@@ -11,6 +11,7 @@ export default defineConfig({
         services: resolve(import.meta.dirname, 'services.html'),
         about: resolve(import.meta.dirname, 'about.html'),
         contact: resolve(import.meta.dirname, 'contact.html'),
+        projects: resolve(import.meta.dirname, 'projects.html'),
         calculatorDecks: resolve(import.meta.dirname, 'calculator/decks.html'),
         calculatorGarages: resolve(import.meta.dirname, 'calculator/garages.html'),
         calculatorPorch: resolve(import.meta.dirname, 'calculator/porch.html'),
