@@ -1,21 +1,38 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
+import { readdirSync, existsSync } from 'fs'
 import { resolve } from 'path'
+
+const root = import.meta.dirname
+const serviceAreaDir = resolve(root, 'service-areas')
+
+const serviceAreaInputs = existsSync(serviceAreaDir)
+  ? Object.fromEntries(
+      readdirSync(serviceAreaDir)
+        .filter((file) => file.endsWith('.html'))
+        .map((file) => [
+          `area_${file.replace('.html', '').replace(/-/g, '_')}`,
+          resolve(serviceAreaDir, file),
+        ])
+    )
+  : {}
 
 export default defineConfig({
   plugins: [tailwindcss()],
   build: {
     rollupOptions: {
       input: {
-        main: resolve(import.meta.dirname, 'index.html'),
-        services: resolve(import.meta.dirname, 'services.html'),
-        about: resolve(import.meta.dirname, 'about.html'),
-        contact: resolve(import.meta.dirname, 'contact.html'),
-        projects: resolve(import.meta.dirname, 'projects.html'),
-        calculatorDecks: resolve(import.meta.dirname, 'calculator/decks.html'),
-        calculatorGarages: resolve(import.meta.dirname, 'calculator/garages.html'),
-        calculatorPorch: resolve(import.meta.dirname, 'calculator/porch.html'),
-        calculatorAdditions: resolve(import.meta.dirname, 'calculator/additions.html'),
+        main: resolve(root, 'index.html'),
+        services: resolve(root, 'services.html'),
+        about: resolve(root, 'about.html'),
+        contact: resolve(root, 'contact.html'),
+        projects: resolve(root, 'projects.html'),
+        faqs: resolve(root, 'faqs.html'),
+        calculatorDecks: resolve(root, 'calculator/decks.html'),
+        calculatorGarages: resolve(root, 'calculator/garages.html'),
+        calculatorPorch: resolve(root, 'calculator/porch.html'),
+        calculatorAdditions: resolve(root, 'calculator/additions.html'),
+        ...serviceAreaInputs,
       },
     },
   },
