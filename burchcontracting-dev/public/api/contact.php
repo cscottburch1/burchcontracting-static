@@ -144,6 +144,11 @@ function collectUploadedFiles(int $maxFiles, int $maxFileSize): array
     return $files;
 }
 
+function labelFor(string $value, array $labels): string
+{
+    return $labels[$value] ?? ($value !== '' ? $value : 'N/A');
+}
+
 function sendLeadEmail(
     string $to,
     string $from,
@@ -152,29 +157,39 @@ function sendLeadEmail(
     string $body,
     array $attachments
 ): bool {
-    $boundary = 'bc_' . bin2hex(random_bytes(8));
     $headers = [
         'From: Burch Contracting <' . $from . '>',
         'Reply-To: ' . $replyTo,
         'MIME-Version: 1.0',
-        'Content-Type: multipart/mixed; boundary="' . $boundary . '"',
     ];
 
-    $message = '--' . $boundary . "\r\n";
-    $message .= "Content-Type: text/plain; charset=UTF-8\r\n\r\n";
-    $message .= $body . "\r\n";
+    if ($attachments === []) {
+        $headers[] = 'Content-Type: text/plain; charset=UTF-8';
+        $headers[] = 'Content-Transfer-Encoding: 8bit';
+        $message = $body;
+    } else {
+        $boundary = 'bc_' . bin2hex(random_bytes(8));
+        $headers[] = 'Content-Type: multipart/mixed; boundary="' . $boundary . '"';
 
-    foreach ($attachments as $attachment) {
-        $message .= '--' . $boundary . "\r\n";
-        $message .= 'Content-Type: ' . $attachment['type'] . '; name="' . $attachment['name'] . "\"\r\n";
-        $message .= "Content-Transfer-Encoding: base64\r\n";
-        $message .= 'Content-Disposition: attachment; filename="' . $attachment['name'] . "\"\r\n\r\n";
-        $message .= chunk_split(base64_encode($attachment['data'])) . "\r\n";
+        $message = '--' . $boundary . "\r\n";
+        $message .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $message .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
+        $message .= $body . "\r\n";
+
+        foreach ($attachments as $attachment) {
+            $message .= '--' . $boundary . "\r\n";
+            $message .= 'Content-Type: ' . $attachment['type'] . '; name="' . $attachment['name'] . "\"\r\n";
+            $message .= "Content-Transfer-Encoding: base64\r\n";
+            $message .= 'Content-Disposition: attachment; filename="' . $attachment['name'] . "\"\r\n\r\n";
+            $message .= chunk_split(base64_encode($attachment['data'])) . "\r\n";
+        }
+
+        $message .= '--' . $boundary . '--';
     }
 
-    $message .= '--' . $boundary . '--';
+    $headerString = implode("\r\n", $headers);
 
-    return mail($to, $subject, $message, implode("\r\n", $headers));
+    return mail($to, $subject, $message, $headerString, '-f' . $from);
 }
 
 if (clean((string) ($_POST['website'] ?? '')) !== '') {
@@ -184,8 +199,14 @@ if (clean((string) ($_POST['website'] ?? '')) !== '') {
 $name = clean((string) ($_POST['name'] ?? ''));
 $phone = clean((string) ($_POST['phone'] ?? ''));
 $email = clean((string) ($_POST['email'] ?? ''));
-$address = clean((string) ($_POST['address'] ?? ''));
+$street = clean((string) ($_POST['address'] ?? ''));
+$city = clean((string) ($_POST['city'] ?? ''));
+$state = clean((string) ($_POST['state'] ?? ''));
 $zipCode = clean((string) ($_POST['zipCode'] ?? ''));
+$address = $street;
+if ($city !== '' || $state !== '' || $zipCode !== '') {
+    $address = implode(', ', array_filter([$street, $city, $state, $zipCode], static fn (string $part): bool => $part !== ''));
+}
 $serviceType = clean((string) ($_POST['serviceType'] ?? ($_POST['projectType'] ?? '')));
 $budgetRange = clean((string) ($_POST['budgetRange'] ?? ''));
 $timeframe = clean((string) ($_POST['timeframe'] ?? ''));
@@ -217,7 +238,43 @@ try {
     respond(400, ['error' => $exception->getMessage()]);
 }
 
-$subject = 'New Estimate Request: ' . $name . ($serviceType !== '' ? ' - ' . $serviceType : '');
+$projectLabels = [
+    'garage' => 'Garage',
+    'addition' => 'Home Addition',
+    'deck' => 'Deck',
+    'screened-porch' => 'Screened Porch',
+    'covered-patio' => 'Covered Patio',
+    'remodeling' => 'Remodeling',
+    'commercial' => 'Commercial Upfit',
+    'other' => 'Other / Not Sure',
+];
+$budgetLabels = [
+    'under-10k' => 'Under $10,000',
+    '10k-25k' => '$10,000 – $25,000',
+    '25k-50k' => '$25,000 – $50,000',
+    '50k-100k' => '$50,000 – $100,000',
+    'over-100k' => 'Over $100,000',
+    'not-sure' => 'Not Sure Yet',
+];
+$timeframeLabels = [
+    'asap' => 'As soon as possible',
+    '1-3months' => 'Within 1–3 months',
+    '3-6months' => '3–6 months',
+    '6-12months' => '6–12 months',
+    'flexible' => 'Flexible / Planning ahead',
+];
+$referralLabels = [
+    'google' => 'Google Search',
+    'referral' => 'Friend or Family Referral',
+    'neighbor' => 'Saw Work in Neighborhood',
+    'repeat' => 'Previous Customer',
+    'facebook' => 'Facebook',
+    'nextdoor' => 'Nextdoor',
+    'other' => 'Other',
+];
+
+$projectLabel = labelFor($serviceType, $projectLabels);
+$subject = 'New Estimate Request: ' . $name . ($projectLabel !== 'N/A' ? ' - ' . $projectLabel : '');
 $body = implode("\n", [
     'New contact form submission',
     '',
@@ -226,10 +283,10 @@ $body = implode("\n", [
     'Email: ' . $email,
     'Address: ' . ($address !== '' ? $address : 'N/A'),
     'Zip Code: ' . ($zipCode !== '' ? $zipCode : 'N/A'),
-    'Project Type: ' . ($serviceType !== '' ? $serviceType : 'N/A'),
-    'Budget: ' . ($budgetRange !== '' ? $budgetRange : 'N/A'),
-    'Timeframe: ' . ($timeframe !== '' ? $timeframe : 'N/A'),
-    'Referral: ' . ($referralSource !== '' ? $referralSource : 'N/A'),
+    'Project Type: ' . $projectLabel,
+    'Budget: ' . labelFor($budgetRange, $budgetLabels),
+    'Timeframe: ' . labelFor($timeframe, $timeframeLabels),
+    'Referral: ' . labelFor($referralSource, $referralLabels),
     '',
     'Description:',
     $description,

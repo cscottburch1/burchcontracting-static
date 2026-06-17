@@ -201,22 +201,16 @@ if (form) {
     formData.append('name', getValue('name'))
     formData.append('phone', getValue('phone'))
     formData.append('email', getValue('email'))
+    formData.append('address', getValue('address'))
+    formData.append('city', getValue('city'))
+    formData.append('state', getValue('state'))
     formData.append('zipCode', getValue('zipCode'))
+    formData.append('projectType', getValue('projectType'))
     formData.append('serviceType', getValue('projectType'))
     formData.append('budgetRange', getValue('budgetRange'))
     formData.append('timeframe', getValue('timeframe'))
     formData.append('referralSource', getValue('referralSource'))
     formData.append('description', getValue('description'))
-
-    const fullAddress = [
-      getValue('address'),
-      getValue('city'),
-      getValue('state'),
-      getValue('zipCode'),
-    ]
-      .filter(Boolean)
-      .join(', ')
-    formData.append('address', fullAddress)
 
     if (fileInput?.files) {
       Array.from(fileInput.files).forEach((file, index) => {
