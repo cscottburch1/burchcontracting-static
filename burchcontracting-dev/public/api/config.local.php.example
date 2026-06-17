@@ -1,1 +1,11 @@
-
+<?php
+/**
+ * Copy this file to config.local.php on the server and fill in your secret key.
+ * config.local.php is gitignored — upload it once via FTP/hPanel File Manager.
+ */
+return [
+    'to_email' => 'estimates@burchcontracting.com',
+    'from_email' => 'noreply@burchcontracting.com',
+    'recaptcha_secret_key' => 'YOUR_RECAPTCHA_SECRET_KEY',
+    'recaptcha_min_score' => 0.5,
+];

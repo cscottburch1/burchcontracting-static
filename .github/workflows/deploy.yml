@@ -40,10 +40,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           protocol: ftp
-          # FTP action resolves paths from repo root, not working-directory
           local-dir: ./burchcontracting-dev/dist/
-          # Hostinger document root — update per staging domain:
-          # nicheprohub.com (dev): ./public_html/
-          # dev.burchcontracting.com: ./domains/dev.burchcontracting.com/public_html/
           server-dir: ./public_html/
           dangerous-clean-slate: false
+          exclude: |
+            **/api/config.local.php
