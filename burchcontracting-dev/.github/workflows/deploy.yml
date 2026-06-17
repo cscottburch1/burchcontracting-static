@@ -3,35 +3,43 @@ name: Deploy to Hostinger
 on:
   push:
     branches:
-      - main  # Change to 'master' if that's your default branch
-  workflow_dispatch:  # Allows manual deployment from GitHub Actions tab
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+    defaults:
+      run:
+        working-directory: burchcontracting-dev
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+          cache-dependency-path: burchcontracting-dev/package-lock.json
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build project
         run: npm run build
-      
+
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/
-          server-dir: ./public_html/
+          port: 21
+          protocol: ftp
+          # FTP action resolves paths from repo root, not working-directory
+          local-dir: ./burchcontracting-dev/dist/
+          # Hostinger subdomain document root (verify in FileZilla after FTP login):
+          server-dir: ./domains/dev.burchcontracting.com/public_html/
           dangerous-clean-slate: false
