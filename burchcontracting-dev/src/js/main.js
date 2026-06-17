@@ -29,23 +29,185 @@ if (testimonialsTrack && testimonialsPrev && testimonialsNext) {
   })
 }
 
-// Contact form — wire up to Netlify Forms, Formspree, etc. before going live
+// Contact form — Formspree submission
 const form = document.getElementById('contact-form')
 if (form) {
   const statusEl = document.getElementById('form-status')
-  form.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const btn = form.querySelector('[type="submit"]')
-    btn.disabled = true
-    btn.textContent = 'Sending…'
-    // TODO: replace with real form submission (Netlify Forms, Formspree, etc.)
-    setTimeout(() => {
-      if (statusEl) {
-        statusEl.textContent = 'Thank you! We\'ll be in touch within one business day.'
-        statusEl.classList.remove('hidden')
+  const submitBtn = document.getElementById('submit-btn')
+  const fileInput = document.getElementById('file-upload')
+  const fileList = document.getElementById('file-list')
+  const defaultBtnText = submitBtn?.textContent ?? 'Submit Request'
+  const MAX_FILE_SIZE = 10 * 1024 * 1024
+
+  const endpoint =
+    import.meta.env.VITE_FORMSPREE_ENDPOINT ||
+    form.dataset.formspreeEndpoint ||
+    ''
+
+  const fieldRules = {
+    name: (value) => (value.trim() ? '' : 'Name is required.'),
+    phone: (value) => {
+      const digits = value.replace(/\D/g, '')
+      if (!digits) return 'Phone number is required.'
+      if (digits.length < 10) return 'Enter a valid 10-digit phone number.'
+      return ''
+    },
+    email: (value) => {
+      if (!value.trim()) return 'Email is required.'
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Enter a valid email address.'
+      return ''
+    },
+    address: (value) => (value.trim() ? '' : 'Street address is required.'),
+    city: (value) => (value.trim() ? '' : 'City is required.'),
+    state: (value) => {
+      if (!value.trim()) return 'State is required.'
+      if (!/^[A-Za-z]{2}$/.test(value.trim())) return 'Enter a 2-letter state code.'
+      return ''
+    },
+    zipCode: (value) => {
+      if (!value.trim()) return 'Zip code is required.'
+      if (!/^\d{5}(-\d{4})?$/.test(value.trim())) return 'Enter a valid zip code.'
+      return ''
+    },
+    projectType: (value) => (value ? '' : 'Please select a project type.'),
+    description: (value) => (value.trim() ? '' : 'Project description is required.'),
+  }
+
+  const showStatus = (message, type) => {
+    if (!statusEl) return
+    statusEl.textContent = message
+    statusEl.classList.remove('hidden', 'bg-green-50', 'border-green-200', 'text-green-800', 'bg-red-50', 'border-red-200', 'text-red-800')
+    if (type === 'success') {
+      statusEl.classList.add('bg-green-50', 'border', 'border-green-200', 'text-green-800')
+    } else {
+      statusEl.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-800')
+    }
+    statusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  }
+
+  const clearFieldErrors = () => {
+    Object.keys(fieldRules).forEach((field) => {
+      const errorEl = document.getElementById(`error-${field}`)
+      const input = form.elements.namedItem(field)
+      errorEl?.classList.add('hidden')
+      if (input && 'classList' in input) {
+        input.classList.remove('border-red-500', 'ring-red-500')
       }
-      btn.textContent = 'Message Sent'
-      form.reset()
-    }, 600)
+    })
+  }
+
+  const showFieldError = (field, message) => {
+    const errorEl = document.getElementById(`error-${field}`)
+    const input = form.elements.namedItem(field)
+    if (errorEl) {
+      errorEl.textContent = message
+      errorEl.classList.remove('hidden')
+    }
+    if (input && 'classList' in input) {
+      input.classList.add('border-red-500')
+      input.setAttribute('aria-invalid', 'true')
+    }
+  }
+
+  const validateForm = () => {
+    clearFieldErrors()
+    let valid = true
+    Object.entries(fieldRules).forEach(([field, rule]) => {
+      const input = form.elements.namedItem(field)
+      const value = input && 'value' in input ? String(input.value) : ''
+      const error = rule(value)
+      if (error) {
+        showFieldError(field, error)
+        valid = false
+      }
+    })
+    return valid
+  }
+
+  const renderFileList = () => {
+    if (!fileInput || !fileList) return
+    const files = Array.from(fileInput.files ?? [])
+    if (!files.length) {
+      fileList.classList.add('hidden')
+      fileList.innerHTML = ''
+      return
+    }
+    fileList.classList.remove('hidden')
+    fileList.innerHTML = files
+      .map((file) => `<li>${file.name} (${Math.round(file.size / 1024)} KB)</li>`)
+      .join('')
+  }
+
+  fileInput?.addEventListener('change', renderFileList)
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    if (!validateForm()) {
+      showStatus('Please fix the highlighted fields and try again.', 'error')
+      return
+    }
+
+    const honeypot = form.elements.namedItem('website')
+    if (honeypot && 'value' in honeypot && honeypot.value) {
+      return
+    }
+
+    if (!endpoint) {
+      showStatus('Form is not configured yet. Please call (864) 724-4600 or email estimates@burchcontracting.com.', 'error')
+      return
+    }
+
+    if (fileInput?.files) {
+      for (const file of fileInput.files) {
+        if (file.size > MAX_FILE_SIZE) {
+          showStatus(`"${file.name}" exceeds the 10MB limit. Please choose smaller files.`, 'error')
+          return
+        }
+      }
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true
+      submitBtn.textContent = 'Sending…'
+    }
+
+    const formData = new FormData(form)
+    formData.delete('attachments')
+    if (fileInput?.files) {
+      Array.from(fileInput.files).forEach((file) => {
+        formData.append('attachments', file, file.name)
+      })
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (response.ok) {
+        showStatus('Thank you! We received your request and will be in touch within one business day.', 'success')
+        form.reset()
+        renderFileList()
+        if (submitBtn) submitBtn.textContent = 'Request Submitted'
+      } else {
+        const message = data.error || 'Something went wrong. Please try again or call (864) 724-4600.'
+        showStatus(message, 'error')
+        if (submitBtn) {
+          submitBtn.disabled = false
+          submitBtn.textContent = defaultBtnText
+        }
+      }
+    } catch {
+      showStatus('Network error. Please try again or call (864) 724-4600.', 'error')
+      if (submitBtn) {
+        submitBtn.disabled = false
+        submitBtn.textContent = defaultBtnText
+      }
+    }
   })
 }
