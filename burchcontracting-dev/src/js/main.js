@@ -29,7 +29,7 @@ if (testimonialsTrack && testimonialsPrev && testimonialsNext) {
   })
 }
 
-// Contact form — Formspree submission
+// Contact form — local PHP endpoint with reCAPTCHA v3
 const form = document.getElementById('contact-form')
 if (form) {
   const statusEl = document.getElementById('form-status')
@@ -39,10 +39,35 @@ if (form) {
   const defaultBtnText = submitBtn?.textContent ?? 'Submit Request'
   const MAX_FILE_SIZE = 10 * 1024 * 1024
 
-  const endpoint =
-    import.meta.env.VITE_FORMSPREE_ENDPOINT ||
-    form.dataset.formspreeEndpoint ||
+  const recaptchaSiteKey =
+    import.meta.env.VITE_RECAPTCHA_SITE_KEY ||
+    form.dataset.recaptchaSiteKey ||
     ''
+  const endpoint = form.dataset.contactEndpoint || '/api/contact.php'
+
+  const loadRecaptcha = () =>
+    new Promise((resolve, reject) => {
+      if (!recaptchaSiteKey) {
+        resolve()
+        return
+      }
+      if (window.grecaptcha) {
+        resolve()
+        return
+      }
+      const script = document.createElement('script')
+      script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`
+      script.async = true
+      script.onload = () => resolve()
+      script.onerror = () => reject(new Error('reCAPTCHA failed to load'))
+      document.head.appendChild(script)
+    })
+
+  const getRecaptchaToken = async () => {
+    if (!recaptchaSiteKey || !window.grecaptcha) return ''
+    await new Promise((resolve) => window.grecaptcha.ready(resolve))
+    return window.grecaptcha.execute(recaptchaSiteKey, { action: 'contact_form' })
+  }
 
   const fieldRules = {
     name: (value) => (value.trim() ? '' : 'Name is required.'),
@@ -153,11 +178,6 @@ if (form) {
       return
     }
 
-    if (!endpoint) {
-      showStatus('Form is not configured yet. Please call (864) 724-4600 or email estimates@burchcontracting.com.', 'error')
-      return
-    }
-
     if (fileInput?.files) {
       for (const file of fileInput.files) {
         if (file.size > MAX_FILE_SIZE) {
@@ -172,15 +192,43 @@ if (form) {
       submitBtn.textContent = 'Sending…'
     }
 
-    const formData = new FormData(form)
-    formData.delete('attachments')
+    const formData = new FormData()
+    const getValue = (field) => {
+      const input = form.elements.namedItem(field)
+      return input && 'value' in input ? String(input.value).trim() : ''
+    }
+
+    formData.append('name', getValue('name'))
+    formData.append('phone', getValue('phone'))
+    formData.append('email', getValue('email'))
+    formData.append('zipCode', getValue('zipCode'))
+    formData.append('serviceType', getValue('projectType'))
+    formData.append('budgetRange', getValue('budgetRange'))
+    formData.append('timeframe', getValue('timeframe'))
+    formData.append('referralSource', getValue('referralSource'))
+    formData.append('description', getValue('description'))
+
+    const fullAddress = [
+      getValue('address'),
+      getValue('city'),
+      getValue('state'),
+      getValue('zipCode'),
+    ]
+      .filter(Boolean)
+      .join(', ')
+    formData.append('address', fullAddress)
+
     if (fileInput?.files) {
-      Array.from(fileInput.files).forEach((file) => {
-        formData.append('attachments', file, file.name)
+      Array.from(fileInput.files).forEach((file, index) => {
+        formData.append(`file${index}`, file, file.name)
       })
     }
 
     try {
+      await loadRecaptcha()
+      const recaptchaToken = await getRecaptchaToken()
+      formData.append('recaptchaToken', recaptchaToken)
+
       const response = await fetch(endpoint, {
         method: 'POST',
         body: formData,

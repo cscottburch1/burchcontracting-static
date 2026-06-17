@@ -28,3 +28,6 @@ dist-ssr
 .env
 sftp.json
 sftp-config.json
+
+# Server-side form secrets (upload manually to Hostinger)
+public/api/config.local.php
