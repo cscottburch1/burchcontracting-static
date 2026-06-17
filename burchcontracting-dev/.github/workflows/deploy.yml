@@ -40,6 +40,8 @@ jobs:
           protocol: ftp
           # FTP action resolves paths from repo root, not working-directory
           local-dir: ./burchcontracting-dev/dist/
-          # Hostinger subdomain document root (verify in FileZilla after FTP login):
-          server-dir: ./domains/dev.burchcontracting.com/public_html/
+          # Hostinger document root — update per staging domain:
+          # nicheprohub.com (dev): ./public_html/
+          # dev.burchcontracting.com: ./domains/dev.burchcontracting.com/public_html/
+          server-dir: ./public_html/
           dangerous-clean-slate: false

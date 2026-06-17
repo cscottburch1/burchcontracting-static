@@ -14,6 +14,21 @@ if (menuBtn && mobileMenu) {
   })
 }
 
+// Testimonials carousel
+const testimonialsTrack = document.getElementById('testimonials-track')
+const testimonialsPrev = document.getElementById('testimonials-prev')
+const testimonialsNext = document.getElementById('testimonials-next')
+
+if (testimonialsTrack && testimonialsPrev && testimonialsNext) {
+  const scrollAmount = () => testimonialsTrack.clientWidth * 0.85
+  testimonialsPrev.addEventListener('click', () => {
+    testimonialsTrack.scrollBy({ left: -scrollAmount(), behavior: 'smooth' })
+  })
+  testimonialsNext.addEventListener('click', () => {
+    testimonialsTrack.scrollBy({ left: scrollAmount(), behavior: 'smooth' })
+  })
+}
+
 // Contact form — wire up to Netlify Forms, Formspree, etc. before going live
 const form = document.getElementById('contact-form')
 if (form) {
