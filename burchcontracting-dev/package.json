@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && echo Build complete! Now right-click the dist folder and select 'Upload Folder' using SFTP extension"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
