@@ -25,7 +25,7 @@ jobs:
           cache-dependency-path: burchcontracting-dev/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Build project
         env:
