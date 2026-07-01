@@ -1,0 +1,95 @@
+name: Deploy to nicheprohub.com
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run deploy in dry-run mode"
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_PROTOCOL: ${{ secrets.DEPLOY_PROTOCOL }}
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+      DEPLOY_USERNAME: ${{ secrets.DEPLOY_USERNAME }}
+      DEPLOY_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
+      DEPLOY_REMOTE_DIR: ${{ secrets.DEPLOY_REMOTE_DIR }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate service pages
+        run: node scripts/generate-services.mjs
+
+      - name: Install lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Validate deployment secrets
+        run: |
+          set -euo pipefail
+          : "${DEPLOY_HOST:?Missing DEPLOY_HOST secret}"
+          : "${DEPLOY_USERNAME:?Missing DEPLOY_USERNAME secret}"
+          : "${DEPLOY_PASSWORD:?Missing DEPLOY_PASSWORD secret}"
+          : "${DEPLOY_REMOTE_DIR:?Missing DEPLOY_REMOTE_DIR secret}"
+
+      - name: Deploy files
+        run: |
+          set -euo pipefail
+
+          protocol="${DEPLOY_PROTOCOL:-sftp}"
+          port="${DEPLOY_PORT:-22}"
+          dry_run=""
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.dry_run }}" == "true" ]]; then
+            dry_run="--dry-run"
+            echo "Running in dry-run mode"
+          fi
+
+          mirror_flags=(
+            "-R"
+            "--verbose"
+            "--parallel=2"
+            "--only-newer"
+            "--exclude-glob=.git"
+            "--exclude-glob=.git/**"
+            "--exclude-glob=.github"
+            "--exclude-glob=.github/**"
+            "--exclude-glob=node_modules"
+            "--exclude-glob=node_modules/**"
+            "--exclude-glob=.env"
+            "--exclude-glob=*.local"
+            "--exclude-glob=.builds"
+            "--exclude-glob=.builds/**"
+            "--exclude-glob=sftp.json"
+            "--exclude-glob=sftp-config.json"
+            "--exclude-glob=api/config.local.php"
+          )
+
+          if [[ -n "$dry_run" ]]; then
+            mirror_flags+=("$dry_run")
+          fi
+
+          lftp -u "$DEPLOY_USERNAME","$DEPLOY_PASSWORD" "${protocol}://${DEPLOY_HOST}:${port}" <<EOF
+set cmd:fail-exit true
+set net:max-retries 2
+set net:reconnect-interval-base 5
+set net:timeout 30
+set ftp:ssl-allow true
+set sftp:auto-confirm yes
+mirror ${mirror_flags[*]} ./ "$DEPLOY_REMOTE_DIR"
+bye
+EOF
