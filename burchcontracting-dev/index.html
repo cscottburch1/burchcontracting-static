@@ -24,7 +24,7 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "GeneralContractor",
+          "@type": ["LocalBusiness", "GeneralContractor"],
           "@id": "https://burchcontracting.com/#business",
           "name": "Burch Contracting",
           "url": "https://burchcontracting.com/",
@@ -44,6 +44,7 @@
             "addressCountry": "US"
           },
           "geo": { "@type": "GeoCoordinates", "latitude": 34.6082, "longitude": -82.1134 },
+          "openingHours": "Mo-Fr 08:00-17:00",
           "areaServed": [
             { "@type": "City", "name": "Simpsonville" },
             { "@type": "City", "name": "Fountain Inn" },
@@ -62,11 +63,28 @@
             "bestRating": "5",
             "ratingCount": "6"
           },
+          "identifier": {
+            "@type": "PropertyValue",
+            "propertyID": "SC Contractor License",
+            "value": "CLG118679"
+          },
           "hasCredential": {
             "@type": "EducationalOccupationalCredential",
             "credentialCategory": "license",
             "name": "SC General Contractor License #CLG118679"
           }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://burchcontracting.com/#organization",
+          "name": "Burch Contracting",
+          "url": "https://burchcontracting.com/",
+          "logo": "https://burchcontracting.com/images/burch-contracting-logo.png",
+          "sameAs": [
+            "PLACEHOLDER_GOOGLE_BUSINESS_PROFILE_URL",
+            "PLACEHOLDER_FACEBOOK_URL",
+            "PLACEHOLDER_BBB_URL"
+          ]
         },
         {
           "@type": "WebSite",
@@ -75,6 +93,48 @@
           "name": "Burch Contracting",
           "publisher": { "@id": "https://burchcontracting.com/#business" },
           "inLanguage": "en-US"
+        },
+        {
+          "@type": "Review",
+          "itemReviewed": { "@id": "https://burchcontracting.com/#business" },
+          "author": { "@type": "Person", "name": "Debra Lee" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "I'm so proud of the shower replacement they did—an outstanding job! Great work. Great price."
+        },
+        {
+          "@type": "Review",
+          "itemReviewed": { "@id": "https://burchcontracting.com/#business" },
+          "author": { "@type": "Person", "name": "Tanya Towne" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "The owner was very professional and understood what I needed. The work was done in a timely manner with no complaints. His employees were polite and respectful. They cleaned up behind themselves and I was very impressed."
+        },
+        {
+          "@type": "Review",
+          "itemReviewed": { "@id": "https://burchcontracting.com/#business" },
+          "author": { "@type": "Person", "name": "Denise Majewski" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Scott's team took out our big bathtub and made it into a step-in shower. They did a fabulous job. On time every day, good follow-up, cleaned up every day, nice people to work with. The price was very fair."
+        },
+        {
+          "@type": "Review",
+          "itemReviewed": { "@id": "https://burchcontracting.com/#business" },
+          "author": { "@type": "Person", "name": "Joanie M Neely" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Scott told me he was really busy but eager to help. He and his team worked quickly and efficiently to get us back home. Super high quality, fairness, and professionalism is what you get when you work with him."
+        },
+        {
+          "@type": "Review",
+          "itemReviewed": { "@id": "https://burchcontracting.com/#business" },
+          "author": { "@type": "Person", "name": "Gary Krause" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "This company was very professional and the timeline was amazing. Very pleased with everything. I would highly recommend them for any work you need done."
+        },
+        {
+          "@type": "Review",
+          "itemReviewed": { "@id": "https://burchcontracting.com/#business" },
+          "author": { "@type": "Person", "name": "Cindy Miler" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "We had the best experience with Burch Contracting! Scott sent his guys over to make some improvements to our kitchen and we couldn't be happier. They all went above and beyond. Highly recommend!!"
         },
         {
           "@type": "FAQPage",
