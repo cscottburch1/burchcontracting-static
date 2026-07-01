@@ -1,0 +1,6 @@
+.builds/
+*.local
+.env
+config.local.php
+sftp.json
+sftp-config.json
