@@ -178,7 +178,7 @@ export const GLOBAL_FAQS = [
     answer: 'Burch Contracting serves Simpsonville, Fountain Inn, Mauldin, Greenville, Greer, Five Forks, Woodruff, Laurens, Gray Court, and surrounding Upstate South Carolina communities. The office is located at 1095 Water Tank Rd, Gray Court, SC 29645.',
   },
   {
-    question: 'How do I get a free estimate from Burch Contracting?',
+    question: 'How do I get a free consultation from Burch Contracting?',
     answer: 'Call (864) 724-4600 or submit the contact form at burchcontracting.com/contact.html. Scott will schedule a site visit, review your project scope, and provide a written estimate with price and timeline before work begins.',
   },
   {
@@ -191,7 +191,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How much does a deck cost in Upstate SC?',
-    answer: 'Custom decks in Upstate SC typically range from $33,000 to $58,000 depending on size, materials, railing, and site conditions. Use the deck cost calculator at burchcontracting.com/calculator/decks.html or request a free estimate for an exact quote.',
+    answer: 'Custom decks in Upstate SC typically range from $33,000 to $58,000 depending on size, materials, railing, and site conditions. Use the deck cost calculator at burchcontracting.com/calculator/decks.html or request a free consultation for an exact quote.',
   },
   {
     question: 'How much does a screened porch cost in Simpsonville SC?',

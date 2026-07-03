@@ -45,7 +45,7 @@ const header = `    <header class="sticky top-0 z-50 bg-white shadow-sm">
             <a href="/projects.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Projects</a>
             <a href="/about.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">About</a>
             <a href="/contact.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Contact</a>
-            <a href="/contact.html" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors duration-200">Get Your Free Estimate</a>
+            <a href="/contact.html" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors duration-200">Get Your Free Consultation</a>
           </div>
           <button id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
             <span class="sr-only">Open menu</span>
@@ -60,7 +60,7 @@ const header = `    <header class="sticky top-0 z-50 bg-white shadow-sm">
             <a href="/projects.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Projects</a>
             <a href="/about.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">About</a>
             <a href="/contact.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Contact</a>
-            <a href="/contact.html" class="mt-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2.5 rounded-lg font-semibold text-sm text-center transition-colors">Get Your Free Estimate</a>
+            <a href="/contact.html" class="mt-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2.5 rounded-lg font-semibold text-sm text-center transition-colors">Get Your Free Consultation</a>
           </div>
         </div>
       </nav>
@@ -273,7 +273,7 @@ ${header}
             </div>
           </div>
           <div class="flex flex-col sm:flex-row gap-4">
-            <a href="/contact.html" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">Get Free Estimate</a>
+            <a href="/contact.html" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">Get Free Consultation</a>
             <a href="tel:${SITE.phoneLink}" class="border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">${SITE.phone}</a>
 ${calculatorButton}
           </div>
@@ -316,7 +316,7 @@ ${relatedServicesHtml}
           <h2 class="text-3xl font-bold text-white mb-4">Ready to Start Your ${esc(service.title)} Project?</h2>
           <p class="text-blue-100 text-lg mb-8">Free on-site consultation and detailed estimate. ${SITE.bbb} BBB Rating, ${SITE.rating} Google Rating, ${SITE.experience} years serving Upstate SC.</p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact.html" class="bg-white hover:bg-slate-100 text-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Request Free Estimate</a>
+            <a href="/contact.html" class="bg-white hover:bg-slate-100 text-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Request Free Consultation</a>
             <a href="tel:${SITE.phoneLink}" class="border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">${SITE.phone}</a>
           </div>
         </div>
