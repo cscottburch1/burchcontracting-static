@@ -46,7 +46,7 @@ const header = `    <header class="sticky top-0 z-50 bg-white shadow-sm">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div class="flex items-center justify-between h-16">
           <a href="/" class="flex items-center shrink-0">
-            <img src="/images/burch-contracting-logo.png" alt="Burch Contracting — Construction &amp; Remodeling" width="160" height="48" class="h-12 w-auto" />
+            <img src="/images/burch-contracting-logo.webp" alt="Burch Contracting — Construction &amp; Remodeling" width="160" height="48" class="h-12 w-auto" />
           </a>
           <div class="hidden md:flex items-center gap-8">
             <a href="/" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Home</a>

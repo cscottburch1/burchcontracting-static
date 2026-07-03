@@ -7,7 +7,7 @@ export const SITE = {
   license: 'CLG118679',
   owner: 'C. Scott Burch',
   office: '1095 Water Tank Rd, Gray Court, SC 29645',
-  ogImage: '/images/custom-deck-greenville-sc.png',
+  ogImage: '/images/custom-deck-greenville-sc.webp',
 }
 
 export const SERVICE_AREAS = [

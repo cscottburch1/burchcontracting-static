@@ -5,6 +5,7 @@ import { resolve } from 'path'
 
 const root = import.meta.dirname
 const serviceAreaDir = resolve(root, 'service-areas')
+const outdoorLivingDir = resolve(root, 'outdoor-living')
 
 const serviceAreaInputs = existsSync(serviceAreaDir)
   ? Object.fromEntries(
@@ -13,6 +14,17 @@ const serviceAreaInputs = existsSync(serviceAreaDir)
         .map((file) => [
           `area_${file.replace('.html', '').replace(/-/g, '_')}`,
           resolve(serviceAreaDir, file),
+        ])
+    )
+  : {}
+
+const outdoorLivingInputs = existsSync(outdoorLivingDir)
+  ? Object.fromEntries(
+      readdirSync(outdoorLivingDir, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => [
+          `outdoor_${dirent.name.replace(/-/g, '_')}`,
+          resolve(outdoorLivingDir, dirent.name, 'index.html'),
         ])
     )
   : {}
@@ -32,7 +44,16 @@ export default defineConfig({
         calculatorGarages: resolve(root, 'calculator/garages.html'),
         calculatorPorch: resolve(root, 'calculator/porch.html'),
         calculatorAdditions: resolve(root, 'calculator/additions.html'),
+        // Service pages (all use nested directory structure)
+        aduBuilder: resolve(root, 'adu-builder/index.html'),
+        remodeling: resolve(root, 'remodeling/index.html'),
+        commercialUpfits: resolve(root, 'commercial-upfits/index.html'),
+        basementFinishing: resolve(root, 'basement-finishing/index.html'),
+        garages: resolve(root, 'garages/index.html'),
+        additions: resolve(root, 'additions/index.html'),
+        // Generated pages
         ...serviceAreaInputs,
+        ...outdoorLivingInputs,
       },
     },
   },

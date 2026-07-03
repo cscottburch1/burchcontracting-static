@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/generate-geo-aeo.mjs",
+    "prebuild": "node scripts/generate-geo-aeo.mjs && node scripts/generate-services.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "npm run build && echo Build complete! Now right-click the dist folder and select 'Upload Folder' using SFTP extension"
