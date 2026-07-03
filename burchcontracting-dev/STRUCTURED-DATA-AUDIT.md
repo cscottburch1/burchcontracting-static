@@ -99,10 +99,6 @@ All service-area pages follow the same pattern:
 **Added:** Same structure as above
 - ✅ BreadcrumbList: Home > Service Areas > Greenville, SC
 
-### **service-areas/greer.html**
-**Added:** Same structure as above
-- ✅ BreadcrumbList: Home > Service Areas > Greer, SC
-
 ### **service-areas/five-forks.html**
 **Added:** Same structure as above
 - ✅ BreadcrumbList: Home > Service Areas > Five Forks, SC

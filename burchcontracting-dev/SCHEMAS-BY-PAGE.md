@@ -70,7 +70,6 @@
 - fountain-inn.html
 - mauldin.html
 - greenville.html
-- greer.html
 - five-forks.html
 - woodruff.html
 - laurens.html

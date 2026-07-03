@@ -71,26 +71,10 @@ export const SERVICE_AREAS = [
     about: 'Greenville is the economic center of the Upstate. Whether you are updating a bungalow near downtown, adding a screened porch in a suburban neighborhood, or building a detached garage, Burch Contracting brings 35+ years of local building experience.',
     neighborhoods: [
       { name: 'North Main & Augusta Road', detail: 'Established neighborhoods with renovation-friendly housing stock.' },
-      { name: 'Taylors & Greer fringe', detail: 'Suburban lots suited for garages, decks, and additions.' },
+      { name: 'Taylors fringe', detail: 'Suburban lots suited for garages, decks, and additions.' },
     ],
     insights: ['Diverse housing stock from historic to new construction.', 'Strong remodeling and flood restoration demand.', 'City and county permit experience across Greenville.'],
     geo: { latitude: 34.8526, longitude: -82.3940 },
-  },
-  {
-    slug: 'greer',
-    name: 'Greer',
-    state: 'SC',
-    county: 'Greenville County',
-    driveTime: '30 min from office',
-    tagline: 'Growing City',
-    highlight: 'Greer\'s residential growth has made garages, room additions, and outdoor living spaces some of our most requested project types in the area.',
-    about: 'Greer combines small-city amenities with rapid residential development. We help Greer homeowners add square footage, build detached garages, and create screened outdoor spaces built for Upstate humidity and seasonal weather.',
-    neighborhoods: [
-      { name: 'City of Greer', detail: 'In-town homes with renovation and addition opportunities.' },
-      { name: 'Bottum Farms & Chandler Pointe', detail: 'Newer subdivisions with contemporary family homes.' },
-    ],
-    insights: ['BMW and manufacturing growth drives housing demand.', 'Popular area for garage and addition investments.', 'Mix of established and new-construction neighborhoods.'],
-    geo: { latitude: 34.9387, longitude: -82.2271 },
   },
   {
     slug: 'five-forks',
@@ -175,7 +159,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'What areas does Burch Contracting serve in Upstate SC?',
-    answer: 'Burch Contracting serves Simpsonville, Fountain Inn, Mauldin, Greenville, Greer, Five Forks, Woodruff, Laurens, Gray Court, and surrounding Upstate South Carolina communities. The office is located at 1095 Water Tank Rd, Gray Court, SC 29645.',
+    answer: 'Burch Contracting serves Simpsonville, Fountain Inn, Mauldin, Greenville, Five Forks, Woodruff, Laurens, Gray Court, and surrounding Upstate South Carolina communities. The office is located at 1095 Water Tank Rd, Gray Court, SC 29645.',
   },
   {
     question: 'How do I get a free consultation from Burch Contracting?',
