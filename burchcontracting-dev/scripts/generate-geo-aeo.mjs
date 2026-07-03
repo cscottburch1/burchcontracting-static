@@ -415,6 +415,7 @@ function generateSitemap() {
     ['/calculator/garages.html', 'monthly', '0.7'],
     ['/calculator/porch.html', 'monthly', '0.7'],
     ['/calculator/additions.html', 'monthly', '0.7'],
+    ['/calculator/estimate.html', 'monthly', '0.7'],
   ]
 
   const areaPages = SERVICE_AREAS.map((area) => [`/service-areas/${area.slug}.html`, 'monthly', '0.75'])

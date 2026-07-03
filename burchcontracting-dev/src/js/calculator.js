@@ -12,18 +12,21 @@ import {
 const app = document.getElementById('calculator-app')
 if (app) {
   const pageKey = app.dataset.page
-  const page = CALCULATOR_PAGES[pageKey]
-  if (page) initCalculator(app, page)
+  if (pageKey === 'estimate') {
+    initCalculator(app, null, { unified: true })
+  } else {
+    const page = CALCULATOR_PAGES[pageKey]
+    if (page) initCalculator(app, page)
+  }
 }
 
-function initCalculator(root, page) {
-  const service = PRICING_CONFIG.services[page.serviceKey]
-  const sizeRange = PRICING_CONFIG.sizeRanges[page.serviceKey]
-  const baseRateEntries = Object.entries(service.baseRates)
-  const defaultRateId = baseRateEntries[0][0]
-  const defaultSqft = defaultSquareFootage(page.serviceKey)
+function buildServiceState(serviceKey) {
+  const service = PRICING_CONFIG.services[serviceKey]
+  const defaultRateId = Object.keys(service.baseRates)[0]
+  const defaultSqft = defaultSquareFootage(serviceKey)
 
-  const state = {
+  return {
+    serviceKey,
     rateId: defaultRateId,
     sqft: defaultSqft,
     sqftInput: String(defaultSqft),
@@ -37,6 +40,11 @@ function initCalculator(root, page) {
     adders: Object.fromEntries((service.adders ?? []).map((a) => [a.id, 0])),
     showDetails: false,
   }
+}
+
+function initCalculator(root, page, options = {}) {
+  const unified = options.unified === true
+  let state = buildServiceState(unified ? Object.values(CALCULATOR_PAGES)[0].serviceKey : page.serviceKey)
 
   root.innerHTML = `
     <div class="grid gap-8 lg:grid-cols-[1.3fr_1fr]">
@@ -51,7 +59,9 @@ function initCalculator(root, page) {
   const mobileBarEl = root.querySelector('#calc-mobile-bar')
 
   const render = () => {
-    renderInputs(inputsEl, service, sizeRange, state, page)
+    const service = PRICING_CONFIG.services[state.serviceKey]
+    const sizeRange = PRICING_CONFIG.sizeRanges[state.serviceKey]
+    renderInputs(inputsEl, service, sizeRange, state, page, unified)
     const estimate = computeEstimate(service, state)
     renderResults(resultsEl, service, state, estimate, page)
     renderMobileBar(mobileBarEl, estimate)
@@ -60,8 +70,10 @@ function initCalculator(root, page) {
   root.addEventListener('click', (e) => {
     const target = e.target.closest('[data-action]')
     if (!target) return
-    const { action, value, field } = target.dataset
+    const { action, value } = target.dataset
+    const service = PRICING_CONFIG.services[state.serviceKey]
 
+    if (action === 'select-service') state = buildServiceState(value)
     if (action === 'select-rate') state.rateId = value
     if (action === 'select-location') state.location = value
     if (action === 'select-material') {
@@ -108,6 +120,7 @@ function initCalculator(root, page) {
   }, true)
 
   function updateResults() {
+    const service = PRICING_CONFIG.services[state.serviceKey]
     const estimate = computeEstimate(service, state)
     renderResults(resultsEl, service, state, estimate, page)
     renderMobileBar(mobileBarEl, estimate)
@@ -167,11 +180,35 @@ function factorButtons(entries, selectedKey, action, service) {
   `
 }
 
-function renderInputs(el, service, sizeRange, state, page) {
+function servicePickerCard(state) {
+  const options = Object.values(CALCULATOR_PAGES)
+  return card(
+    'What Are You Planning to Build?',
+    `<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      ${options
+        .map(
+          (opt) => `
+        <button type="button" data-action="select-service" data-value="${opt.serviceKey}"
+          class="rounded-xl border-2 p-4 text-center transition-all ${
+            state.serviceKey === opt.serviceKey
+              ? 'border-blue-600 bg-blue-50 text-blue-900'
+              : 'border-slate-200 bg-white text-slate-700 hover:border-blue-300'
+          }">
+          <div class="font-semibold text-sm">${opt.title.replace(' Cost Calculator', '')}</div>
+        </button>
+      `
+        )
+        .join('')}
+    </div>`
+  )
+}
+
+function renderInputs(el, service, sizeRange, state, page, unified = false) {
   const rates = Object.entries(service.baseRates)
   const updated = new Date(PRICING_UPDATED).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
 
   el.innerHTML = `
+    ${unified ? servicePickerCard(state) : ''}
     <div class="rounded-xl border-2 border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
       <strong>Pricing data updated:</strong> ${updated} — reflects current Upstate SC market rates, material costs, and labor pricing.
     </div>
@@ -342,7 +379,7 @@ function renderResults(el, service, state, estimate, page) {
           : ''
       }
       <div class="space-y-3 print:hidden">
-        <a href="/contact.html" class="flex items-center justify-center gap-2 w-full bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">Get Your Free On-Site Estimate</a>
+        <a href="/contact.html" class="flex items-center justify-center gap-2 w-full bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">Get Your Free On-Site Consultation</a>
         <a href="tel:+18647244600" class="flex items-center justify-center gap-2 w-full border-2 border-slate-300 hover:bg-slate-50 text-slate-800 px-6 py-3 rounded-lg font-semibold text-sm transition-colors">(864) 724-4600</a>
         <button type="button" data-action="print" class="w-full rounded-lg border-2 border-slate-300 bg-white px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 transition-colors text-sm">Save / Print This Estimate</button>
       </div>
