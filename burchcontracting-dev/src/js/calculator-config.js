@@ -1,7 +1,7 @@
-export const PRICING_UPDATED = '2026-05-02'
+export const PRICING_UPDATED = '2026-07-03'
 
 export const PRICING_CONFIG = {
-  defaultOverheadAndProfit: 0.225,
+  defaultOverheadAndProfit: 0.20,
   locationFactors: {
     grayCourtArea: {
       name: 'Gray Court & Surrounding Area',
@@ -29,6 +29,9 @@ export const PRICING_CONFIG = {
     screenedPorches: { min: 100, max: 600 },
     garages: { min: 400, max: 1200 },
     homeAdditions: { min: 200, max: 1000 },
+    kitchenRemodel: { min: 100, max: 400 },
+    bathRemodel: { min: 35, max: 150 },
+    wholeHomeRemodel: { min: 800, max: 4000 },
   },
   services: {
     decks: {
@@ -156,6 +159,93 @@ export const PRICING_CONFIG = {
         { id: 'secondStory', label: 'Second Story Addition Premium', cost: 35, unit: 'per SF' },
       ],
     },
+    kitchenRemodel: {
+      name: 'Kitchen Remodeling',
+      baseRates: {
+        standardRefresh: {
+          label: 'Standard Kitchen Refresh',
+          directCost: 110,
+          description: 'Cabinet refacing or stock cabinets, laminate counters, standard fixtures',
+        },
+        midRangeRemodel: {
+          label: 'Mid-Range Kitchen Remodel',
+          directCost: 165,
+          description: 'New cabinetry, quartz or granite counters, tile backsplash, updated lighting',
+        },
+        premiumCustom: {
+          label: 'Premium Custom Kitchen',
+          directCost: 235,
+          description: 'Custom cabinetry, premium stone counters, high-end appliances, layout changes',
+        },
+      },
+      materialFactors: { standard: 1, upgraded: 1.15, premium: 1.3 },
+      complexityFactors: { simple: 1, moderate: 1.15, complex: 1.3 },
+      siteConditionFactors: { straightforward: 1, moderate: 1.1, difficult: 1.2 },
+      adders: [
+        { id: 'island', label: 'Kitchen Island Addition', cost: 4500, unit: 'per island' },
+        { id: 'appliances', label: 'High-End Appliance Package', cost: 8000, unit: 'per package' },
+        { id: 'hood', label: 'Custom Range Hood', cost: 1800, unit: 'per hood' },
+        { id: 'pantry', label: 'Pantry / Butler\'s Pantry Addition', cost: 3200, unit: 'per addition' },
+      ],
+    },
+    bathRemodel: {
+      name: 'Bathroom Remodeling',
+      baseRates: {
+        basicRefresh: {
+          label: 'Basic Bath Refresh',
+          directCost: 140,
+          description: 'New fixtures, vanity, and paint with the existing layout retained',
+        },
+        midRangeRemodel: {
+          label: 'Mid-Range Bath Remodel',
+          directCost: 280,
+          description: 'New tile, vanity, and tub/shower with some layout adjustments',
+        },
+        fullGutRenovation: {
+          label: 'Full Gut Renovation',
+          directCost: 550,
+          description: 'Complete reconfiguration, premium tile and fixtures, custom shower',
+        },
+      },
+      materialFactors: { standard: 1, upgraded: 1.18, premium: 1.35 },
+      complexityFactors: { simple: 1, moderate: 1.15, complex: 1.3 },
+      siteConditionFactors: { straightforward: 1, moderate: 1.1, difficult: 1.22 },
+      adders: [
+        { id: 'heatedFloor', label: 'Heated Tile Flooring', cost: 1200, unit: 'per bath' },
+        { id: 'soakingTub', label: 'Freestanding Soaking Tub', cost: 3500, unit: 'per tub' },
+        { id: 'curblessShower', label: 'Curbless Walk-In Shower Upgrade', cost: 2800, unit: 'per shower' },
+        { id: 'doubleVanity', label: 'Double Vanity Upgrade', cost: 1800, unit: 'per vanity' },
+      ],
+    },
+    wholeHomeRemodel: {
+      name: 'Whole-Home Remodeling',
+      baseRates: {
+        standardRefresh: {
+          label: 'Standard Whole-Home Refresh',
+          directCost: 110,
+          description: 'Flooring, paint, fixtures, and cosmetic updates throughout',
+        },
+        midRangeRemodel: {
+          label: 'Mid-Range Whole-Home Remodel',
+          directCost: 165,
+          description: 'Kitchen and bath updates, new flooring, and updated systems',
+        },
+        highEndRenovation: {
+          label: 'High-End Whole-Home Renovation',
+          directCost: 235,
+          description: 'Full reconfiguration, premium finishes throughout, structural changes',
+        },
+      },
+      materialFactors: { builder: 1, standard: 1.08, upgraded: 1.18, premium: 1.32 },
+      complexityFactors: { simple: 1, moderate: 1.12, complex: 1.25 },
+      siteConditionFactors: { straightforward: 1, moderate: 1.1, difficult: 1.22 },
+      adders: [
+        { id: 'kitchenReno', label: 'Kitchen Renovation Inclusion', cost: 45000, unit: 'per kitchen' },
+        { id: 'primarySuite', label: 'Primary Suite Renovation', cost: 28000, unit: 'per suite' },
+        { id: 'flooring', label: 'Whole-Home Flooring Replacement', cost: 9, unit: 'per SF' },
+        { id: 'hvac', label: 'HVAC System Replacement', cost: 9500, unit: 'per system' },
+      ],
+    },
   },
 }
 
@@ -164,7 +254,7 @@ export const CALCULATOR_PAGES = {
     serviceKey: 'decks',
     title: 'Deck Cost Calculator',
     metaTitle: 'Deck Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
-    description: 'Estimate custom deck costs in Upstate SC by size, material, and location. Transparent 22.5% overhead & profit. SC Licensed #CLG118679.',
+    description: 'Estimate custom deck costs in Upstate SC by size, material, and location. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
     intro: 'Decks in Upstate SC typically cost $30–$50 per square foot installed — a 12×16 deck (192 sqft) runs $6,000–$9,600 in pressure-treated lumber or $10,000–$14,000 in composite. Size, height, railing, and stairs are the biggest cost drivers.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
@@ -172,7 +262,7 @@ export const CALCULATOR_PAGES = {
     serviceKey: 'garages',
     title: 'Garage Cost Calculator',
     metaTitle: 'Garage Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
-    description: 'Plan detached and attached garage construction costs in Upstate SC. Transparent pricing with 22.5% overhead & profit.',
+    description: 'Plan detached and attached garage construction costs in Upstate SC. Transparent pricing with 20% overhead & profit.',
     intro: 'A standard two-car detached garage in Upstate SC costs $28,000–$48,000 fully finished — slab, framing, roof, doors, and basic electrical. Workshop upgrades, insulation, and HVAC add $4,000–$12,000.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
@@ -191,6 +281,30 @@ export const CALCULATOR_PAGES = {
     description: 'Estimate room addition and home expansion costs in Upstate SC. $150–$300/sq ft typical range.',
     intro: 'Room additions in Upstate SC typically cost $150–$300 per square foot depending on finishes, HVAC, plumbing, and structural complexity. Use this calculator for a realistic planning range.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
+  },
+  kitchen: {
+    serviceKey: 'kitchenRemodel',
+    title: 'Kitchen Remodel Cost Calculator',
+    metaTitle: 'Kitchen Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
+    description: 'Estimate kitchen remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
+    intro: 'Kitchen remodels in Greenville and Laurens County SC typically cost $100–$250 per square foot — a 200 sqft kitchen runs $20,000–$50,000 depending on cabinetry, counters, and layout changes.',
+    marketArea: 'Greenville County & Laurens County',
+  },
+  bath: {
+    serviceKey: 'bathRemodel',
+    title: 'Bathroom Remodel Cost Calculator',
+    metaTitle: 'Bathroom Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
+    description: 'Estimate bathroom remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
+    intro: 'Bathroom remodels in Greenville and Laurens County SC typically run $5,000–$60,000 depending on scope — basic refreshes start around $5,000, and full gut renovations with premium finishes can exceed $45,000.',
+    marketArea: 'Greenville County & Laurens County',
+  },
+  wholeHome: {
+    serviceKey: 'wholeHomeRemodel',
+    title: 'Whole-Home Remodel Cost Calculator',
+    metaTitle: 'Whole-Home Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
+    description: 'Estimate whole-home remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
+    intro: 'Whole-home remodels in Greenville and Laurens County SC typically cost $100–$250 per square foot — a 2,000 sqft home runs $200,000–$500,000 depending on scope and finish level.',
+    marketArea: 'Greenville County & Laurens County',
   },
 }
 

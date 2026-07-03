@@ -45,6 +45,9 @@ export default defineConfig({
         calculatorPorch: resolve(root, 'calculator/porch.html'),
         calculatorAdditions: resolve(root, 'calculator/additions.html'),
         calculatorEstimate: resolve(root, 'calculator/estimate.html'),
+        calculatorKitchen: resolve(root, 'calculator/kitchen-remodel.html'),
+        calculatorBath: resolve(root, 'calculator/bath-remodel.html'),
+        calculatorWholeHome: resolve(root, 'calculator/whole-home-remodel.html'),
         // Service pages (all use nested directory structure)
         aduBuilder: resolve(root, 'adu-builder/index.html'),
         remodeling: resolve(root, 'remodeling/index.html'),
