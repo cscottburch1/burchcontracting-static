@@ -2,8 +2,37 @@
  * Service Pages Data
  * Central data source for all dedicated service pages
  * Powers scripts/generate-services.mjs
- * All pricing verified from live burchcontracting.com (2026-07-01)
+ *
+ * PRICING SOURCE OF TRUTH: src/js/calculator-config.js is the single
+ * authoritative pricing engine for this site (see PRICING.md). Every
+ * dollar figure below for decks, screened-porches, garages, additions,
+ * and remodeling (bath/kitchen/whole-home) is computed from that config
+ * via src/data/pricing-sync.js — none of it is hand-typed, so it can't
+ * drift out of sync again. Reconciled 2026-07-05.
+ *
+ * covered-patios, adu-builder, commercial-upfits, and basement-finishing
+ * have no equivalent service in calculator-config.js (no calculator exists
+ * for them), so their figures remain hand-authored and are out of scope
+ * for this reconciliation.
  */
+import {
+  projectCostString,
+  projectEstimate,
+  combinedCostString,
+  tierPerSqftBand,
+  tierPerSqftString,
+  servicePerSqftBand,
+} from './pricing-sync.js'
+
+/** Formats a {min,max} band as "$X-Y{suffix}". */
+function formatBand(band, suffix = '/sq ft') {
+  return `$${Math.round(band.min)}-${Math.round(band.max)}${suffix}`
+}
+
+/** Combines two tier bands (e.g. a service's cheapest to priciest named tier) into one "$X-Y{suffix}" string. */
+function spanPerSqft(lowBand, highBand, suffix = '/sq ft') {
+  return formatBand({ min: lowBand.min, max: highBand.max }, suffix)
+}
 
 export const SITE = {
   name: 'Burch Contracting',
@@ -34,47 +63,47 @@ export const SERVICES = [
     h1: 'Custom Deck Builder - Upstate SC',
     intro: "From pressure-treated pine to premium composite materials, I handle every aspect of custom deck construction: design, permits, footings, framing, and finishing. Every deck engineered for Upstate SC weather and built to last decades.",
     stats: {
-      costRange: '$30-50 Per Sq Ft',
+      costRange: formatBand(servicePerSqftBand('decks'), ' Per Sq Ft'),
       timeline: '2-4 Weeks Typical',
       experience: '35+ Years Experience',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: '$30-50/sq ft',
+    pricePerSqFt: formatBand(servicePerSqftBand('decks')),
     timeline: '2-4 weeks',
     commonProjects: [
       {
         name: 'Basic Pressure-Treated 12×16',
         size: '192 sq ft',
-        cost: '$12,000–$15,000',
+        cost: projectCostString('decks', 'pressureTreated', 192),
         details: 'Southern yellow pine, ground-level, basic railings'
       },
       {
         name: 'Mid-Range Composite 16×20',
         size: '320 sq ft',
-        cost: '$18,000–$28,000',
+        cost: projectCostString('decks', 'compositeLowMaintenance', 320),
         details: 'Trex or TimberTech, elevated, composite railings'
       },
       {
         name: 'Premium Two-Tier Deck',
         size: '500+ sq ft',
-        cost: '$35,000–$65,000',
+        cost: projectCostString('decks', 'premiumComposite', 500),
         details: 'Multi-level, built-in seating, lighting, pergola'
       }
     ],
     pricingTiers: [
       {
         name: 'Pressure-Treated Pine',
-        range: '$30-40/sq ft',
+        range: tierPerSqftString('decks', 'pressureTreated'),
         description: 'Southern yellow pine with standard railings and ground-level or single-story elevated design. Most economical option, requires annual maintenance.'
       },
       {
         name: 'Composite Decking',
-        range: '$40-50/sq ft',
+        range: tierPerSqftString('decks', 'compositeLowMaintenance'),
         description: 'Trex, TimberTech, or Azek composite materials with matching railings. Low maintenance, 25-year warranties, premium appearance.'
       },
       {
         name: 'Multi-Level Premium',
-        range: '$50-65/sq ft',
+        range: tierPerSqftString('decks', 'premiumComposite'),
         description: 'Two-tier designs with built-in seating, planters, lighting, pergolas, or screened sections. Custom features and premium materials.'
       }
     ],
@@ -94,47 +123,50 @@ export const SERVICES = [
     h1: 'Screened Porch Builder - Upstate SC',
     intro: "From simple porch conversions to luxury three-season rooms with HVAC, I handle all aspects: foundation work, framing, screening systems, electrical, and interior finishing. Every porch designed for year-round comfort in Upstate SC's climate.",
     stats: {
-      costRange: '$20,000-$55,000 Range',
+      costRange: '$15,000-$65,000 Range',
       timeline: '3-6 Weeks Typical',
       experience: '35+ Years Experience',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: '$100-175/sq ft',
+    pricePerSqFt: spanPerSqft(
+      tierPerSqftBand('screenedPorches', 'newScreenedPorch'),
+      tierPerSqftBand('screenedPorches', 'upgradedOutdoorRoom', { material: 'premium', complexity: 'complex' })
+    ),
     timeline: '3-6 weeks',
     commonProjects: [
       {
         name: 'Basic 12×16 Screened Porch',
         size: '192 sq ft',
-        cost: '$22,000–$28,000',
+        cost: projectCostString('screenedPorches', 'newScreenedPorch', 192),
         details: 'Concrete pad, PT framing, fiberglass screens, ceiling fan, basic electrical'
       },
       {
         name: 'Mid-Range 16×20 Three-Season',
         size: '320 sq ft',
-        cost: '$32,000–$42,000',
+        cost: projectCostString('screenedPorches', 'newScreenedPorch', 320, { material: 'upgraded' }),
         details: 'Elevated deck base, composite flooring, EZE-Breeze windows, upgraded lighting'
       },
       {
         name: 'Premium HVAC Sunroom',
         size: '300+ sq ft',
-        cost: '$45,000–$55,000+',
+        cost: projectCostString('screenedPorches', 'upgradedOutdoorRoom', 300, { material: 'premium', complexity: 'complex' }),
         details: 'Insulated construction, HVAC extension, premium windows, tile flooring'
       }
     ],
     pricingTiers: [
       {
         name: 'Basic Screened Porch',
-        range: '$20,000-$28,000',
+        range: tierPerSqftString('screenedPorches', 'newScreenedPorch'),
         description: 'Ground-level concrete pad or existing deck conversion. PT framing, fiberglass screening, basic electrical with ceiling fan and outlets. Simple and functional.'
       },
       {
         name: 'Mid-Range Three-Season',
-        range: '$28,000-$42,000',
+        range: tierPerSqftString('screenedPorches', 'newScreenedPorch', { material: 'upgraded' }),
         description: 'EZE-Breeze vinyl window system for adjustable ventilation. Composite or tongue-and-groove ceiling, upgraded lighting, decorative posts. More finished appearance.'
       },
       {
         name: 'Premium Climate-Controlled',
-        range: '$42,000-$55,000+',
+        range: tierPerSqftString('screenedPorches', 'upgradedOutdoorRoom', { material: 'premium', complexity: 'complex' }),
         description: 'Insulated walls and roof, HVAC extension for year-round use. Premium vinyl windows, tile or hardwood flooring, coffered ceilings, built-in features.'
       }
     ],
@@ -214,7 +246,11 @@ export const SERVICES = [
     h1: 'Garage Builder - Upstate SC',
     intro: "From basic 2-car detached garages to luxury 3-car workshops with apartments above, I handle everything: site prep, foundation, framing, roofing, electrical, and finishing. Every garage engineered to match your home's architecture and meet your specific needs.",
     stats: {
-      costRange: '$28,000-$145,000 Range',
+      // Low end reconciled to calculator-config.js (attachedBasic @576sf). High end
+      // ($145,000) is the apartment-above-garage tier below, which calculator-config.js
+      // has no equivalent for (it prices the garage structure only, not living space) —
+      // left as the original hand-authored figure.
+      costRange: '$39,000-$145,000 Range',
       timeline: '6-10 Weeks Typical',
       experience: '35+ Years Experience',
       rating: 'BBB A+ Rated'
@@ -225,13 +261,13 @@ export const SERVICES = [
       {
         name: '2-Car Detached Garage',
         size: '24×24 (576 sq ft)',
-        cost: '$28,000–$42,000',
+        cost: projectCostString('garages', 'detachedStandard', 576),
         details: 'Concrete slab, vinyl siding, architectural shingles, two 9×7 doors, basic electrical'
       },
       {
         name: '3-Car Garage with Workshop',
         size: '30×30 (900 sq ft)',
-        cost: '$45,000–$65,000',
+        cost: projectCostString('garages', 'upgradedWorkshop', 900),
         details: 'Extended depth for storage, upgraded electrical (220V), workbench area, epoxy floor'
       },
       {
@@ -244,12 +280,12 @@ export const SERVICES = [
     pricingTiers: [
       {
         name: '2-Car Detached',
-        range: '$28,000-$42,000',
+        range: projectCostString('garages', 'detachedStandard', 576),
         description: 'Standard 24×24 garage with 4" concrete slab, vinyl siding to match home, two 9×7 insulated garage doors, basic electrical. Most popular choice.'
       },
       {
         name: '3-Car or Workshop',
-        range: '$45,000-$65,000',
+        range: projectCostString('garages', 'upgradedWorkshop', 900),
         description: '30×30 or larger, upgraded electrical (220V for tools/chargers), additional windows, workbench area, epoxy floor coating, storage loft option.'
       },
       {
@@ -275,47 +311,54 @@ export const SERVICES = [
     h1: 'Room Addition Contractor - Upstate SC',
     intro: "From single-story bedroom additions to two-story master suites, I handle all phases: design, foundation work, framing, roofing, HVAC integration, and complete interior finishing to seamlessly match your existing home's style and quality.",
     stats: {
-      costRange: '$150-300 Per Sq Ft',
+      costRange: spanPerSqft(
+        tierPerSqftBand('homeAdditions', 'basicFinish'),
+        tierPerSqftBand('homeAdditions', 'premiumCustom'),
+        ' Per Sq Ft'
+      ),
       timeline: '8-16 Weeks Typical',
       experience: '35+ Years Experience',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: '$150-300/sq ft',
+    pricePerSqFt: spanPerSqft(
+      tierPerSqftBand('homeAdditions', 'basicFinish'),
+      tierPerSqftBand('homeAdditions', 'premiumCustom')
+    ),
     timeline: '8-16 weeks',
     commonProjects: [
       {
         name: 'Single Bedroom Addition',
         size: '16×20 (320 sq ft)',
-        cost: '$48,000–$64,000',
+        cost: projectCostString('homeAdditions', 'basicFinish', 320),
         details: 'Foundation to roof, HVAC extension, closet, matching exterior, basic finishes'
       },
       {
         name: 'Master Suite Addition',
         size: '16×24 with bath (384 sq ft)',
-        cost: '$77,000–$96,000',
+        cost: projectCostString('homeAdditions', 'premiumCustom', 384),
         details: 'Bedroom, walk-in closet, full master bath with tile shower, upgraded finishes'
       },
       {
         name: 'Two-Story Addition',
         size: '760 sq ft (380 per floor)',
-        cost: '$190,000–$228,000',
+        cost: projectCostString('homeAdditions', 'premiumCustom', 760, { complexity: 'complex' }),
         details: 'Bedroom suite over family room, complex framing, structural engineering'
       }
     ],
     pricingTiers: [
       {
         name: 'Basic Addition',
-        range: '$150-200/sq ft',
+        range: tierPerSqftString('homeAdditions', 'basicFinish'),
         description: 'Single-story room with foundation, framing, roofing, basic electrical/plumbing, drywall, and standard finishes. HVAC extension included.'
       },
       {
         name: 'Mid-Range Addition',
-        range: '$200-250/sq ft',
+        range: tierPerSqftString('homeAdditions', 'standardLivingSpace'),
         description: 'Upgraded materials, better windows, hardwood floors, tile bathrooms, crown molding, custom closet systems. More finished appearance.'
       },
       {
         name: 'Premium Addition',
-        range: '$250-300/sq ft',
+        range: tierPerSqftString('homeAdditions', 'premiumCustom'),
         description: 'Two-story construction, luxury finishes, high-end fixtures, custom cabinetry, architectural details. Complex structural work and engineering.'
       }
     ],
@@ -396,7 +439,9 @@ export const SERVICES = [
     h1: 'Home Remodeling Contractor - Upstate SC',
     intro: "From kitchen and bathroom renovations to whole-house remodels, I handle all phases: design, demolition, structural work, electrical, plumbing, and complete finishing. Every project managed personally from start to finish.",
     stats: {
-      costRange: '$8,000-$60,000 Typical',
+      // Bath + kitchen scope only (see note on the Whole-House tier below for
+      // why that one isn't rolled into this headline figure).
+      costRange: '$5,600-$75,000 Typical',
       timeline: '2-8 Weeks Typical',
       experience: '35+ Years Experience',
       rating: 'BBB A+ Rated'
@@ -407,36 +452,51 @@ export const SERVICES = [
       {
         name: 'Modest Bathroom Remodel',
         size: '5×8 full bath',
-        cost: '$10,000–$15,000',
+        cost: projectCostString('bathRemodel', 'basicRefresh', 40),
         details: 'New tub/shower, vanity, toilet, flooring, tile work, updated electrical and plumbing'
       },
       {
         name: 'Mid-Range Kitchen Remodel',
         size: '10×12 kitchen',
-        cost: '$35,000–$50,000',
+        cost: projectCostString('kitchenRemodel', 'midRangeRemodel', 120),
         details: 'New cabinets, countertops, appliances, flooring, lighting, backsplash, reconfigured layout'
       },
       {
         name: 'Luxury Master Bath',
         size: '8×12 or larger',
-        cost: '$20,000–$35,000',
+        cost: projectCostString('bathRemodel', 'fullGutRenovation', 96),
         details: 'Custom tile shower, soaking tub, double vanity, heated floors, premium fixtures'
       }
     ],
     pricingTiers: [
       {
         name: 'Bathroom Remodeling',
-        range: '$8,000-$25,000',
-        description: 'Full bathroom renovation including new fixtures, tile, vanity, flooring, and updated plumbing/electrical. Modest remodel $10-15K, luxury master bath $20-35K.'
+        range: combinedCostString(
+          projectEstimate('bathRemodel', 'basicRefresh', 35),
+          projectEstimate('bathRemodel', 'fullGutRenovation', 100)
+        ),
+        description: 'Full bathroom renovation including new fixtures, tile, vanity, flooring, and updated plumbing/electrical. Modest remodel $6-8K, luxury master bath $60-72K.'
       },
       {
         name: 'Kitchen Remodeling',
-        range: '$20,000-$60,000',
-        description: 'Complete kitchen renovation with new cabinets, countertops, appliances, flooring, lighting. Budget refresh $20-30K, mid-range remodel $35-50K, high-end custom $50-60K+.'
+        range: combinedCostString(
+          projectEstimate('kitchenRemodel', 'standardRefresh', 200),
+          projectEstimate('kitchenRemodel', 'premiumCustom', 200)
+        ),
+        description: 'Complete kitchen renovation with new cabinets, countertops, appliances, flooring, lighting. Budget refresh $25-30K, mid-range remodel $38-45K, high-end custom $54-64K+.'
       },
       {
         name: 'Whole-House Remodel',
-        range: '$50,000-$150,000+',
+        // NOTE: large increase from the original "$50,000-$150,000+". The
+        // wholeHomeRemodel service in calculator-config.js (added 2026-07-05)
+        // is scoped to comprehensive renovation of a typical 2,000 sqft home
+        // at $135-290/sqft — its mathematical floor is well above the old
+        // figure. Flagged for visibility in the reconciliation PR.
+        range: combinedCostString(
+          projectEstimate('wholeHomeRemodel', 'standardRefresh', 2000),
+          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
+          { plus: true }
+        ),
         description: 'Comprehensive home renovation including multiple rooms, structural changes, systems upgrades, complete interior refresh. Custom scope and pricing.'
       }
     ],

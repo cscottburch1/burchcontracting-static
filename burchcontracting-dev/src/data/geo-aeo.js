@@ -179,15 +179,15 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How much does a screened porch cost in Simpsonville SC?',
-    answer: 'Screened porches in Simpsonville and surrounding areas typically run $20,000 to $55,000 for new construction. Converting an existing deck can save 25–30%. Use the porch calculator at burchcontracting.com/calculator/porch.html for a planning estimate.',
+    answer: 'Screened porches in Simpsonville and surrounding areas typically run $15,000 to $65,000 for new construction. Converting an existing deck can save 50–70% since the framing and floor are already in place. Use the porch calculator at burchcontracting.com/calculator/porch.html for a planning estimate.',
   },
   {
     question: 'How much does a detached garage cost in Upstate SC?',
-    answer: 'Detached two-car garages in Upstate SC commonly range from $60,000 to $108,000 depending on size, foundation, finishes, and electrical. Use the garage calculator at burchcontracting.com/calculator/garages.html or contact us for a detailed quote.',
+    answer: 'Detached two-car garages (576 sqft) in Upstate SC commonly range from $58,000 to $70,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $122,000 to $147,000. Use the garage calculator at burchcontracting.com/calculator/garages.html or contact us for a detailed quote.',
   },
   {
     question: 'How much does a room addition cost per square foot?',
-    answer: 'Room additions in Upstate SC typically cost $150 to $300 per square foot depending on scope, structural work, finishes, and HVAC integration. A 400 sq ft addition often falls between $60,000 and $120,000. Use the addition calculator for a planning range.',
+    answer: 'Room additions in Upstate SC typically cost $200 to $340 per square foot depending on scope, structural work, finishes, and HVAC integration. A 400 sq ft addition often falls between $78,000 and $152,000. Use the addition calculator for a planning range.',
   },
   {
     question: 'Does Burch Contracting handle permits and inspections?',
@@ -226,7 +226,7 @@ export const SERVICE_FAQS = [
       },
       {
         question: 'Can you convert my existing deck into a screened porch?',
-        answer: 'Yes. Deck conversions are often 25–30% less expensive than new porch construction when the existing structure can support the roof and screen system. Scott evaluates your deck during the site visit.',
+        answer: 'Yes. Deck conversions are often 50–70% less expensive than new porch construction when the existing structure can support the roof and screen system. Scott evaluates your deck during the site visit.',
       },
     ],
   },

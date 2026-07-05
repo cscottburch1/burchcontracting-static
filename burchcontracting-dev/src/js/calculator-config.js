@@ -1,4 +1,4 @@
-export const PRICING_UPDATED = '2026-07-03'
+export const PRICING_UPDATED = '2026-07-05'
 
 export const PRICING_CONFIG = {
   defaultOverheadAndProfit: 0.20,
@@ -255,7 +255,7 @@ export const CALCULATOR_PAGES = {
     title: 'Deck Cost Calculator',
     metaTitle: 'Deck Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
     description: 'Estimate custom deck costs in Upstate SC by size, material, and location. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
-    intro: 'Decks in Upstate SC typically cost $30–$50 per square foot installed — a 12×16 deck (192 sqft) runs $6,000–$9,600 in pressure-treated lumber or $10,000–$14,000 in composite. Size, height, railing, and stairs are the biggest cost drivers.',
+    intro: 'Decks in Upstate SC typically cost $40–$85 per square foot installed — a 12×16 deck (192 sqft) runs $7,400–$8,950 in pressure-treated lumber or $11,350–$13,700 in composite. Size, height, railing, and stairs are the biggest cost drivers.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   garages: {
@@ -263,7 +263,7 @@ export const CALCULATOR_PAGES = {
     title: 'Garage Cost Calculator',
     metaTitle: 'Garage Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
     description: 'Plan detached and attached garage construction costs in Upstate SC. Transparent pricing with 20% overhead & profit.',
-    intro: 'A standard two-car detached garage in Upstate SC costs $28,000–$48,000 fully finished — slab, framing, roof, doors, and basic electrical. Workshop upgrades, insulation, and HVAC add $4,000–$12,000.',
+    intro: 'A standard two-car detached garage (24×24, 576 sqft) in Upstate SC costs $58,000–$70,000 fully finished — slab, framing, roof, doors, and basic electrical. A comparable attached garage runs $39,000–$47,000, and workshop upgrades or larger 3-car footprints (900 sqft) commonly run $122,000–$147,000.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   porch: {
@@ -271,15 +271,15 @@ export const CALCULATOR_PAGES = {
     title: 'Screened Porch Cost Calculator',
     metaTitle: 'Screened Porch Cost Calculator Simpsonville SC | Burch Contracting',
     description: 'Estimate screened porch and outdoor room costs in Upstate SC. New construction or deck conversions.',
-    intro: 'Screened porches in Upstate SC typically run $20,000–$55,000 depending on size, roof structure, and finishes. Converting an existing deck can save 25–30% versus new construction.',
+    intro: 'Screened porches in Upstate SC typically run $15,000–$65,000 depending on size, roof structure, and finishes. Converting an existing deck can save 50–70% versus new construction since the framing and floor are already in place.',
     marketArea: 'Simpsonville, Fountain Inn, Greenville County, and Laurens County',
   },
   additions: {
     serviceKey: 'homeAdditions',
     title: 'Home Addition Cost Calculator',
     metaTitle: 'Room Addition Cost Calculator Upstate SC | Burch Contracting',
-    description: 'Estimate room addition and home expansion costs in Upstate SC. $150–$300/sq ft typical range.',
-    intro: 'Room additions in Upstate SC typically cost $150–$300 per square foot depending on finishes, HVAC, plumbing, and structural complexity. Use this calculator for a realistic planning range.',
+    description: 'Estimate room addition and home expansion costs in Upstate SC. $200–$340/sq ft typical range.',
+    intro: 'Room additions in Upstate SC typically cost $200–$340 per square foot depending on finishes, HVAC, plumbing, and structural complexity — a 400 sqft addition typically runs $78,000–$152,000. Use this calculator for a realistic planning range.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   kitchen: {
@@ -287,7 +287,7 @@ export const CALCULATOR_PAGES = {
     title: 'Kitchen Remodel Cost Calculator',
     metaTitle: 'Kitchen Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate kitchen remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
-    intro: 'Kitchen remodels in Greenville and Laurens County SC typically cost $100–$250 per square foot — a 200 sqft kitchen runs $20,000–$50,000 depending on cabinetry, counters, and layout changes.',
+    intro: 'Kitchen remodels in Greenville and Laurens County SC typically cost $135–$290 per square foot — a 200 sqft kitchen runs $25,000–$64,500 depending on cabinetry, counters, and layout changes.',
     marketArea: 'Greenville County & Laurens County',
   },
   bath: {
@@ -295,7 +295,7 @@ export const CALCULATOR_PAGES = {
     title: 'Bathroom Remodel Cost Calculator',
     metaTitle: 'Bathroom Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate bathroom remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
-    intro: 'Bathroom remodels in Greenville and Laurens County SC typically run $5,000–$60,000 depending on scope — basic refreshes start around $5,000, and full gut renovations with premium finishes can exceed $45,000.',
+    intro: 'Bathroom remodels in Greenville and Laurens County SC typically run $5,600–$75,000 depending on scope — a small powder room refresh starts around $5,600, while a full primary bath gut renovation with premium finishes can run $65,000–$75,000+.',
     marketArea: 'Greenville County & Laurens County',
   },
   wholeHome: {
@@ -303,7 +303,7 @@ export const CALCULATOR_PAGES = {
     title: 'Whole-Home Remodel Cost Calculator',
     metaTitle: 'Whole-Home Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate whole-home remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
-    intro: 'Whole-home remodels in Greenville and Laurens County SC typically cost $100–$250 per square foot — a 2,000 sqft home runs $200,000–$500,000 depending on scope and finish level.',
+    intro: 'Whole-home remodels in Greenville and Laurens County SC typically cost $135–$290 per square foot — a 2,000 sqft home runs $250,000–$645,000 depending on scope and finish level.',
     marketArea: 'Greenville County & Laurens County',
   },
 }
@@ -339,7 +339,8 @@ export function formatCurrency(amount) {
 }
 
 export function formatPercent(rate) {
-  return `${(rate * 100).toFixed(1)}%`
+  const pct = rate * 100
+  return `${Number.isInteger(pct) ? pct : pct.toFixed(1)}%`
 }
 
 export function defaultSquareFootage(serviceKey) {
