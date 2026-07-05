@@ -183,7 +183,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How much does a detached garage cost in Upstate SC?',
-    answer: 'Detached two-car garages in Upstate SC commonly range from $44,000 to $54,000 for a standard finish, with larger 3-car or workshop configurations running $73,000 to $88,000. Use the garage calculator at burchcontracting.com/calculator/garages.html or contact us for a detailed quote.',
+    answer: 'Detached two-car garages (576 sqft) in Upstate SC commonly range from $58,000 to $70,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $122,000 to $147,000. Use the garage calculator at burchcontracting.com/calculator/garages.html or contact us for a detailed quote.',
   },
   {
     question: 'How much does a room addition cost per square foot?',

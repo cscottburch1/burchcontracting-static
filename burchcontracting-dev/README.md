@@ -12,6 +12,12 @@ This repository is configured for automatic deployment to Hostinger.
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for complete setup instructions.
 
+## 💲 Pricing
+
+`src/js/calculator-config.js` is the single authoritative source for all
+pricing on this site. See [PRICING.md](PRICING.md) before changing any
+dollar figure, rate, or the overhead & profit percentage.
+
 ## 📦 Development
 
 ### Prerequisites

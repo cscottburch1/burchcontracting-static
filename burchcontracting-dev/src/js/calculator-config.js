@@ -263,7 +263,7 @@ export const CALCULATOR_PAGES = {
     title: 'Garage Cost Calculator',
     metaTitle: 'Garage Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
     description: 'Plan detached and attached garage construction costs in Upstate SC. Transparent pricing with 20% overhead & profit.',
-    intro: 'A standard two-car detached garage (roughly 440 sqft) in Upstate SC costs $44,000–$54,000 fully finished — slab, framing, roof, doors, and basic electrical. A comparable attached garage runs $30,000–$36,000, and workshop upgrades or larger 3-car footprints commonly run $73,000–$88,000.',
+    intro: 'A standard two-car detached garage (24×24, 576 sqft) in Upstate SC costs $58,000–$70,000 fully finished — slab, framing, roof, doors, and basic electrical. A comparable attached garage runs $39,000–$47,000, and workshop upgrades or larger 3-car footprints (900 sqft) commonly run $122,000–$147,000.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   porch: {
