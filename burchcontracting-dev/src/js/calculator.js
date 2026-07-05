@@ -180,6 +180,23 @@ function factorButtons(entries, selectedKey, action, service) {
   `
 }
 
+function howWeCalculateCard() {
+  return `
+    <details class="group rounded-xl border border-slate-200 bg-white p-5 open:shadow-sm">
+      <summary class="font-semibold text-slate-900 cursor-pointer list-none flex items-start justify-between gap-4">
+        <span>How We Calculate Your Estimate</span>
+        <span class="text-blue-700 text-lg leading-none group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
+      </summary>
+      <div class="mt-4 space-y-3 text-sm text-slate-600 leading-relaxed">
+        <p><strong class="text-slate-800">Direct cost</strong> — labor and materials for your project size, including typical waste and overage, based on current Upstate SC supplier and subcontractor pricing.</p>
+        <p><strong class="text-slate-800">Location, material, complexity &amp; site factors</strong> — adjust the direct cost for exactly where you are, the finish level you choose, how complex the design is, and your site's conditions.</p>
+        <p><strong class="text-slate-800">Overhead &amp; profit (${formatPercent(PRICING_CONFIG.defaultOverheadAndProfit)})</strong> — covers project supervision, scheduling, warranty coverage, insurance, and standard business overhead, not just markup.</p>
+        <p>This is a planning estimate only. Your final price is confirmed after a free on-site visit, once we've verified scope, permits, and site-specific factors.</p>
+      </div>
+    </details>
+  `
+}
+
 function servicePickerCard(state) {
   const options = Object.values(CALCULATOR_PAGES)
   return card(
@@ -210,12 +227,13 @@ function renderInputs(el, service, sizeRange, state, page, unified = false) {
   el.innerHTML = `
     ${unified ? servicePickerCard(state) : ''}
     <div class="rounded-xl border-2 border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
-      <strong>Pricing data updated:</strong> ${updated} — reflects current Upstate SC market rates, material costs, and labor pricing.
+      <strong>Pricing data updated:</strong> ${updated} — based on current Upstate SC market rates (BLS labor data plus local supplier and subcontractor pricing).
     </div>
     <div class="rounded-xl border-2 border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 leading-relaxed">
       <h2 class="font-bold text-base mb-2">Budget Planning Tool</h2>
       This calculator uses local market pricing with transparent ${formatPercent(PRICING_CONFIG.defaultOverheadAndProfit)} overhead and profit. Final pricing depends on site conditions, materials, permits, and scope verification.
     </div>
+    ${howWeCalculateCard()}
     ${card(
       'Choose Your Project Type',
       `<div class="space-y-3">
