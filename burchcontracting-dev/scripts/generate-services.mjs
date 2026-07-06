@@ -296,8 +296,7 @@ ${authorBox()}
     ? `
       <section class="bg-white py-16 lg:py-20 border-t border-slate-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-3xl font-bold text-slate-900 mb-2 text-center">How It Works</h2>
-          <p class="text-slate-600 mb-10 text-center">A simple, straightforward process from consultation to completed work:</p>
+          <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">Our Simple Process</h2>
           <ol class="grid grid-cols-1 md:grid-cols-3 gap-6">
 ${service.howItWorks
       .map(
@@ -317,7 +316,7 @@ ${service.howItWorks
     ? `
       <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Why Homeowners Choose This Service</h2>
+          <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Why Work With Us</h2>
           <ul class="grid grid-cols-1 md:grid-cols-2 gap-5">
 ${service.benefits
       .map(
