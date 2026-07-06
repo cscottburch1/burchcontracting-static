@@ -55,6 +55,7 @@ export default defineConfig({
         basementFinishing: resolve(root, 'basement-finishing/index.html'),
         garages: resolve(root, 'garages/index.html'),
         additions: resolve(root, 'additions/index.html'),
+        insuranceRestoration: resolve(root, 'insurance-restoration/index.html'),
         // Generated pages
         ...serviceAreaInputs,
         ...outdoorLivingInputs,

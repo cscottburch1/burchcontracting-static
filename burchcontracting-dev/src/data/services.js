@@ -637,6 +637,64 @@ export const SERVICES = [
       { name: 'Remodeling Services', url: '/remodeling' },
       { name: 'ADU Construction', url: '/adu-builder' }
     ]
+  },
+  {
+    id: 'insurance-restoration',
+    title: 'Insurance Restoration & Damage Documentation',
+    slug: 'insurance-restoration',
+    category: 'Insurance Documentation',
+    description: 'Professional damage documentation and detailed insurance-ready estimates for storm and property damage claims in Upstate SC.',
+    h1: 'Professional Damage Documentation & Insurance-Ready Estimates',
+    intro: "Thorough on-site assessments and detailed, itemized estimates using current local pricing — so your insurance claim reflects the true, full scope of the damage. If we're awarded the repair work, the full documentation fee is credited toward your project.",
+    stats: {
+      costRange: '$450 Flat Fee',
+      timeline: 'Credited to Repairs',
+      experience: '35+ Years Experience',
+      rating: 'BBB A+ Rated'
+    },
+    flatFee: {
+      amount: '$450',
+      note: 'One-time flat fee for the full documentation package',
+      credit: 'The full $450 is credited toward your repair project if Burch Contracting is awarded the work.'
+    },
+    howItWorks: [
+      {
+        title: 'Free Consultation',
+        description: 'We discuss the damage and your situation over the phone or on-site. No obligation.'
+      },
+      {
+        title: 'Agreement & Payment',
+        description: 'The $450 documentation fee is paid upfront before the on-site assessment is scheduled.'
+      },
+      {
+        title: 'On-Site Assessment',
+        description: 'A thorough inspection of the affected areas with detailed photos and written notes.'
+      },
+      {
+        title: 'Detailed Estimate Prepared',
+        description: 'We compile a professional, itemized estimate using current local material and labor pricing.'
+      },
+      {
+        title: 'Documentation Delivered',
+        description: 'You receive the completed package to submit with your insurance claim.'
+      },
+      {
+        title: 'Credit Toward Repairs',
+        description: 'If we are awarded the repair work, the $450 fee is credited in full toward your project cost.'
+      }
+    ],
+    benefits: [
+      'Detailed, itemized documentation to support your insurance claim',
+      'Estimates based on current local material and labor pricing',
+      'Helps identify damage that may otherwise go under-scoped',
+      'Fee credited in full if we perform the repair work'
+    ],
+    calculator: null,
+    relatedServices: [
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'Room Additions', url: '/additions' }
+    ]
   }
 ];
 

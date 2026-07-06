@@ -82,6 +82,7 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
               <li><a href="/outdoor-living/decks" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
               <li><a href="/remodeling" class="hover:text-white transition-colors">Remodeling</a></li>
               <li><a href="/commercial-upfits" class="hover:text-white transition-colors">Commercial Upfits</a></li>
+              <li><a href="/insurance-restoration" class="hover:text-white transition-colors">Insurance Restoration</a></li>
             </ul>
           </div>
           <div>
@@ -176,7 +177,16 @@ function servicePage(service) {
     },
   }
 
-  const commonProjectsHtml = service.commonProjects
+  if (service.flatFee) {
+    schema.offers = {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      price: service.flatFee.amount.replace(/[^0-9.]/g, ''),
+      description: service.flatFee.credit,
+    }
+  }
+
+  const commonProjectsHtml = (service.commonProjects || [])
     .map(
       (project) => `              <li class="bg-white border border-slate-200 rounded-xl p-6 hover:border-blue-200 hover:shadow-sm transition-all">
                 <h3 class="font-bold text-slate-900 text-lg mb-2">${esc(project.name)}</h3>
@@ -187,7 +197,7 @@ function servicePage(service) {
     )
     .join('\n')
 
-  const pricingTiersHtml = service.pricingTiers
+  const pricingTiersHtml = (service.pricingTiers || [])
     .map(
       (tier) => `              <li class="bg-white border border-slate-200 rounded-xl p-6">
                 <h3 class="font-bold text-slate-900 text-lg mb-2">${esc(tier.name)}</h3>
@@ -230,6 +240,84 @@ ${service.additionalCosts
 
   const calculatorButton = service.calculator
     ? `            <a href="/calculator/${service.calculator}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost</a>`
+    : ''
+
+  const commonProjectsSectionHtml = service.commonProjects
+    ? `
+      <section class="bg-white py-16 lg:py-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-bold text-slate-900 mb-2">Common ${esc(service.title)} Projects</h2>
+          <p class="text-slate-600 mb-8">Real-world project examples with typical costs in Upstate SC:</p>
+          <ul class="grid grid-cols-1 md:grid-cols-3 gap-6">
+${commonProjectsHtml}
+          </ul>
+${authorBox()}
+        </div>
+      </section>`
+    : ''
+
+  let pricingSectionHtml = ''
+  if (service.pricingTiers) {
+    pricingSectionHtml = `
+      <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-bold text-slate-900 mb-2">${esc(service.title)} Pricing Breakdown</h2>
+          <p class="text-slate-600 mb-8">Three pricing tiers to match your project scope and budget:</p>
+          <ul class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+${pricingTiersHtml}
+          </ul>
+        </div>
+      </section>`
+  } else if (service.flatFee) {
+    pricingSectionHtml = `
+      <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="bg-white border border-slate-200 rounded-2xl p-10 text-center shadow-sm">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">${esc(service.title)} Package</h2>
+            <p class="text-6xl font-bold text-blue-700">${esc(service.flatFee.amount)}</p>
+            <p class="text-lg text-slate-600 mt-2">${esc(service.flatFee.note)}</p>
+            <p class="mt-6 font-medium text-slate-900">${esc(service.flatFee.credit)}</p>
+          </div>
+${authorBox()}
+        </div>
+      </section>`
+  }
+
+  const howItWorksSectionHtml = service.howItWorks
+    ? `
+      <section class="bg-white py-16 lg:py-20 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-bold text-slate-900 mb-2 text-center">How It Works</h2>
+          <p class="text-slate-600 mb-10 text-center">A simple, straightforward process from consultation to completed documentation:</p>
+          <ol class="grid grid-cols-1 md:grid-cols-3 gap-6">
+${service.howItWorks
+      .map(
+        (step, i) => `            <li class="bg-white border border-slate-200 rounded-xl p-7">
+              <div class="w-10 h-10 bg-blue-700 text-white rounded-full flex items-center justify-center font-bold text-lg mb-4">${i + 1}</div>
+              <h3 class="font-bold text-slate-900 text-lg mb-2">${esc(step.title)}</h3>
+              <p class="text-slate-600 text-sm leading-relaxed">${esc(step.description)}</p>
+            </li>`
+      )
+      .join('\n')}
+          </ol>
+        </div>
+      </section>`
+    : ''
+
+  const benefitsSectionHtml = service.benefits
+    ? `
+      <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Why Homeowners Choose This Service</h2>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-5">
+${service.benefits
+      .map(
+        (benefit) => `            <li class="flex gap-3 items-start"><span class="text-blue-700 text-xl leading-none mt-0.5" aria-hidden="true">&#10003;</span><span class="text-slate-700">${esc(benefit)}</span></li>`
+      )
+      .join('\n')}
+          </ul>
+        </div>
+      </section>`
     : ''
 
   return `<!doctype html>
@@ -280,27 +368,11 @@ ${calculatorButton}
         </div>
       </section>
 
-      <section class="bg-white py-16 lg:py-20">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-3xl font-bold text-slate-900 mb-2">Common ${esc(service.title)} Projects</h2>
-          <p class="text-slate-600 mb-8">Real-world project examples with typical costs in Upstate SC:</p>
-          <ul class="grid grid-cols-1 md:grid-cols-3 gap-6">
-${commonProjectsHtml}
-          </ul>
-${authorBox()}
-        </div>
-      </section>
-
-      <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-3xl font-bold text-slate-900 mb-2">${esc(service.title)} Pricing Breakdown</h2>
-          <p class="text-slate-600 mb-8">Three pricing tiers to match your project scope and budget:</p>
-          <ul class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-${pricingTiersHtml}
-          </ul>
-        </div>
-      </section>
+${commonProjectsSectionHtml}
+${pricingSectionHtml}
 ${additionalCostsHtml}
+${howItWorksSectionHtml}
+${benefitsSectionHtml}
 
       <section class="bg-white py-16 lg:py-20 border-t border-slate-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

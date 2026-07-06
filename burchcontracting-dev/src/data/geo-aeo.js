@@ -150,6 +150,7 @@ export const CORE_SERVICES = [
   { name: 'Room Additions', anchor: 'additions', summary: 'Ground-floor and second-story home expansions.' },
   { name: 'Remodeling', anchor: 'remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
   { name: 'Commercial', anchor: 'commercial', summary: 'Office upfits and tenant improvements.' },
+  { name: 'Insurance Restoration', anchor: 'insurance-restoration', summary: 'Damage documentation and insurance-ready estimates.' },
 ]
 
 export const GLOBAL_FAQS = [
@@ -171,7 +172,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'What types of projects does Burch Contracting build?',
-    answer: 'Burch Contracting builds custom decks, screened porches, detached and attached garages, room additions, ADUs, kitchen and bath remodels, basement finishing, flood restoration, and light commercial upfits across Upstate SC.',
+    answer: 'Burch Contracting builds custom decks, screened porches, detached and attached garages, room additions, ADUs, kitchen and bath remodels, basement finishing, flood restoration, insurance damage documentation, and light commercial upfits across Upstate SC.',
   },
   {
     question: 'How much does a deck cost in Upstate SC?',
@@ -249,6 +250,19 @@ export const SERVICE_FAQS = [
       {
         question: 'Does Burch Contracting do kitchen and bathroom remodels?',
         answer: 'Yes. Kitchen and bath renovations are core services including demolition, plumbing, tile, cabinetry, flooring, and finish work. Bath-to-shower conversions are one of our most requested remodel projects.',
+      },
+    ],
+  },
+  {
+    category: 'Insurance Restoration',
+    faqs: [
+      {
+        question: 'How much does insurance damage documentation cost?',
+        answer: 'The documentation package is a flat $450 fee. If Burch Contracting is awarded the resulting repair work, the full $450 is credited toward the project.',
+      },
+      {
+        question: 'Does Burch Contracting help with insurance claims?',
+        answer: 'Yes. Burch Contracting provides on-site damage assessments and detailed, itemized estimates using current local pricing to support your insurance claim.',
       },
     ],
   },
