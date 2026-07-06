@@ -283,12 +283,21 @@ ${authorBox()}
       </section>`
   }
 
+  const authorOnlySectionHtml = !service.commonProjects && !service.pricingTiers && !service.flatFee
+    ? `
+      <section class="bg-white py-12 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+${authorBox()}
+        </div>
+      </section>`
+    : ''
+
   const howItWorksSectionHtml = service.howItWorks
     ? `
       <section class="bg-white py-16 lg:py-20 border-t border-slate-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl font-bold text-slate-900 mb-2 text-center">How It Works</h2>
-          <p class="text-slate-600 mb-10 text-center">A simple, straightforward process from consultation to completed documentation:</p>
+          <p class="text-slate-600 mb-10 text-center">A simple, straightforward process from consultation to completed work:</p>
           <ol class="grid grid-cols-1 md:grid-cols-3 gap-6">
 ${service.howItWorks
       .map(
@@ -370,6 +379,7 @@ ${calculatorButton}
 
 ${commonProjectsSectionHtml}
 ${pricingSectionHtml}
+${authorOnlySectionHtml}
 ${additionalCostsHtml}
 ${howItWorksSectionHtml}
 ${benefitsSectionHtml}

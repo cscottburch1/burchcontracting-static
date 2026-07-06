@@ -150,7 +150,7 @@ export const CORE_SERVICES = [
   { name: 'Room Additions', anchor: 'additions', summary: 'Ground-floor and second-story home expansions.' },
   { name: 'Remodeling', anchor: 'remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
   { name: 'Commercial', anchor: 'commercial', summary: 'Office upfits and tenant improvements.' },
-  { name: 'Insurance Restoration', anchor: 'insurance-restoration', summary: 'Damage documentation and insurance-ready estimates.' },
+  { name: 'Insurance Restoration', anchor: 'insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
 ]
 
 export const GLOBAL_FAQS = [
@@ -257,12 +257,12 @@ export const SERVICE_FAQS = [
     category: 'Insurance Restoration',
     faqs: [
       {
-        question: 'How much does insurance damage documentation cost?',
-        answer: 'The documentation package is a flat $450 fee. If Burch Contracting is awarded the resulting repair work, the full $450 is credited toward the project.',
+        question: 'How much does insurance restoration cost?',
+        answer: 'Costs vary based on the extent of storm or water damage and the scope of repairs needed. We offer a free consultation and ballpark range, followed by a detailed written estimate before any work begins.',
       },
       {
         question: 'Does Burch Contracting help with insurance claims?',
-        answer: 'Yes. Burch Contracting provides on-site damage assessments and detailed, itemized estimates using current local pricing to support your insurance claim.',
+        answer: 'Yes. Burch Contracting provides on-site damage assessments and detailed documentation and estimates to support your insurance claim, then completes the approved repair work.',
       },
     ],
   },

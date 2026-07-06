@@ -36,10 +36,9 @@ the config.
 `services.js` pricing remains hand-authored. If a calculator is ever
 added for one of these, reconcile it the same way as the others.
 
-`insurance-restoration` is a flat $450 fee (`service.flatFee`), not a
-per-sqft or tiered price — it isn't calculator-shaped and never will be,
-so it's intentionally excluded from the `pricing-sync.js` reconciliation
-entirely.
+`insurance-restoration` has no fixed price at all — cost varies by
+damage scope, quoted per-project after a free consultation. It's
+intentionally excluded from the `pricing-sync.js` reconciliation.
 
 ## If you change a rate in calculator-config.js
 
