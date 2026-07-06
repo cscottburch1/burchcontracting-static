@@ -344,6 +344,15 @@ function renderResults(el, service, state, estimate, page) {
 
   el.innerHTML = `
     <div class="bg-white rounded-xl border border-slate-100 shadow-sm p-6 lg:p-8 lg:sticky lg:top-24">
+      <div class="hidden print:flex items-center justify-between gap-4 border-b-2 border-slate-900 pb-4 mb-6">
+        <img src="/images/burch-contracting-logo.webp" alt="Burch Contracting" class="h-14 w-auto" />
+        <div class="text-right text-xs text-slate-700 leading-relaxed">
+          <p class="font-bold text-sm text-slate-900">Burch Contracting</p>
+          <p>1095 Water Tank Rd, Gray Court, SC 29645</p>
+          <p>(864) 724-4600 &middot; estimates@burchcontracting.com</p>
+          <p>SC License #CLG118679</p>
+        </div>
+      </div>
       <h2 class="text-xl font-bold text-slate-900 mb-5">Your Estimate</h2>
       <div class="text-sm text-slate-600 mb-6 space-y-1">
         <p><span class="font-semibold text-slate-800">Selected Project:</span> ${rate.label}</p>
