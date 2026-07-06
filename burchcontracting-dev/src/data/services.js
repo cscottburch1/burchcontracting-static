@@ -678,6 +678,70 @@ export const SERVICES = [
       { name: 'Basement Finishing', url: '/basement-finishing' },
       { name: 'Room Additions', url: '/additions' }
     ]
+  },
+  {
+    id: 'ada-compliance',
+    title: 'ADA Compliance & Accessibility Modifications',
+    slug: 'ada-compliance',
+    category: 'Accessibility',
+    description: 'Ramps, bathrooms, doorways, and other accessibility improvements for commercial and residential properties to meet current ADA standards.',
+    h1: 'ADA Compliance & Accessibility Modifications',
+    intro: "From aging-in-place bathroom conversions to commercial ramps and doorway widening, we design and build accessibility modifications that meet current ADA standards — for homeowners and business owners across Upstate SC.",
+    heroImage: '/images/ada-compliance-commercial.webp',
+    stats: {
+      costRange: 'Custom Quote',
+      timeline: 'Varies by Scope',
+      experience: '35+ Years Experience',
+      rating: 'BBB A+ Rated'
+    },
+    serviceCategories: [
+      {
+        name: 'Residential Accessibility',
+        items: [
+          'Curbless / roll-in shower conversions',
+          'Grab bars and ADA-height fixtures',
+          'Widened doorways and hallways',
+          'Wheelchair ramps and threshold ramps',
+          'Accessible flooring transitions'
+        ]
+      },
+      {
+        name: 'Commercial ADA Compliance',
+        items: [
+          'Accessible entrance ramps and handrails',
+          'ADA-compliant restroom retrofits',
+          'Door width and hardware upgrades',
+          'Parking and path-of-travel accessibility',
+          'Code compliance review and permitting'
+        ]
+      }
+    ],
+    howItWorks: [
+      {
+        title: 'Free Consultation',
+        description: 'Discuss your accessibility needs or compliance requirements. No obligation.'
+      },
+      {
+        title: 'On-Site Assessment',
+        description: 'We evaluate the space against current ADA standards and identify what needs to change.'
+      },
+      {
+        title: 'Compliant Construction',
+        description: 'We complete the approved modifications to code, with full attention to detail.'
+      }
+    ],
+    benefits: [
+      'Full compliance with current ADA standards',
+      'Improved safety for residents, employees, and customers',
+      'Greater independence and accessibility at home',
+      '35+ years local experience with permits and inspections'
+    ],
+    calculator: null,
+    relatedServices: [
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'Commercial Upfits', url: '/commercial-upfits' }
+    ]
   }
 ];
 

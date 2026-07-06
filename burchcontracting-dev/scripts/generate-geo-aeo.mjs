@@ -152,7 +152,7 @@ function serviceAreaPage(area) {
           name: area.name,
           containedInPlace: { '@type': 'AdministrativeArea', name: area.county },
         },
-        serviceType: ['Deck Builder', 'Garage Construction', 'Screened Porches', 'Room Additions', 'Remodeling'],
+        serviceType: ['Deck Builder', 'Garage Construction', 'Screened Porches', 'Room Additions', 'Remodeling', 'Insurance Restoration', 'ADA Compliance'],
       },
       {
         '@type': 'BreadcrumbList',

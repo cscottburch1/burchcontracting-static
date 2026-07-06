@@ -83,6 +83,7 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
               <li><a href="/remodeling" class="hover:text-white transition-colors">Remodeling</a></li>
               <li><a href="/commercial-upfits" class="hover:text-white transition-colors">Commercial Upfits</a></li>
               <li><a href="/insurance-restoration" class="hover:text-white transition-colors">Insurance Restoration</a></li>
+              <li><a href="/ada-compliance" class="hover:text-white transition-colors">ADA Compliance</a></li>
             </ul>
           </div>
           <div>
@@ -283,7 +284,75 @@ ${authorBox()}
       </section>`
   }
 
-  const authorOnlySectionHtml = !service.commonProjects && !service.pricingTiers && !service.flatFee
+  const heroContentHtml = `          <p class="text-blue-300 font-semibold text-sm uppercase tracking-widest mb-3">${esc(service.category)}</p>
+          <h1 class="text-4xl lg:text-5xl font-bold mb-6">${esc(service.h1)}</h1>
+          <p class="text-xl text-slate-300 leading-relaxed mb-8">${esc(service.intro)}</p>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
+              <p class="text-blue-300 text-xs uppercase tracking-wide mb-1">Cost Range</p>
+              <p class="text-white font-bold text-lg">${esc(service.stats.costRange)}</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
+              <p class="text-blue-300 text-xs uppercase tracking-wide mb-1">Timeline</p>
+              <p class="text-white font-bold text-lg">${esc(service.stats.timeline)}</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
+              <p class="text-blue-300 text-xs uppercase tracking-wide mb-1">Experience</p>
+              <p class="text-white font-bold text-lg">${esc(service.stats.experience)}</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
+              <p class="text-blue-300 text-xs uppercase tracking-wide mb-1">Rating</p>
+              <p class="text-white font-bold text-lg">${esc(service.stats.rating)}</p>
+            </div>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact.html" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">Get Free Consultation</a>
+            <a href="tel:${SITE.phoneLink}" class="border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">${SITE.phone}</a>
+${calculatorButton}
+          </div>`
+
+  const heroSectionHtml = service.heroImage
+    ? `      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div>
+${heroContentHtml}
+          </div>
+          <img src="${esc(service.heroImage)}" alt="${esc(service.h1)}" width="640" height="480" loading="lazy" class="rounded-2xl w-full h-72 lg:h-96 object-cover shadow-lg" />
+        </div>
+      </section>`
+    : `      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+${heroContentHtml}
+        </div>
+      </section>`
+
+  const serviceCategoriesSectionHtml = service.serviceCategories
+    ? `
+      <section class="bg-white py-16 lg:py-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-bold text-slate-900 mb-10 text-center">What We Handle</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+${service.serviceCategories
+      .map(
+        (cat) => `            <div class="bg-slate-50 border border-slate-200 rounded-xl p-7">
+              <h3 class="font-bold text-slate-900 text-lg mb-4">${esc(cat.name)}</h3>
+              <ul class="space-y-2 text-sm text-slate-700">
+${cat.items
+          .map(
+            (item) => `                <li class="flex items-start gap-2"><span class="text-blue-700 mt-0.5" aria-hidden="true">&#10003;</span><span>${esc(item)}</span></li>`
+          )
+          .join('\n')}
+              </ul>
+            </div>`
+      )
+      .join('\n')}
+          </div>
+${authorBox()}
+        </div>
+      </section>`
+    : ''
+
+  const authorOnlySectionHtml = !service.commonProjects && !service.pricingTiers && !service.flatFee && !service.serviceCategories
     ? `
       <section class="bg-white py-12 border-t border-slate-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -345,38 +414,10 @@ ${seoHead({ title, description, canonical })}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-700 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
 ${header}
     <main id="main-content">
-      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p class="text-blue-300 font-semibold text-sm uppercase tracking-widest mb-3">${esc(service.category)}</p>
-          <h1 class="text-4xl lg:text-5xl font-bold mb-6">${esc(service.h1)}</h1>
-          <p class="text-xl text-slate-300 leading-relaxed mb-8">${esc(service.intro)}</p>
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
-              <p class="text-blue-300 text-xs uppercase tracking-wide mb-1">Cost Range</p>
-              <p class="text-white font-bold text-lg">${esc(service.stats.costRange)}</p>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
-              <p class="text-blue-300 text-xs uppercase tracking-wide mb-1">Timeline</p>
-              <p class="text-white font-bold text-lg">${esc(service.stats.timeline)}</p>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
-              <p class="text-blue-300 text-xs uppercase tracking-wide mb-1">Experience</p>
-              <p class="text-white font-bold text-lg">${esc(service.stats.experience)}</p>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
-              <p class="text-blue-300 text-xs uppercase tracking-wide mb-1">Rating</p>
-              <p class="text-white font-bold text-lg">${esc(service.stats.rating)}</p>
-            </div>
-          </div>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a href="/contact.html" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">Get Free Consultation</a>
-            <a href="tel:${SITE.phoneLink}" class="border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">${SITE.phone}</a>
-${calculatorButton}
-          </div>
-        </div>
-      </section>
+${heroSectionHtml}
 
 ${commonProjectsSectionHtml}
+${serviceCategoriesSectionHtml}
 ${pricingSectionHtml}
 ${authorOnlySectionHtml}
 ${additionalCostsHtml}

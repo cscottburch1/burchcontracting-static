@@ -151,6 +151,7 @@ export const CORE_SERVICES = [
   { name: 'Remodeling', anchor: 'remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
   { name: 'Commercial', anchor: 'commercial', summary: 'Office upfits and tenant improvements.' },
   { name: 'Insurance Restoration', anchor: 'insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
+  { name: 'ADA Compliance', anchor: 'ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
 ]
 
 export const GLOBAL_FAQS = [
@@ -263,6 +264,19 @@ export const SERVICE_FAQS = [
       {
         question: 'Does Burch Contracting help with insurance claims?',
         answer: 'Yes. Burch Contracting provides on-site damage assessments and detailed documentation and estimates to support your insurance claim, then completes the approved repair work.',
+      },
+    ],
+  },
+  {
+    category: 'ADA Compliance',
+    faqs: [
+      {
+        question: 'Does Burch Contracting handle ADA compliance projects?',
+        answer: 'Yes. Burch Contracting builds residential accessibility modifications (roll-in showers, grab bars, ramps) and commercial ADA compliance upgrades (entrance ramps, restroom retrofits, door widening) to meet current ADA standards.',
+      },
+      {
+        question: 'How much does an ADA compliance modification cost?',
+        answer: 'Costs vary widely based on scope — from a single bathroom grab bar installation to a full commercial restroom retrofit or entrance ramp. We provide a free consultation and detailed written estimate before any work begins.',
       },
     ],
   },
