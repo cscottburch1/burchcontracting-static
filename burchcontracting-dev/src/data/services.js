@@ -748,7 +748,7 @@ export const SERVICES = [
     title: 'ADA Bath to Shower Conversions',
     slug: 'ada-bath-to-shower',
     category: 'Accessibility Remodeling',
-    description: 'Convert existing bathtubs into accessible, zero-entry roll-in showers with ADA-compliant features including grab bars, low-threshold entry, and non-slip surfaces.',
+    description: 'Convert bathtubs into accessible, zero-entry roll-in showers with ADA-compliant grab bars, low-threshold entry, and non-slip surfaces.',
     h1: 'ADA Bath to Shower Conversions',
     intro: "Convert your existing bathtub into a safe, accessible, zero-entry roll-in shower — ADA-compliant grab bars, low-threshold entry, and non-slip surfaces, built for aging-in-place and long-term safety.",
     heroImage: '/images/ada-compliance-residential.webp',

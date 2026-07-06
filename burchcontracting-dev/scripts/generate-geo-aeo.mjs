@@ -10,6 +10,7 @@ import {
   cityFaqs,
   faqPageSchema,
 } from '../src/data/geo-aeo.js'
+import { SERVICES } from '../src/data/services.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const areaDir = resolve(root, 'service-areas')
@@ -416,11 +417,20 @@ function generateSitemap() {
     ['/calculator/porch.html', 'monthly', '0.7'],
     ['/calculator/additions.html', 'monthly', '0.7'],
     ['/calculator/estimate.html', 'monthly', '0.7'],
+    ['/calculator/kitchen-remodel.html', 'monthly', '0.7'],
+    ['/calculator/bath-remodel.html', 'monthly', '0.7'],
+    ['/calculator/whole-home-remodel.html', 'monthly', '0.7'],
+    ['/calculator/ada-bath-shower.html', 'monthly', '0.7'],
   ]
+
+  // Derived from SERVICES (src/data/services.js) so every dedicated
+  // service page — including future ones — is automatically indexed
+  // without needing to remember to update this list by hand.
+  const servicePages = SERVICES.map((service) => [`/${service.slug}`, 'monthly', '0.8'])
 
   const areaPages = SERVICE_AREAS.map((area) => [`/service-areas/${area.slug}.html`, 'monthly', '0.75'])
 
-  const urls = [...staticPages, ...areaPages]
+  const urls = [...staticPages, ...servicePages, ...areaPages]
     .map(
       ([path, changefreq, priority]) => `  <url>
     <loc>${SITE.domain}${path}</loc>
