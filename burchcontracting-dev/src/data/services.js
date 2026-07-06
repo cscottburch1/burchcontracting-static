@@ -742,6 +742,71 @@ export const SERVICES = [
       { name: 'Basement Finishing', url: '/basement-finishing' },
       { name: 'Commercial Upfits', url: '/commercial-upfits' }
     ]
+  },
+  {
+    id: 'ada-bath-to-shower',
+    title: 'ADA Bath to Shower Conversions',
+    slug: 'ada-bath-to-shower',
+    category: 'Accessibility Remodeling',
+    description: 'Convert existing bathtubs into accessible, zero-entry roll-in showers with ADA-compliant features including grab bars, low-threshold entry, and non-slip surfaces.',
+    h1: 'ADA Bath to Shower Conversions',
+    intro: "Convert your existing bathtub into a safe, accessible, zero-entry roll-in shower — ADA-compliant grab bars, low-threshold entry, and non-slip surfaces, built for aging-in-place and long-term safety.",
+    heroImage: '/images/ada-compliance-residential.webp',
+    // Fixed-scope itemized pricing (see ADA_BATH_SHOWER_ITEMS in
+    // calculator-config.js) — not sqft-based, so this range is
+    // informational only, not computed via pricing-sync.js.
+    stats: {
+      costRange: '$10,500-$19,800 Typical',
+      timeline: '1-2 Weeks Typical',
+      experience: '35+ Years Experience',
+      rating: 'BBB A+ Rated'
+    },
+    serviceCategories: [
+      {
+        name: 'Structural & Mechanical',
+        items: [
+          'Demo and removal of the existing tub',
+          'Plumbing rough-in and relocation',
+          'Waterproofing and backing (Schluter or equivalent)',
+          'ADA roll-in shower base, fiberglass or tile-ready'
+        ]
+      },
+      {
+        name: 'Finishes & Fixtures',
+        items: [
+          'Tile or fiberglass surround',
+          'ADA grab bars, installed',
+          'Shower valve and trim, thermostatic available',
+          'Accessible door or curtain and accessories'
+        ]
+      }
+    ],
+    howItWorks: [
+      {
+        title: 'Free Consultation',
+        description: 'Discuss your accessibility needs and get a ballpark range. No obligation.'
+      },
+      {
+        title: 'On-Site Assessment',
+        description: 'We evaluate tub size, plumbing access, and wall condition to confirm scope.'
+      },
+      {
+        title: 'Conversion Installed',
+        description: 'Demo through finish, completed to ADA standards with full attention to detail.'
+      }
+    ],
+    benefits: [
+      'Improved safety and fall prevention',
+      'ADA-compliant grab bars and low-threshold entry',
+      'Supports aging-in-place and independent living',
+      'Insurance-friendly documentation available on request'
+    ],
+    calculator: 'ada-bath-shower',
+    relatedServices: [
+      { name: 'ADA Compliance & Accessibility', url: '/ada-compliance' },
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Insurance Restoration', url: '/insurance-restoration' }
+    ]
   }
 ];
 

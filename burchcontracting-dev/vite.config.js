@@ -48,6 +48,7 @@ export default defineConfig({
         calculatorKitchen: resolve(root, 'calculator/kitchen-remodel.html'),
         calculatorBath: resolve(root, 'calculator/bath-remodel.html'),
         calculatorWholeHome: resolve(root, 'calculator/whole-home-remodel.html'),
+        calculatorAdaBathShower: resolve(root, 'calculator/ada-bath-shower.html'),
         // Service pages (all use nested directory structure)
         aduBuilder: resolve(root, 'adu-builder/index.html'),
         remodeling: resolve(root, 'remodeling/index.html'),
@@ -57,6 +58,7 @@ export default defineConfig({
         additions: resolve(root, 'additions/index.html'),
         insuranceRestoration: resolve(root, 'insurance-restoration/index.html'),
         adaCompliance: resolve(root, 'ada-compliance/index.html'),
+        adaBathToShower: resolve(root, 'ada-bath-to-shower/index.html'),
         // Generated pages
         ...serviceAreaInputs,
         ...outdoorLivingInputs,

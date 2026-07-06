@@ -249,6 +249,27 @@ export const PRICING_CONFIG = {
   },
 }
 
+/**
+ * ADA Bath-to-Shower Conversion pricing.
+ * This is a fixed-scope itemized project, not a per-sqft service, so it
+ * doesn't fit calculateEstimate()'s sqft x rate model — it has its own
+ * calculator (src/js/ada-bath-calculator.js) that sums applicable items
+ * and applies the same location factor and overhead & profit rate used
+ * everywhere else on the site. This is still the single source of truth
+ * for these dollar figures; nothing should hand-type them elsewhere.
+ */
+export const ADA_BATH_SHOWER_ITEMS = [
+  { id: 'demo', label: 'Demo & Removal of Old Tub', low: 800, high: 1400, note: 'Includes haul away', always: true },
+  { id: 'plumbing', label: 'Plumbing Rough-In & Relocation', low: 1200, high: 2200, note: 'New drain, supply lines', always: true },
+  { id: 'waterproofing', label: 'Waterproofing & Backing', low: 600, high: 1000, note: 'Schluter or equivalent', always: true },
+  { id: 'showerBase', label: 'ADA Roll-In Shower Base', low: 1800, high: 3500, note: 'Fiberglass or tile-ready', always: true },
+  { id: 'tileSurround', label: 'Tile / Surround (Materials + Labor)', low: 2800, high: 5500, note: '3x6 or larger tile', group: 'finish', groupValue: 'tile' },
+  { id: 'grabBars', label: 'ADA Grab Bars (2-3)', low: 350, high: 650, note: 'Installed', optional: true, defaultOn: true },
+  { id: 'valve', label: 'Shower Valve & Trim', low: 450, high: 850, note: 'Thermostatic recommended', hasThermostatic: true },
+  { id: 'door', label: 'Door / Curtain & Accessories', low: 300, high: 700, always: true },
+  { id: 'labor', label: 'Labor & Finishing', low: 2500, high: 4000, always: true },
+]
+
 export const CALCULATOR_PAGES = {
   decks: {
     serviceKey: 'decks',
