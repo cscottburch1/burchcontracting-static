@@ -507,6 +507,7 @@ export const SERVICES = [
     },
     calculator: null,
     relatedServices: [
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
       { name: 'Room Additions', url: '/additions' },
       { name: 'Basement Finishing', url: '/basement-finishing' },
       { name: 'ADU Construction', url: '/adu-builder' }
@@ -674,6 +675,7 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
       { name: 'Home Remodeling', url: '/remodeling' },
       { name: 'Basement Finishing', url: '/basement-finishing' },
       { name: 'Room Additions', url: '/additions' }
@@ -738,6 +740,7 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
       { name: 'Home Remodeling', url: '/remodeling' },
       { name: 'Basement Finishing', url: '/basement-finishing' },
       { name: 'Commercial Upfits', url: '/commercial-upfits' }
