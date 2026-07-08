@@ -751,7 +751,7 @@ export const SERVICES = [
     description: 'Convert bathtubs into accessible, zero-entry roll-in showers with ADA-compliant grab bars, low-threshold entry, and non-slip surfaces.',
     h1: 'ADA Bath to Shower Conversions',
     intro: "Convert your existing bathtub into a safe, accessible, zero-entry roll-in shower — ADA-compliant grab bars, low-threshold entry, and non-slip surfaces, built for aging-in-place and long-term safety.",
-    heroImage: '/images/ada-compliance-residential.webp',
+    heroImage: '/images/ada-bath-to-shower/ada-bath-to-shower-conversion-simpsonville.webp',
     // Fixed-scope itemized pricing (see ADA_BATH_SHOWER_ITEMS in
     // calculator-config.js) — not sqft-based, so this range is
     // informational only, not computed via pricing-sync.js.
