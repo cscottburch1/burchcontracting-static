@@ -165,7 +165,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How do I get a free consultation from Burch Contracting?',
-    answer: 'Call (864) 724-4600 or submit the contact form at burchcontracting.com/contact.html. Scott will schedule a site visit, review your project scope, and provide a written estimate with price and timeline before work begins.',
+    answer: 'Call (864) 724-4600 or submit the contact form at burchcontracting.com/contact.html. Scott will review your project scope and provide a free ballpark price range. A detailed written estimate, concept drawings, or floor plans are available for a fee, fully credited toward your project if you hire us.',
   },
   {
     question: 'Does Scott Burch work on the job site?',
@@ -215,7 +215,7 @@ export const SERVICE_FAQS = [
       },
       {
         question: 'How long does it take to build a custom deck?',
-        answer: 'Most custom decks take 3 to 5 weeks from permit approval to completion, depending on size, complexity, and weather. Scott provides a timeline in your written estimate.',
+        answer: 'Most custom decks take 3 to 5 weeks from permit approval to completion, depending on size, complexity, and weather. Scott confirms your exact timeline as part of your estimate.',
       },
     ],
   },
@@ -259,11 +259,11 @@ export const SERVICE_FAQS = [
     faqs: [
       {
         question: 'How much does insurance restoration cost?',
-        answer: 'Costs vary based on the extent of storm or water damage and the scope of repairs needed. We offer a free consultation and ballpark range, followed by a detailed written estimate before any work begins.',
+        answer: 'Costs vary based on the extent of storm or water damage and the scope of repairs needed. We offer a free consultation and ballpark range. A detailed written estimate with full documentation is available for a fee, fully credited back if you hire us.',
       },
       {
         question: 'Does Burch Contracting help with insurance claims?',
-        answer: 'Yes. Burch Contracting provides on-site damage assessments and detailed documentation and estimates to support your insurance claim, then completes the approved repair work.',
+        answer: 'Yes. Burch Contracting provides on-site damage assessments to support your insurance claim. Detailed documentation and a full written estimate are available for a fee, credited back if you hire us, then we complete the approved repair work.',
       },
     ],
   },
@@ -276,7 +276,7 @@ export const SERVICE_FAQS = [
       },
       {
         question: 'How much does an ADA compliance modification cost?',
-        answer: 'Costs vary widely based on scope — from a single bathroom grab bar installation to a full commercial restroom retrofit or entrance ramp. We provide a free consultation and detailed written estimate before any work begins.',
+        answer: 'Costs vary widely based on scope — from a single bathroom grab bar installation to a full commercial restroom retrofit or entrance ramp. We provide a free consultation and ballpark range; a detailed written estimate is available for a fee, credited back if you hire us.',
       },
     ],
   },

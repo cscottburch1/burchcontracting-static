@@ -248,23 +248,23 @@ export const SERVICE_FAQS = {
   'insurance-restoration': [
     {
       question: 'Do you work with insurance companies on storm and water damage claims?',
-      answer: 'Yes. We provide thorough documentation and detailed estimates and communicate clearly with your insurance company throughout the claim. Scott Burch personally oversees each restoration project so the repairs are handled correctly and to standard.'
+      answer: 'Yes. We communicate clearly with your insurance company throughout the claim, and a detailed written estimate with full documentation is available for a fee, credited back if you hire us. Scott Burch personally oversees each restoration project so the repairs are handled correctly and to standard.'
     },
     {
       question: 'What types of damage do you restore?',
-      answer: 'We handle storm damage, water damage, wind and hail damage, and general insurance-claim repairs across Upstate SC, from documentation and estimating through full-quality repairs.'
+      answer: 'We handle storm damage, water damage, wind and hail damage, and general insurance-claim repairs across Upstate SC, from a free consultation through full-quality repairs.'
     },
     {
       question: 'How does the insurance restoration process work?',
-      answer: 'It runs in three steps: a free consultation to discuss the damage and get a ballpark range, a detailed on-site assessment with professional documentation and a written estimate, and then quality repairs completed once the work is approved.'
+      answer: 'It runs in three steps: a free consultation to discuss the damage and get a ballpark range, a detailed on-site assessment with professional documentation and a written estimate (available for a fee, credited back if you hire us), and then quality repairs completed once the work is approved.'
     },
     {
       question: 'Will you provide documentation for my insurance claim?',
-      answer: 'Yes. Thorough documentation and detailed estimates are a core part of our restoration service, which helps support your claim and keeps communication with the insurer clear.'
+      answer: 'Yes. A detailed written estimate with full documentation to support your insurance claim is available for a fee, which is fully credited toward your project if you hire us.'
     },
     {
       question: 'How much does insurance restoration cost?',
-      answer: 'Restoration is quoted custom based on the scope of damage, and in many cases the work is covered by your insurance claim. We provide a detailed estimate after the on-site assessment so you know what to expect before repairs begin.'
+      answer: 'Restoration is quoted custom based on the scope of damage, and in many cases the work is covered by your insurance claim. We provide a free consultation and ballpark range; a detailed written estimate is available for a fee, credited back if you hire us.'
     }
   ],
 
@@ -287,7 +287,7 @@ export const SERVICE_FAQS = {
     },
     {
       question: 'How much do accessibility modifications cost?',
-      answer: 'Accessibility work is quoted custom based on scope, since a single grab-bar and threshold project differs greatly from a full commercial restroom retrofit. We provide a detailed estimate after an on-site assessment.'
+      answer: 'Accessibility work is quoted custom based on scope, since a single grab-bar and threshold project differs greatly from a full commercial restroom retrofit. We provide a free consultation and ballpark range; a detailed written estimate is available for a fee, credited back if you hire us.'
     }
   ],
 

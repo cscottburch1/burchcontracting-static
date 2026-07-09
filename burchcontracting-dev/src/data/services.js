@@ -644,9 +644,9 @@ export const SERVICES = [
     title: 'Insurance Restoration & Repair Services',
     slug: 'insurance-restoration',
     category: 'Insurance Restoration',
-    description: 'Professional storm damage, water damage, and insurance claim restoration services in Upstate SC. Detailed estimates and full repair services.',
+    description: 'Professional storm damage, water damage, and insurance claim restoration services in Upstate SC. Free consultations and full repair services.',
     h1: 'Insurance Restoration & Repair Services',
-    intro: "Professional storm damage, water damage, and insurance claim restoration in Upstate SC — from detailed documentation and estimates to full quality repairs. Scott Burch personally oversees every project.",
+    intro: "Professional storm damage, water damage, and insurance claim restoration in Upstate SC — from a free consultation to full quality repairs. Scott Burch personally oversees every project.",
     stats: {
       costRange: 'Custom Quote',
       timeline: 'Varies by Scope',
@@ -659,8 +659,8 @@ export const SERVICES = [
         description: 'Discuss the damage and situation. Get a ballpark range.'
       },
       {
-        title: 'Detailed Assessment',
-        description: 'On-site inspection, professional documentation, and detailed estimate.'
+        title: 'On-Site Assessment',
+        description: 'On-site inspection and a free ballpark range. A detailed written estimate with full documentation is available for a fee, credited back if you hire us.'
       },
       {
         title: 'Quality Repairs',
@@ -668,7 +668,7 @@ export const SERVICES = [
       }
     ],
     benefits: [
-      'Thorough documentation and estimates',
+      'Free consultation and ballpark range',
       'Clear communication with insurance companies',
       'Scott on the job site',
       '35+ years local experience'
