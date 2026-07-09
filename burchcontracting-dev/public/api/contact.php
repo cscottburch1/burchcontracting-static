@@ -149,6 +149,65 @@ function labelFor(string $value, array $labels): string
     return $labels[$value] ?? ($value !== '' ? $value : 'N/A');
 }
 
+function renderConfirmationEmail(string $firstName, string $projectLabel): ?string
+{
+    $templatePath = __DIR__ . '/email-templates/confirmation.html';
+    if (!file_exists($templatePath)) {
+        return null;
+    }
+
+    $template = file_get_contents($templatePath);
+    if ($template === false) {
+        return null;
+    }
+
+    $projectText = ($projectLabel !== '' && $projectLabel !== 'N/A') ? $projectLabel : 'home remodeling';
+
+    return str_replace(
+        ['[Customer First Name]', '[Project Type or "home remodeling"]'],
+        [htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'), htmlspecialchars($projectText, ENT_QUOTES, 'UTF-8')],
+        $template
+    );
+}
+
+function sendConfirmationEmail(string $to, string $from, string $subject, string $htmlBody): bool
+{
+    $headers = [
+        'From: Burch Contracting <' . $from . '>',
+        'Reply-To: ' . $from,
+        'MIME-Version: 1.0',
+    ];
+
+    $logoPath = __DIR__ . '/../images/burch-contracting-logo.webp';
+    $logoData = file_exists($logoPath) ? file_get_contents($logoPath) : false;
+
+    if ($logoData === false) {
+        // No local logo to embed — fall back to a plain HTML send rather than failing outright.
+        $headers[] = 'Content-Type: text/html; charset=UTF-8';
+        $headers[] = 'Content-Transfer-Encoding: 8bit';
+        return mail($to, $subject, $htmlBody, implode("\r\n", $headers), '-f' . $from);
+    }
+
+    $boundary = 'bc_rel_' . bin2hex(random_bytes(8));
+    $headers[] = 'Content-Type: multipart/related; boundary="' . $boundary . '"';
+
+    $message = '--' . $boundary . "\r\n";
+    $message .= "Content-Type: text/html; charset=UTF-8\r\n";
+    $message .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
+    $message .= $htmlBody . "\r\n";
+
+    $message .= '--' . $boundary . "\r\n";
+    $message .= "Content-Type: image/webp; name=\"burch-contracting-logo.webp\"\r\n";
+    $message .= "Content-Transfer-Encoding: base64\r\n";
+    $message .= "Content-ID: <burch-logo>\r\n";
+    $message .= "Content-Disposition: inline; filename=\"burch-contracting-logo.webp\"\r\n\r\n";
+    $message .= chunk_split(base64_encode($logoData)) . "\r\n";
+
+    $message .= '--' . $boundary . '--';
+
+    return mail($to, $subject, $message, implode("\r\n", $headers), '-f' . $from);
+}
+
 function sendLeadEmail(
     string $to,
     string $from,
@@ -296,6 +355,13 @@ $body = implode("\n", [
 
 if (!sendLeadEmail($toEmail, $fromEmail, $email, $subject, $body, $attachments)) {
     respond(500, ['error' => 'Failed to send message. Please call (864) 724-4600.']);
+}
+
+$firstName = explode(' ', $name)[0];
+$confirmationHtml = renderConfirmationEmail($firstName, $projectLabel);
+if ($confirmationHtml !== null) {
+    // Best-effort: a failed confirmation email should never fail the lead submission itself.
+    sendConfirmationEmail($email, $fromEmail, 'Thank You for Contacting Burch Contracting', $confirmationHtml);
 }
 
 respond(200, [
