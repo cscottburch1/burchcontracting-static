@@ -2,6 +2,7 @@ import { mkdirSync, writeFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { SITE, SERVICES } from '../src/data/services.js'
+import { SERVICE_FAQS } from '../src/data/service-faqs.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -149,13 +150,27 @@ function authorBox() {
           </aside>`
 }
 
+function faqHtml(faqs, idPrefix = 'faq') {
+  return faqs
+    .map(
+      (faq, index) => `            <details class="group bg-white border border-slate-200 rounded-xl p-5 open:border-blue-200 open:shadow-sm" id="${idPrefix}-${index}">
+              <summary class="font-semibold text-slate-900 cursor-pointer list-none flex items-start justify-between gap-4">
+                <span>${esc(faq.question)}</span>
+                <span class="text-blue-700 text-lg leading-none group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-4 text-slate-600 text-sm leading-relaxed">${esc(faq.answer)}</p>
+            </details>`
+    )
+    .join('\n')
+}
+
 function servicePage(service) {
   const canonical = `${SITE.url}/${service.slug}`
   const title = `${service.title} | Burch Contracting`
   const description = service.description
+  const faqs = SERVICE_FAQS[service.id] || []
 
-  const schema = {
-    '@context': 'https://schema.org',
+  const serviceSchema = {
     '@type': 'Service',
     name: service.title,
     description: service.description,
@@ -179,13 +194,37 @@ function servicePage(service) {
   }
 
   if (service.flatFee) {
-    schema.offers = {
+    serviceSchema.offers = {
       '@type': 'Offer',
       priceCurrency: 'USD',
       price: service.flatFee.amount.replace(/[^0-9.]/g, ''),
       description: service.flatFee.credit,
     }
   }
+
+  const schemaGraph = [serviceSchema]
+
+  schemaGraph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE.url}/services.html` },
+      { '@type': 'ListItem', position: 3, name: service.title, item: canonical },
+    ],
+  })
+
+  if (faqs.length) {
+    schemaGraph.push({
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      })),
+    })
+  }
+
+  const schema = { '@context': 'https://schema.org', '@graph': schemaGraph }
 
   const commonProjectsHtml = (service.commonProjects || [])
     .map(
@@ -284,7 +323,16 @@ ${authorBox()}
       </section>`
   }
 
-  const heroContentHtml = `          <p class="text-blue-300 font-semibold text-sm uppercase tracking-widest mb-3">${esc(service.category)}</p>
+  const heroContentHtml = `          <nav class="mb-4" aria-label="Breadcrumb">
+            <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-400">
+              <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+              <li aria-hidden="true"><span>/</span></li>
+              <li><a href="/services.html" class="hover:text-white transition-colors">Services</a></li>
+              <li aria-hidden="true"><span>/</span></li>
+              <li class="text-slate-200" aria-current="page">${esc(service.title)}</li>
+            </ol>
+          </nav>
+          <p class="text-blue-300 font-semibold text-sm uppercase tracking-widest mb-3">${esc(service.category)}</p>
           <h1 class="text-4xl lg:text-5xl font-bold mb-6">${esc(service.h1)}</h1>
           <p class="text-xl text-slate-300 leading-relaxed mb-8">${esc(service.intro)}</p>
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -397,6 +445,19 @@ ${service.benefits
       </section>`
     : ''
 
+  const faqSectionHtml = faqs.length
+    ? `
+      <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100" aria-labelledby="${service.id}-faqs-heading">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 id="${service.id}-faqs-heading" class="text-3xl font-bold text-slate-900 mb-3 text-center">${esc(service.title)} FAQs</h2>
+          <p class="text-slate-600 text-center mb-8">Direct answers for homeowners and AI search — licensed, local, and accountable.</p>
+          <div class="space-y-4">
+${faqHtml(faqs, service.id)}
+          </div>
+        </div>
+      </section>`
+    : ''
+
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -423,6 +484,7 @@ ${authorOnlySectionHtml}
 ${additionalCostsHtml}
 ${howItWorksSectionHtml}
 ${benefitsSectionHtml}
+${faqSectionHtml}
 
       <section class="bg-white py-16 lg:py-20 border-t border-slate-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
