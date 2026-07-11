@@ -46,6 +46,7 @@ RewriteRule ^projects/?$ /projects.html [R=301,L]
 RewriteRule ^services/?$ /services.html [R=301,L]
 # Fragment redirect (NE keeps "#" from being percent-encoded to %23).
 RewriteRule ^areas/?$ /#service-areas [R=301,L,NE]
+RewriteRule ^service-areas/?$ /#service-areas [R=301,L,NE]
 
 RewriteRule ^garage-builder/?$ /garages [R=301,L]
 RewriteRule ^room-additions/?$ /additions [R=301,L]
@@ -55,8 +56,262 @@ RewriteRule ^cost/?$ /calculator/estimate.html [R=301,L]
 RewriteRule ^calculator/decks/?$ /calculator/decks.html [R=301,L]
 RewriteRule ^calculator/garages/?$ /calculator/garages.html [R=301,L]
 
+# =============================================================================
+# LEGACY burchcontracting.com (Next.js) -> NEW static site
+# ADDITIONAL RULES — covering the programmatic tree the original rules above miss
+#
+# STATUS: DRAFT. Validate against the GSC "Indexed pages" export before shipping.
+# Targets below are best-relevance guesses. Any legacy URL with real click volume
+# deserves a hand-checked target, not a pattern match. All targets below were
+# checked against migration/inventory.csv (Phase 1 audit) and exist on the new
+# site as of 2026-07-11; the URLs *feeding into* these rules (the legacy side)
+# have not been independently confirmed against GSC — see open questions below.
+#
+# Placed after the specific calculator/service rules above (so those still win)
+# and before the service-areas generic rule below (specific-before-generic).
+# =============================================================================
+
+# --- Family 1: city x service, pattern /{city}-sc/{service} -------------------
+# 9 cities x 5 services = 45 legacy URLs. The new site has no city x service tier,
+# so these map to the city's service-area page, which covers decks, garages,
+# porches, and additions for that city. Closest available relevance.
+
+# BROADENED from a 5-service alternation to a wildcard: the GSC export showed
+# real city-sc/kitchen-remodeling and city-sc/bathroom-remodeling URLs (e.g.
+# gray-court-sc/kitchen-remodeling, 1 real click) that a fixed
+# (deck-builder|garage-builder|room-additions|screened-porches|adu-builder)
+# alternation would have missed entirely -> 404, since these 6 known-city
+# rules had no fallback beneath them (unlike clinton/ora/joanna below, which
+# already used a wildcard). Matching that same wildcard approach here for
+# consistency and to cover any other legacy service slug not seen in this
+# sample.
+RewriteRule ^simpsonville-sc/([a-z-]+)/?$ /service-areas/simpsonville.html [R=301,L]
+RewriteRule ^fountain-inn-sc/([a-z-]+)/?$ /service-areas/fountain-inn.html [R=301,L]
+RewriteRule ^mauldin-sc/([a-z-]+)/?$ /service-areas/mauldin.html [R=301,L]
+RewriteRule ^gray-court-sc/([a-z-]+)/?$ /service-areas/gray-court.html [R=301,L]
+RewriteRule ^laurens-sc/([a-z-]+)/?$ /service-areas/laurens.html [R=301,L]
+RewriteRule ^woodruff-sc/([a-z-]+)/?$ /service-areas/woodruff.html [R=301,L]
+
+# Cities with NO page on the new site. All three are Laurens County; nearest
+# existing coverage is the Laurens page. DECISION NEEDED: redirect (below) or
+# build dedicated pages — unresolved, see audit-report.md.
+RewriteRule ^clinton-sc/([a-z-]+)/?$ /service-areas/laurens.html [R=301,L]
+RewriteRule ^ora-sc/([a-z-]+)/?$ /service-areas/laurens.html [R=301,L]
+RewriteRule ^joanna-sc/([a-z-]+)/?$ /service-areas/laurens.html [R=301,L]
+
+# --- Family 2: service x city, pattern /{service}/{city} ----------------------
+# 12 cities appear in this tree, including four with no page on the new site:
+# greer, travelers-rest, duncan, taylors.
+# Ordering matters: the known-city rules must precede the catch-alls.
+
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/simpsonville/?$ /service-areas/simpsonville.html [R=301,L]
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/fountain-inn/?$ /service-areas/fountain-inn.html [R=301,L]
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/mauldin/?$ /service-areas/mauldin.html [R=301,L]
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/gray-court/?$ /service-areas/gray-court.html [R=301,L]
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/laurens/?$ /service-areas/laurens.html [R=301,L]
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/woodruff/?$ /service-areas/woodruff.html [R=301,L]
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/greenville/?$ /service-areas/greenville.html [R=301,L]
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/five-forks/?$ /service-areas/five-forks.html [R=301,L]
+
+# greer already redirects to greenville elsewhere in this file — stay consistent.
+RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-builder)/greer/?$ /service-areas/greenville.html [R=301,L]
+
+# travelers-rest, duncan, taylors: no page anywhere. Fall through to the service
+# page rather than a city page — preserves service intent, loses geo intent.
+RewriteRule ^deck-builder/[a-z-]+/?$ /outdoor-living/decks [R=301,L]
+RewriteRule ^screened-porches/[a-z-]+/?$ /outdoor-living/screened-porches [R=301,L]
+RewriteRule ^garage-builder/[a-z-]+/?$ /garages [R=301,L]
+RewriteRule ^room-additions/[a-z-]+/?$ /additions [R=301,L]
+RewriteRule ^adu-builder/[a-z-]+/?$ /adu-builder [R=301,L]
+
+# --- Family 3: /locations tree ------------------------------------------------
+# /locations/{service}-{city}-sc  (e.g. /locations/deck-builder-simpsonville-sc)
+# Flattened to the service page. If GSC shows traffic here, hand-map instead.
+
+RewriteRule ^locations/deck-builder-[a-z-]+-sc/?$ /outdoor-living/decks [R=301,L]
+# FIXED: the real legacy slug is "screened-porch-builder-{city}-sc" (confirmed
+# via GSC — e.g. /locations/screened-porch-builder-greenville-sc, 71
+# impressions), not "screened-porches-{city}-sc" as originally drafted. The
+# original pattern wouldn't 404 (the generic /locations/[a-z-]+ catch-all
+# below still catches it) but would send real traffic to the homepage anchor
+# instead of the actually-relevant screened-porches page.
+RewriteRule ^locations/screened-porch-builder-[a-z-]+-sc/?$ /outdoor-living/screened-porches [R=301,L]
+RewriteRule ^locations/garage-builder-[a-z-]+-sc/?$ /garages [R=301,L]
+RewriteRule ^locations/room-additions-[a-z-]+-sc/?$ /additions [R=301,L]
+RewriteRule ^locations/adu-builder-[a-z-]+-sc/?$ /adu-builder [R=301,L]
+RewriteRule ^locations/kitchen-remodeling-[a-z-]+-sc/?$ /calculator/kitchen-remodel.html [R=301,L]
+RewriteRule ^locations/bathroom-remodeling-[a-z-]+-sc/?$ /calculator/bath-remodel.html [R=301,L]
+RewriteRule ^locations/basement-finishing-[a-z-]+-sc/?$ /basement-finishing [R=301,L]
+
+# The /locations index itself, and any unmatched child (safety net — this
+# already prevents the above gaps from 404ing, just with less topical
+# relevance than a specific rule).
+RewriteRule ^locations/?$ /#service-areas [R=301,L,NE]
+RewriteRule ^locations/[a-z-]+/?$ /#service-areas [R=301,L,NE]
+
+# --- Family 4: legacy top-level service pages ---------------------------------
+# garage-builder and room-additions bare paths are already handled above.
+# These are the ones that were not:
+
+RewriteRule ^deck-builder/?$ /outdoor-living/decks [R=301,L]
+RewriteRule ^screened-porches/?$ /outdoor-living/screened-porches [R=301,L]
+
+# --- Family 5: /services/{slug} -----------------------------------------------
+# The rule above only covers bare "^services/?$". Children 404'd until now.
+# VERIFY the full child list against GSC — this is what could be observed
+# without it.
+
+RewriteRule ^services/additions/?$ /additions [R=301,L]
+RewriteRule ^services/decks/?$ /outdoor-living/decks [R=301,L]
+RewriteRule ^services/screened-porches/?$ /outdoor-living/screened-porches [R=301,L]
+RewriteRule ^services/garages/?$ /garages [R=301,L]
+RewriteRule ^services/remodeling/?$ /remodeling [R=301,L]
+RewriteRule ^services/[a-z-]+/?$ /services.html [R=301,L]
+
+# --- Family 6: calculators ----------------------------------------------------
+# The rules above cover calculator/decks, calculator/garages,
+# calculator/decks-screened-porches. These are the gaps:
+
+RewriteRule ^calculator/room-additions/?$ /calculator/additions.html [R=301,L]
+RewriteRule ^calculator/additions/?$ /calculator/additions.html [R=301,L]
+RewriteRule ^calculator/porch/?$ /calculator/porch.html [R=301,L]
+
+# Confirmed against the 2026-07-11 GSC Performance export (Pages.csv) — these
+# legacy calculator slugs have real clicks/impressions and an exact-matching
+# new-site calculator, so they get a hand-checked target instead of falling
+# through to the generic estimate calculator below.
+RewriteRule ^calculator/screened-porches/?$ /calculator/porch.html [R=301,L]
+RewriteRule ^calculator/bathroom-remodeling/?$ /calculator/bath-remodel.html [R=301,L]
+RewriteRule ^calculator/kitchen-remodeling/?$ /calculator/kitchen-remodel.html [R=301,L]
+RewriteRule ^calculator/remodeling/?$ /calculator/whole-home-remodel.html [R=301,L]
+# No basement-finishing calculator exists on the new site — the service page
+# is more relevant than the generic all-purpose estimator (1178 impressions
+# on this legacy URL, worth the more specific target).
+RewriteRule ^calculator/basement-finishing/?$ /basement-finishing [R=301,L]
+
+# Bare "/calculators" (plural) — distinct legacy URL, 1 click / 64 impressions.
+RewriteRule ^calculators/?$ /calculator/estimate.html [R=301,L]
+# Different legacy naming convention entirely (underscore, trailing slash,
+# no /calculator/ prefix) — 1 click / 137 impressions, no exact new-site match.
+RewriteRule ^remodeling_cost_calculator/?$ /calculator/whole-home-remodel.html [R=301,L]
+
+# Remaining legacy calculator slugs with no exact new-site equivalent
+# (adus, commercial-renovations, handyman) fall through to the all-purpose
+# estimator below rather than a mismatched specific page.
+RewriteRule ^calculator/?$ /calculator/estimate.html [R=301,L]
+RewriteRule ^calculator/([a-z-]+)/?$ /calculator/estimate.html [R=301,L]
+
+# --- Family 8: /cost/{article-slug} — NOT in the original draft above ---------
+# Discovered via the GSC Performance export: a whole content tier of
+# "cost of X in {city}, SC" articles under /cost/, distinct from /calculator/.
+# 4 of these currently carry real clicks (11 total) and several hundred
+# impressions — hand-mapped by topic keyword to the closest calculator/service
+# page. The existing bare "^cost/?$" rule above only covered "/cost" itself.
+
+RewriteRule ^cost/home-addition-cost-[a-z-]+-sc/?$ /calculator/additions.html [R=301,L]
+RewriteRule ^cost/room-addition-cost-[a-z-]+-sc/?$ /calculator/additions.html [R=301,L]
+RewriteRule ^cost/screened-porch-vs-sunroom-sc/?$ /calculator/porch.html [R=301,L]
+RewriteRule ^cost/garage-construction-cost-[a-z-]+-sc/?$ /calculator/garages.html [R=301,L]
+RewriteRule ^cost/cost-to-build-a-deck-[a-z-]+-sc/?$ /calculator/decks.html [R=301,L]
+RewriteRule ^cost/kitchen-remodel-cost-[a-z-]+-sc/?$ /calculator/kitchen-remodel.html [R=301,L]
+RewriteRule ^cost/bathroom-remodel-cost-[a-z-]+-sc/?$ /calculator/bath-remodel.html [R=301,L]
+RewriteRule ^cost/basement-finishing-cost-[a-z-]+-sc/?$ /basement-finishing [R=301,L]
+# Any other /cost/{slug} not matched above falls through to the all-purpose
+# estimator rather than a 404 — verify against a fuller GSC export if one
+# with more rows becomes available (this pass covered the top ~200 pages).
+RewriteRule ^cost/[a-z0-9-]+/?$ /calculator/estimate.html [R=301,L]
+
+# --- Family 9: bare/underscore-style legacy slugs -----------------------------
+# Discovered via GSC — a pre-Next.js (WordPress-style?) URL convention with
+# trailing slashes and underscores, alongside bare hyphenated versions of the
+# same topics. All 0 clicks in this export but real impressions (up to ~110);
+# unambiguous keyword match to an existing calculator/service page, so mapped
+# directly rather than left to a generic fallback.
+
+RewriteRule ^bathroom-remodeling/?$ /calculator/bath-remodel.html [R=301,L]
+RewriteRule ^bath_remodeling/?$ /calculator/bath-remodel.html [R=301,L]
+RewriteRule ^kitchen-remodeling/?$ /calculator/kitchen-remodel.html [R=301,L]
+RewriteRule ^kitchen_remodeling/?$ /calculator/kitchen-remodel.html [R=301,L]
+RewriteRule ^basement_remodeling/?$ /basement-finishing [R=301,L]
+RewriteRule ^room_additions/?$ /additions [R=301,L]
+RewriteRule ^commercial-renovations/?$ /commercial-upfits [R=301,L]
+RewriteRule ^commercial_remodeling_company/?$ /commercial-upfits [R=301,L]
+RewriteRule ^screened_patios/?$ /outdoor-living/screened-porches [R=301,L]
+
+# Unambiguous single-page matches, all 0 clicks / low impressions:
+RewriteRule ^pricing/?$ /services.html [R=301,L]
+RewriteRule ^request_a_free_estimate/?$ /contact.html [R=301,L]
+RewriteRule ^commercial-services/?$ /commercial-upfits [R=301,L]
+RewriteRule ^home-renovations/?$ /remodeling [R=301,L]
+# No single "outdoor living" hub page exists on the new site (only the three
+# child pages) — services.html covers the same ground at the top level.
+RewriteRule ^outdoor-living/?$ /services.html [R=301,L]
+
+# Ten individual /projects/{case-study-slug} pages, 0 clicks each but ~205
+# impressions combined — consolidated to the projects listing rather than
+# 404ing. Same fallback pattern as /cost/* and /calculator/* above: safe
+# default, not a hand-picked target (there's no per-project equivalent on the
+# new site to pick).
+RewriteRule ^projects/[a-z0-9-]+/?$ /projects.html [R=301,L]
+
+# --- Family 7: orphans --------------------------------------------------------
+# /portal — customer portal. The new site has no equivalent.
+# DECISION NEEDED: is this a live feature customers use? If so it must not be
+# broken. If it is dead, send it to contact rather than the homepage.
+RewriteRule ^portal/?$ /contact.html [R=301,L]
+
+# /areas and /cost are already handled above.
+
+# =============================================================================
+# GSC CROSS-CHECK — done 2026-07-11 against burchcontracting.com-Performance-
+# on-Search-2026-07-11/Pages.csv and the Coverage export (see
+# migration/gsc-validation-notes.md for the full writeup). Loop-checked by
+# hand: every target above is a real .html file, a real clean-slug directory,
+# or the #service-areas fragment; none re-match a pattern in this file.
+#
+#   - Family 1 clinton-sc/ora-sc/joanna-sc -> RESOLVED: 0 clicks across all
+#     three cities x all services in the export. Redirect-to-Laurens is safe;
+#     no traffic to lose by not building dedicated pages.
+#   - Family 2 travelers-rest/duncan/taylors fallback -> RESOLVED: none of
+#     these three appear anywhere in the Pages export (not even 1 impression).
+#     Service-page fallback is safe.
+#   - The ~150-URL city x service tier overall -> RESOLVED: real clicks across
+#     the whole tier total at most 1 per URL (a handful of URLs), impressions
+#     up to a few hundred on a few. Shedding this is an acceptable, bounded
+#     risk — porting the tier into real pages is not justified by this data.
+#   - Family 6/8 (calculators, /cost/*) -> UPGRADED: cross-checking surfaced
+#     an entire /cost/{article-slug} tier (11 real clicks, several hundred
+#     impressions) that neither the original .htaccess nor the draft above
+#     covered at all, plus several /calculator/* legacy slugs that were about
+#     to fall into the generic estimate-calculator catch-all despite having
+#     an exact-matching new-site calculator. Both fixed above with hand-picked
+#     targets instead of pattern matches.
+#   - Family 7 /portal -> STILL OPEN: 2 real clicks / 95 impressions (plus a
+#     www-prefixed variant with more impressions). This is not a "no traffic,
+#     nothing lost" case like the others — redirecting to /contact.html is a
+#     reasonable placeholder, but whether /portal was a real customer login
+#     feature (and whether that functionality needs to exist on the new site)
+#     is a product question only Scott can answer, not an SEO one. Flagging,
+#     not guessing.
+#   - STILL OPEN, needs a human decision (not a pattern rule): /blog/* (4
+#     articles), /clients/, /commercial-roofing_company/ + /roofing/ (is
+#     roofing still an offered service?), /work, /subcontractors/join,
+#     /employment + /employment/direct-hire, /handyman-services-estimator/ +
+#     /handyman-services-near-you/ (is handyman still offered?), and /admin
+#     (likely an accidentally-indexed CMS backend URL — probably correct to
+#     leave 404ing rather than redirect). Full list with click/impression
+#     counts in migration/gsc-validation-notes.md.
+# =============================================================================
+
 # Renamed service area (must come before the generic rule below).
 RewriteRule ^service-areas/greer/?$ /service-areas/greenville.html [R=301,L]
+# FOUND VIA GSC: legacy "-sc"-suffixed city slugs under /service-areas/ (e.g.
+# /service-areas/simpsonville-sc, 32 impressions; also fountain-inn-sc,
+# mauldin-sc, woodruff-sc). Without this rule they'd fall into the generic
+# rule below and 301 to a file that doesn't exist (service-areas/
+# simpsonville-sc.html is not a real page — the real one is simpsonville.html)
+# i.e. a redirect straight into a 404. Must come before the generic rule.
+RewriteRule ^service-areas/([a-z-]+)-sc/?$ /service-areas/$1.html [R=301,L]
 # Generic: any other extensionless /service-areas/<slug> -> <slug>.html.
 # The character class has no dot, so already-.html requests never re-match.
 RewriteRule ^service-areas/([a-z-]+)/?$ /service-areas/$1.html [R=301,L]
