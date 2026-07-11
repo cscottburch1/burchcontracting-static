@@ -39,6 +39,8 @@ export default defineConfig({
         services: resolve(root, 'services.html'),
         about: resolve(root, 'about.html'),
         contact: resolve(root, 'contact.html'),
+        privacyPolicy: resolve(root, 'privacy-policy.html'),
+        termsOfService: resolve(root, 'terms-of-service.html'),
         projects: resolve(root, 'projects.html'),
         faqs: resolve(root, 'faqs.html'),
         calculatorDecks: resolve(root, 'calculator/decks.html'),
