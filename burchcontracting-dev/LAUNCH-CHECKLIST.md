@@ -29,18 +29,25 @@ skipped** — the form still works, but with no bot protection.
 
 ## 3. Confirm the reCAPTCHA site key is registered for burchcontracting.com
 
-The site key baked into the contact form
-(`data-recaptcha-site-key="6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li"` in
-`contact.html`) must have `burchcontracting.com` (and `www.burchcontracting.com`
-if used) listed as an authorized domain in the Google reCAPTCHA admin console,
-or verification will fail for every real visitor.
+`src/js/main.js:42-45` reads the site key from `import.meta.env.VITE_RECAPTCHA_SITE_KEY`
+**first**, falling back to `contact.html`'s hardcoded
+`data-recaptcha-site-key="6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li"` only if
+that env var is unset. `.github/workflows/deploy.yml:32` injects
+`VITE_RECAPTCHA_SITE_KEY` from the GitHub Actions secret of the same name at
+build time — so **the secret's value, not the hardcoded fallback, is what
+production actually uses.**
 
-Note: the current staging domain (nicheprohub.com) uses a separate site key,
-`6Le5vkEtAAAAAKMZtQ-YahscAQXHygBRDBGutTuD`, which is why the form works there
-today even though `6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li` is hardcoded in
-`contact.html`. Confirm which key `contact.html` should actually ship with at
-launch — if `6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li` isn't registered for
-burchcontracting.com, swap it for whichever key is, before flipping noindex.
+- The `VITE_RECAPTCHA_SITE_KEY` secret exists on the `burchcontracting-static`
+  repo (confirmed via `gh secret list`, set 2026-07-08) — its value can't be
+  read via the CLI, so confirm in the Google reCAPTCHA admin console which
+  site key it holds, and that `burchcontracting.com` (and `www.` if used) is
+  an authorized domain for that key.
+- Separately, the current staging domain (nicheprohub.com) uses its own site
+  key, `6Le5vkEtAAAAAKMZtQ-YahscAQXHygBRDBGutTuD` — that's why the form works
+  there regardless of what's hardcoded in `contact.html` or set in the CI
+  secret. Don't confuse "it works on staging" with "the prod key is correct."
+- If the secret's key isn't registered for burchcontracting.com, update the
+  `VITE_RECAPTCHA_SITE_KEY` GitHub secret (not `contact.html`) before launch.
 
 ## 4. Submit the sitemap in Search Console
 
