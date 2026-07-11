@@ -176,6 +176,7 @@ function servicePage(service) {
     description: service.description,
     provider: {
       '@type': 'LocalBusiness',
+      '@id': `${SITE.url}/#business`,
       name: SITE.name,
       telephone: SITE.phone,
       email: SITE.email,

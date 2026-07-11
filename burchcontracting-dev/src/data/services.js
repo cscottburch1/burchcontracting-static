@@ -37,7 +37,7 @@ function spanPerSqft(lowBand, highBand, suffix = '/sq ft') {
 export const SITE = {
   name: 'Burch Contracting',
   phone: '(864) 724-4600',
-  phoneLink: 'tel:8647244600',
+  phoneLink: '8647244600',
   email: 'estimates@burchcontracting.com',
   address: '1095 Water Tank Rd',
   city: 'Gray Court',
