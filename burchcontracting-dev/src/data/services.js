@@ -570,7 +570,7 @@ export const SERVICES = [
     relatedServices: [
       { name: 'Remodeling Services', url: '/remodeling' },
       { name: 'Room Additions', url: '/additions' },
-      { name: 'General Contracting', url: '/services' }
+      { name: 'General Contracting', url: '/services.html' }
     ]
   },
   {
