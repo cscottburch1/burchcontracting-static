@@ -1,0 +1,68 @@
+# ---------------------------------------------------------------------------
+# Expected behavior trace (worked through by hand, not executed):
+#
+#   /garages
+#     -> No RewriteRule below matches "garages" (only the old-URL patterns
+#        listed further down do). "garages" is a real directory, so Apache's
+#        core mod_dir does its own internal trailing-slash redirect to
+#        /garages/, then DirectoryIndex serves garages/index.html. 200 OK,
+#        one implicit hop handled by Apache itself (not this file).
+#
+#   /garages/
+#     -> Real directory, DirectoryIndex serves garages/index.html directly.
+#        200 OK, no redirect.
+#
+#   /contact.html
+#     -> Contains a dot, so it never matches "^contact/?$" (that pattern has
+#        no dot in it). Served as a static file directly. 200 OK.
+#
+#   /contact
+#     -> Matches "^contact/?$" -> 301 redirect to /contact.html -> that
+#        request matches nothing else and is served as a static file.
+#        One 301 hop total.
+#
+#   /service-areas/simpsonville
+#     -> Does not match the "greer" exact-match rule. Matches the generic
+#        "^service-areas/([a-z-]+)/?$" pattern (no dot in the character
+#        class) -> 301 redirect to /service-areas/simpsonville.html -> that
+#        request contains a dot, doesn't match the generic rule again, and
+#        is served as a static file. One 301 hop total, no loop.
+# ---------------------------------------------------------------------------
+
+RewriteEngine On
+
+# Force HTTPS and strip "www." in a single 301 hop.
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
+
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [L,R=301]
+
+# --- Old Next.js site URLs -> new static site URLs ---------------------
+
+RewriteRule ^contact/?$ /contact.html [R=301,L]
+RewriteRule ^about/?$ /about.html [R=301,L]
+RewriteRule ^projects/?$ /projects.html [R=301,L]
+RewriteRule ^services/?$ /services.html [R=301,L]
+# Fragment redirect (NE keeps "#" from being percent-encoded to %23).
+RewriteRule ^areas/?$ /#service-areas [R=301,L,NE]
+
+RewriteRule ^garage-builder/?$ /garages [R=301,L]
+RewriteRule ^room-additions/?$ /additions [R=301,L]
+
+RewriteRule ^calculator/decks-screened-porches/?$ /calculator/porch.html [R=301,L]
+RewriteRule ^cost/?$ /calculator/estimate.html [R=301,L]
+RewriteRule ^calculator/decks/?$ /calculator/decks.html [R=301,L]
+RewriteRule ^calculator/garages/?$ /calculator/garages.html [R=301,L]
+
+# Renamed service area (must come before the generic rule below).
+RewriteRule ^service-areas/greer/?$ /service-areas/greenville.html [R=301,L]
+# Generic: any other extensionless /service-areas/<slug> -> <slug>.html.
+# The character class has no dot, so already-.html requests never re-match.
+RewriteRule ^service-areas/([a-z-]+)/?$ /service-areas/$1.html [R=301,L]
+
+RewriteRule ^privacy-policy/?$ /privacy-policy.html [R=301,L]
+RewriteRule ^terms-of-service/?$ /terms-of-service.html [R=301,L]
+RewriteRule ^editorial-policy/?$ /about.html [R=301,L]
+
+ErrorDocument 404 /404.html
