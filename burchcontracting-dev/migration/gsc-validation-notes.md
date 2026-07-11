@@ -136,33 +136,34 @@ else who reads that file, but it did not affect anything in this migration
 (the real page content, which is what matters, is consistent with
 everything else confirmed in this project).
 
-## Still open — needs your input, not a pattern rule
+## Deferred 2026-07-11 (owner decision) — blog and /clients/ will be added later
 
-Guessing these would risk the exact "soft 404 / wrong-relevance redirect"
-problem the original draft warned about, or requires a business decision I
-can't make from code:
+Not open questions anymore — the owner confirmed both a blog and a
+`/clients/`-equivalent page are planned for later, just not as part of this
+migration. Deliberately **not** redirected to a generic fallback now:
+these 14 legacy URLs (13 blog articles + the bare `/blog` index, all 0
+clicks) and `/clients/` (3 real clicks, 14 impressions) are left unmapped
+(404ing) rather than pattern-matched to a mismatched page that would need
+to be undone once the real pages exist. No further action needed here
+unless priorities change.
 
-| Legacy URL(s) | Clicks / Impressions | Question |
-|---|---|---|
-| `/clients/` | 3/14 | Real clicks, no obvious new-site equivalent (testimonials live inline on the homepage, not a standalone page). |
-| `/blog/deck-building-cost-simpsonville-sc` | 0/108 | |
-| `/blog/room-addition-cost-in-south-carolina` | 0/81 | |
-| `/blog/how-much-does-a-screened-porch-cost-in-south-carolina` | 0/58 | |
-| `/blog/composite-vs-pressure-treated-deck-which-is-better` | 0/57 | |
-| `/blog/average-cost-of-basement-finishing-in-south-carolina` | 0/46 | |
-| `/blog/bath-to-shower-conversion-cost-south-carolina` | 0/32 | |
-| `/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc` | 0/14 | |
-| `/blog/how-long-does-a-kitchen-remodel-take` | 0/6 | |
-| `/blog/best-home-improvements-for-property-value-in-south-carolina` | 0/5 | |
-| `/blog/how-to-plan-a-kitchen-remodel-step-by-step` | 0/4 | |
-| `/blog/basement-finishing-ideas-sc` | 0/4 | |
-| `/blog/kitchen-remodel-cost-fountain-inn-sc` | 0/3 | |
-| `/blog/cost-of-bathroom-remodeling-simpsonville-sc` | 0/3 | |
-| `/blog` (bare index) | 0/2 | 13 articles + the bare index, all 0 clicks. Is a blog planned for the new site? If not, these could redirect to the matching calculator page, but that's a bigger topical mismatch than the other fallbacks above — worth a deliberate call rather than a silent pattern match. |
-| `/work` | 0/29 | Ambiguous between a portfolio/gallery page and a careers page — can't tell which from the URL alone. |
-| `/subcontractors/join` | 0/41 | Subcontractor recruitment — still accepting applications this way? |
-| `/employment`, `/employment/direct-hire` | 0/19, 0/4 | Careers page — still relevant? |
-| `/admin` | 0/14 | Almost certainly an accidentally-indexed CMS backend URL, not real content — probably correct to leave 404ing (and worth confirming it's blocked from crawling going forward) rather than redirect anywhere. |
+| Legacy URL(s) | Clicks / Impressions |
+|---|---|
+| `/clients/` | 3/14 |
+| `/blog/deck-building-cost-simpsonville-sc` | 0/108 |
+| `/blog/room-addition-cost-in-south-carolina` | 0/81 |
+| `/blog/how-much-does-a-screened-porch-cost-in-south-carolina` | 0/58 |
+| `/blog/composite-vs-pressure-treated-deck-which-is-better` | 0/57 |
+| `/blog/average-cost-of-basement-finishing-in-south-carolina` | 0/46 |
+| `/blog/bath-to-shower-conversion-cost-south-carolina` | 0/32 |
+| `/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc` | 0/14 |
+| `/blog/how-long-does-a-kitchen-remodel-take` | 0/6 |
+| `/blog/best-home-improvements-for-property-value-in-south-carolina` | 0/5 |
+| `/blog/how-to-plan-a-kitchen-remodel-step-by-step` | 0/4 |
+| `/blog/basement-finishing-ideas-sc` | 0/4 |
+| `/blog/kitchen-remodel-cost-fountain-inn-sc` | 0/3 |
+| `/blog/cost-of-bathroom-remodeling-simpsonville-sc` | 0/3 |
+| `/blog` (bare index) | 0/2 |
 
 ## Automated cross-check
 

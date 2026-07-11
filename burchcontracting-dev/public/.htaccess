@@ -325,11 +325,13 @@ RewriteRule ^portal/?$ /contact.html [R=301,L]
 #     301 alias to /projects, not a careers page — matched here too.
 #     Employment/subcontractor application pages -> no such feature yet,
 #     fallback to /contact.html rather than 404.
-#   - STILL OPEN, needs a human decision (not a pattern rule): /blog/* (13
-#     articles + index — is a blog planned?), /clients/ (3 real clicks — what
-#     was this page?). /admin intentionally left unmapped (almost certainly
-#     an accidentally-indexed CMS backend URL, not real content — correct to
-#     leave 404ing). Full detail in migration/gsc-validation-notes.md.
+#   - DEFERRED 2026-07-11 (owner decision): /blog/* (13 articles + index) and
+#     /clients/ (3 real clicks) are both planned for later, just not as part
+#     of this migration — deliberately left unmapped (404ing) rather than
+#     pattern-matched to a fallback that would need undoing once real pages
+#     exist. /admin also intentionally left unmapped (accidentally-indexed
+#     CMS backend URL, not real content). Full detail in
+#     migration/gsc-validation-notes.md.
 # =============================================================================
 
 # Renamed service area (must come before the generic rule below).
