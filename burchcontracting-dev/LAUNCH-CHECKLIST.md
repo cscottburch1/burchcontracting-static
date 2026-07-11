@@ -35,6 +35,13 @@ The site key baked into the contact form
 if used) listed as an authorized domain in the Google reCAPTCHA admin console,
 or verification will fail for every real visitor.
 
+Note: the current staging domain (nicheprohub.com) uses a separate site key,
+`6Le5vkEtAAAAAKMZtQ-YahscAQXHygBRDBGutTuD`, which is why the form works there
+today even though `6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li` is hardcoded in
+`contact.html`. Confirm which key `contact.html` should actually ship with at
+launch — if `6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li` isn't registered for
+burchcontracting.com, swap it for whichever key is, before flipping noindex.
+
 ## 4. Submit the sitemap in Search Console
 
 Submit `https://burchcontracting.com/sitemap.xml` in Google Search Console
