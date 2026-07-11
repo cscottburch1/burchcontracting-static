@@ -32,6 +32,11 @@ function clean(string $value): string
     return trim($value);
 }
 
+function headerSafe(string $value): string
+{
+    return trim(str_replace(["\r", "\n"], ' ', $value));
+}
+
 function verifyRecaptcha(string $secret, string $token, string $action, float $minScore): ?string
 {
     if ($secret === '') {
@@ -333,7 +338,7 @@ $referralLabels = [
 ];
 
 $projectLabel = labelFor($serviceType, $projectLabels);
-$subject = 'New Estimate Request: ' . $name . ($projectLabel !== 'N/A' ? ' - ' . $projectLabel : '');
+$subject = 'New Estimate Request: ' . headerSafe($name) . ($projectLabel !== 'N/A' ? ' - ' . $projectLabel : '');
 $body = implode("\n", [
     'New contact form submission',
     '',

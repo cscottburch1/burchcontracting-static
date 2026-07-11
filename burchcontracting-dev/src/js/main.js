@@ -70,7 +70,8 @@ if (form) {
   }
 
   const fieldRules = {
-    name: (value) => (value.trim() ? '' : 'Name is required.'),
+    firstName: (value) => (value.trim() ? '' : 'First name is required.'),
+    lastName: (value) => (value.trim() ? '' : 'Last name is required.'),
     phone: (value) => {
       const digits = value.replace(/\D/g, '')
       if (!digits) return 'Phone number is required.'
@@ -198,7 +199,7 @@ if (form) {
       return input && 'value' in input ? String(input.value).trim() : ''
     }
 
-    formData.append('name', getValue('name'))
+    formData.append('name', `${getValue('firstName')} ${getValue('lastName')}`.trim())
     formData.append('phone', getValue('phone'))
     formData.append('email', getValue('email'))
     formData.append('address', getValue('address'))
