@@ -1,0 +1,3 @@
+page,issue_type,value
+/projects.html,missing-alt-text,
+public/api/email-templates/confirmation.html,hardcoded-absolute-burchcontracting,https://burchcontracting.com
