@@ -30,6 +30,7 @@ function seoHead({ title, description, canonical, ogImage = SITE.ogImage }) {
     <title>${esc(title)}</title>
     <link rel="canonical" href="${canonical}" />
     <meta name="theme-color" content="#1d4ed8" />
+    <meta name="google-site-verification" content="ntiguLhlJqrZC6Iwzu-HD4CGZrBaofiBXgsdc-F8B0w" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="${SITE.name}" />
     <meta property="og:title" content="${esc(title)}" />
