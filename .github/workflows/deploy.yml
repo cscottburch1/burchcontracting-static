@@ -6,6 +6,14 @@ on:
       - main
   workflow_dispatch:
 
+# Only one deploy runs at a time. cancel-in-progress is deliberately false:
+# cancelling an FTP upload mid-flight is how the server ended up in a mixed
+# version state before (stale sync-state file, partially-uploaded files).
+# A newly pushed commit queues behind the active run instead of killing it.
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -32,6 +40,17 @@ jobs:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
         run: npm run build
 
+      - name: Stamp build version
+        run: |
+          echo "commit=${GITHUB_SHA}" > dist/version.txt
+          echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
+
+      # Recovery procedure: if the live site is ever stale while runs are
+      # green, the FTP action's incremental sync-state file
+      # (.ftp-deploy-sync-state.json, in the server-dir root) has likely
+      # gotten ahead of what's actually on the server. Delete that file via
+      # Hostinger File Manager, then re-run this workflow — with no state
+      # file present, the action does a full re-upload of every file.
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -43,5 +62,24 @@ jobs:
           local-dir: ./burchcontracting-dev/dist/
           server-dir: ./
           dangerous-clean-slate: false
+          log-level: verbose
+          timeout: 600000
           exclude: |
             **/api/config.local.php
+
+      - name: Verify deployment
+        env:
+          SITE_URL: ${{ vars.STAGING_URL || 'https://nicheprohub.com' }}
+        run: |
+          sleep 10
+          live=$(curl -fsSL --retry 3 "$SITE_URL/version.txt?nocache=$GITHUB_RUN_ID" | grep '^commit=' | cut -d= -f2)
+          echo "Live commit:     $live"
+          echo "Expected commit: $GITHUB_SHA"
+          if [ "$live" != "$GITHUB_SHA" ]; then
+            echo "::error::Deployed version marker does not match this commit — the FTP sync likely skipped files. Delete .ftp-deploy-sync-state.json on the server and re-run."
+            exit 1
+          fi
+          # Spot-check that known-bad artifacts from the stale build are gone:
+          curl -fsSL "$SITE_URL/outdoor-living/decks/?nocache=$GITHUB_RUN_ID" | grep -q 'tel:tel:' && { echo "::error::Stale decks page still live (tel:tel: found)"; exit 1; }
+          curl -fsSL "$SITE_URL/privacy-policy.html?nocache=$GITHUB_RUN_ID" -o /dev/null || { echo "::error::privacy-policy.html not reachable"; exit 1; }
+          echo "Deploy verified: server matches $GITHUB_SHA"
