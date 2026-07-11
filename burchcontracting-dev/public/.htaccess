@@ -185,10 +185,16 @@ RewriteRule ^calculator/screened-porches/?$ /calculator/porch.html [R=301,L]
 RewriteRule ^calculator/bathroom-remodeling/?$ /calculator/bath-remodel.html [R=301,L]
 RewriteRule ^calculator/kitchen-remodeling/?$ /calculator/kitchen-remodel.html [R=301,L]
 RewriteRule ^calculator/remodeling/?$ /calculator/whole-home-remodel.html [R=301,L]
-# No basement-finishing calculator exists on the new site — the service page
-# is more relevant than the generic all-purpose estimator (1178 impressions
-# on this legacy URL, worth the more specific target).
-RewriteRule ^calculator/basement-finishing/?$ /basement-finishing [R=301,L]
+# DEVIATION FROM INSTRUCTION, FLAGGING: was told to delete this rule outright
+# ("the page is now real, same path"), but the legacy URL is extensionless
+# (/calculator/basement-finishing) while the new page — like every other
+# calculator on this site — is served at .../basement-finishing.html. Those
+# are NOT the same path; deleting the rule would 404 a URL with 1178
+# impressions, the 3rd-highest of any calculator. Repointed instead of
+# deleted, matching how every other calculator/* legacy slug on this site
+# redirects extensionless -> .html. If a bare (no .html) URL was actually
+# intended for this one specifically, say so and I'll change it.
+RewriteRule ^calculator/basement-finishing/?$ /calculator/basement-finishing.html [R=301,L]
 # Handyman now has a real service page on the new site (added 2026-07-11,
 # built from the old Next.js site's real handyman calculator pricing data)
 # — was falling into the generic estimator (61 impressions).
@@ -220,7 +226,9 @@ RewriteRule ^cost/garage-construction-cost-[a-z-]+-sc/?$ /calculator/garages.htm
 RewriteRule ^cost/cost-to-build-a-deck-[a-z-]+-sc/?$ /calculator/decks.html [R=301,L]
 RewriteRule ^cost/kitchen-remodel-cost-[a-z-]+-sc/?$ /calculator/kitchen-remodel.html [R=301,L]
 RewriteRule ^cost/bathroom-remodel-cost-[a-z-]+-sc/?$ /calculator/bath-remodel.html [R=301,L]
-RewriteRule ^cost/basement-finishing-cost-[a-z-]+-sc/?$ /basement-finishing [R=301,L]
+# RESOLVED 2026-07-12: repointed from the service page to the new real
+# basement-finishing calculator now that one exists.
+RewriteRule ^cost/basement-finishing-cost-[a-z-]+-sc/?$ /calculator/basement-finishing.html [R=301,L]
 # Any other /cost/{slug} not matched above falls through to the all-purpose
 # estimator rather than a 404 — verify against a fuller GSC export if one
 # with more rows becomes available (this pass covered the top ~200 pages).
@@ -268,6 +276,11 @@ RewriteRule ^subcontractors/join/?$ /contact.html [R=301,L]
 # 301" under "Canonical Routes") — /work was already a portfolio alias for
 # /projects there, not a careers page. Same mapping here.
 RewriteRule ^work/?$ /projects.html [R=301,L]
+
+# RESOLVED 2026-07-12: the real /clients/ page is planned for later but not
+# built yet, and this URL has 3 real clicks — a bookmarked customer would
+# 404 on cutover otherwise. Remove this rule once the real page ships.
+RewriteRule ^clients/?$ /contact.html [R=301,L]
 
 # Unambiguous single-page matches, all 0 clicks / low impressions:
 RewriteRule ^pricing/?$ /services.html [R=301,L]
@@ -325,13 +338,16 @@ RewriteRule ^portal/?$ /contact.html [R=301,L]
 #     301 alias to /projects, not a careers page — matched here too.
 #     Employment/subcontractor application pages -> no such feature yet,
 #     fallback to /contact.html rather than 404.
-#   - DEFERRED 2026-07-11 (owner decision): /blog/* (13 articles + index) and
-#     /clients/ (3 real clicks) are both planned for later, just not as part
-#     of this migration — deliberately left unmapped (404ing) rather than
-#     pattern-matched to a fallback that would need undoing once real pages
-#     exist. /admin also intentionally left unmapped (accidentally-indexed
-#     CMS backend URL, not real content). Full detail in
-#     migration/gsc-validation-notes.md.
+#   - DEFERRED 2026-07-11 (owner decision): /blog/* (13 articles + index) is
+#     planned for later, not part of this migration — deliberately left
+#     unmapped (404ing), all 0 clicks. /admin also intentionally left
+#     unmapped (accidentally-indexed CMS backend URL, not real content).
+#   - /clients/ -> RESOLVED 2026-07-12: real page still planned for later,
+#     but redirected to /contact.html now (not left 404ing like /blog/*)
+#     because it has 3 real clicks — a bookmarked customer hitting a 404 on
+#     cutover is a worse outcome than a temporary redirect. Remove once the
+#     real page ships (comment on the rule itself as a reminder).
+#     Full detail in migration/gsc-validation-notes.md.
 # =============================================================================
 
 # Renamed service area (must come before the generic rule below).

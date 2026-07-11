@@ -291,9 +291,22 @@ ${service.additionalCosts
       </section>`
   }
 
-  const calculatorButton = service.calculator
-    ? `            <a href="/calculator/${service.calculator}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost</a>`
-    : ''
+  // A service normally links one calculator (service.calculator). Some
+  // services split into multiple calculators (e.g. remodeling has separate
+  // kitchen/bath/whole-home tools) — service.calculators, an array of
+  // { id, label }, renders one button per entry instead. Without this, any
+  // service with more than one calculator can only link one of them from
+  // its own page, leaving the rest with no inbound link (orphaned in the
+  // sitemap even though they're real, built pages).
+  const calculatorButton = service.calculators
+    ? service.calculators
+        .map(
+          (calc) => `            <a href="/calculator/${calc.id}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">${esc(calc.label)}</a>`
+        )
+        .join('\n')
+    : service.calculator
+      ? `            <a href="/calculator/${service.calculator}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost</a>`
+      : ''
 
   const commonProjectsSectionHtml = service.commonProjects
     ? `

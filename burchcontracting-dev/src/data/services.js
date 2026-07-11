@@ -505,7 +505,15 @@ export const SERVICES = [
       bathroom: '2-4 weeks',
       wholeHouse: '12-20 weeks'
     },
-    calculator: null,
+    // Three separate calculators exist for this service (kitchen, bath,
+    // whole-home) — a single `calculator` field can't link all three, which
+    // is why kitchen-remodel.html and whole-home-remodel.html had no
+    // inbound link from anywhere despite being real, sitemapped pages.
+    calculators: [
+      { id: 'kitchen-remodel', label: 'Kitchen Cost Calculator' },
+      { id: 'bath-remodel', label: 'Bath Cost Calculator' },
+      { id: 'whole-home-remodel', label: 'Whole-Home Cost Calculator' }
+    ],
     relatedServices: [
       { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
       { name: 'Room Additions', url: '/additions' },
@@ -632,7 +640,7 @@ export const SERVICES = [
       { item: 'HVAC Upgrade', cost: '$0-$3,500', note: 'depending on existing system capacity' },
       { item: 'Structural Repairs', cost: '$1,500-$4,000', note: 'if foundation cracks or floor leveling required' }
     ],
-    calculator: null,
+    calculator: 'basement-finishing',
     relatedServices: [
       { name: 'Room Additions', url: '/additions' },
       { name: 'Remodeling Services', url: '/remodeling' },

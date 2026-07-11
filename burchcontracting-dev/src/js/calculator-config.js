@@ -32,6 +32,7 @@ export const PRICING_CONFIG = {
     kitchenRemodel: { min: 100, max: 400 },
     bathRemodel: { min: 35, max: 150 },
     wholeHomeRemodel: { min: 800, max: 4000 },
+    basementFinishing: { min: 400, max: 2000 },
   },
   services: {
     decks: {
@@ -246,6 +247,36 @@ export const PRICING_CONFIG = {
         { id: 'hvac', label: 'HVAC System Replacement', cost: 9500, unit: 'per system' },
       ],
     },
+    basementFinishing: {
+      name: 'Basement Finishing',
+      baseRates: {
+        basicFinish: {
+          label: 'Basic Finished Space',
+          directCost: 42,
+          description: 'Framing, insulation, drywall, flooring, lighting, code egress',
+        },
+        standardLivingSuite: {
+          label: 'Standard Living Suite',
+          directCost: 63,
+          description: 'Adds a bedroom and full bath, upgraded flooring, dedicated HVAC zone',
+        },
+        premiumBuildOut: {
+          label: 'Premium Build-Out',
+          directCost: 88,
+          description: 'Full suite with wet bar, media room, custom millwork, premium finishes',
+        },
+      },
+      materialFactors: { builder: 1, standard: 1.08, upgraded: 1.18, premium: 1.3 },
+      complexityFactors: { simple: 1, moderate: 1.14, complex: 1.3 },
+      siteConditionFactors: { straightforward: 1, moderate: 1.12, difficult: 1.28 },
+      adders: [
+        { id: 'fullBath', label: 'Full Bathroom Addition', cost: 18500, unit: 'per bath' },
+        { id: 'egressWindow', label: 'Egress Window & Well (code required for bedrooms)', cost: 4800, unit: 'per window' },
+        { id: 'wetBar', label: 'Wet Bar / Kitchenette', cost: 12500, unit: 'per bar' },
+        { id: 'waterproofing', label: 'Waterproofing & Sump System', cost: 7200, unit: 'per system' },
+        { id: 'hvacZone', label: 'Dedicated HVAC Zone', cost: 6500, unit: 'per zone' },
+      ],
+    },
   },
 }
 
@@ -326,6 +357,14 @@ export const CALCULATOR_PAGES = {
     description: 'Estimate whole-home remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
     intro: 'Whole-home remodels in Greenville and Laurens County SC typically cost $135–$290 per square foot — a 2,000 sqft home runs $250,000–$645,000 depending on scope and finish level.',
     marketArea: 'Greenville County & Laurens County',
+  },
+  basement: {
+    serviceKey: 'basementFinishing',
+    title: 'Basement Finishing Cost Calculator',
+    metaTitle: 'Basement Finishing Cost Calculator Upstate SC | Burch Contracting',
+    description: 'Estimate basement finishing costs in Upstate SC — basic living space, a full bedroom/bath suite, or a premium build-out. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
+    intro: 'Basement finishing in Upstate SC typically costs $48–$121 per square foot — a 1,000 sqft basement runs $47,809–$120,637 depending on scope, from a basic finished space to a full living suite with bedroom and bath, up to a premium build-out with wet bar and media room.',
+    marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
 }
 

@@ -52,6 +52,7 @@ export default defineConfig({
         calculatorBath: resolve(root, 'calculator/bath-remodel.html'),
         calculatorWholeHome: resolve(root, 'calculator/whole-home-remodel.html'),
         calculatorAdaBathShower: resolve(root, 'calculator/ada-bath-shower.html'),
+        calculatorBasementFinishing: resolve(root, 'calculator/basement-finishing.html'),
         // Service pages (all use nested directory structure)
         aduBuilder: resolve(root, 'adu-builder/index.html'),
         remodeling: resolve(root, 'remodeling/index.html'),

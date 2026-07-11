@@ -138,18 +138,22 @@ everything else confirmed in this project).
 
 ## Deferred 2026-07-11 (owner decision) — blog and /clients/ will be added later
 
-Not open questions anymore — the owner confirmed both a blog and a
-`/clients/`-equivalent page are planned for later, just not as part of this
-migration. Deliberately **not** redirected to a generic fallback now:
-these 14 legacy URLs (13 blog articles + the bare `/blog` index, all 0
-clicks) and `/clients/` (3 real clicks, 14 impressions) are left unmapped
-(404ing) rather than pattern-matched to a mismatched page that would need
-to be undone once the real pages exist. No further action needed here
-unless priorities change.
+Both a blog and a `/clients/`-equivalent page are planned for later, just
+not as part of this migration.
+
+**Update 2026-07-12:** `/clients/` was re-evaluated and now redirects to
+`/contact.html` (see `public/.htaccess`) rather than staying unmapped — it
+has 3 real clicks (average position 5), and a bookmarked customer hitting a
+404 on cutover is worse than a temporary redirect. Remove that rule once
+the real page ships.
+
+The 14 `/blog/*` URLs remain deliberately unmapped (404ing) — all 0 clicks,
+so no equivalent urgency, and a pattern-matched fallback would just need
+undoing once the real pages exist.
 
 | Legacy URL(s) | Clicks / Impressions |
 |---|---|
-| `/clients/` | 3/14 |
+| `/clients/` (now redirects to `/contact.html`, temporary) | 3/14 |
 | `/blog/deck-building-cost-simpsonville-sc` | 0/108 |
 | `/blog/room-addition-cost-in-south-carolina` | 0/81 |
 | `/blog/how-much-does-a-screened-porch-cost-in-south-carolina` | 0/58 |

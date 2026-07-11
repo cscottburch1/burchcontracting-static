@@ -17,7 +17,7 @@ const areaDir = resolve(root, 'service-areas')
 
 function esc(value) {
   return String(value)
-    .replaceAll('&', '&amp;')
+    .replace(/&(?!(?:[a-zA-Z][a-zA-Z0-9]*|#\d+|#x[0-9a-fA-F]+);)/g, '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
@@ -148,7 +148,7 @@ function faqHtml(faqs, idPrefix = 'faq') {
 function serviceAreaPage(area) {
   const faqs = cityFaqs(area)
   const canonical = `${SITE.domain}/service-areas/${area.slug}.html`
-  const title = `Deck Builder, Garage Contractor &amp; Home Additions ${area.name} SC | Burch Contracting`
+  const title = `Deck Builder, Garage Contractor & Home Additions ${area.name} SC | Burch Contracting`
   const description = `Burch Contracting builds decks, screened porches, garages, and room additions in ${area.name}, SC. SC License #${SITE.license}. BBB A+. Free consultations. ${area.driveTime}.`
 
   const schema = {
@@ -432,6 +432,7 @@ function generateSitemap() {
     ['/calculator/bath-remodel.html', 'monthly', '0.7'],
     ['/calculator/whole-home-remodel.html', 'monthly', '0.7'],
     ['/calculator/ada-bath-shower.html', 'monthly', '0.7'],
+    ['/calculator/basement-finishing.html', 'monthly', '0.7'],
     ['/privacy-policy.html', 'yearly', '0.3'],
     ['/terms-of-service.html', 'yearly', '0.3'],
   ]

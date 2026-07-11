@@ -8,6 +8,7 @@
     "prebuild": "node scripts/generate-geo-aeo.mjs && node scripts/generate-services.mjs",
     "build": "vite build",
     "preview": "vite preview",
+    "check-build": "node scripts/check-build.mjs",
     "deploy": "npm run build && echo Build complete! Now right-click the dist folder and select 'Upload Folder' using SFTP extension"
   },
   "devDependencies": {
