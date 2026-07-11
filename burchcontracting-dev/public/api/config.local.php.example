@@ -1,11 +1,22 @@
 <?php
 /**
- * Copy this file to config.local.php on the server and fill in your secret key.
- * config.local.php is gitignored — upload it once via FTP/hPanel File Manager.
+ * Copy this file to config.local.php on the server and fill in your secret
+ * key and SMTP credentials. config.local.php is gitignored — upload it once
+ * via FTP/hPanel File Manager. Never commit real values from this file.
  */
 return [
     'to_email' => 'estimates@burchcontracting.com',
     'from_email' => 'noreply@burchcontracting.com',
     'recaptcha_secret_key' => 'YOUR_RECAPTCHA_SECRET_KEY',
     'recaptcha_min_score' => 0.5,
+
+    // SMTP (authenticated) — replaces PHP mail(), which shared hosting often
+    // sends to spam or drops silently. Get these from your mailbox/hosting
+    // provider's SMTP settings, not invented values.
+    'smtp_host' => 'CHANGE_ME_SMTP_HOST',
+    'smtp_port' => 587,
+    'smtp_username' => 'CHANGE_ME_SMTP_USERNAME',
+    'smtp_password' => 'CHANGE_ME_SMTP_PASSWORD',
+    // 'tls' = STARTTLS, usually port 587. 'ssl' = implicit TLS, usually port 465.
+    'smtp_secure' => 'tls',
 ];

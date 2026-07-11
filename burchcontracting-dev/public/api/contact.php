@@ -3,6 +3,13 @@ declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
 
+require __DIR__ . '/PHPMailer/src/Exception.php';
+require __DIR__ . '/PHPMailer/src/PHPMailer.php';
+require __DIR__ . '/PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
+use PHPMailer\PHPMailer\PHPMailer;
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['error' => 'Method not allowed']);
@@ -17,8 +24,14 @@ $toEmail = $config['to_email'] ?? 'estimates@burchcontracting.com';
 $fromEmail = $config['from_email'] ?? 'noreply@burchcontracting.com';
 $recaptchaSecret = $config['recaptcha_secret_key'] ?? '';
 $minScore = (float) ($config['recaptcha_min_score'] ?? 0.5);
+$smtpHost = $config['smtp_host'] ?? '';
+$smtpPort = (int) ($config['smtp_port'] ?? 587);
+$smtpUsername = $config['smtp_username'] ?? '';
+$smtpPassword = $config['smtp_password'] ?? '';
+$smtpSecure = $config['smtp_secure'] ?? 'tls'; // 'tls' (STARTTLS, usually port 587) or 'ssl' (implicit TLS, usually port 465)
 $maxFileSize = 10 * 1024 * 1024;
 $maxFiles = 10;
+$fallbackLogPath = __DIR__ . '/leads-fallback.log';
 
 function respond(int $status, array $payload): void
 {
@@ -175,85 +188,119 @@ function renderConfirmationEmail(string $firstName, string $projectLabel): ?stri
     );
 }
 
-function sendConfirmationEmail(string $to, string $from, string $subject, string $htmlBody): bool
+/**
+ * Every submission that reaches this point gets appended here — regardless
+ * of whether the email send below succeeds — so a lead can never vanish
+ * silently just because SMTP had a bad moment or config.local.php isn't
+ * fully set up yet. Append-only, best-effort: a logging failure must never
+ * break the response to the visitor. *.log is already gitignored, and
+ * public/api/.htaccess denies direct HTTP access to it.
+ */
+function logSubmissionFallback(string $logPath, array $submission, bool $emailSent, ?string $emailError = null): void
 {
-    $headers = [
-        'From: Burch Contracting <' . $from . '>',
-        'Reply-To: ' . $from,
-        'MIME-Version: 1.0',
-    ];
-
-    $logoPath = __DIR__ . '/../images/burch-contracting-logo.webp';
-    $logoData = file_exists($logoPath) ? file_get_contents($logoPath) : false;
-
-    if ($logoData === false) {
-        // No local logo to embed — fall back to a plain HTML send rather than failing outright.
-        $headers[] = 'Content-Type: text/html; charset=UTF-8';
-        $headers[] = 'Content-Transfer-Encoding: 8bit';
-        return mail($to, $subject, $htmlBody, implode("\r\n", $headers), '-f' . $from);
-    }
-
-    $boundary = 'bc_rel_' . bin2hex(random_bytes(8));
-    $headers[] = 'Content-Type: multipart/related; boundary="' . $boundary . '"';
-
-    $message = '--' . $boundary . "\r\n";
-    $message .= "Content-Type: text/html; charset=UTF-8\r\n";
-    $message .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
-    $message .= $htmlBody . "\r\n";
-
-    $message .= '--' . $boundary . "\r\n";
-    $message .= "Content-Type: image/webp; name=\"burch-contracting-logo.webp\"\r\n";
-    $message .= "Content-Transfer-Encoding: base64\r\n";
-    $message .= "Content-ID: <burch-logo>\r\n";
-    $message .= "Content-Disposition: inline; filename=\"burch-contracting-logo.webp\"\r\n\r\n";
-    $message .= chunk_split(base64_encode($logoData)) . "\r\n";
-
-    $message .= '--' . $boundary . '--';
-
-    return mail($to, $subject, $message, implode("\r\n", $headers), '-f' . $from);
+    $entry = array_merge($submission, [
+        'timestamp' => date('c'),
+        'email_sent' => $emailSent,
+        'email_error' => $emailError,
+    ]);
+    @file_put_contents($logPath, json_encode($entry, JSON_UNESCAPED_SLASHES) . PHP_EOL, FILE_APPEND | LOCK_EX);
 }
 
+function createMailer(string $host, int $port, string $username, string $password, string $secure): PHPMailer
+{
+    $mail = new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host = $host;
+    $mail->Port = $port;
+    $mail->SMTPAuth = true;
+    $mail->Username = $username;
+    $mail->Password = $password;
+    $mail->SMTPSecure = $secure === 'ssl' ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->CharSet = PHPMailer::CHARSET_UTF8;
+    return $mail;
+}
+
+/**
+ * Sends the lead notification via authenticated SMTP. Returns null on
+ * success, or the PHPMailer error string on failure — the caller decides
+ * what to do with a failure (log it, fall back to the local record, and
+ * still tell the visitor it worked, per the transport-swap spec).
+ */
 function sendLeadEmail(
+    string $smtpHost,
+    int $smtpPort,
+    string $smtpUsername,
+    string $smtpPassword,
+    string $smtpSecure,
     string $to,
     string $from,
     string $replyTo,
     string $subject,
     string $body,
     array $attachments
-): bool {
-    $headers = [
-        'From: Burch Contracting <' . $from . '>',
-        'Reply-To: ' . $replyTo,
-        'MIME-Version: 1.0',
-    ];
-
-    if ($attachments === []) {
-        $headers[] = 'Content-Type: text/plain; charset=UTF-8';
-        $headers[] = 'Content-Transfer-Encoding: 8bit';
-        $message = $body;
-    } else {
-        $boundary = 'bc_' . bin2hex(random_bytes(8));
-        $headers[] = 'Content-Type: multipart/mixed; boundary="' . $boundary . '"';
-
-        $message = '--' . $boundary . "\r\n";
-        $message .= "Content-Type: text/plain; charset=UTF-8\r\n";
-        $message .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
-        $message .= $body . "\r\n";
-
-        foreach ($attachments as $attachment) {
-            $message .= '--' . $boundary . "\r\n";
-            $message .= 'Content-Type: ' . $attachment['type'] . '; name="' . $attachment['name'] . "\"\r\n";
-            $message .= "Content-Transfer-Encoding: base64\r\n";
-            $message .= 'Content-Disposition: attachment; filename="' . $attachment['name'] . "\"\r\n\r\n";
-            $message .= chunk_split(base64_encode($attachment['data'])) . "\r\n";
-        }
-
-        $message .= '--' . $boundary . '--';
+): ?string {
+    if ($smtpHost === '' || $smtpUsername === '' || $smtpPassword === '') {
+        return 'SMTP is not configured (missing host/username/password in config.local.php)';
     }
 
-    $headerString = implode("\r\n", $headers);
+    try {
+        $mail = createMailer($smtpHost, $smtpPort, $smtpUsername, $smtpPassword, $smtpSecure);
+        $mail->setFrom($from, 'Burch Contracting');
+        $mail->addAddress($to);
+        $mail->addReplyTo($replyTo);
+        $mail->Subject = $subject;
+        $mail->isHTML(false);
+        $mail->Body = $body;
 
-    return mail($to, $subject, $message, $headerString, '-f' . $from);
+        foreach ($attachments as $attachment) {
+            $mail->addStringAttachment($attachment['data'], $attachment['name'], PHPMailer::ENCODING_BASE64, $attachment['type']);
+        }
+
+        $mail->send();
+        return null;
+    } catch (PHPMailerException $exception) {
+        return $exception->getMessage();
+    }
+}
+
+/**
+ * Best-effort confirmation auto-reply — a failure here must never fail the
+ * lead submission itself. Returns null on success, error string on failure.
+ */
+function sendConfirmationEmail(
+    string $smtpHost,
+    int $smtpPort,
+    string $smtpUsername,
+    string $smtpPassword,
+    string $smtpSecure,
+    string $to,
+    string $from,
+    string $subject,
+    string $htmlBody
+): ?string {
+    if ($smtpHost === '' || $smtpUsername === '' || $smtpPassword === '') {
+        return 'SMTP is not configured (missing host/username/password in config.local.php)';
+    }
+
+    try {
+        $mail = createMailer($smtpHost, $smtpPort, $smtpUsername, $smtpPassword, $smtpSecure);
+        $mail->setFrom($from, 'Burch Contracting');
+        $mail->addAddress($to);
+        $mail->addReplyTo($from);
+        $mail->Subject = $subject;
+        $mail->isHTML(true);
+        $mail->Body = $htmlBody;
+
+        $logoPath = __DIR__ . '/../images/burch-contracting-logo.webp';
+        if (file_exists($logoPath)) {
+            $mail->addEmbeddedImage($logoPath, 'burch-logo', 'burch-contracting-logo.webp', PHPMailer::ENCODING_BASE64, 'image/webp');
+        }
+
+        $mail->send();
+        return null;
+    } catch (PHPMailerException $exception) {
+        return $exception->getMessage();
+    }
 }
 
 if (clean((string) ($_POST['website'] ?? '')) !== '') {
@@ -358,17 +405,65 @@ $body = implode("\n", [
     'Attachments: ' . (count($attachments) > 0 ? count($attachments) . ' file(s)' : 'None'),
 ]);
 
-if (!sendLeadEmail($toEmail, $fromEmail, $email, $subject, $body, $attachments)) {
-    respond(500, ['error' => 'Failed to send message. Please call (864) 724-4600.']);
+$leadEmailError = sendLeadEmail(
+    $smtpHost,
+    $smtpPort,
+    $smtpUsername,
+    $smtpPassword,
+    $smtpSecure,
+    $toEmail,
+    $fromEmail,
+    $email,
+    $subject,
+    $body,
+    $attachments
+);
+
+if ($leadEmailError !== null) {
+    // Visible in the server error log — this is the "make the failure
+    // visible" half of the spec. The visitor still gets a success response
+    // below; the fallback log entry (written regardless of outcome) is the
+    // durable record that the lead must not vanish silently.
+    error_log('[contact.php] Lead email failed to send: ' . $leadEmailError);
 }
+
+logSubmissionFallback($fallbackLogPath, [
+    'name' => $name,
+    'phone' => $phone,
+    'email' => $email,
+    'address' => $address,
+    'zipCode' => $zipCode,
+    'projectType' => $projectLabel,
+    'budgetRange' => labelFor($budgetRange, $budgetLabels),
+    'timeframe' => labelFor($timeframe, $timeframeLabels),
+    'referralSource' => labelFor($referralSource, $referralLabels),
+    'description' => $description,
+    'attachmentCount' => count($attachments),
+], $leadEmailError === null, $leadEmailError);
 
 $firstName = explode(' ', $name)[0];
 $confirmationHtml = renderConfirmationEmail($firstName, $projectLabel);
 if ($confirmationHtml !== null) {
-    // Best-effort: a failed confirmation email should never fail the lead submission itself.
-    sendConfirmationEmail($email, $fromEmail, 'Thank You for Contacting Burch Contracting', $confirmationHtml);
+    $confirmationError = sendConfirmationEmail(
+        $smtpHost,
+        $smtpPort,
+        $smtpUsername,
+        $smtpPassword,
+        $smtpSecure,
+        $email,
+        $fromEmail,
+        'Thank You for Contacting Burch Contracting',
+        $confirmationHtml
+    );
+    if ($confirmationError !== null) {
+        error_log('[contact.php] Confirmation email failed to send: ' . $confirmationError);
+    }
 }
 
+// Always respond success once we reach this point: the submission is
+// captured in the fallback log even if email delivery failed above, so a
+// visitor-facing error here would be misleading (the lead was not lost)
+// and would just prompt an unnecessary phone call.
 respond(200, [
     'success' => true,
     'message' => 'Request submitted successfully',

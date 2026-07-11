@@ -1,2 +1,8 @@
 RewriteEngine On
 RewriteRule ^contact$ contact.php [L]
+
+# leads-fallback.log holds raw submission data (names, emails, project
+# descriptions) — must never be directly downloadable.
+<FilesMatch "\.log$">
+  Require all denied
+</FilesMatch>
