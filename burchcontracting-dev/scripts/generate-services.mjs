@@ -92,6 +92,7 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
               <li><a href="/commercial-upfits" class="hover:text-white transition-colors">Commercial Upfits</a></li>
               <li><a href="/insurance-restoration" class="hover:text-white transition-colors">Insurance Restoration</a></li>
               <li><a href="/ada-compliance" class="hover:text-white transition-colors">ADA Compliance</a></li>
+              <li><a href="/handyman" class="hover:text-white transition-colors">Handyman Services</a></li>
             </ul>
           </div>
           <div>

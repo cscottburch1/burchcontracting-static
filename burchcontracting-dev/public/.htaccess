@@ -93,8 +93,9 @@ RewriteRule ^laurens-sc/([a-z-]+)/?$ /service-areas/laurens.html [R=301,L]
 RewriteRule ^woodruff-sc/([a-z-]+)/?$ /service-areas/woodruff.html [R=301,L]
 
 # Cities with NO page on the new site. All three are Laurens County; nearest
-# existing coverage is the Laurens page. DECISION NEEDED: redirect (below) or
-# build dedicated pages — unresolved, see audit-report.md.
+# existing coverage is the Laurens page. RESOLVED via GSC (see cross-check
+# block below): 0 real clicks across all three cities — redirect, not
+# dedicated pages, is the safe call.
 RewriteRule ^clinton-sc/([a-z-]+)/?$ /service-areas/laurens.html [R=301,L]
 RewriteRule ^ora-sc/([a-z-]+)/?$ /service-areas/laurens.html [R=301,L]
 RewriteRule ^joanna-sc/([a-z-]+)/?$ /service-areas/laurens.html [R=301,L]
@@ -188,6 +189,10 @@ RewriteRule ^calculator/remodeling/?$ /calculator/whole-home-remodel.html [R=301
 # is more relevant than the generic all-purpose estimator (1178 impressions
 # on this legacy URL, worth the more specific target).
 RewriteRule ^calculator/basement-finishing/?$ /basement-finishing [R=301,L]
+# Handyman now has a real service page on the new site (added 2026-07-11,
+# built from the old Next.js site's real handyman calculator pricing data)
+# — was falling into the generic estimator (61 impressions).
+RewriteRule ^calculator/handyman/?$ /handyman [R=301,L]
 
 # Bare "/calculators" (plural) — distinct legacy URL, 1 click / 64 impressions.
 RewriteRule ^calculators/?$ /calculator/estimate.html [R=301,L]
@@ -238,6 +243,32 @@ RewriteRule ^commercial-renovations/?$ /commercial-upfits [R=301,L]
 RewriteRule ^commercial_remodeling_company/?$ /commercial-upfits [R=301,L]
 RewriteRule ^screened_patios/?$ /outdoor-living/screened-porches [R=301,L]
 
+# RESOLVED 2026-07-11 (owner decision): handyman is now a real lower-tier
+# service on the new site (see /handyman); these two legacy URLs (0 clicks,
+# 13+6 impressions) now have a real target instead of being left open.
+RewriteRule ^handyman-services-estimator/?$ /handyman [R=301,L]
+RewriteRule ^handyman-services-near-you/?$ /handyman [R=301,L]
+
+# RESOLVED 2026-07-11 (owner decision): roofing is not an offered service —
+# no roofing content exists or is planned on the new site. Sent to the
+# services listing rather than left 404ing.
+RewriteRule ^commercial-roofing_company/?$ /services.html [R=301,L]
+RewriteRule ^roofing/?$ /services.html [R=301,L]
+
+# RESOLVED 2026-07-11 (owner decision): no admin/employee/subcontractor
+# application features on the new site yet. /admin is intentionally left
+# unmapped (almost certainly an accidentally-indexed CMS backend URL, not
+# real content — correct to leave 404ing). Employment/subcontractor pages
+# get a same-intent fallback to contact rather than 404ing outright.
+RewriteRule ^employment/direct-hire/?$ /contact.html [R=301,L]
+RewriteRule ^employment/?$ /contact.html [R=301,L]
+RewriteRule ^subcontractors/join/?$ /contact.html [R=301,L]
+
+# CONFIRMED via the old Next.js site's own CLAUDE.md ("/work redirects here
+# 301" under "Canonical Routes") — /work was already a portfolio alias for
+# /projects there, not a careers page. Same mapping here.
+RewriteRule ^work/?$ /projects.html [R=301,L]
+
 # Unambiguous single-page matches, all 0 clicks / low impressions:
 RewriteRule ^pricing/?$ /services.html [R=301,L]
 RewriteRule ^request_a_free_estimate/?$ /contact.html [R=301,L]
@@ -255,9 +286,8 @@ RewriteRule ^outdoor-living/?$ /services.html [R=301,L]
 RewriteRule ^projects/[a-z0-9-]+/?$ /projects.html [R=301,L]
 
 # --- Family 7: orphans --------------------------------------------------------
-# /portal — customer portal. The new site has no equivalent.
-# DECISION NEEDED: is this a live feature customers use? If so it must not be
-# broken. If it is dead, send it to contact rather than the homepage.
+# /portal — customer portal. RESOLVED 2026-07-11 (owner decision): no
+# customer portal on the new site yet — redirect to contact stands.
 RewriteRule ^portal/?$ /contact.html [R=301,L]
 
 # /areas and /cost are already handled above.
@@ -286,21 +316,20 @@ RewriteRule ^portal/?$ /contact.html [R=301,L]
 #     to fall into the generic estimate-calculator catch-all despite having
 #     an exact-matching new-site calculator. Both fixed above with hand-picked
 #     targets instead of pattern matches.
-#   - Family 7 /portal -> STILL OPEN: 2 real clicks / 95 impressions (plus a
-#     www-prefixed variant with more impressions). This is not a "no traffic,
-#     nothing lost" case like the others — redirecting to /contact.html is a
-#     reasonable placeholder, but whether /portal was a real customer login
-#     feature (and whether that functionality needs to exist on the new site)
-#     is a product question only Scott can answer, not an SEO one. Flagging,
-#     not guessing.
-#   - STILL OPEN, needs a human decision (not a pattern rule): /blog/* (4
-#     articles), /clients/, /commercial-roofing_company/ + /roofing/ (is
-#     roofing still an offered service?), /work, /subcontractors/join,
-#     /employment + /employment/direct-hire, /handyman-services-estimator/ +
-#     /handyman-services-near-you/ (is handyman still offered?), and /admin
-#     (likely an accidentally-indexed CMS backend URL — probably correct to
-#     leave 404ing rather than redirect). Full list with click/impression
-#     counts in migration/gsc-validation-notes.md.
+#   - RESOLVED 2026-07-11 (owner decisions, see conversation): /portal -> no
+#     customer portal yet, /contact.html stands. Roofing -> not offered,
+#     redirected to /services.html. Handyman -> now a real service
+#     (/handyman), built from the old Next.js site's real calculator pricing
+#     data (confirmed via the burch-contracting-fresh source, not guessed).
+#     /work -> confirmed via that same source's own CLAUDE.md as an existing
+#     301 alias to /projects, not a careers page — matched here too.
+#     Employment/subcontractor application pages -> no such feature yet,
+#     fallback to /contact.html rather than 404.
+#   - STILL OPEN, needs a human decision (not a pattern rule): /blog/* (13
+#     articles + index — is a blog planned?), /clients/ (3 real clicks — what
+#     was this page?). /admin intentionally left unmapped (almost certainly
+#     an accidentally-indexed CMS backend URL, not real content — correct to
+#     leave 404ing). Full detail in migration/gsc-validation-notes.md.
 # =============================================================================
 
 # Renamed service area (must come before the generic rule below).

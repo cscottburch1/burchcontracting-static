@@ -810,6 +810,66 @@ export const SERVICES = [
       { name: 'Home Remodeling', url: '/remodeling' },
       { name: 'Insurance Restoration', url: '/insurance-restoration' }
     ]
+  },
+  {
+    id: 'handyman',
+    title: 'Handyman Services',
+    slug: 'handyman',
+    category: 'Handyman & Repairs',
+    description: 'Small plumbing, electrical, carpentry, and painting jobs — a lower-tier service for homeowners who need a task list handled without a full remodel. Licensed contractor serving Upstate SC since 1995.',
+    h1: 'Handyman Services - Upstate SC',
+    intro: "From a single outlet swap to a water heater replacement, I handle the smaller jobs too — plumbing fixtures, electrical, doors and windows, carpentry, drywall repair, and interior painting. Same licensing and accountability as every larger project, just sized for a shorter task list.",
+    stats: {
+      costRange: '$125-$4,400 Typical',
+      timeline: 'Same-Day to 1 Week',
+      experience: '35+ Years Experience',
+      rating: 'BBB A+ Rated'
+    },
+    pricePerSqFt: 'Priced per task',
+    timeline: 'Same-day to 1 week',
+    commonProjects: [
+      {
+        name: 'Outlet or Light Fixture Swap',
+        size: 'Single fixture',
+        cost: '$125–$730',
+        details: 'Outlet and switch replacement, GFCI upgrades, light fixture or ceiling fan installation.'
+      },
+      {
+        name: 'Interior Door or Room Paint',
+        size: 'Single room',
+        cost: '$400–$2,050',
+        details: 'Interior or exterior door installation, baseboards, crown molding, or a full room repaint.'
+      },
+      {
+        name: 'Water Heater Replacement',
+        size: '40-50 gal or tankless',
+        cost: '$1,100–$4,400',
+        details: 'Standard tank or tankless water heater installation, fully licensed and code-compliant.'
+      }
+    ],
+    pricingTiers: [
+      {
+        name: 'Small Repairs & Fixture Swaps',
+        range: '$125-$730',
+        description: 'Outlet and switch replacement, light fixtures, GFCI and dimmer upgrades, small drywall patches, ceiling fans, faucet and toilet installation.'
+      },
+      {
+        name: 'Installations & Carpentry',
+        range: '$400-$2,050',
+        description: 'Interior and exterior doors, windows, baseboards, crown molding, custom shelving, and full-room interior painting.'
+      },
+      {
+        name: 'Larger Plumbing & Repairs',
+        range: '$1,100-$4,400',
+        description: 'Standard or tankless water heater replacement, large drywall repairs, and popcorn ceiling removal.'
+      }
+    ],
+    calculator: null,
+    relatedServices: [
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Insurance Restoration', url: '/insurance-restoration' }
+    ]
   }
 ];
 

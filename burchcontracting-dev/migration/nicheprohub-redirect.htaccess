@@ -1,0 +1,29 @@
+# =============================================================================
+# nicheprohub.com — POST-CUTOVER REDIRECT-ONLY .htaccess
+#
+# DO NOT deploy this to burchcontracting.com. This file is meant to REPLACE
+# whatever is currently in nicheprohub.com's docroot once the deploy workflow
+# has been repointed to burchcontracting.com's hosting account and this
+# repo's content is no longer being served from nicheprohub.com.
+#
+# What it does: every request to nicheprohub.com (any path, any query string)
+# 301s to the identical path on https://burchcontracting.com. This is a pure
+# domain-level passthrough — nicheprohub.com currently serves the exact same
+# repo/content as burchcontracting.com will, so there is no legacy-URL
+# mapping to do here (that work is in the main public/.htaccess, which
+# handles the *old Next.js* burchcontracting.com's different URL structure).
+#
+# Deployment: replace the entire contents of nicheprohub.com's docroot
+# .htaccess with this file (rename to .htaccess). It does not require any
+# other files in the docroot to keep working — every request is redirected
+# before any static-file lookup happens.
+# =============================================================================
+
+RewriteEngine On
+
+# Redirect everything (any host: nicheprohub.com or www., any scheme) to the
+# identical path on burchcontracting.com. QSA appends the original query
+# string automatically (and omits it cleanly when there isn't one) — no
+# separate www/https handling needed here since burchcontracting.com's own
+# .htaccess normalizes those on arrival.
+RewriteRule ^(.*)$ https://burchcontracting.com/$1 [R=301,L,QSA]

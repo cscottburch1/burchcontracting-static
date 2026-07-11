@@ -312,6 +312,25 @@ export const SERVICE_FAQS = {
       question: 'Can you provide documentation for insurance or a medical need?',
       answer: 'Yes. Insurance-friendly documentation is available on request, which can help when a conversion is tied to a medical need or accessibility requirement.'
     }
+  ],
+
+  'handyman': [
+    {
+      question: 'What kind of handyman work do you do?',
+      answer: 'Small plumbing fixture swaps (faucets, toilets, disposals, water heaters), electrical fixture and outlet installation, interior doors and windows, carpentry like baseboards and shelving, drywall repair, and interior painting. If a job is outside that scope, we\'ll tell you up front.'
+    },
+    {
+      question: 'How much does handyman work cost?',
+      answer: 'Most single-task jobs run $125 to $730 — outlet swaps, light fixtures, and small drywall patches at the low end. Installations like doors, windows, or a full room repaint typically run $400 to $2,050. Larger jobs like a water heater replacement run $1,100 to $4,400.'
+    },
+    {
+      question: 'Is there a minimum job size?',
+      answer: 'Handyman work is offered as a lower-tier service alongside our larger construction projects — contact us with your task list and we\'ll let you know if it\'s a good fit or better scoped as part of a larger remodel.'
+    },
+    {
+      question: 'Do you handle multiple small tasks in one visit?',
+      answer: 'Yes. Many customers bundle several small tasks — a few outlet swaps, a door install, some drywall patching — into a single visit, which is usually more cost-effective than separate trips.'
+    }
   ]
 };
 

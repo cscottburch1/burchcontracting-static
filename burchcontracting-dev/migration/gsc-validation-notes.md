@@ -90,6 +90,52 @@ a domain/framework switch.
    site. Consolidated to `/projects.html` (the listing page) as a safe
    fallback rather than 404ing.
 
+## Resolved 2026-07-11 — owner decisions + real source confirmation
+
+The `burch-contracting-fresh` Next.js project (the actual current
+burchcontracting.com codebase, at `E:\All Websites\Burchcontracting.com\
+burch-contracting-fresh`) was made available, which resolved several open
+items with real data instead of guesses:
+
+- **`/portal`** — owner confirmed no customer portal on the new site yet.
+  `/contact.html` redirect stands as-is.
+- **`/commercial-roofing_company/`, `/roofing/`** — owner confirmed roofing
+  is not an offered service. Redirected to `/services.html`.
+- **`/handyman-services-estimator/`, `/handyman-services-near-you/`,
+  `/calculator/handyman`** — owner asked for handyman to be built as a new
+  lower-tier service. Added `/handyman` to the new static site (`src/data/
+  services.js` + `src/data/service-faqs.js`, generated via `scripts/
+  generate-services.mjs`, linked from `services.html` and the shared service
+  footer, added to `vite.config.js` build inputs and `sitemap.xml`).
+  Pricing (`$125-$4,400` typical, and the 3 pricing tiers) is not invented —
+  it's derived directly from the real 30-item handyman rate table in
+  `burch-contracting-fresh/src/app/calculator/handyman/_ClientCalculator.tsx`
+  (the old site's own existing calculator), summed as labor + material
+  low/high per task. All three legacy URLs now redirect to `/handyman`.
+- **`/work`** — confirmed via `burch-contracting-fresh/CLAUDE.md`'s own
+  "Canonical Routes" section: `/work` already 301s to `/projects` on the
+  current live site (a portfolio alias, not a careers page as I'd
+  guessed-but-flagged). Matched: `/work` → `/projects.html`.
+- **`/employment`, `/employment/direct-hire`, `/subcontractors/join`** —
+  owner confirmed no application features on the new site yet. Redirected to
+  `/contact.html` as a same-intent fallback rather than left 404ing.
+- **`/admin`** — left intentionally unmapped/404ing; confirmed as correct
+  (no admin feature on the new site).
+
+### A note on `burch-contracting-fresh/CLAUDE.md`
+
+That file's "Project Overview" and "Verified Stats" sections describe the
+business as a **garage door contractor serving Raleigh/Durham, NC** (with
+NC city names in "Service areas"). This does not match the real business —
+confirmed by grepping the actual page source (`src/app/`, `src/components/`,
+`src/config/business.ts`): zero matches for "Raleigh," "Durham," etc., and
+95 files matching the real Upstate SC cities and business details. That
+section of the CLAUDE.md appears to be stale or mistaken documentation, not
+a reflection of real site content — flagging in case it's misleading anyone
+else who reads that file, but it did not affect anything in this migration
+(the real page content, which is what matters, is consistent with
+everything else confirmed in this project).
+
 ## Still open — needs your input, not a pattern rule
 
 Guessing these would risk the exact "soft 404 / wrong-relevance redirect"
@@ -98,9 +144,6 @@ can't make from code:
 
 | Legacy URL(s) | Clicks / Impressions | Question |
 |---|---|---|
-| `/portal` (+ `www.` variant) | 2 / 95 (+0/17) | Was this a real customer-login feature? If yes, does it need to exist on the new site, or is redirecting to `/contact.html` acceptable? |
-| `/commercial-roofing_company/`, `/roofing/` | 0/141, 0/77 | Is roofing still an offered service? No roofing content exists anywhere on the new site. |
-| `/handyman-services-estimator/`, `/handyman-services-near-you/` | 0/13, 0/6 | Is handyman work still offered? Same situation as roofing. |
 | `/clients/` | 3/14 | Real clicks, no obvious new-site equivalent (testimonials live inline on the homepage, not a standalone page). |
 | `/blog/deck-building-cost-simpsonville-sc` | 0/108 | |
 | `/blog/room-addition-cost-in-south-carolina` | 0/81 | |

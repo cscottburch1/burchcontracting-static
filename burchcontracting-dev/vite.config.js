@@ -62,6 +62,7 @@ export default defineConfig({
         insuranceRestoration: resolve(root, 'insurance-restoration/index.html'),
         adaCompliance: resolve(root, 'ada-compliance/index.html'),
         adaBathToShower: resolve(root, 'ada-bath-to-shower/index.html'),
+        handyman: resolve(root, 'handyman/index.html'),
         // Generated pages
         ...serviceAreaInputs,
         ...outdoorLivingInputs,
