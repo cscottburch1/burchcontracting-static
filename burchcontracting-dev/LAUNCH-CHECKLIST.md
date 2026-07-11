@@ -74,3 +74,18 @@ with a single 301 hop to the expected new page:
 
 Also confirm `http://www.burchcontracting.com/` redirects to
 `https://burchcontracting.com/` in one hop.
+
+## 7. Point the deploy workflow at burchcontracting.com
+
+When cutting over from the nicheprohub.com staging docroot to the real
+burchcontracting.com docroot:
+
+- Update the FTP secrets (`FTP_SERVER`/`FTP_USERNAME`/`FTP_PASSWORD` and/or
+  `server-dir` in `.github/workflows/deploy.yml`) to point at the
+  burchcontracting.com hosting account/docroot.
+- Set the `STAGING_URL` repository variable (Settings → Secrets and
+  variables → Actions → Variables) to `https://burchcontracting.com` so the
+  workflow's post-deploy verification step checks the right domain.
+- Expect the **first** deploy to the new docroot to be a full upload — no
+  `.ftp-deploy-sync-state.json` exists there yet, so every file gets sent
+  (this is normal and expected, not the stale-sync-state failure mode).
