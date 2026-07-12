@@ -52,33 +52,42 @@ protection.
 ## 3. Confirm the reCAPTCHA site key is registered for burchcontracting.com
 
 `src/js/main.js` reads the site key from `import.meta.env.VITE_RECAPTCHA_SITE_KEY`
-**first**, falling back to `contact.html`'s hardcoded
-`data-recaptcha-site-key="6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li"` only if
-that env var is unset. `.github/workflows/deploy.yml` injects
+**first**, falling back to `contact.html`'s hardcoded `data-recaptcha-site-key`
+only if that env var is unset. `.github/workflows/deploy.yml` injects
 `VITE_RECAPTCHA_SITE_KEY` from the GitHub Actions secret of the same name at
 build time — so **the secret's value, not the hardcoded fallback, is what
-production actually uses.**
+production actually uses**, once `VITE_RECAPTCHA_SITE_KEY` is actually set for
+a build. The hardcoded fallback in `contact.html` is nicheprohub.com's own
+dedicated key — by design, not an oversight (see update below).
 
 - The `VITE_RECAPTCHA_SITE_KEY` secret exists on the `burchcontracting-static`
   repo (confirmed via `gh secret list`, set 2026-07-08) — its value can't be
   read via the CLI, so confirm in the Google reCAPTCHA admin console which
   site key it holds, and that `burchcontracting.com` (and `www.` if used) is
-  an authorized domain for that key.
-- Separately, the current staging domain (nicheprohub.com) uses its own site
-  key, `6Le5vkEtAAAAAKMZtQ-YahscAQXHygBRDBGutTuD` — that's why the form works
-  there regardless of what's hardcoded in `contact.html` or set in the CI
-  secret. Don't confuse "it works on staging" with "the prod key is correct."
+  an authorized domain for that key. **This is still unverified** and is a
+  completely separate key from nicheprohub's (below) — don't confuse "the
+  form works on staging" with "the prod key is correct."
 - If the secret's key isn't registered for burchcontracting.com, update the
   `VITE_RECAPTCHA_SITE_KEY` GitHub secret (not `contact.html`) before launch.
 
-**Update 2026-07-12:** a dev-purposes reCAPTCHA key added to nicheprohub.com's
-`config.local.php` has gone missing and needed re-adding 3 times. Investigated: ruled
-out the deploy pipeline (every FTP deploy run's logs show `Deleting: 0 B` — it isn't
-deleting anything) and the hPanel malware scanner (checked directly, nothing found
-there). **Root cause still unknown as of this writing.** Don't assume a key placed on
-the server will still be there later without checking — re-verify immediately before
-relying on it, and consider asking Hostinger support whether anything auto-cleans that
-directory.
+**Update 2026-07-12 (resolved):** the disappearing-config-file issue below was
+caused by hPanel having its own native Git-integration auto-deploy pointed at
+this same repo, racing against the proper GitHub Actions FTP workflow and
+periodically overwriting the server with raw unbuilt source (which would never
+include `config.local.php`, since it's gitignored). **Disabled by the owner.**
+Root cause found, not still open.
+
+**Update 2026-07-12 (current key):** nicheprohub.com now uses a freshly generated,
+dedicated site key: `6LcROk8tAAAAAGm5cv1I9sB5iDnPuSkyeq2Po-oG` (hardcoded in
+`contact.html`), paired with its own secret in `config.local.php`. Verified
+working with a real end-to-end test submission to the live form after this was
+set. Any older site-key values referenced in earlier notes/commits for
+nicheprohub.com are obsolete — this is the current one.
+
+Original (now historical) note on the disappearing key, kept for context: a
+dev-purposes reCAPTCHA key added to nicheprohub.com's `config.local.php` had
+gone missing and needed re-adding 3 times before the hPanel Git integration was
+identified as the cause.
 
 ## 4. Submit the sitemap in Search Console
 
