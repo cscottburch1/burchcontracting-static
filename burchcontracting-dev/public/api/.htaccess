@@ -1,6 +1,10 @@
 RewriteEngine On
 RewriteRule ^contact$ contact.php [L]
 
+# email-templates/ holds the confirmation-email HTML source used by
+# contact.php — a build artifact, not a page anyone should browse directly.
+RewriteRule ^email-templates/ - [F,L]
+
 # leads-fallback.log holds raw submission data (names, emails, project
 # descriptions) — must never be directly downloadable.
 <FilesMatch "\.log$">
