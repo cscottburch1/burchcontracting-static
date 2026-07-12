@@ -16,6 +16,20 @@ if (menuBtn && mobileMenu) {
   })
 }
 
+// Mobile nav accordions (Services / Service Areas) — generic on data-mobile-
+// accordion so any future dropdown works the same way without new JS.
+document.querySelectorAll('[data-mobile-accordion]').forEach((btn) => {
+  const key = btn.dataset.mobileAccordion
+  const panel = document.querySelector(`[data-mobile-accordion-panel="${key}"]`)
+  const icon = btn.querySelector('[data-mobile-accordion-icon]')
+  if (!panel) return
+  btn.addEventListener('click', () => {
+    const isOpen = !panel.classList.contains('hidden')
+    panel.classList.toggle('hidden')
+    if (icon) icon.textContent = isOpen ? '+' : '−'
+  })
+})
+
 // Testimonials carousel
 const testimonialsTrack = document.getElementById('testimonials-track')
 const testimonialsPrev = document.getElementById('testimonials-prev')

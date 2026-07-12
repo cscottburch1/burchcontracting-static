@@ -167,7 +167,7 @@
     </a>
 
     <!-- ===== HEADER ===== -->
-    <header class="sticky top-0 z-50 bg-white shadow-sm">
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div class="flex items-center justify-between h-16">
 
@@ -177,9 +177,59 @@
           </a>
 
           <!-- Desktop nav links -->
-          <div class="hidden md:flex items-center gap-8">
+          <div class="hidden lg:flex items-center gap-6">
             <a href="/" aria-current="page" class="text-blue-700 font-semibold text-sm transition-colors">Home</a>
-            <a href="/services.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Services</a>
+
+          <div class="relative group">
+            <button type="button" class="flex items-center gap-1 font-medium text-sm text-slate-600 hover:text-blue-700 transition-colors py-2">
+              Services
+              <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="invisible absolute left-0 top-full w-[520px] pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+              <div class="grid grid-cols-2 gap-x-2 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
+                <div>
+                <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Outdoor Living</p>
+                <a href="/outdoor-living/decks" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Custom Decks</a>
+                <a href="/outdoor-living/screened-porches" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Screened Porches</a>
+                <a href="/outdoor-living/covered-patios" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Covered Patios</a>
+                <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Construction</p>
+                <a href="/garages" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Garages</a>
+                <a href="/additions" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Room Additions</a>
+                <a href="/adu-builder" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADU Builder</a>
+                <a href="/basement-finishing" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Basement Finishing</a>
+                </div>
+                <div>
+                <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Remodeling & More</p>
+                <a href="/remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
+                <a href="/commercial-upfits" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
+                <a href="/insurance-restoration" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
+                <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Accessibility</p>
+                <a href="/ada-compliance" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Compliance</a>
+                <a href="/ada-bath-to-shower" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Bath to Shower</a>
+                <a href="/handyman" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Handyman Services</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <button type="button" class="flex items-center gap-1 font-medium text-sm text-slate-600 hover:text-blue-700 transition-colors py-2">
+              Service Areas
+              <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="invisible absolute left-0 top-full w-64 pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+              <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-lg">
+                <a href="/service-areas/simpsonville.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Simpsonville</a>
+                <a href="/service-areas/fountain-inn.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Fountain Inn</a>
+                <a href="/service-areas/mauldin.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Mauldin</a>
+                <a href="/service-areas/greenville.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Greenville</a>
+                <a href="/service-areas/five-forks.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Five Forks</a>
+                <a href="/service-areas/woodruff.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Woodruff</a>
+                <a href="/service-areas/laurens.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Laurens</a>
+                <a href="/service-areas/gray-court.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Gray Court</a>
+              </div>
+            </div>
+          </div>
             <a href="/projects.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Projects</a>
             <a href="/about.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">About</a>
             <a href="/contact.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Contact</a>
@@ -194,7 +244,7 @@
             type="button"
             aria-expanded="false"
             aria-controls="mobile-menu"
-            class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            class="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
           >
             <span class="sr-only">Open menu</span>
             <svg id="icon-open" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
@@ -207,10 +257,44 @@
         </div>
 
         <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-slate-100 mt-0.5">
+        <div id="mobile-menu" class="hidden lg:hidden pb-4 border-t border-slate-100 mt-0.5">
           <div class="flex flex-col gap-1 pt-4">
             <a href="/" class="text-blue-700 font-semibold px-3 py-2 rounded-lg bg-blue-50 text-sm">Home</a>
-            <a href="/services.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Services</a>
+
+            <button type="button" data-mobile-accordion="services" class="flex items-center justify-between text-left font-semibold text-slate-900 py-2 w-full">
+              Services
+              <span data-mobile-accordion-icon class="text-sm">+</span>
+            </button>
+            <div data-mobile-accordion-panel="services" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
+              <a href="/outdoor-living/decks" class="text-slate-700 text-sm py-1 hover:text-blue-700">Custom Decks</a>
+              <a href="/outdoor-living/screened-porches" class="text-slate-700 text-sm py-1 hover:text-blue-700">Screened Porches</a>
+              <a href="/outdoor-living/covered-patios" class="text-slate-700 text-sm py-1 hover:text-blue-700">Covered Patios</a>
+              <a href="/garages" class="text-slate-700 text-sm py-1 hover:text-blue-700">Garages</a>
+              <a href="/additions" class="text-slate-700 text-sm py-1 hover:text-blue-700">Room Additions</a>
+              <a href="/adu-builder" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
+              <a href="/basement-finishing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
+              <a href="/remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
+              <a href="/commercial-upfits" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
+              <a href="/insurance-restoration" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
+              <a href="/ada-compliance" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Compliance</a>
+              <a href="/ada-bath-to-shower" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Bath to Shower</a>
+              <a href="/handyman" class="text-slate-700 text-sm py-1 hover:text-blue-700">Handyman Services</a>
+            </div>
+
+            <button type="button" data-mobile-accordion="areas" class="flex items-center justify-between text-left font-semibold text-slate-900 py-2 w-full">
+              Service Areas
+              <span data-mobile-accordion-icon class="text-sm">+</span>
+            </button>
+            <div data-mobile-accordion-panel="areas" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
+              <a href="/service-areas/simpsonville.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Simpsonville</a>
+              <a href="/service-areas/fountain-inn.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Fountain Inn</a>
+              <a href="/service-areas/mauldin.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Mauldin</a>
+              <a href="/service-areas/greenville.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Greenville</a>
+              <a href="/service-areas/five-forks.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Five Forks</a>
+              <a href="/service-areas/woodruff.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Woodruff</a>
+              <a href="/service-areas/laurens.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Laurens</a>
+              <a href="/service-areas/gray-court.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Gray Court</a>
+            </div>
             <a href="/projects.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Projects</a>
             <a href="/about.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">About</a>
             <a href="/contact.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Contact</a>
@@ -226,73 +310,61 @@
     <main id="main-content">
 
       <!-- Hero -->
-      <section class="bg-white py-16 lg:py-24">
-        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-          <!-- Text Side -->
-          <div>
-            <div class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              Upstate SC Local Contractor
-            </div>
-
-            <h1 class="text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-none mb-6">
-              Local Upstate SC Construction &amp;<br> Home Remodeling Experts
-            </h1>
-
-            <p class="text-xl text-gray-600 mb-8 max-w-lg">
-              Custom Room additions, decks, screened porches, garages, and full home remodeling. Built with quality right here in Simpsonville, Fountain Inn, Greenville and surrounding communities since 1995.
-            </p>
-
-            <!-- Trust -->
-            <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-gray-500 mb-10">
-              <div>Scott Burch &bull; Owner</div>
-              <div>35+ Years Local Experience</div>
-              <div>BBB A+ &bull; Fully Licensed #CLG118679</div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a href="/contact.html" class="inline-block px-8 py-4 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-xl text-lg text-center transition-all shadow-sm">
-                Get A Free Consultation Today
-              </a>
-              <a href="/projects.html" class="inline-block px-8 py-4 border-2 border-gray-300 hover:bg-gray-50 font-semibold rounded-xl text-lg text-center transition-all">
-                View Recent Local Projects
-              </a>
-            </div>
+      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-20 lg:py-28">
+        <div class="max-w-4xl mx-auto px-6">
+          <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-200 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            Upstate SC Local Contractor Since 1995
           </div>
 
-          <!-- Image Side -->
-          <div class="relative rounded-3xl overflow-hidden shadow-2xl">
-            <img src="/images/bath-to-half-wall-shower-conversion-woodruff-sc.webp"
-                 alt="Local Upstate SC custom home remodeling and construction project - screened porch addition"
-                 class="w-full h-auto object-cover"
-                 width="852" height="1200"
-                 loading="eager" fetchpriority="high">
+          <h1 class="text-4xl lg:text-6xl font-bold tracking-tight leading-tight mb-6">
+            Local Upstate SC Construction &amp; Home Remodeling Experts
+          </h1>
+
+          <p class="text-xl text-slate-300 mb-8 max-w-2xl">
+            Custom room additions, decks, screened porches, garages, and full home remodeling. Built with quality right here in Simpsonville, Fountain Inn, Greenville and surrounding communities since 1995.
+          </p>
+
+          <!-- Trust -->
+          <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-slate-400 mb-10">
+            <div>Scott Burch &bull; Owner</div>
+            <div>35+ Years Local Experience</div>
+            <div>BBB A+ &bull; Fully Licensed #CLG118679</div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact.html" class="inline-block px-8 py-4 bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded-xl text-lg text-center transition-all shadow-sm">
+              Get A Free Consultation Today
+            </a>
+            <a href="/projects.html" class="inline-block px-8 py-4 border-2 border-white/30 hover:bg-white/10 text-white font-semibold rounded-xl text-lg text-center transition-all">
+              View Recent Local Projects
+            </a>
           </div>
         </div>
       </section>
 
       <!-- Trust stats -->
-      <section class="bg-blue-700 text-white py-10" aria-label="Company credentials">
+      <section class="bg-slate-950 text-white py-10 border-t border-white/10" aria-label="Company credentials">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <dl class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <div>
-              <dt class="text-blue-200 text-sm font-medium uppercase tracking-wide">BBB Rating</dt>
-              <dd class="text-3xl font-bold mt-1">A+</dd>
-              <dd class="text-blue-200 text-xs mt-1">Since 2014</dd>
+          <dl class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="rounded-xl border border-white/15 bg-white/5 p-4 text-center">
+              <dt class="text-slate-400 text-xs font-medium uppercase tracking-wide">BBB Rating</dt>
+              <dd class="text-2xl lg:text-3xl font-bold mt-1 text-blue-400">A+</dd>
+              <dd class="text-slate-500 text-xs mt-1">Since 2014</dd>
             </div>
-            <div>
-              <dt class="text-blue-200 text-sm font-medium uppercase tracking-wide">Google Rating</dt>
-              <dd class="text-3xl font-bold mt-1">5.0</dd>
-              <dd class="text-blue-200 text-xs mt-1">Verified Reviews</dd>
+            <div class="rounded-xl border border-white/15 bg-white/5 p-4 text-center">
+              <dt class="text-slate-400 text-xs font-medium uppercase tracking-wide">Google Rating</dt>
+              <dd class="text-2xl lg:text-3xl font-bold mt-1 text-blue-400">5.0</dd>
+              <dd class="text-slate-500 text-xs mt-1">Verified Reviews</dd>
             </div>
-            <div>
-              <dt class="text-blue-200 text-sm font-medium uppercase tracking-wide">Years Experience</dt>
-              <dd class="text-3xl font-bold mt-1">35+</dd>
-              <dd class="text-blue-200 text-xs mt-1">Est. 1995</dd>
+            <div class="rounded-xl border border-white/15 bg-white/5 p-4 text-center">
+              <dt class="text-slate-400 text-xs font-medium uppercase tracking-wide">Years Experience</dt>
+              <dd class="text-2xl lg:text-3xl font-bold mt-1 text-blue-400">35+</dd>
+              <dd class="text-slate-500 text-xs mt-1">Est. 1995</dd>
             </div>
-            <div>
-              <dt class="text-blue-200 text-sm font-medium uppercase tracking-wide">Licensed &amp; Insured</dt>
-              <dd class="text-3xl font-bold mt-1">100%</dd>
-              <dd class="text-blue-200 text-xs mt-1">Fully Certified</dd>
+            <div class="rounded-xl border border-white/15 bg-white/5 p-4 text-center">
+              <dt class="text-slate-400 text-xs font-medium uppercase tracking-wide">Licensed &amp; Insured</dt>
+              <dd class="text-2xl lg:text-3xl font-bold mt-1 text-blue-400">100%</dd>
+              <dd class="text-slate-500 text-xs mt-1">Fully Certified</dd>
             </div>
           </dl>
         </div>

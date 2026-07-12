@@ -29,38 +29,144 @@
   </head>
   <body class="font-sans text-slate-800 bg-white antialiased">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-700 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
-    <header class="sticky top-0 z-50 bg-white shadow-sm">
-      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-        <div class="flex items-center justify-between h-16">
-          <a href="/" class="flex items-center shrink-0">
-            <img src="/images/burch-contracting-logo.webp" alt="Burch Contracting — Construction &amp; Remodeling" width="187" height="56" class="h-14 w-auto" />
-          </a>
-          <div class="hidden md:flex items-center gap-8">
-            <a href="/" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Home</a>
-            <a href="/services.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Services</a>
-            <a href="/projects.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Projects</a>
-            <a href="/about.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">About</a>
-            <a href="/contact.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Contact</a>
-            <a href="/contact.html" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors duration-200">Get Your Free Consultation</a>
-          </div>
-          <button id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
-            <span class="sr-only">Open menu</span>
-            <svg id="icon-open" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
-            <svg id="icon-close" class="w-6 h-6 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-slate-100 mt-0.5">
-          <div class="flex flex-col gap-1 pt-4">
-            <a href="/" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Home</a>
-            <a href="/services.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Services</a>
-            <a href="/projects.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Projects</a>
-            <a href="/about.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">About</a>
-            <a href="/contact.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Contact</a>
-            <a href="/contact.html" class="mt-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2.5 rounded-lg font-semibold text-sm text-center transition-colors">Get Your Free Consultation</a>
-          </div>
-        </div>
-      </nav>
-    </header>
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+          <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+            <div class="flex items-center justify-between h-16">
+
+              <!-- Logo -->
+              <a href="/" class="flex items-center shrink-0">
+                <img src="/images/burch-contracting-logo.webp" alt="Burch Contracting — Construction &amp; Remodeling" width="187" height="56" class="h-14 w-auto" />
+              </a>
+
+              <!-- Desktop nav links -->
+              <div class="hidden lg:flex items-center gap-6">
+                <a href="/" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Home</a>
+
+              <div class="relative group">
+                <button type="button" class="flex items-center gap-1 font-medium text-sm text-slate-600 hover:text-blue-700 transition-colors py-2">
+                  Services
+                  <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="invisible absolute left-0 top-full w-[520px] pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+                  <div class="grid grid-cols-2 gap-x-2 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
+                    <div>
+                    <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Outdoor Living</p>
+                    <a href="/outdoor-living/decks" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Custom Decks</a>
+                    <a href="/outdoor-living/screened-porches" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Screened Porches</a>
+                    <a href="/outdoor-living/covered-patios" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Covered Patios</a>
+                    <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Construction</p>
+                    <a href="/garages" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Garages</a>
+                    <a href="/additions" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Room Additions</a>
+                    <a href="/adu-builder" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADU Builder</a>
+                    <a href="/basement-finishing" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Basement Finishing</a>
+                    </div>
+                    <div>
+                    <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Remodeling & More</p>
+                    <a href="/remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
+                    <a href="/commercial-upfits" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
+                    <a href="/insurance-restoration" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
+                    <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Accessibility</p>
+                    <a href="/ada-compliance" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Compliance</a>
+                    <a href="/ada-bath-to-shower" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Bath to Shower</a>
+                    <a href="/handyman" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Handyman Services</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative group">
+                <button type="button" class="flex items-center gap-1 font-medium text-sm text-slate-600 hover:text-blue-700 transition-colors py-2">
+                  Service Areas
+                  <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="invisible absolute left-0 top-full w-64 pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+                  <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-lg">
+                    <a href="/service-areas/simpsonville.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Simpsonville</a>
+                    <a href="/service-areas/fountain-inn.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Fountain Inn</a>
+                    <a href="/service-areas/mauldin.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Mauldin</a>
+                    <a href="/service-areas/greenville.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Greenville</a>
+                    <a href="/service-areas/five-forks.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Five Forks</a>
+                    <a href="/service-areas/woodruff.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Woodruff</a>
+                    <a href="/service-areas/laurens.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Laurens</a>
+                    <a href="/service-areas/gray-court.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Gray Court</a>
+                  </div>
+                </div>
+              </div>
+                <a href="/projects.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Projects</a>
+                <a href="/about.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">About</a>
+                <a href="/contact.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Contact</a>
+                <a href="/contact.html" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors duration-200">
+                  Get Your Free Consultation
+                </a>
+              </div>
+
+              <!-- Mobile hamburger -->
+              <button
+                id="menu-btn"
+                type="button"
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+                class="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              >
+                <span class="sr-only">Open menu</span>
+                <svg id="icon-open" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                </svg>
+                <svg id="icon-close" class="w-6 h-6 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="hidden lg:hidden pb-4 border-t border-slate-100 mt-0.5">
+              <div class="flex flex-col gap-1 pt-4">
+                <a href="/" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Home</a>
+
+                <button type="button" data-mobile-accordion="services" class="flex items-center justify-between text-left font-semibold text-slate-900 py-2 w-full">
+                  Services
+                  <span data-mobile-accordion-icon class="text-sm">+</span>
+                </button>
+                <div data-mobile-accordion-panel="services" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
+                  <a href="/outdoor-living/decks" class="text-slate-700 text-sm py-1 hover:text-blue-700">Custom Decks</a>
+                  <a href="/outdoor-living/screened-porches" class="text-slate-700 text-sm py-1 hover:text-blue-700">Screened Porches</a>
+                  <a href="/outdoor-living/covered-patios" class="text-slate-700 text-sm py-1 hover:text-blue-700">Covered Patios</a>
+                  <a href="/garages" class="text-slate-700 text-sm py-1 hover:text-blue-700">Garages</a>
+                  <a href="/additions" class="text-slate-700 text-sm py-1 hover:text-blue-700">Room Additions</a>
+                  <a href="/adu-builder" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
+                  <a href="/basement-finishing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
+                  <a href="/remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
+                  <a href="/commercial-upfits" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
+                  <a href="/insurance-restoration" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
+                  <a href="/ada-compliance" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Compliance</a>
+                  <a href="/ada-bath-to-shower" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Bath to Shower</a>
+                  <a href="/handyman" class="text-slate-700 text-sm py-1 hover:text-blue-700">Handyman Services</a>
+                </div>
+
+                <button type="button" data-mobile-accordion="areas" class="flex items-center justify-between text-left font-semibold text-slate-900 py-2 w-full">
+                  Service Areas
+                  <span data-mobile-accordion-icon class="text-sm">+</span>
+                </button>
+                <div data-mobile-accordion-panel="areas" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
+                  <a href="/service-areas/simpsonville.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Simpsonville</a>
+                  <a href="/service-areas/fountain-inn.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Fountain Inn</a>
+                  <a href="/service-areas/mauldin.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Mauldin</a>
+                  <a href="/service-areas/greenville.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Greenville</a>
+                  <a href="/service-areas/five-forks.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Five Forks</a>
+                  <a href="/service-areas/woodruff.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Woodruff</a>
+                  <a href="/service-areas/laurens.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Laurens</a>
+                  <a href="/service-areas/gray-court.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Gray Court</a>
+                </div>
+                <a href="/projects.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Projects</a>
+                <a href="/about.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">About</a>
+                <a href="/contact.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Contact</a>
+                <a href="/contact.html" class="mt-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2.5 rounded-lg font-semibold text-sm text-center transition-colors">
+                  Get Your Free Consultation
+                </a>
+              </div>
+            </div>
+          </nav>
+        </header>
     <main id="main-content">
       <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
@@ -341,6 +447,17 @@
         mobileMenu?.classList.toggle('hidden');
         iconOpen?.classList.toggle('hidden');
         iconClose?.classList.toggle('hidden');
+      });
+      document.querySelectorAll('[data-mobile-accordion]').forEach((btn) => {
+        const key = btn.dataset.mobileAccordion;
+        const panel = document.querySelector('[data-mobile-accordion-panel="' + key + '"]');
+        const icon = btn.querySelector('[data-mobile-accordion-icon]');
+        if (!panel) return;
+        btn.addEventListener('click', () => {
+          const isOpen = !panel.classList.contains('hidden');
+          panel.classList.toggle('hidden');
+          if (icon) icon.textContent = isOpen ? '+' : '−';
+        });
       });
     </script>
   </body>
