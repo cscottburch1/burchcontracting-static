@@ -8,6 +8,7 @@ import {
   defaultSquareFootage,
   calculateEstimate,
 } from './calculator-config.js'
+import { trackEvent } from './analytics.js'
 
 const app = document.getElementById('calculator-app')
 if (app) {
@@ -45,6 +46,18 @@ function buildServiceState(serviceKey) {
 function initCalculator(root, page, options = {}) {
   const unified = options.unified === true
   let state = buildServiceState(unified ? Object.values(CALCULATOR_PAGES)[0].serviceKey : page.serviceKey)
+
+  // Fires once per page load, the first time the user actually changes an
+  // estimate parameter (not on the initial render with default values, and
+  // not on secondary UI actions like toggle-details/print that don't change
+  // the estimate itself) — "highest-intent on-site action" means they used
+  // the tool to get a personalized result, not just landed on the page.
+  let completeFired = false
+  const markComplete = () => {
+    if (completeFired) return
+    completeFired = true
+    trackEvent('calculator_complete', { service: state.serviceKey })
+  }
 
   root.innerHTML = `
     <div class="grid gap-8 lg:grid-cols-[1.3fr_1fr]">
@@ -91,6 +104,8 @@ function initCalculator(root, page, options = {}) {
     if (action === 'toggle-details') state.showDetails = !state.showDetails
     if (action === 'print') window.print()
 
+    if (action !== 'toggle-details' && action !== 'print') markComplete()
+
     render()
   })
 
@@ -100,10 +115,12 @@ function initCalculator(root, page, options = {}) {
       state.sqftInput = target.value
       const parsed = Number(target.value)
       if (parsed >= 1) state.sqft = parsed
+      markComplete()
       updateResults()
     }
     if (target.dataset.adder) {
       state.adders[target.dataset.adder] = Math.max(0, Number(target.value) || 0)
+      markComplete()
       updateResults()
     }
   })

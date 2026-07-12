@@ -136,6 +136,7 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
         </div>
       </div>
     </footer>
+    <script type="module" src="/src/js/analytics.js"></script>
     <script>
       document.getElementById('year').textContent = new Date().getFullYear();
       const menuBtn = document.getElementById('menu-btn');

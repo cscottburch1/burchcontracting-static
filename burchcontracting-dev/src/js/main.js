@@ -1,3 +1,5 @@
+import { trackEvent } from './analytics.js'
+
 // Mobile menu toggle
 const menuBtn = document.getElementById('menu-btn')
 const mobileMenu = document.getElementById('mobile-menu')
@@ -233,6 +235,10 @@ if (form) {
       const data = await response.json().catch(() => ({}))
 
       if (response.ok) {
+        // Fires on the PHP handler's success response, not on button click —
+        // a failed/rejected submission (validation, recaptcha, 500) never
+        // reaches this branch, so it can't be miscounted as a lead.
+        trackEvent('generate_lead', { project_type: getValue('projectType') })
         showStatus('Thank you! We received your request and will be in touch within one business day.', 'success')
         form.reset()
         renderFileList()
