@@ -40,6 +40,29 @@ jobs:
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
         run: npm run build
 
+      # Fails the workflow (not just a warning) on: &amp;amp; double-encoding,
+      # any sitemap URL with zero inbound internal links, or (only once
+      # cutover has happened — see BUILD_ENV below) noindex still present
+      # anywhere except 404.html. Runs on the regenerated source files from
+      # the build step above, not dist/, and before the FTP deploy step so a
+      # failure blocks the deploy.
+      #
+      # BUILD_ENV is only set to "production" once STAGING_URL has been
+      # pointed at the real burchcontracting.com (LAUNCH-CHECKLIST.md #7,
+      # done at cutover) — deliberately NOT unconditional. This workflow
+      # currently deploys to nicheprohub.com on every push to main, and
+      # every one of those 39 pages intentionally carries noindex pre-launch
+      # (see LAUNCH-CHECKLIST.md #1). Setting BUILD_ENV=production
+      # unconditionally right now would fail the noindex check on every
+      # single push starting today and block all further staging deploys
+      # until someone manually flips noindex early — the opposite of the
+      # intent. This condition makes the guard activate automatically at
+      # the same moment cutover happens, with no separate step to remember.
+      - name: Build guard (check-build)
+        env:
+          BUILD_ENV: ${{ vars.STAGING_URL == 'https://burchcontracting.com' && 'production' || '' }}
+        run: npm run check-build
+
       - name: Stamp build version
         run: |
           echo "commit=${GITHUB_SHA}" > dist/version.txt
