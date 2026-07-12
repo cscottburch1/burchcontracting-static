@@ -101,8 +101,20 @@ if (orphans.length) {
 }
 
 // --- Check 3: noindex present in production ---
+// Scans dist/, not the source tree scanned above: flip-noindex-production.mjs
+// (run as part of `npm run build` when BUILD_ENV=production) only rewrites
+// dist/*.html, not the source .html files, so checking source here would
+// always find "noindex" and fail even on a correctly-flipped production
+// build. By the time this check runs in CI, "Build project" has already
+// produced dist/, so it's always present when BUILD_ENV=production.
 if (process.env.BUILD_ENV === 'production') {
-  const noindexPages = pages.filter(
+  const distDir = path.join(root, 'dist')
+  const distPages = walkHtmlFiles(distDir).map((f) => ({
+    file: f,
+    rel: path.relative(distDir, f).split(path.sep).join('/'),
+    html: fs.readFileSync(f, 'utf8'),
+  }))
+  const noindexPages = distPages.filter(
     (p) => /<meta[^>]*name=["']robots["'][^>]*noindex/i.test(p.html) && !NOINDEX_EXEMPT.has(p.rel)
   )
   if (noindexPages.length) {

@@ -35,7 +35,12 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      # BUILD_ENV=production is what activates flip-noindex-production.mjs
+      # (see package.json's "build" script) — no-op otherwise, so this is
+      # safe to pass unconditionally. Same condition as the guard step below.
       - name: Build project
+        env:
+          BUILD_ENV: ${{ vars.STAGING_URL == 'https://burchcontracting.com' && 'production' || '' }}
         run: npm run build
 
       # Fails the workflow (not just a warning) on: &amp;amp; double-encoding,
