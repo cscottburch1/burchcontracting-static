@@ -100,9 +100,37 @@ jobs:
             echo "::error::Deployed version marker does not match this commit — the FTP sync likely skipped files. Delete .ftp-deploy-sync-state.json on the server and re-run."
             exit 1
           fi
-          # Spot-check that known-bad artifacts from the stale build are gone:
-          curl -fsSL "$SITE_URL/outdoor-living/decks/?nocache=$GITHUB_RUN_ID" | grep -q 'tel:tel:' && { echo "::error::Stale decks page still live (tel:tel: found)"; exit 1; }
           curl -fsSL "$SITE_URL/privacy-policy.html?nocache=$GITHUB_RUN_ID" -o /dev/null || { echo "::error::privacy-policy.html not reachable"; exit 1; }
+
+          # Content-integrity check across every built page. version.txt above
+          # only proves ONE freshly-generated file uploaded — it says nothing
+          # about the rest, since the FTP action's incremental sync can skip
+          # files its (possibly stale) state file thinks are unchanged. That
+          # exact gap once left outdoor-living/decks silently stale while this
+          # step stayed green. Compare a hash of every dist/*.html file against
+          # what's actually live instead of one hardcoded known-bad string on
+          # one page.
+          mismatch=0
+          while IFS= read -r -d '' file; do
+            rel="${file#dist/}"
+            if [ "$rel" = "index.html" ]; then
+              url_path="/"
+            elif [ "${rel%/index.html}" != "$rel" ]; then
+              url_path="/${rel%/index.html}/"
+            else
+              url_path="/$rel"
+            fi
+            local_hash=$(sha256sum "$file" | cut -d' ' -f1)
+            live_hash=$(curl -fsSL "$SITE_URL$url_path?nocache=$GITHUB_RUN_ID" | sha256sum | cut -d' ' -f1)
+            if [ "$local_hash" != "$live_hash" ]; then
+              echo "::error::Content mismatch on $url_path — built hash $local_hash, live hash $live_hash. FTP sync likely skipped this file; delete .ftp-deploy-sync-state.json on the server and re-run."
+              mismatch=1
+            fi
+          done < <(find dist -name '*.html' -print0)
+          if [ "$mismatch" = "1" ]; then
+            exit 1
+          fi
+          echo "Content-integrity check passed: every built page matches live."
 
           # reCAPTCHA site key is read from this data attribute at runtime (see
           # src/js/main.js) — confirm the live page matches what's actually in
