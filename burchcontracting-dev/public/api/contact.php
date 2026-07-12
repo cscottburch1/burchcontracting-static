@@ -291,9 +291,14 @@ function sendConfirmationEmail(
         $mail->isHTML(true);
         $mail->Body = $htmlBody;
 
-        $logoPath = __DIR__ . '/../images/burch-contracting-logo.webp';
+        // MUST be PNG, not WebP. Gmail and Outlook cannot decode image/webp in email —
+        // Outlook's Word rendering engine has no WebP decoder at all. A WebP CID
+        // attachment embeds correctly but renders as a blank space in most inboxes.
+        $logoPath = __DIR__ . '/../images/burch-contracting-logo-email.png';
         if (file_exists($logoPath)) {
-            $mail->addEmbeddedImage($logoPath, 'burch-logo', 'burch-contracting-logo.webp', PHPMailer::ENCODING_BASE64, 'image/webp');
+            $mail->addEmbeddedImage($logoPath, 'burch-logo', 'burch-contracting-logo-email.png', PHPMailer::ENCODING_BASE64, 'image/png');
+        } else {
+            error_log('[contact.php] confirmation email: logo not found at ' . $logoPath . ' — sent without embedded logo');
         }
 
         $mail->send();
