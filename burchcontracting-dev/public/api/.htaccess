@@ -6,3 +6,14 @@ RewriteRule ^contact$ contact.php [L]
 <FilesMatch "\.log$">
   Require all denied
 </FilesMatch>
+
+# Defense in depth: config.local.php holds real SMTP/reCAPTCHA secrets. PHP
+# already prevents its contents from leaking on direct request (the file
+# just `return`s an array — nothing is echoed, so a direct hit renders a
+# blank page, not the secrets) — but block it outright too, in case PHP
+# execution is ever misconfigured for this path (e.g. served as static text
+# instead of executed). config.local.php.example has no real secrets and is
+# left accessible.
+<Files "config.local.php">
+  Require all denied
+</Files>
