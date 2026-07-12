@@ -1,5 +1,31 @@
 # Launch Checklist
 
+## 🔧 Recovery deploy — do now
+
+The server was last modified by the now-removed Hostinger hPanel Git
+integration (see item 3), so the FTP action's incremental sync state cannot
+be trusted. Run this exact sequence:
+
+1. **hPanel File Manager** → site root → enable "Show Hidden Files" → delete
+   `.ftp-deploy-sync-state.json`.
+2. **Verify `api/config.local.php` still exists** with all fields present
+   (`recaptcha_secret_key` + the 5 `smtp_*` keys) — restore from your local
+   copy if it's missing or incomplete.
+3. **Delete any raw-repo debris** in the docroot that returns HTTP 200 for
+   files like `package.json`, `vite.config.js`, `src/js/main.js`,
+   `.env.example`, `DEPLOYMENT.md` — leftovers from the old raw-repo sync.
+   (Probed clean as of 2026-07-12; re-check before relying on this.)
+4. **Push this branch / re-run the deploy workflow** — with no sync-state
+   file present, expect a full re-upload of every file (this is normal, not
+   a failure).
+5. **Confirm the workflow's "Verify deployment" step is green** — it now
+   checks the version marker, the live reCAPTCHA site key against this
+   commit's `contact.html`, that `api/contact.php` returns 405, and that
+   `api/config.local.php` does NOT return 200.
+6. **Submit a real test through the live form** with DevTools console open.
+   Expect the lead email AND the confirmation auto-reply, both delivered to
+   estimates@burchcontracting.com.
+
 ## ⚠️ REMOVE THE SITE-WIDE `noindex` — 39 pages
 
 If this ships, Google deindexes burchcontracting.com within days. Verify with a live
@@ -49,45 +75,58 @@ protection.
   (`smtp_host`/`port`/`username`/`password`/`secure`) for the contact form to actually
   send email — see `config.local.php.example` for the full current key list.
 
-## 3. Confirm the reCAPTCHA site key is registered for burchcontracting.com
+## 3. reCAPTCHA site key — single source of truth
 
-`src/js/main.js` reads the site key from `import.meta.env.VITE_RECAPTCHA_SITE_KEY`
-**first**, falling back to `contact.html`'s hardcoded `data-recaptcha-site-key`
-only if that env var is unset. `.github/workflows/deploy.yml` injects
-`VITE_RECAPTCHA_SITE_KEY` from the GitHub Actions secret of the same name at
-build time — so **the secret's value, not the hardcoded fallback, is what
-production actually uses**, once `VITE_RECAPTCHA_SITE_KEY` is actually set for
-a build. The hardcoded fallback in `contact.html` is nicheprohub.com's own
-dedicated key — by design, not an oversight (see update below).
+`src/js/main.js` reads the site key from `contact.html`'s
+`data-recaptcha-site-key` attribute ONLY — there is no environment variable
+in the build anymore. A prior `VITE_RECAPTCHA_SITE_KEY` GitHub Actions
+secret used to override this value silently at build time, drifted out of
+sync with `contact.html`, and was the actual root cause of the "Security
+verification failed" / silent form failures chased across several earlier
+fix attempts (editing `contact.html` alone never worked, because the secret
+always won). That secret injection has been removed from
+`.github/workflows/deploy.yml`; the build no longer reads it at all.
 
-- The `VITE_RECAPTCHA_SITE_KEY` secret exists on the `burchcontracting-static`
-  repo (confirmed via `gh secret list`, set 2026-07-08) — its value can't be
-  read via the CLI, so confirm in the Google reCAPTCHA admin console which
-  site key it holds, and that `burchcontracting.com` (and `www.` if used) is
-  an authorized domain for that key. **This is still unverified** and is a
-  completely separate key from nicheprohub's (below) — don't confuse "the
-  form works on staging" with "the prod key is correct."
-- If the secret's key isn't registered for burchcontracting.com, update the
-  `VITE_RECAPTCHA_SITE_KEY` GitHub secret (not `contact.html`) before launch.
+Two sync points remain, and only two:
 
-**Update 2026-07-12 (resolved):** the disappearing-config-file issue below was
-caused by hPanel having its own native Git-integration auto-deploy pointed at
-this same repo, racing against the proper GitHub Actions FTP workflow and
-periodically overwriting the server with raw unbuilt source (which would never
-include `config.local.php`, since it's gitignored). **Disabled by the owner.**
-Root cause found, not still open.
+- **Site key** (public, safe to commit) — `contact.html`'s
+  `data-recaptcha-site-key` attribute. This is the only file that ever needs
+  editing to change it.
+- **Secret key** (never in git) — `recaptcha_secret_key` in
+  `public/api/config.local.php` on the Hostinger server, hand-maintained
+  (see item 2).
 
-**Update 2026-07-12 (current key):** nicheprohub.com now uses a freshly generated,
-dedicated site key: `6LcROk8tAAAAAGm5cv1I9sB5iDnPuSkyeq2Po-oG` (hardcoded in
-`contact.html`), paired with its own secret in `config.local.php`. Verified
-working with a real end-to-end test submission to the live form after this was
-set. Any older site-key values referenced in earlier notes/commits for
-nicheprohub.com are obsolete — this is the current one.
+**Action still needed (human-only, item below):** delete the now-unused
+`VITE_RECAPTCHA_SITE_KEY` from GitHub — both the repository secret
+(Settings → Secrets and variables → Actions → Secrets) and the stray
+environment of the same name if one exists (Settings → Environments).
+Neither is read by the workflow anymore; leaving them in place is exactly
+the kind of hidden second copy that caused this bug, waiting to bite again
+the next time someone assumes it's still wired up.
 
-Original (now historical) note on the disappearing key, kept for context: a
-dev-purposes reCAPTCHA key added to nicheprohub.com's `config.local.php` had
-gone missing and needed re-adding 3 times before the hPanel Git integration was
-identified as the cause.
+**Current key (2026-07-12):** nicheprohub.com, burchcontracting.com, and
+www.burchcontracting.com are all registered under one v3 key pair,
+`6LcROk8tAAAAAGm5cv1I9sB5iDnPuSkyeq2Po-oG` (site key, in `contact.html`),
+paired with its own secret in `config.local.php`. Verified working with a
+real end-to-end test submission to the live form. Any older site-key values
+referenced in earlier notes/commits are obsolete — this is the current one.
+
+**Update 2026-07-12 (resolved):** the disappearing-`config.local.php` mystery
+(item 2) was caused by Hostinger hPanel's own native Git integration, pointed
+at this same repo, racing the proper GitHub Actions FTP workflow and
+periodically overwriting the docroot with raw unbuilt source — which never
+includes `config.local.php` since it's gitignored. **The integration was
+permanently disconnected 2026-07-11.** Root cause found, not still open.
+
+**Hard rule going forward:** the ONLY deployment path is the GitHub Actions
+FTP workflow (`.github/workflows/deploy.yml`). Never reconnect hPanel's Git
+integration. Never hand-edit files in the deployed docroot except
+`api/config.local.php` (the one file the workflow deliberately excludes).
+If the docroot is ever modified out-of-band (manual FTP edit, hPanel File
+Manager, a reconnected integration, etc.), delete
+`.ftp-deploy-sync-state.json` from the server root before the next deploy —
+otherwise the FTP action's incremental sync trusts its stale state and may
+skip files that need re-uploading.
 
 ## 4. Submit the sitemap in Search Console
 
@@ -162,9 +201,9 @@ These require access, credentials, or judgment that only Scott has:
   burchcontracting.com site first, before pointing DNS anywhere new.
 - **SMTP credentials** in `public/api/config.local.php` on the server (see item 2) —
   never requested by or given to Claude; add directly on the server.
-- **Confirm the reCAPTCHA key registered for burchcontracting.com is correct** (item 3)
-  — currently unverified, and a related dev key has been mysteriously disappearing from
-  nicheprohub.com's config (see item 3's update).
+- **Delete the unused `VITE_RECAPTCHA_SITE_KEY` GitHub secret and environment** (item 3)
+  — no longer read by the workflow; leaving it in place risks the same silent-drift bug
+  recurring the next time someone assumes it's still wired up.
 - **A live test lead through the production form**, confirmed received in the actual
   inbox, not spam (item 5).
 - **SPF/DKIM records** on the domain sending form notifications — authenticated SMTP

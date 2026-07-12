@@ -1,15 +1,21 @@
 /**
- * Build guard — fails the build (exit 1) on three failure modes that have
- * each already shipped once:
+ * Build guard — fails the build (exit 1) on failure modes that have each
+ * already shipped once:
  *   1. Double-encoded ampersands ("&amp;amp;") anywhere in built HTML.
  *   2. Orphan pages: any URL listed in sitemap.xml with zero inbound
  *      internal links from anywhere else on the site.
  *   3. Site-wide noindex still present when BUILD_ENV=production.
+ *   4. reCAPTCHA site key drift: dist/contact.html must have a well-formed
+ *      data-recaptcha-site-key, and no dist/assets/*.js may contain a key
+ *      literal — see LAUNCH-CHECKLIST.md #3 for why this must be the only
+ *      place the site key lives.
  *
- * Scans the repo's own HTML source files directly (index.html, service
- * pages, generated service-area/calculator pages, etc.) — the same files
- * `npm run build` bundles into dist/ — rather than requiring a prior build
- * step, so this can run standalone in CI or locally.
+ * Checks 1-3 scan the repo's own HTML source files directly (index.html,
+ * service pages, generated service-area/calculator pages, etc.) — the same
+ * files `npm run build` bundles into dist/ — rather than requiring a prior
+ * build step, so those can run standalone in CI or locally. Check 4 reads
+ * dist/ directly, since it's specifically verifying what actually gets
+ * deployed; it requires `npm run build` to have already run.
  *
  * Exception: 404.html is excluded from the noindex check. Per
  * LAUNCH-CHECKLIST.md #1, 404.html must carry noindex permanently, in
@@ -108,6 +114,59 @@ if (process.env.BUILD_ENV === 'production') {
   }
 }
 
+// --- Check 4: reCAPTCHA site key must live only in dist/contact.html's
+// data-recaptcha-site-key attribute, never baked into JS. Requires a prior
+// build (dist/assets/*.js is what actually gets deployed) — see
+// LAUNCH-CHECKLIST.md #3 for the incident this guards against.
+const RECAPTCHA_KEY_RE = /^6L[0-9A-Za-z_-]{38}$/
+const distContactPath = path.join(root, 'dist/contact.html')
+const distAssetsDir = path.join(root, 'dist/assets')
+
+if (!fs.existsSync(distContactPath)) {
+  failed = true
+  failures.push({
+    check: 'recaptcha-site-key',
+    detail: ['dist/contact.html not found — run `npm run build` before check-build.'],
+  })
+} else {
+  const distContactHtml = fs.readFileSync(distContactPath, 'utf8')
+  const keyMatch = distContactHtml.match(/data-recaptcha-site-key="([^"]*)"/)
+
+  if (!keyMatch) {
+    failed = true
+    failures.push({
+      check: 'recaptcha-site-key',
+      detail: ['dist/contact.html has no data-recaptcha-site-key attribute at all.'],
+    })
+  } else if (!RECAPTCHA_KEY_RE.test(keyMatch[1])) {
+    failed = true
+    failures.push({
+      check: 'recaptcha-site-key',
+      detail: [
+        `dist/contact.html's data-recaptcha-site-key is "${keyMatch[1]}" — not a well-formed reCAPTCHA v3 site key (expected "6L" followed by 38 letters/digits/_/-). Check for a placeholder, typo, or empty value.`,
+      ],
+    })
+  }
+
+  if (fs.existsSync(distAssetsDir)) {
+    const leaked = fs
+      .readdirSync(distAssetsDir)
+      .filter((f) => f.endsWith('.js'))
+      .filter((f) => /6L[0-9A-Za-z_-]{20,}/.test(fs.readFileSync(path.join(distAssetsDir, f), 'utf8')))
+
+    if (leaked.length) {
+      failed = true
+      failures.push({
+        check: 'recaptcha-key-baked-into-js',
+        detail: leaked.map(
+          (f) =>
+            `dist/assets/${f} contains a reCAPTCHA key literal — the site key must only exist in contact.html's data attribute, read at runtime. This means the old VITE_RECAPTCHA_SITE_KEY env-var path or a hardcoded literal has crept back into src/js/. Remove it — see LAUNCH-CHECKLIST.md #3.`
+        ),
+      })
+    }
+  }
+}
+
 // --- Report ---
 if (failed) {
   console.error('check-build FAILED\n')
@@ -118,5 +177,5 @@ if (failed) {
   }
   process.exit(1)
 } else {
-  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans${process.env.BUILD_ENV === 'production' ? ', noindex checked (production mode)' : ' (noindex check skipped — not BUILD_ENV=production)'}.`)
+  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans${process.env.BUILD_ENV === 'production' ? ', noindex checked (production mode)' : ' (noindex check skipped — not BUILD_ENV=production)'}, reCAPTCHA site key verified single-source in dist/.`)
 }

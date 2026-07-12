@@ -36,8 +36,6 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Build project
-        env:
-          VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
         run: npm run build
 
       # Fails the workflow (not just a warning) on: &amp;amp; double-encoding,
@@ -105,4 +103,33 @@ jobs:
           # Spot-check that known-bad artifacts from the stale build are gone:
           curl -fsSL "$SITE_URL/outdoor-living/decks/?nocache=$GITHUB_RUN_ID" | grep -q 'tel:tel:' && { echo "::error::Stale decks page still live (tel:tel: found)"; exit 1; }
           curl -fsSL "$SITE_URL/privacy-policy.html?nocache=$GITHUB_RUN_ID" -o /dev/null || { echo "::error::privacy-policy.html not reachable"; exit 1; }
+
+          # reCAPTCHA site key is read from this data attribute at runtime (see
+          # src/js/main.js) — confirm the live page matches what's actually in
+          # the repo at this commit, not a stale or hand-edited copy.
+          expected_key=$(grep -o 'data-recaptcha-site-key="[^"]*"' contact.html | head -1)
+          live_key=$(curl -fsSL "$SITE_URL/contact.html?nocache=$GITHUB_RUN_ID" | grep -o 'data-recaptcha-site-key="[^"]*"' | head -1)
+          echo "Expected recaptcha key attr: $expected_key"
+          echo "Live recaptcha key attr:     $live_key"
+          if [ -z "$live_key" ] || [ "$live_key" != "$expected_key" ]; then
+            echo "::error::Live data-recaptcha-site-key does not match contact.html in this commit — contact form will fail reCAPTCHA."
+            exit 1
+          fi
+
+          # /api/contact.php should reject GET (405) but exist; config.local.php
+          # must never be served (403), or the reCAPTCHA/SMTP secrets leak.
+          contact_status=$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/api/contact.php")
+          echo "contact.php status: $contact_status"
+          if [ "$contact_status" != "405" ]; then
+            echo "::error::api/contact.php returned $contact_status, expected 405"
+            exit 1
+          fi
+
+          config_status=$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/api/config.local.php")
+          echo "config.local.php status: $config_status"
+          if [ "$config_status" = "200" ]; then
+            echo "::error::api/config.local.php is publicly readable (200) — secrets are exposed"
+            exit 1
+          fi
+
           echo "Deploy verified: server matches $GITHUB_SHA"

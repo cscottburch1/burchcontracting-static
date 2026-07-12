@@ -55,10 +55,7 @@ if (form) {
   const defaultBtnText = submitBtn?.textContent ?? 'Submit Request'
   const MAX_FILE_SIZE = 10 * 1024 * 1024
 
-  const recaptchaSiteKey =
-    import.meta.env.VITE_RECAPTCHA_SITE_KEY ||
-    form.dataset.recaptchaSiteKey ||
-    ''
+  const recaptchaSiteKey = form.dataset.recaptchaSiteKey || ''
   const endpoint = form.dataset.contactEndpoint || '/api/contact.php'
 
   const loadRecaptcha = () =>
