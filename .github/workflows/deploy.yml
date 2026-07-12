@@ -110,9 +110,16 @@ jobs:
           # step stayed green. Compare a hash of every dist/*.html file against
           # what's actually live instead of one hardcoded known-bad string on
           # one page.
+          # api/ is backend PHP territory, not public pages — some paths under
+          # it (e.g. email-templates/) are deliberately blocked via .htaccess
+          # and correctly return 403/empty, which would never hash-match the
+          # built HTML. Only compare pages meant to be served as-is.
           mismatch=0
           while IFS= read -r -d '' file; do
             rel="${file#dist/}"
+            case "$rel" in
+              api/*) continue ;;
+            esac
             if [ "$rel" = "index.html" ]; then
               url_path="/"
             elif [ "${rel%/index.html}" != "$rel" ]; then
