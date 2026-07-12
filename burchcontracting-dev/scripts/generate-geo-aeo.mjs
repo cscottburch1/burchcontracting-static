@@ -325,7 +325,7 @@ ${seoHead({ title, description, canonical })}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-700 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
 ${header}
     <main id="main-content">
-      <section class="bg-slate-900 text-white py-16 lg:py-24">
+      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav class="mb-4" aria-label="Breadcrumb">
             <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-400">
@@ -467,7 +467,7 @@ ${seoHead({ title, description, canonical })}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-700 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
 ${header}
     <main id="main-content">
-      <section class="bg-slate-900 text-white py-16 lg:py-24">
+      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav class="mb-4" aria-label="Breadcrumb">
             <ol class="flex items-center gap-2 text-sm text-slate-400">
