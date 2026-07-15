@@ -121,7 +121,7 @@ if (form) {
     } else {
       statusEl.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-800')
     }
-    statusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
   const clearFieldErrors = () => {
@@ -250,7 +250,7 @@ if (form) {
         // a failed/rejected submission (validation, recaptcha, 500) never
         // reaches this branch, so it can't be miscounted as a lead.
         trackEvent('generate_lead', { project_type: getValue('projectType') })
-        showStatus('Thank you! We received your request and will be in touch within one business day.', 'success')
+        showStatus('Thank you! We received your request and will be in touch within 1-3 business days, (depending on volume of requests).', 'success')
         form.reset()
         renderFileList()
         if (submitBtn) submitBtn.textContent = 'Request Submitted'
