@@ -1,6 +1,15 @@
 # Launch Checklist
 
-## 🔧 Recovery deploy — do now
+## ✅ Launch complete — site is live at burchcontracting.com
+
+Verified live 2026-07-19: deploy pipeline green (content-integrity, reCAPTCHA key,
+`contact.php`/`config.local.php` checks all pass), noindex is off (`index, follow`
+serving in production), and the recovery sequence below has already been run
+successfully — kept here only as a reference if the docroot ever gets modified
+out-of-band again.
+
+<details>
+<summary>🔧 Recovery deploy sequence (reference — already executed, not currently needed)</summary>
 
 The server was last modified by the now-removed Hostinger hPanel Git
 integration (see item 3), so the FTP action's incremental sync state cannot
@@ -26,40 +35,26 @@ be trusted. Run this exact sequence:
    Expect the lead email AND the confirmation auto-reply, both delivered to
    estimates@burchcontracting.com.
 
-## ⚠️ REMOVE THE SITE-WIDE `noindex` — 39 pages
+</details>
 
-If this ships, Google deindexes burchcontracting.com within days. Verify with a live
-`curl -I` of production headers AND a grep of built HTML, before and after deploy.
-
-This is step 1 below — the warning is repeated here at the top because it's the single
-highest-consequence mistake on this whole list. As of 2026-07-12,
-`scripts/check-build.mjs` (wired into `.github/workflows/deploy.yml` as the "Build guard
-(check-build)" step) automatically starts enforcing this in CI the moment the
-`STAGING_URL` repository variable is set to `https://burchcontracting.com` — i.e. at the
-same moment as step 7 below. That catches regressions on future builds; it does not flip
-`noindex` for you now, and does not replace the manual curl/grep check against the
-actual live production response before you consider launch done.
-
-Complete these in order on launch day. FLIP_NOINDEX_NOW was set to "no" during
-pre-launch prep, so noindex is still active site-wide — step 1 turns it off.
-
-## 1. Flip noindex → index
+## 1. Flip noindex → index — ✅ DONE, verified live 2026-07-19
 
 Every page currently ships `<meta name="robots" content="noindex, nofollow" />`
 **except** `404.html`, which must stay `noindex, nofollow` permanently.
 
-- Change every page's robots meta to `content="index, follow"` (hand-written
-  pages + both generator templates in `scripts/`, then regenerate).
+`curl -s https://burchcontracting.com/ | grep -i noindex` returns nothing;
+`curl -I` shows no `X-Robots-Tag: noindex` header. If this ever needs re-verifying
+after a future deploy:
+
 - Verify: `grep -rc 'noindex' burchcontracting-dev --include='*.html'` — only
   `404.html` should report a match.
 - Run `npm run build` and re-check the grep against `dist/` too.
-- **Before AND after the live deploy**, verify the real production response, not just
-  the local build: `curl -I https://burchcontracting.com/` (and a handful of other
-  pages) to confirm no `X-Robots-Tag: noindex` response header, and separately
-  `curl -s https://burchcontracting.com/ | grep -i noindex` to confirm the meta tag is
-  actually gone from what's being served — not just what's in this repo.
+- Check the real production response, not just the local build: `curl -I
+  https://burchcontracting.com/` (and a handful of other pages) for the
+  `X-Robots-Tag` header, and `curl -s https://burchcontracting.com/ | grep -i
+  noindex` for the meta tag.
 
-## 2. Confirm reCAPTCHA secret is live on the server
+## 2. Confirm reCAPTCHA secret is live on the server — ✅ site key confirmed; secret presumed live (server-side, unverifiable remotely)
 
 `public/api/contact.php` reads `config.local.php` for `recaptcha_secret_key`.
 If that file is missing, `verifyRecaptcha()` returns `null` immediately
@@ -75,7 +70,7 @@ protection.
   (`smtp_host`/`port`/`username`/`password`/`secure`) for the contact form to actually
   send email — see `config.local.php.example` for the full current key list.
 
-## 3. reCAPTCHA site key — single source of truth
+## 3. reCAPTCHA site key — single source of truth — ✅ verified matching live 2026-07-19
 
 `src/js/main.js` reads the site key from `contact.html`'s
 `data-recaptcha-site-key` attribute ONLY — there is no environment variable
@@ -134,7 +129,7 @@ Submit `https://burchcontracting.com/sitemap.xml` in Google Search Console
 for the burchcontracting.com property. Confirms SEARCH_CONSOLE_VERIFICATION
 ownership is in place before submitting.
 
-## 5. Test one real form submission with a file attachment
+## 5. Test one real form submission with a file attachment — ⏳ still open (human-only)
 
 Submit the contact form on the live domain with a small image attached.
 Confirm: the email arrives at estimates@burchcontracting.com, the attachment
@@ -147,7 +142,7 @@ confirmed against production: real credentials were never requested by or given 
 Claude, and don't exist anywhere in this repo. This step is now doubly important —
 confirm both that the email arrives, and that it lands in the inbox rather than spam.
 
-## 6. Spot-check five old URLs redirect correctly
+## 6. Spot-check five old URLs redirect correctly — ✅ all 5 + www→bare-domain verified 2026-07-19
 
 Using the `.htaccess` redirect map (`public/.htaccess`), check these resolve
 with a single 301 hop to the expected new page:
@@ -168,7 +163,7 @@ validated against real Google Search Console click/impression data. See
 unmapped (`/blog/*`, `/clients/` redirects temporarily to `/contact.html` until a real
 page ships).
 
-## 7. Point the deploy workflow at burchcontracting.com
+## 7. Point the deploy workflow at burchcontracting.com — ✅ DONE, verified live 2026-07-19
 
 When cutting over from the nicheprohub.com staging docroot to the real
 burchcontracting.com docroot:
@@ -195,22 +190,26 @@ burchcontracting.com docroot:
 
 ## Human-only items — do not attempt via automation
 
-These require access, credentials, or judgment that only Scott has:
+These require access, credentials, or judgment that only Scott has. DNS cutover has
+happened — burchcontracting.com is live and serving this site as of 2026-07-19. What
+remains open:
 
-- **DNS cutover** — and take a full backup of the current live (legacy Next.js)
-  burchcontracting.com site first, before pointing DNS anywhere new.
 - **SMTP credentials** in `public/api/config.local.php` on the server (see item 2) —
-  never requested by or given to Claude; add directly on the server.
+  never requested by or given to Claude; add directly on the server if not already done.
 - **Delete the unused `VITE_RECAPTCHA_SITE_KEY` GitHub secret and environment** (item 3)
   — no longer read by the workflow; leaving it in place risks the same silent-drift bug
   recurring the next time someone assumes it's still wired up.
 - **A live test lead through the production form**, confirmed received in the actual
-  inbox, not spam (item 5).
+  inbox, not spam (item 5) — never confirmed against production SMTP.
 - **SPF/DKIM records** on the domain sending form notifications — authenticated SMTP
   still lands in spam without these.
 - **Google Search Console**: submit the new sitemap (item 4), then monitor the Coverage
   report daily for 2 weeks post-launch. The legacy site currently has 93 URLs returning
   404 and 48 "crawled — currently not indexed" (see `migration/gsc-validation-notes.md`)
   — that number should fall after cutover, not stay flat or grow.
-- **Google Business Profile** — update the website link to burchcontracting.com once
-  live.
+- **Google Business Profile** — update the website link to burchcontracting.com (site is
+  now live, so this can be done).
+
+Done (verified 2026-07-19, remote-checkable): noindex is off, deploy workflow targets
+burchcontracting.com, reCAPTCHA site key matches, `config.local.php`/`contact.php`
+endpoints are correctly locked down, and all spot-checked legacy redirects work.
