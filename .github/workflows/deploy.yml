@@ -119,6 +119,13 @@ jobs:
           # it (e.g. email-templates/) are deliberately blocked via .htaccess
           # and correctly return 403/empty, which would never hash-match the
           # built HTML. Only compare pages meant to be served as-is.
+          #
+          # Cloudflare (proxying this domain) rewrites mailto: links and injects
+          # a decoder <script> at the edge on every request (Email Address
+          # Obfuscation, kept on deliberately for spam reduction) — a permanent,
+          # expected transformation, not a deploy bug. Both sides are piped
+          # through strip-cf-email-obfuscation.py to normalize that one known
+          # rewrite away before hashing, so it can't mask a real mismatch.
           mismatch=0
           while IFS= read -r -d '' file; do
             rel="${file#dist/}"
@@ -132,8 +139,8 @@ jobs:
             else
               url_path="/$rel"
             fi
-            local_hash=$(sha256sum "$file" | cut -d' ' -f1)
-            live_hash=$(curl -fsSL "$SITE_URL$url_path?nocache=$GITHUB_RUN_ID" | sha256sum | cut -d' ' -f1)
+            local_hash=$(python3 ../.github/scripts/strip-cf-email-obfuscation.py "$file" | sha256sum | cut -d' ' -f1)
+            live_hash=$(curl -fsSL "$SITE_URL$url_path?nocache=$GITHUB_RUN_ID" | python3 ../.github/scripts/strip-cf-email-obfuscation.py | sha256sum | cut -d' ' -f1)
             if [ "$local_hash" != "$live_hash" ]; then
               echo "::error::Content mismatch on $url_path — built hash $local_hash, live hash $live_hash. FTP sync likely skipped this file; delete .ftp-deploy-sync-state.json on the server and re-run."
               mismatch=1
