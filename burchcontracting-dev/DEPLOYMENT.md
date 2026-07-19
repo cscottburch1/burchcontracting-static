@@ -11,7 +11,7 @@ The GitHub Actions workflow has been configured to:
 
 ## Required GitHub Secrets
 
-You need to add the following secrets to your GitHub repository:
+You need to add the following secrets to your GitHub repository. The workflow accepts either the `FTP_*` names below or equivalent `DEPLOY_*` names (`DEPLOY_HOST`, `DEPLOY_USERNAME`, `DEPLOY_PASSWORD`).
 
 1. Go to your repository: https://github.com/cscottburch1/burchcontracting-static
 2. Click **Settings** → **Secrets and variables** → **Actions**
@@ -19,7 +19,7 @@ You need to add the following secrets to your GitHub repository:
 
 ### FTP_SERVER
 - **Value**: Your Hostinger FTP server address
-- **Example**: `ftp.yourdomain.com` or `192.168.x.x`
+- **Example**: `ftp.yourdomain.com`, `192.168.x.x`, or `ftp://ftp.yourdomain.com`
 - **Where to find**: Hostinger control panel → FTP Accounts → Server address
 
 ### FTP_USERNAME

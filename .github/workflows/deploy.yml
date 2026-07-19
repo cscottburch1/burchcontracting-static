@@ -71,6 +71,45 @@ jobs:
           echo "commit=${GITHUB_SHA}" > dist/version.txt
           echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
 
+      - name: Normalize FTP connection settings
+        id: ftp
+        env:
+          RAW_SERVER: ${{ secrets.DEPLOY_HOST || secrets.FTP_SERVER }}
+        run: |
+          server="${RAW_SERVER#"${RAW_SERVER%%[![:space:]]*}"}"
+          server="${server%"${server##*[![:space:]]}"}"
+          protocol=ftp
+          port=21
+
+          case "$server" in
+            ftps://*)
+              protocol=ftps
+              server="${server#ftps://}"
+              ;;
+            ftp://*)
+              server="${server#ftp://}"
+              ;;
+          esac
+
+          server="${server%%/*}"
+          if [[ "$server" == *:* ]]; then
+            host="${server%%:*}"
+            maybe_port="${server##*:}"
+            if [[ "$maybe_port" =~ ^[0-9]+$ ]]; then
+              server="$host"
+              port="$maybe_port"
+            fi
+          fi
+
+          if [ -z "$server" ]; then
+            echo "::error::FTP server is empty. Set DEPLOY_HOST or FTP_SERVER."
+            exit 1
+          fi
+
+          echo "server=$server" >> "$GITHUB_OUTPUT"
+          echo "protocol=$protocol" >> "$GITHUB_OUTPUT"
+          echo "port=$port" >> "$GITHUB_OUTPUT"
+
       # Recovery procedure: if the live site is ever stale while runs are
       # green, the FTP action's incremental sync-state file
       # (.ftp-deploy-sync-state.json, in the server-dir root) has likely
@@ -80,11 +119,11 @@ jobs:
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          protocol: ftp
+          server: ${{ steps.ftp.outputs.server }}
+          username: ${{ secrets.DEPLOY_USERNAME || secrets.FTP_USERNAME }}
+          password: ${{ secrets.DEPLOY_PASSWORD || secrets.FTP_PASSWORD }}
+          port: ${{ steps.ftp.outputs.port }}
+          protocol: ${{ steps.ftp.outputs.protocol }}
           local-dir: ./burchcontracting-dev/dist/
           server-dir: ./
           dangerous-clean-slate: false
