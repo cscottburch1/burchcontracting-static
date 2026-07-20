@@ -3,8 +3,15 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { SITE, SERVICES } from '../src/data/services.js'
 import { SERVICE_FAQS } from '../src/data/service-faqs.js'
+import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA } from '../src/data/site-schema.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+
+// Site relaunch date (see LAUNCH-CHECKLIST.md) — used as datePublished/
+// dateModified across service pages until real per-page edit history exists.
+// Bump LAST_UPDATED_ISO/DISPLAY together when content actually changes.
+const LAST_UPDATED_ISO = '2026-07-19'
+const LAST_UPDATED_DISPLAY = 'July 2026'
 
 function esc(value) {
   return String(value)
@@ -275,8 +282,7 @@ function authorBox() {
             <h3 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h3>
             <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
             <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | ${SITE.experience} years | ${SITE.rating} Google Rating | BBB ${SITE.bbb} Rated</p>
-            <p class="text-slate-600 text-sm mt-2 leading-relaxed">Last updated</p>
-            <p class="text-slate-900 text-sm font-medium">Apr 16, 2026</p>
+            <p class="text-slate-600 text-sm mt-3 leading-relaxed">Last updated: <span id="last-updated">${LAST_UPDATED_DISPLAY}</span></p>
           </aside>`
 }
 
@@ -300,27 +306,32 @@ function servicePage(service) {
   const description = service.description
   const faqs = SERVICE_FAQS[service.id] || []
 
+  const personId = `${SITE.url}/#scott-burch`
+
   const serviceSchema = {
     '@type': 'Service',
     name: service.title,
     description: service.description,
-    provider: {
-      '@type': 'LocalBusiness',
-      '@id': `${SITE.url}/#business`,
-      name: SITE.name,
-      telephone: SITE.phone,
-      email: SITE.email,
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: SITE.address,
-        addressLocality: SITE.city,
-        addressRegion: SITE.state,
-        postalCode: SITE.zip,
-      },
-    },
+    datePublished: LAST_UPDATED_ISO,
+    dateModified: LAST_UPDATED_ISO,
+    author: { '@id': personId },
+    provider: { '@id': LOCAL_BUSINESS_SCHEMA['@id'] },
     areaServed: {
       '@type': 'State',
       name: 'South Carolina',
+    },
+  }
+
+  const personSchema = {
+    '@type': 'Person',
+    '@id': personId,
+    name: SITE.owner,
+    jobTitle: 'General Contractor',
+    hasCredential: {
+      '@type': 'EducationalOccupationalCredential',
+      credentialCategory: 'license',
+      recognizedBy: { '@type': 'Organization', name: 'South Carolina LLR' },
+      identifier: SITE.license,
     },
   }
 
@@ -333,7 +344,20 @@ function servicePage(service) {
     }
   }
 
-  const schemaGraph = [serviceSchema]
+  const schemaGraph = [LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, serviceSchema, personSchema]
+
+  if (service.howItWorks) {
+    schemaGraph.push({
+      '@type': 'HowTo',
+      name: `How ${service.title} Works`,
+      step: service.howItWorks.map((step, i) => ({
+        '@type': 'HowToStep',
+        position: i + 1,
+        name: step.title,
+        text: step.description,
+      })),
+    })
+  }
 
   schemaGraph.push({
     '@type': 'BreadcrumbList',
@@ -359,22 +383,22 @@ function servicePage(service) {
 
   const commonProjectsHtml = (service.commonProjects || [])
     .map(
-      (project) => `              <li class="bg-white border border-slate-200 rounded-xl p-6 hover:border-blue-200 hover:shadow-sm transition-all">
-                <h3 class="font-bold text-slate-900 text-lg mb-2">${esc(project.name)}</h3>
-                <p class="text-blue-700 font-semibold mb-2">${esc(project.cost)}</p>
-                <p class="text-slate-500 text-sm mb-3">${esc(project.size)}</p>
-                <p class="text-slate-600 text-sm leading-relaxed">${esc(project.details)}</p>
-              </li>`
+      (project) => `                  <tr class="border-t border-slate-200">
+                    <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left">${esc(project.name)}</th>
+                    <td class="px-4 py-4 text-slate-500 text-sm">${esc(project.size)}</td>
+                    <td class="px-4 py-4 text-blue-700 font-semibold whitespace-nowrap">${esc(project.cost)}</td>
+                    <td class="px-4 py-4 text-slate-600 text-sm leading-relaxed">${esc(project.details)}</td>
+                  </tr>`
     )
     .join('\n')
 
   const pricingTiersHtml = (service.pricingTiers || [])
     .map(
-      (tier) => `              <li class="bg-white border border-slate-200 rounded-xl p-6">
-                <h3 class="font-bold text-slate-900 text-lg mb-2">${esc(tier.name)}</h3>
-                <p class="text-blue-700 font-bold text-2xl mb-3">${esc(tier.range)}</p>
-                <p class="text-slate-600 text-sm leading-relaxed">${esc(tier.description)}</p>
-              </li>`
+      (tier) => `                  <tr class="border-t border-slate-200">
+                    <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left">${esc(tier.name)}</th>
+                    <td class="px-4 py-4 text-blue-700 font-bold text-lg whitespace-nowrap">${esc(tier.range)}</td>
+                    <td class="px-4 py-4 text-slate-600 text-sm leading-relaxed">${esc(tier.description)}</td>
+                  </tr>`
     )
     .join('\n')
 
@@ -432,9 +456,22 @@ ${service.additionalCosts
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl font-bold text-slate-900 mb-2">Common ${esc(service.title)} Projects</h2>
           <p class="text-slate-600 mb-8">Real-world project examples with typical costs in Upstate SC:</p>
-          <ul class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Common ${esc(service.title)} projects and typical costs — Upstate SC</caption>
+              <thead class="bg-slate-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Project Type</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Size</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Typical Cost</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Details</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
 ${commonProjectsHtml}
-          </ul>
+              </tbody>
+            </table>
+          </div>
 ${authorBox()}
         </div>
       </section>`
@@ -447,9 +484,21 @@ ${authorBox()}
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl font-bold text-slate-900 mb-2">${esc(service.title)} Pricing Breakdown</h2>
           <p class="text-slate-600 mb-8">Three pricing tiers to match your project scope and budget:</p>
-          <ul class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-100">${esc(service.title)} pricing tiers — Upstate SC</caption>
+              <thead class="bg-slate-100">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Tier</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Price Range</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">What's Included</th>
+                </tr>
+              </thead>
+              <tbody>
 ${pricingTiersHtml}
-          </ul>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>`
   } else if (service.flatFee) {
@@ -602,6 +651,17 @@ ${faqHtml(faqs, service.id)}
       </section>`
     : ''
 
+  const citationsSectionHtml = service.citations
+    ? `
+      <section class="bg-white py-8 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p class="text-sm text-slate-500">Codes &amp; permits: ${service.citations
+      .map((c) => `<a href="${esc(c.url)}" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">${esc(c.text)}</a>`)
+      .join(' &middot; ')}</p>
+        </div>
+      </section>`
+    : ''
+
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -629,6 +689,7 @@ ${additionalCostsHtml}
 ${howItWorksSectionHtml}
 ${benefitsSectionHtml}
 ${faqSectionHtml}
+${citationsSectionHtml}
 
       <section class="bg-white py-16 lg:py-20 border-t border-slate-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

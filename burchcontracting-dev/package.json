@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/generate-geo-aeo.mjs && node scripts/generate-services.mjs",
+    "prebuild": "node scripts/generate-geo-aeo.mjs && node scripts/generate-services.mjs && node scripts/generate-calculator-tables.mjs",
     "build": "vite build && node scripts/flip-noindex-production.mjs",
     "preview": "vite preview",
     "check-build": "node scripts/check-build.mjs",

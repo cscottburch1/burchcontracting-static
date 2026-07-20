@@ -11,6 +11,7 @@ import {
   faqPageSchema,
 } from '../src/data/geo-aeo.js'
 import { SERVICES } from '../src/data/services.js'
+import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA } from '../src/data/site-schema.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const areaDir = resolve(root, 'service-areas')
@@ -260,6 +261,8 @@ function serviceAreaPage(area) {
   const schema = {
     '@context': 'https://schema.org',
     '@graph': [
+      LOCAL_BUSINESS_SCHEMA,
+      ORGANIZATION_SCHEMA,
       faqPageSchema(faqs),
       {
         '@type': 'Service',
@@ -450,13 +453,29 @@ ${faqHtml(group.faqs, group.category.toLowerCase().replace(/\s+/g, '-'))}
             </a>`
   ).join('\n')
 
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      LOCAL_BUSINESS_SCHEMA,
+      ORGANIZATION_SCHEMA,
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'FAQs', item: canonical },
+        ],
+      },
+      faqPageSchema(allFaqs),
+    ],
+  }
+
   return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 ${seoHead({ title, description, canonical })}
-    <script type="application/ld+json">${JSON.stringify(faqPageSchema(allFaqs))}</script>
+    <script type="application/ld+json">${JSON.stringify(schema)}</script>
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -489,6 +508,7 @@ ${globalSection}
           </div>
 ${serviceSections}
 ${authorBox('Upstate SC')}
+          <p class="mt-8 text-sm text-slate-500">Codes &amp; permits: <a href="https://llr.sc.gov/bcc/" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">South Carolina Building Codes Council</a> &middot; <a href="https://www.greenvillecounty.org/buildingsafety/Permits.aspx" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Greenville County building permits</a> &middot; <a href="https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Laurens County building permits &amp; documents</a></p>
         </div>
       </section>
 

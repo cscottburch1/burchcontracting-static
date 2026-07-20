@@ -38,6 +38,23 @@ RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [L,R=301]
 
+# --- Security headers ----------------------------------------------------
+# Wrapped in <IfModule> so a host without mod_headers loaded doesn't 500.
+# script-src/style-src include 'unsafe-inline' because pages ship inline
+# JSON-LD (exempt from CSP anyway) and one inline mobile-nav <script>, plus
+# Tailwind's compiled stylesheet — there's no per-request templating layer
+# here to mint per-build nonces against. www.google.com/gstatic.com/
+# googletagmanager.com/google-analytics.com are reCAPTCHA + GA4, the only
+# third-party script/frame origins this site actually loads.
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+</IfModule>
+
 # --- Old Next.js site URLs -> new static site URLs ---------------------
 
 RewriteRule ^contact/?$ /contact.html [R=301,L]

@@ -296,6 +296,11 @@ export const SERVICES = [
     ],
     calculator: 'garages',
     rentalIncome: '$850-$1,200/month for garage apartment',
+    citations: [
+      { text: 'South Carolina Building Codes Council', url: 'https://llr.sc.gov/bcc/' },
+      { text: 'Greenville County building permits', url: 'https://www.greenvillecounty.org/buildingsafety/Permits.aspx' },
+      { text: 'Laurens County building permits & documents', url: 'https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php' }
+    ],
     relatedServices: [
       { name: 'ADU Construction', url: '/adu-builder' },
       { name: 'Room Additions', url: '/additions' },
@@ -363,6 +368,11 @@ export const SERVICES = [
       }
     ],
     calculator: 'additions',
+    citations: [
+      { text: 'South Carolina Building Codes Council', url: 'https://llr.sc.gov/bcc/' },
+      { text: 'Greenville County building permits', url: 'https://www.greenvillecounty.org/buildingsafety/Permits.aspx' },
+      { text: 'Laurens County building permits & documents', url: 'https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php' }
+    ],
     relatedServices: [
       { name: 'Basement Finishing', url: '/basement-finishing' },
       { name: 'ADU Construction', url: '/adu-builder' },

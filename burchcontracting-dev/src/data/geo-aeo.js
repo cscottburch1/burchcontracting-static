@@ -309,7 +309,6 @@ export function cityFaqs(area) {
 
 export function faqPageSchema(faqs) {
   return {
-    '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
