@@ -301,7 +301,7 @@ function serviceAreaPage(area) {
     (service) => `              <li class="bg-white border border-slate-100 rounded-xl p-5 hover:border-blue-200 transition-colors">
                 <h3 class="font-bold text-slate-900 mb-2">${esc(service.name)}</h3>
                 <p class="text-slate-600 text-sm mb-3">${esc(service.summary)}</p>
-                <a href="/services.html#${service.anchor}" class="text-blue-700 hover:text-blue-800 font-semibold text-sm">Learn more &rarr;</a>
+                <a href="${service.url}" class="text-blue-700 hover:text-blue-800 font-semibold text-sm">Learn more &rarr;</a>
               </li>`
   ).join('\n')
 

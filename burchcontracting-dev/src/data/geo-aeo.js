@@ -144,14 +144,14 @@ export const SERVICE_AREAS = [
 ]
 
 export const CORE_SERVICES = [
-  { name: 'Custom Decks', anchor: 'decks', summary: 'Wood and composite decks for outdoor entertaining.' },
-  { name: 'Screened Porches', anchor: 'screened-porches', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
-  { name: 'Garages', anchor: 'garages', summary: 'Attached and detached garage construction.' },
-  { name: 'Room Additions', anchor: 'additions', summary: 'Ground-floor and second-story home expansions.' },
-  { name: 'Remodeling', anchor: 'remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
-  { name: 'Commercial', anchor: 'commercial', summary: 'Office upfits and tenant improvements.' },
-  { name: 'Insurance Restoration', anchor: 'insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
-  { name: 'ADA Compliance', anchor: 'ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
+  { name: 'Custom Decks', url: '/outdoor-living/decks', summary: 'Wood and composite decks for outdoor entertaining.' },
+  { name: 'Screened Porches', url: '/outdoor-living/screened-porches', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
+  { name: 'Garages', url: '/garages', summary: 'Attached and detached garage construction.' },
+  { name: 'Room Additions', url: '/additions', summary: 'Ground-floor and second-story home expansions.' },
+  { name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
+  { name: 'Commercial', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
+  { name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
+  { name: 'ADA Compliance', url: '/ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
 ]
 
 export const GLOBAL_FAQS = [
