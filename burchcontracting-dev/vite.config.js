@@ -6,6 +6,7 @@ import { resolve } from 'path'
 const root = import.meta.dirname
 const serviceAreaDir = resolve(root, 'service-areas')
 const outdoorLivingDir = resolve(root, 'outdoor-living')
+const calculatorDir = resolve(root, 'calculator')
 
 const serviceAreaInputs = existsSync(serviceAreaDir)
   ? Object.fromEntries(
@@ -29,6 +30,24 @@ const outdoorLivingInputs = existsSync(outdoorLivingDir)
     )
   : {}
 
+// Auto-discovered rather than hand-listed like the block below: a new
+// calculator/*.html file used to need a matching entry added here by hand,
+// and calculator/covered-patios.html shipped without one — it worked in
+// `npm run dev` (which needs no input list) and passed the deploy's
+// content-integrity check (which can only compare files that made it into
+// dist/), so it 404'd in production with nothing catching it until someone
+// hit the live URL. Scanning the directory closes that gap for good.
+const calculatorInputs = existsSync(calculatorDir)
+  ? Object.fromEntries(
+      readdirSync(calculatorDir)
+        .filter((file) => file.endsWith('.html'))
+        .map((file) => [
+          `calculator_${file.replace('.html', '').replace(/-/g, '_')}`,
+          resolve(calculatorDir, file),
+        ])
+    )
+  : {}
+
 export default defineConfig({
   plugins: [tailwindcss()],
   build: {
@@ -43,16 +62,6 @@ export default defineConfig({
         termsOfService: resolve(root, 'terms-of-service.html'),
         projects: resolve(root, 'projects.html'),
         faqs: resolve(root, 'faqs.html'),
-        calculatorDecks: resolve(root, 'calculator/decks.html'),
-        calculatorGarages: resolve(root, 'calculator/garages.html'),
-        calculatorPorch: resolve(root, 'calculator/porch.html'),
-        calculatorAdditions: resolve(root, 'calculator/additions.html'),
-        calculatorEstimate: resolve(root, 'calculator/estimate.html'),
-        calculatorKitchen: resolve(root, 'calculator/kitchen-remodel.html'),
-        calculatorBath: resolve(root, 'calculator/bath-remodel.html'),
-        calculatorWholeHome: resolve(root, 'calculator/whole-home-remodel.html'),
-        calculatorAdaBathShower: resolve(root, 'calculator/ada-bath-shower.html'),
-        calculatorBasementFinishing: resolve(root, 'calculator/basement-finishing.html'),
         // Service pages (all use nested directory structure)
         aduBuilder: resolve(root, 'adu-builder/index.html'),
         remodeling: resolve(root, 'remodeling/index.html'),
@@ -67,6 +76,7 @@ export default defineConfig({
         // Generated pages
         ...serviceAreaInputs,
         ...outdoorLivingInputs,
+        ...calculatorInputs,
       },
     },
   },
