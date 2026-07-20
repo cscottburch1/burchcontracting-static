@@ -19,4 +19,19 @@ return [
     'smtp_password' => 'CHANGE_ME_SMTP_PASSWORD',
     // 'tls' = STARTTLS, usually port 587. 'ssl' = implicit TLS, usually port 465.
     'smtp_secure' => 'tls',
+
+    // CRM database (public/api/admin/) — Hostinger MySQL, created in hPanel
+    // under Databases. db_name/db_user are the full prefixed names Hostinger
+    // assigns (e.g. u123456789_crm), not just what you typed when creating
+    // them. 'localhost' is correct for Hostinger shared hosting.
+    'db_host' => 'localhost',
+    'db_name' => 'CHANGE_ME_DB_NAME',
+    'db_user' => 'CHANGE_ME_DB_USER',
+    'db_password' => 'CHANGE_ME_DB_PASSWORD',
+
+    // CRM admin login (public/api/admin/login.php). Generate the hash with:
+    //   php -r "echo password_hash('your-password-here', PASSWORD_DEFAULT);"
+    // Never put the plain password here — hash only.
+    'admin_username' => 'CHANGE_ME_ADMIN_USERNAME',
+    'admin_password_hash' => 'CHANGE_ME_ADMIN_PASSWORD_HASH',
 ];

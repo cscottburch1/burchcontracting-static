@@ -6,6 +6,7 @@ header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/PHPMailer/src/Exception.php';
 require __DIR__ . '/PHPMailer/src/PHPMailer.php';
 require __DIR__ . '/PHPMailer/src/SMTP.php';
+require __DIR__ . '/admin/db.php';
 
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -204,6 +205,37 @@ function logSubmissionFallback(string $logPath, array $submission, bool $emailSe
         'email_error' => $emailError,
     ]);
     @file_put_contents($logPath, json_encode($entry, JSON_UNESCAPED_SLASHES) . PHP_EOL, FILE_APPEND | LOCK_EX);
+}
+
+/**
+ * Best-effort CRM insert — a database outage must never fail the lead
+ * submission itself. The fallback log above is still the durable record;
+ * this is an additional, disposable copy for the admin panel to read.
+ */
+function saveLeadToCrm(array $submission): void
+{
+    try {
+        $pdo = getPdo();
+        $stmt = $pdo->prepare(
+            'INSERT INTO leads (name, phone, email, address, zip_code, service_type, budget_range, timeframe, referral_source, description, attachment_count)
+             VALUES (:name, :phone, :email, :address, :zip_code, :service_type, :budget_range, :timeframe, :referral_source, :description, :attachment_count)'
+        );
+        $stmt->execute([
+            'name' => $submission['name'],
+            'phone' => $submission['phone'],
+            'email' => $submission['email'],
+            'address' => $submission['address'] !== '' ? $submission['address'] : null,
+            'zip_code' => $submission['zipCode'] !== '' ? $submission['zipCode'] : null,
+            'service_type' => $submission['projectType'],
+            'budget_range' => $submission['budgetRange'],
+            'timeframe' => $submission['timeframe'],
+            'referral_source' => $submission['referralSource'],
+            'description' => $submission['description'],
+            'attachment_count' => $submission['attachmentCount'],
+        ]);
+    } catch (Throwable $exception) {
+        error_log('[contact.php] CRM insert failed: ' . $exception->getMessage());
+    }
 }
 
 function createMailer(string $host, int $port, string $username, string $password, string $secure): PHPMailer
@@ -432,7 +464,7 @@ if ($leadEmailError !== null) {
     error_log('[contact.php] Lead email failed to send: ' . $leadEmailError);
 }
 
-logSubmissionFallback($fallbackLogPath, [
+$submissionRecord = [
     'name' => $name,
     'phone' => $phone,
     'email' => $email,
@@ -444,7 +476,10 @@ logSubmissionFallback($fallbackLogPath, [
     'referralSource' => labelFor($referralSource, $referralLabels),
     'description' => $description,
     'attachmentCount' => count($attachments),
-], $leadEmailError === null, $leadEmailError);
+];
+
+logSubmissionFallback($fallbackLogPath, $submissionRecord, $leadEmailError === null, $leadEmailError);
+saveLeadToCrm($submissionRecord);
 
 $firstName = explode(' ', $name)[0];
 $confirmationHtml = renderConfirmationEmail($firstName, $projectLabel);
