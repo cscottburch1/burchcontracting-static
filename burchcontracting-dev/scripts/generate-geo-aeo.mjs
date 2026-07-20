@@ -559,6 +559,7 @@ function generateSitemap() {
     ['/calculator/whole-home-remodel.html', 'monthly', '0.7'],
     ['/calculator/ada-bath-shower.html', 'monthly', '0.7'],
     ['/calculator/basement-finishing.html', 'monthly', '0.7'],
+    ['/calculator/covered-patios.html', 'monthly', '0.7'],
     ['/privacy-policy.html', 'yearly', '0.3'],
     ['/terms-of-service.html', 'yearly', '0.3'],
   ]

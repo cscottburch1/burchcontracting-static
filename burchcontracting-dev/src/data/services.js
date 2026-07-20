@@ -6,14 +6,16 @@
  * PRICING SOURCE OF TRUTH: src/js/calculator-config.js is the single
  * authoritative pricing engine for this site (see PRICING.md). Every
  * dollar figure below for decks, screened-porches, garages, additions,
- * and remodeling (bath/kitchen/whole-home) is computed from that config
- * via src/data/pricing-sync.js — none of it is hand-typed, so it can't
- * drift out of sync again. Reconciled 2026-07-05.
+ * remodeling (bath/kitchen/whole-home), and covered-patios is computed
+ * from that config via src/data/pricing-sync.js — none of it is
+ * hand-typed, so it can't drift out of sync again. Reconciled 2026-07-05;
+ * covered-patios reconciled separately when its calculator was added.
  *
- * covered-patios, adu-builder, commercial-upfits, and basement-finishing
- * have no equivalent service in calculator-config.js (no calculator exists
- * for them), so their figures remain hand-authored and are out of scope
- * for this reconciliation.
+ * adu-builder, commercial-upfits, and basement-finishing have no
+ * equivalent service in calculator-config.js (no calculator exists for
+ * them — basement-finishing has a calculator page, but its baseRates
+ * were never reconciled the way the others were), so their figures
+ * remain hand-authored and are out of scope for this reconciliation.
  */
 import {
   projectCostString,
@@ -186,51 +188,60 @@ export const SERVICES = [
     h1: 'Covered Patio Builder - Upstate SC',
     intro: "I build custom covered patios that extend your outdoor living space with protection from sun and rain. From simple roof extensions to fully-featured outdoor kitchens with lighting and ceiling fans, every patio is designed to complement your home's architecture and maximize your outdoor enjoyment.",
     stats: {
-      costRange: '$15,000-$45,000 Range',
+      costRange: combinedCostString(
+        projectEstimate('coveredPatios', 'basicRoof', 192),
+        projectEstimate('coveredPatios', 'premiumOutdoorLiving', 400),
+        { plus: true }
+      ),
       timeline: '2-5 Weeks Typical',
       experience: '35+ Years Experience',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: '$75-150/sq ft',
+    pricePerSqFt: formatBand(servicePerSqftBand('coveredPatios')),
     timeline: '2-5 weeks',
     commonProjects: [
       {
         name: 'Basic 12×16 Covered Patio',
         size: '192 sq ft',
-        cost: '$15,000–$22,000',
+        cost: projectCostString('coveredPatios', 'basicRoof', 192),
         details: 'Concrete slab, PT or aluminum posts, architectural shingles, basic electrical'
       },
       {
         name: 'Mid-Range 16×20 Patio',
         size: '320 sq ft',
-        cost: '$25,000–$35,000',
+        cost: projectCostString('coveredPatios', 'midRangeOutdoorRoom', 320),
         details: 'Decorative columns, ceiling fans, recessed lighting, matching roof line'
       },
       {
         name: 'Premium Outdoor Living Space',
         size: '400+ sq ft',
-        cost: '$40,000–$55,000+',
+        cost: projectCostString('coveredPatios', 'premiumOutdoorLiving', 400),
         details: 'Outdoor kitchen, fireplace, custom lighting, premium materials'
       }
     ],
     pricingTiers: [
       {
         name: 'Basic Covered Patio',
-        range: '$15,000-$22,000',
+        range: projectCostString('coveredPatios', 'basicRoof', 192),
         description: 'Simple roof structure over existing concrete pad or new slab. PT or aluminum posts, architectural shingles, basic electrical for lights and fans.'
       },
       {
         name: 'Mid-Range Outdoor Room',
-        range: '$25,000-$35,000',
+        range: projectCostString('coveredPatios', 'midRangeOutdoorRoom', 320),
         description: 'Decorative columns, tongue-and-groove ceiling, ceiling fans, recessed lighting, upgraded materials. Roof line matches home architecture.'
       },
       {
         name: 'Premium Outdoor Living',
-        range: '$40,000-$55,000+',
+        range: projectCostString('coveredPatios', 'premiumOutdoorLiving', 400),
         description: 'Complete outdoor living space with kitchen area, fireplace or fire pit, custom lighting, premium materials, integrated landscaping features.'
       }
     ],
-    calculator: null,
+    calculator: 'covered-patios',
+    citations: [
+      { text: 'South Carolina Building Codes Council', url: 'https://llr.sc.gov/bcc/' },
+      { text: 'Greenville County building permits', url: 'https://www.greenvillecounty.org/buildingsafety/Permits.aspx' },
+      { text: 'Laurens County building permits & documents', url: 'https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php' }
+    ],
     relatedServices: [
       { name: 'Custom Deck Building', url: '/outdoor-living/decks' },
       { name: 'Screened Porches', url: '/outdoor-living/screened-porches' },

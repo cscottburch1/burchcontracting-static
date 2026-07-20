@@ -73,6 +73,7 @@ const STANDARD_PAGES = [
   { file: 'bath-remodel.html', calcKey: 'bath', question: 'How much does a bathroom remodel cost in Greenville & Laurens County?' },
   { file: 'whole-home-remodel.html', calcKey: 'wholeHome', question: 'How much does a whole-home remodel cost in Greenville & Laurens County?' },
   { file: 'basement-finishing.html', calcKey: 'basement', question: 'How much does basement finishing cost in Upstate SC?' },
+  { file: 'covered-patios.html', calcKey: 'coveredPatios', question: 'How much does a covered patio cost in Upstate SC?' },
 ]
 
 for (const page of STANDARD_PAGES) {

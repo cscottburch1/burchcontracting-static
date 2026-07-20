@@ -33,6 +33,7 @@ export const PRICING_CONFIG = {
     bathRemodel: { min: 35, max: 150 },
     wholeHomeRemodel: { min: 800, max: 4000 },
     basementFinishing: { min: 400, max: 2000 },
+    coveredPatios: { min: 100, max: 600 },
   },
   services: {
     decks: {
@@ -277,6 +278,35 @@ export const PRICING_CONFIG = {
         { id: 'hvacZone', label: 'Dedicated HVAC Zone', cost: 6500, unit: 'per zone' },
       ],
     },
+    coveredPatios: {
+      name: 'Covered Patios',
+      baseRates: {
+        basicRoof: {
+          label: 'Basic Roof Structure',
+          directCost: 68,
+          description: 'Roof over existing or new concrete slab, PT or aluminum posts, architectural shingles, basic electrical',
+        },
+        midRangeOutdoorRoom: {
+          label: 'Mid-Range Outdoor Room',
+          directCost: 88,
+          description: 'Decorative columns, tongue-and-groove ceiling, ceiling fans, recessed lighting, roof line matched to home',
+        },
+        premiumOutdoorLiving: {
+          label: 'Premium Outdoor Living Space',
+          directCost: 112,
+          description: 'Outdoor kitchen area, fireplace or fire pit, custom lighting, premium materials, integrated landscaping',
+        },
+      },
+      materialFactors: { standard: 1, upgraded: 1.15, premium: 1.3 },
+      complexityFactors: { simple: 1, moderate: 1.12, complex: 1.25 },
+      siteConditionFactors: { flat: 1, slope: 1.1, challenging: 1.22 },
+      adders: [
+        { id: 'kitchen', label: 'Outdoor Kitchen Area', cost: 12000, unit: 'per kitchen' },
+        { id: 'fireplace', label: 'Fireplace or Fire Pit', cost: 5500, unit: 'per feature' },
+        { id: 'fan', label: 'Ceiling Fan with Light', cost: 450, unit: 'per fan' },
+        { id: 'lighting', label: 'Recessed / Accent Lighting Package', cost: 1400, unit: 'per patio' },
+      ],
+    },
   },
 }
 
@@ -357,6 +387,14 @@ export const CALCULATOR_PAGES = {
     description: 'Estimate whole-home remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
     intro: 'Whole-home remodels in Greenville and Laurens County SC typically cost $135–$290 per square foot — a 2,000 sqft home runs $250,000–$645,000 depending on scope and finish level.',
     marketArea: 'Greenville County & Laurens County',
+  },
+  coveredPatios: {
+    serviceKey: 'coveredPatios',
+    title: 'Covered Patio Cost Calculator',
+    metaTitle: 'Covered Patio Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
+    description: 'Estimate covered patio and outdoor living space costs in Upstate SC by size, finish level, and location. Transparent 20% overhead & profit. SC Licensed #CLG118679.',
+    intro: 'Covered patios in Upstate SC typically cost $77–$154 per square foot — a 320 sqft mid-range outdoor room with decorative columns and lighting runs $32,055–$38,604. Roof structure, columns, and finish level are the biggest cost drivers.',
+    marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   basement: {
     serviceKey: 'basementFinishing',
