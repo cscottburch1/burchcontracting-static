@@ -8,6 +8,120 @@ serving in production), and the recovery sequence below has already been run
 successfully — kept here only as a reference if the docroot ever gets modified
 out-of-band again.
 
+## Redirect map verification — 2026-07-20
+
+A report surfaced two legacy URLs allegedly still serving the old Next.js site
+instead of redirecting (`/simpsonville-sc/deck-builder`, `/locations`), with a
+theory that leftover static files from the old site's export were physically
+shadowing those exact paths in the docroot, ahead of `.htaccess`.
+
+**Re-tested independently, live, from scratch — both now redirect correctly**,
+along with every other rule family in `public/.htaccess`:
+
+- All 28 representative URLs spanning every distinct `RewriteRule` family
+  (base old-site rules, city×service, service×city, `/locations/*`,
+  `/services/*`, `/calculator/*`, `/cost/*`, the bare/underscore tier,
+  `/service-areas/*`) return their documented 301 target. 0 failures.
+- Response bodies checked directly: the 301s return Cloudflare/LiteSpeed's
+  generic redirect page (no old-site HTML), and the destination pages carry
+  correct self-referential canonical tags for the *new* site — no trace of
+  the old nav/footer/testimonials/self-canonical symptom originally reported.
+- `.htaccess` correctly 403s on direct fetch (expected Apache behavior, not a
+  bug) so a byte-for-byte diff against the repo copy isn't possible over
+  HTTP — but the fact that literally every rule in the 387-line file fires
+  with the exact right target is strong behavioral proof the full, current
+  file is what's live; a stale/partial file would show a different subset
+  working, not all of it.
+- Cloudflare side ruled out as a cause: 0 Page Rules configured, 0
+  Redirect/Cache Rules configured, and `cf-cache-status: DYNAMIC` on both
+  originally-reported URLs (a fresh, uncached response from origin each
+  time, not a frozen snapshot).
+
+**Root cause (best available evidence, not 100% certain):** most likely the
+same stale-FTP-sync-state class of issue this file's Recovery deploy
+sequence already documents, not literal leftover files at those specific
+paths — no direct evidence of the latter was found (see caveat below), and
+the former is a known, previously-hit failure mode for this project. A full
+docroot re-upload (the GEO remediation deploy earlier the same day, commit
+`23c3c29`) most likely fixed it as a side effect: the deploy pipeline's own
+automated content-integrity check ("every built page matches live," hashed
+against every `dist/*.html` file) passed clean on that run and every run
+since.
+
+<details>
+<summary>Full pass/fail table (28 URLs, one per distinct rule family, tested 2026-07-20)</summary>
+
+| URL | Expected target | Result |
+|---|---|---|
+| `/contact` | `/contact.html` | ✅ 301 |
+| `/areas` | `/#service-areas` | ✅ 301 |
+| `/service-areas` | `/#service-areas` | ✅ 301 |
+| `/garage-builder` | `/garages` | ✅ 301 |
+| `/calculator/decks` | `/calculator/decks.html` | ✅ 301 |
+| `/simpsonville-sc/deck-builder` | `/service-areas/simpsonville.html` | ✅ 301 (previously reported failing) |
+| `/fountain-inn-sc/garage-builder` | `/service-areas/fountain-inn.html` | ✅ 301 |
+| `/clinton-sc/deck-builder` | `/service-areas/laurens.html` | ✅ 301 |
+| `/deck-builder/simpsonville` | `/service-areas/simpsonville.html` | ✅ 301 |
+| `/deck-builder/greer` | `/service-areas/greenville.html` | ✅ 301 |
+| `/deck-builder/travelers-rest` | `/outdoor-living/decks` | ✅ 301 |
+| `/locations` | `/#service-areas` | ✅ 301 (previously reported failing) |
+| `/locations/deck-builder-mauldin-sc` | `/outdoor-living/decks` | ✅ 301 |
+| `/locations/basement-finishing-laurens-sc` | `/basement-finishing` | ✅ 301 |
+| `/deck-builder` | `/outdoor-living/decks` | ✅ 301 |
+| `/services/decks` | `/outdoor-living/decks` | ✅ 301 |
+| `/services/whatever-else` | `/services.html` | ✅ 301 |
+| `/calculator/room-additions` | `/calculator/additions.html` | ✅ 301 |
+| `/calculators` | `/calculator/estimate.html` | ✅ 301 |
+| `/cost/cost-to-build-a-deck-mauldin-sc` | `/calculator/decks.html` | ✅ 301 |
+| `/cost/whatever-article-slug` | `/calculator/estimate.html` | ✅ 301 |
+| `/bathroom-remodeling` | `/calculator/bath-remodel.html` | ✅ 301 |
+| `/roofing` | `/services.html` | ✅ 301 |
+| `/work` | `/projects.html` | ✅ 301 |
+| `/clients` | `/contact.html` | ✅ 301 |
+| `/portal` | `/contact.html` | ✅ 301 |
+| `/service-areas/simpsonville-sc` | `/service-areas/simpsonville.html` | ✅ 301 |
+| `/service-areas/greer` | `/service-areas/greenville.html` | ✅ 301 |
+| `/editorial-policy` | `/about.html` | ✅ 301 |
+
+28/28 pass. An additional ~90-URL sweep covering every real example in every
+`.htaccess` rule family (not just this representative list) was also run the
+same day, with the same 100% pass rate.
+
+</details>
+
+**Caveat — this repo has no direct server/FTP access.** `.vscode/sftp.json`
+and `.env` are gitignored and were not present locally; no Hostinger
+credentials exist anywhere in this environment. Everything above is HTTP-
+based evidence (extensive and consistent, but external) — it was not
+possible to directly list the docroot and rule out leftover files with
+certainty the way the original report asked. If this ever regresses, that
+direct docroot check (Hostinger File Manager or SFTP client, per
+`SFTP-GUIDE.md`) is the one verification step still worth doing that
+wasn't possible here.
+
+**Structural gap worth knowing about regardless of root cause:** the FTP
+deploy step (`.github/workflows/deploy.yml`) runs with
+`dangerous-clean-slate: false` — it only adds/updates files matching the
+current build, it never deletes files on the server that aren't in `dist/`.
+If old-site debris was ever uploaded to the docroot (e.g. during the
+pre-2026-07-11 hPanel Git integration incident, see item 3 below), nothing
+in the current pipeline would ever clean it up on its own. Worth a one-time
+manual File Manager sweep to confirm the docroot only contains what
+`dist/` produces, and worth considering a periodic (not every-deploy)
+clean-slate run as deliberate maintenance — `dangerous-clean-slate: true`
+is a mirror/delete operation, so treat that as a separate, careful,
+manually-triggered action, not a default.
+
+**Still open, unchanged from before (human-only, not attempted here):**
+- `nicheprohub.com` still serves full duplicate content (confirmed fresh
+  2026-07-20: root returns 200, not a redirect; `/garages` still resolves
+  locally on that domain rather than 301ing to burchcontracting.com).
+  `migration/nicheprohub-redirect.htaccess` is prepared but not deployed —
+  needs manual upload to that domain's own docroot via Hostinger File
+  Manager (separate hosting/FTP access this environment doesn't have).
+- GSC Coverage report monitoring (see item 4 below) — still needs a human
+  with Search Console access.
+
 <details>
 <summary>🔧 Recovery deploy sequence (reference — already executed, not currently needed)</summary>
 
