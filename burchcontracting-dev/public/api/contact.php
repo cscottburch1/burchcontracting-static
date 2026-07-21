@@ -249,6 +249,12 @@ function createMailer(string $host, int $port, string $username, string $passwor
     $mail->Password = $password;
     $mail->SMTPSecure = $secure === 'ssl' ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
     $mail->CharSet = PHPMailer::CHARSET_UTF8;
+    // A misconfigured host/port/secure combo (e.g. STARTTLS on an implicit-TLS-only
+    // port) makes the socket hang reading a garbled handshake instead of failing
+    // fast. PHPMailer's default Timeout is 300s with no cap otherwise, which would
+    // block the whole request — well past what a visitor will wait for a response.
+    $mail->Timeout = 10;
+    $mail->SMTPKeepAlive = false;
     return $mail;
 }
 
