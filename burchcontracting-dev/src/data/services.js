@@ -612,6 +612,7 @@ export const SERVICES = [
     category: 'Commercial',
     description: 'Commercial roof installation, repair, and maintenance: TPO, EPDM, PVC, modified bitumen, standing seam and R-panel metal, and silicone/acrylic coatings. Licensed general contractor serving Upstate SC.',
     h1: 'Commercial Roofing Contractor - Upstate SC',
+    heroImage: '/images/commercial-tpo-roof.jpg',
     intro: "Most roofers only touch the roof. When a leak, a tear-off, or a storm claim damages what's underneath — ceilings, drywall, insulation, flooring — I handle that too, as one contract with one point of contact instead of a roofer and a separate remodeling contractor. From flat-roof systems to standing seam metal, tear-offs to recover, and ongoing maintenance agreements, every project is licensed, code-compliant, and personally overseen.",
     stats: {
       costRange: 'TODO(scott): confirm',
