@@ -11,14 +11,15 @@
  * hand-typed, so it can't drift out of sync again. Reconciled 2026-07-05;
  * covered-patios reconciled separately when its calculator was added.
  *
- * adu-builder, commercial-upfits, commercial-roofing, and
- * basement-finishing have no equivalent service in calculator-config.js
- * (no calculator exists for them — basement-finishing has a calculator
- * page, but its baseRates were never reconciled the way the others
- * were), so their figures remain hand-authored and are out of scope
- * for this reconciliation. commercial-roofing has no bid history at
- * all yet — its price fields are TODO(scott) placeholders, not
- * hand-authored numbers, until real figures exist.
+ * adu-builder, commercial-upfits, and basement-finishing have no
+ * equivalent service in calculator-config.js (no calculator exists for
+ * them — basement-finishing has a calculator page, but its baseRates
+ * were never reconciled the way the others were), so their figures
+ * remain hand-authored and are out of scope for this reconciliation.
+ * commercial-roofing intentionally carries no pricing at all (owner
+ * decision 2026-07-23): per-project cost varies too much by material
+ * and scope to publish a range, so its page has no cost fields —
+ * decision-making content and a "why us" pitch instead.
  */
 import {
   projectCostString,
@@ -615,49 +616,50 @@ export const SERVICES = [
     heroImage: '/images/commercial-tpo-roof.jpg',
     intro: "Most roofers only touch the roof. When a leak, a tear-off, or a storm claim damages what's underneath — ceilings, drywall, insulation, flooring — I handle that too, as one contract with one point of contact instead of a roofer and a separate remodeling contractor. From flat-roof systems to standing seam metal, tear-offs to recover, and ongoing maintenance agreements, every project is licensed, code-compliant, and personally overseen.",
     stats: {
-      costRange: 'TODO(scott): confirm',
-      timeline: 'TODO(scott): confirm',
+      costRange: 'Custom Quote',
+      timeline: 'Varies by Scope',
       experience: '35+ Years Experience',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: 'TODO(scott): confirm',
-    timeline: 'TODO(scott): confirm',
-    commonProjects: [
+    serviceCategories: [
       {
-        name: 'TPO/EPDM Recover',
-        size: 'TODO(scott): confirm',
-        cost: 'TODO(scott): confirm',
-        details: 'Recover over existing single-ply membrane where the two-roof-system code limit allows it. Insulation overlay, new membrane, flashing and drain detail work.'
+        name: 'Roofing Systems We Install',
+        items: [
+          'TPO, EPDM, and PVC single-ply membranes',
+          'Modified bitumen',
+          'Standing seam and R-panel metal roofing',
+          'Silicone and acrylic restoration coatings'
+        ]
       },
       {
-        name: 'Full Tear-Off & Replacement',
-        size: 'TODO(scott): confirm',
-        cost: 'TODO(scott): confirm',
-        details: 'Complete removal of existing roofing down to deck, inspection and repair of substrate, new insulation and membrane or metal system installed to current code.'
-      },
-      {
-        name: 'Standing Seam / R-Panel Metal',
-        size: 'TODO(scott): confirm',
-        cost: 'TODO(scott): confirm',
-        details: 'Metal panel roof installation for commercial and industrial buildings, including trim, flashing, and fastening detail for long-term weathertightness.'
+        name: 'What We Handle Beyond the Roof',
+        items: [
+          'Interior ceiling, drywall, and insulation repair after a leak',
+          'Flooring and finish repair tied to roof-related water damage',
+          'Insurance claim documentation and adjuster coordination',
+          'Scheduled inspections and maintenance agreements'
+        ]
       }
     ],
-    pricingTiers: [
+    howItWorks: [
       {
-        name: 'Coating / Restoration',
-        range: 'TODO(scott): confirm',
-        description: 'Silicone or acrylic roof coating over sound existing membrane to extend service life and stop minor leaks without a full tear-off.'
+        title: 'Free Consultation',
+        description: 'Discuss the roof condition, age, and any leak or repair history. No obligation.'
       },
       {
-        name: 'Recover',
-        range: 'TODO(scott): confirm',
-        description: 'New membrane installed over existing roofing where the building has not yet reached the two-roof-system limit under code.'
+        title: 'On-Site Roof Assessment',
+        description: 'We inspect the existing roof system, deck condition, and drainage to determine whether a recover, tear-off, or coating fits the situation — and confirm how many roof systems are already on the building, since code limits that to two before a tear-off is required.'
       },
       {
-        name: 'Full Tear-Off & Replacement',
-        range: 'TODO(scott): confirm',
-        description: 'Complete removal and replacement — TPO, EPDM, PVC, modified bitumen, or standing seam/R-panel metal, installed to current code.'
+        title: 'Installation or Repair',
+        description: 'We complete the approved work to code, with full attention to flashing, drainage, and long-term weathertightness. Every project priced to its own scope and materials — no two roofs are the same.'
       }
+    ],
+    benefits: [
+      'One contract for the roof and everything under it — ceiling, drywall, insulation, flooring — instead of a roofer and a separate remodeling contractor',
+      'Direct insurance claim support for storm and hail damage, the same process used for residential restoration',
+      'Scheduled maintenance and inspection agreements to catch problems before they become leaks',
+      '35+ years local experience with permits and inspections'
     ],
     calculator: null,
     relatedServices: [

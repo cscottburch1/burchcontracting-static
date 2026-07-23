@@ -241,7 +241,7 @@ export const SERVICE_FAQS = {
     },
     {
       question: 'Do you handle storm and hail damage insurance claims for commercial roofs?',
-      answer: 'Yes. We document storm and hail damage, work directly with your insurance adjuster, and complete the approved repair or replacement. This is the same insurance-restoration process we run for residential claims, applied to commercial roofing — see our insurance restoration services for how the claims process works. Cost for any repair depends on the scope your adjuster approves; TODO(scott): confirm typical claim-related repair ranges.'
+      answer: 'Yes. We document storm and hail damage, work directly with your insurance adjuster, and complete the approved repair or replacement. This is the same insurance-restoration process we run for residential claims, applied to commercial roofing — see our insurance restoration services for how the claims process works.'
     }
   ],
 
