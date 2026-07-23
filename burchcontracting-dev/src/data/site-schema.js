@@ -30,7 +30,7 @@ export const LOCAL_BUSINESS_SCHEMA = {
     postalCode: '29645',
     addressCountry: 'US',
   },
-  geo: { '@type': 'GeoCoordinates', latitude: 34.6082, longitude: -82.1134 },
+  geo: { '@type': 'GeoCoordinates', latitude: 34.6465, longitude: -82.1158 },
   openingHours: 'Mo-Fr 08:00-17:00',
   areaServed: [
     { '@type': 'City', name: 'Simpsonville' },

@@ -138,7 +138,7 @@ export const SERVICE_AREAS = [
       { name: 'Water Tank Rd area', detail: 'Our office location — central to Laurens County projects.' },
     ],
     insights: ['Burch Contracting office is located here.', 'Fastest response times for local homeowners.', 'Rural and suburban project experience since 1995.'],
-    geo: { latitude: 34.6082, longitude: -82.1134 },
+    geo: { latitude: 34.6465, longitude: -82.1158 },
     isOffice: true,
   },
 ]

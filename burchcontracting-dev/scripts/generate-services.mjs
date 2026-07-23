@@ -227,7 +227,7 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
             <ul class="space-y-3 text-sm">
               <li class="flex items-start gap-2">
                 <svg class="w-4 h-4 text-blue-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-2.003 3.5-4.697 3.5-8.333 0-4.552-3.507-7.994-8-7.994s-8 3.442-8 7.994c0 3.636 1.556 6.33 3.5 8.333a19.583 19.583 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
-                <a href="https://www.google.com/maps/place/Burch+Contracting/@34.5822568,-82.3465501,75182m/data=!3m1!1e3!4m10!1m2!2m1!1sBurch+Contracting!3m6!1s0xe54a4fa317765f3:0x967dc0e0beb33729!8m2!3d34.5827!4d-82.016883!15sChFCdXJjaCBDb250cmFjdGluZ1oTIhFidXJjaCBjb250cmFjdGluZ5IBEmdlbmVyYWxfY29udHJhY3RvcuABAA!16s%2Fg%2F11xtcmrdxv?entry=ttu&amp;g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">${SITE.address}<br/>${SITE.city}, ${SITE.state} ${SITE.zip}</a>
+                <a href="https://www.google.com/maps/place/Burch+Contracting/@34.6465,-82.1158,17z" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">${SITE.address}<br/>${SITE.city}, ${SITE.state} ${SITE.zip}</a>
               </li>
               <li>
                 <a href="tel:${SITE.phoneLink}" class="flex items-center gap-2 hover:text-white transition-colors">
