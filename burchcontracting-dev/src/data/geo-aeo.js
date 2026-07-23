@@ -5,6 +5,7 @@ export const SITE = {
   phoneTel: '+18647244600',
   email: 'estimates@burchcontracting.com',
   license: 'CLG118679',
+  licenseNC: '107292',
   owner: 'C. Scott Burch',
   office: '1095 Water Tank Rd, Gray Court, SC 29645',
   ogImage: '/images/custom-deck-greenville-sc.webp',
@@ -157,8 +158,8 @@ export const CORE_SERVICES = [
 
 export const GLOBAL_FAQS = [
   {
-    question: 'Is Burch Contracting a licensed general contractor in South Carolina?',
-    answer: 'Yes. Burch Contracting holds SC General Contractor License #CLG118679. Scott Burch has been a licensed residential builder since 1995 and a licensed general contractor since 2014. The company is fully insured and BBB A+ rated.',
+    question: 'Is Burch Contracting a licensed general contractor?',
+    answer: 'Yes. Burch Contracting holds SC General Contractor License #CLG118679 and NC General Contractor License (Limited) #107292. Scott Burch has been a licensed residential builder since 1995 and a licensed general contractor since 2014. The company is fully insured and BBB A+ rated.',
   },
   {
     question: 'What areas does Burch Contracting serve in Upstate SC?',

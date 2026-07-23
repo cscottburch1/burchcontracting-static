@@ -19,7 +19,7 @@ export const LOCAL_BUSINESS_SCHEMA = {
   image: 'https://burchcontracting.com/images/burch-contracting-logo.webp',
   logo: 'https://burchcontracting.com/images/burch-contracting-logo.webp',
   description:
-    'Garage construction, room additions, screened porches, decks, remodeling, commercial upfits, insurance restoration, and ADA compliance in Upstate SC. Transparent pricing. SC Licensed #CLG118679.',
+    'Garage construction, room additions, screened porches, decks, remodeling, commercial upfits, insurance restoration, and ADA compliance in Upstate SC. Transparent pricing. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
   telephone: '+18647244600',
   email: 'estimates@burchcontracting.com',
   address: {
@@ -43,11 +43,18 @@ export const LOCAL_BUSINESS_SCHEMA = {
     { '@type': 'City', name: 'Gray Court' },
   ],
   priceRange: '$$',
-  identifier: {
-    '@type': 'PropertyValue',
-    propertyID: 'SC Contractor License',
-    value: 'CLG118679',
-  },
+  identifier: [
+    {
+      '@type': 'PropertyValue',
+      propertyID: 'SC Contractor License',
+      value: 'CLG118679',
+    },
+    {
+      '@type': 'PropertyValue',
+      propertyID: 'NC Contractor License (Limited)',
+      value: '107292',
+    },
+  ],
 }
 
 export const ORGANIZATION_SCHEMA = {

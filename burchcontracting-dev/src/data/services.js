@@ -50,6 +50,7 @@ export const SITE = {
   state: 'SC',
   zip: '29645',
   license: 'CLG118679',
+  licenseNC: '107292',
   owner: 'C. Scott Burch',
   established: '1995',
   experience: '35+',

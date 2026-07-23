@@ -367,7 +367,7 @@ function renderResults(el, service, state, estimate, page) {
           <p class="font-bold text-sm text-slate-900">Burch Contracting</p>
           <p>1095 Water Tank Rd, Gray Court, SC 29645</p>
           <p>(864) 724-4600 &middot; estimates@burchcontracting.com</p>
-          <p>SC License #CLG118679</p>
+          <p>SC License #CLG118679 | NC License (Limited) #107292</p>
         </div>
       </div>
       <h2 class="text-xl font-bold text-slate-900 mb-5">Your Estimate</h2>
