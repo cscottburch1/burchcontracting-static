@@ -11,11 +11,14 @@
  * hand-typed, so it can't drift out of sync again. Reconciled 2026-07-05;
  * covered-patios reconciled separately when its calculator was added.
  *
- * adu-builder, commercial-upfits, and basement-finishing have no
- * equivalent service in calculator-config.js (no calculator exists for
- * them — basement-finishing has a calculator page, but its baseRates
- * were never reconciled the way the others were), so their figures
- * remain hand-authored and are out of scope for this reconciliation.
+ * adu-builder, commercial-upfits, commercial-roofing, and
+ * basement-finishing have no equivalent service in calculator-config.js
+ * (no calculator exists for them — basement-finishing has a calculator
+ * page, but its baseRates were never reconciled the way the others
+ * were), so their figures remain hand-authored and are out of scope
+ * for this reconciliation. commercial-roofing has no bid history at
+ * all yet — its price fields are TODO(scott) placeholders, not
+ * hand-authored numbers, until real figures exist.
  */
 import {
   projectCostString,
@@ -603,6 +606,66 @@ export const SERVICES = [
     ]
   },
   {
+    id: 'commercial-roofing',
+    title: 'Commercial Roofing',
+    slug: 'commercial-roofing',
+    category: 'Commercial',
+    description: 'Commercial roof installation, repair, and maintenance: TPO, EPDM, PVC, modified bitumen, standing seam and R-panel metal, and silicone/acrylic coatings. Licensed general contractor serving Upstate SC.',
+    h1: 'Commercial Roofing Contractor - Upstate SC',
+    intro: "Most roofers only touch the roof. When a leak, a tear-off, or a storm claim damages what's underneath — ceilings, drywall, insulation, flooring — I handle that too, as one contract with one point of contact instead of a roofer and a separate remodeling contractor. From flat-roof systems to standing seam metal, tear-offs to recover, and ongoing maintenance agreements, every project is licensed, code-compliant, and personally overseen.",
+    stats: {
+      costRange: 'TODO(scott): confirm',
+      timeline: 'TODO(scott): confirm',
+      experience: '35+ Years Experience',
+      rating: 'BBB A+ Rated'
+    },
+    pricePerSqFt: 'TODO(scott): confirm',
+    timeline: 'TODO(scott): confirm',
+    commonProjects: [
+      {
+        name: 'TPO/EPDM Recover',
+        size: 'TODO(scott): confirm',
+        cost: 'TODO(scott): confirm',
+        details: 'Recover over existing single-ply membrane where the two-roof-system code limit allows it. Insulation overlay, new membrane, flashing and drain detail work.'
+      },
+      {
+        name: 'Full Tear-Off & Replacement',
+        size: 'TODO(scott): confirm',
+        cost: 'TODO(scott): confirm',
+        details: 'Complete removal of existing roofing down to deck, inspection and repair of substrate, new insulation and membrane or metal system installed to current code.'
+      },
+      {
+        name: 'Standing Seam / R-Panel Metal',
+        size: 'TODO(scott): confirm',
+        cost: 'TODO(scott): confirm',
+        details: 'Metal panel roof installation for commercial and industrial buildings, including trim, flashing, and fastening detail for long-term weathertightness.'
+      }
+    ],
+    pricingTiers: [
+      {
+        name: 'Coating / Restoration',
+        range: 'TODO(scott): confirm',
+        description: 'Silicone or acrylic roof coating over sound existing membrane to extend service life and stop minor leaks without a full tear-off.'
+      },
+      {
+        name: 'Recover',
+        range: 'TODO(scott): confirm',
+        description: 'New membrane installed over existing roofing where the building has not yet reached the two-roof-system limit under code.'
+      },
+      {
+        name: 'Full Tear-Off & Replacement',
+        range: 'TODO(scott): confirm',
+        description: 'Complete removal and replacement — TPO, EPDM, PVC, modified bitumen, or standing seam/R-panel metal, installed to current code.'
+      }
+    ],
+    calculator: null,
+    relatedServices: [
+      { name: 'Insurance Restoration', url: '/insurance-restoration' },
+      { name: 'Commercial Upfits', url: '/commercial-upfits' },
+      { name: 'General Contracting', url: '/services.html' }
+    ]
+  },
+  {
     id: 'basement-finishing',
     title: 'Basement Finishing',
     slug: 'basement-finishing',
@@ -704,6 +767,7 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
+      { name: 'Commercial Roofing', url: '/commercial-roofing' },
       { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
       { name: 'Home Remodeling', url: '/remodeling' },
       { name: 'Basement Finishing', url: '/basement-finishing' },

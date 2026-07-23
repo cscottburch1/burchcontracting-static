@@ -274,11 +274,13 @@ RewriteRule ^screened_patios/?$ /outdoor-living/screened-porches [R=301,L]
 RewriteRule ^handyman-services-estimator/?$ /handyman [R=301,L]
 RewriteRule ^handyman-services-near-you/?$ /handyman [R=301,L]
 
-# RESOLVED 2026-07-11 (owner decision): roofing is not an offered service —
-# no roofing content exists or is planned on the new site. Sent to the
-# services listing rather than left 404ing.
-RewriteRule ^commercial-roofing_company/?$ /services.html [R=301,L]
-RewriteRule ^roofing/?$ /services.html [R=301,L]
+# UPDATED 2026-07-23: commercial roofing is now a real service on the new
+# site (see /commercial-roofing) — superseding the 2026-07-11 decision that
+# sent these to the services listing.
+RewriteRule ^commercial-roofing_company/?$ /commercial-roofing [R=301,L]
+RewriteRule ^roofing/?$ /commercial-roofing [R=301,L]
+RewriteRule ^commercial-roof-repair/?$ /commercial-roofing [R=301,L]
+RewriteRule ^flat-roof(ing)?/?$ /commercial-roofing [R=301,L]
 
 # RESOLVED 2026-07-11 (owner decision): no admin/employee/subcontractor
 # application features on the new site yet. /admin is intentionally left

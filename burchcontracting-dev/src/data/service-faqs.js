@@ -222,6 +222,29 @@ export const SERVICE_FAQS = {
     }
   ],
 
+  'commercial-roofing': [
+    {
+      question: 'What commercial roofing systems do you install?',
+      answer: 'We install TPO, EPDM, and PVC single-ply membranes, modified bitumen, standing seam and R-panel metal roofing, and silicone or acrylic restoration coatings. The right system depends on the building\'s deck type, slope, drainage, and how long the roof needs to perform before its next major repair.'
+    },
+    {
+      question: 'Should I recover my existing roof or do a full tear-off?',
+      answer: 'A recover installs a new membrane over the existing roof and costs less, but building code allows only two roof systems on a building before a tear-off is required — if your roof already has one recover on it, or the existing substrate is wet or deteriorated, a full tear-off is the only code-compliant option. We inspect the existing roof and roof history before recommending either.'
+    },
+    {
+      question: 'Do you handle roof leaks and emergency repairs?',
+      answer: 'Yes. We respond to active leaks and storm-related emergencies with temporary weatherproofing to stop water intrusion, followed by a permanent repair. Because we also handle the interior side of the building, ceiling, drywall, insulation, and flooring damaged by the leak gets repaired under the same contract instead of requiring a second contractor.'
+    },
+    {
+      question: 'Do you offer roof maintenance or inspection agreements?',
+      answer: 'Yes, and we treat this as core to how we work with property managers and building owners, not an add-on. Scheduled inspections catch membrane wear, flashing failures, and drainage issues before they become leaks, and a maintenance agreement extends the service life of the roof and supports warranty compliance where applicable.'
+    },
+    {
+      question: 'Do you handle storm and hail damage insurance claims for commercial roofs?',
+      answer: 'Yes. We document storm and hail damage, work directly with your insurance adjuster, and complete the approved repair or replacement. This is the same insurance-restoration process we run for residential claims, applied to commercial roofing — see our insurance restoration services for how the claims process works. Cost for any repair depends on the scope your adjuster approves; TODO(scott): confirm typical claim-related repair ranges.'
+    }
+  ],
+
   'basement-finishing': [
     {
       question: 'How much does it cost to finish a basement?',

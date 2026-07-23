@@ -149,7 +149,8 @@ export const CORE_SERVICES = [
   { name: 'Garages', url: '/garages', summary: 'Attached and detached garage construction.' },
   { name: 'Room Additions', url: '/additions', summary: 'Ground-floor and second-story home expansions.' },
   { name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
-  { name: 'Commercial', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
+  { name: 'Commercial Upfits', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
+  { name: 'Commercial Roofing', url: '/commercial-roofing', summary: 'Flat and metal roof installation, repair, and maintenance.' },
   { name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
   { name: 'ADA Compliance', url: '/ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
 ]
@@ -264,6 +265,31 @@ export const SERVICE_FAQS = [
       {
         question: 'Does Burch Contracting help with insurance claims?',
         answer: 'Yes. Burch Contracting provides on-site damage assessments to support your insurance claim. Detailed documentation and a full written estimate are available for a fee, credited back if you hire us, then we complete the approved repair work.',
+      },
+    ],
+  },
+  {
+    category: 'Commercial Roofing',
+    faqs: [
+      {
+        question: 'What commercial roofing systems do you install?',
+        answer: "We install TPO, EPDM, and PVC single-ply membranes, modified bitumen, standing seam and R-panel metal roofing, and silicone or acrylic restoration coatings. The right system depends on the building's deck type, slope, drainage, and how long the roof needs to perform before its next major repair.",
+      },
+      {
+        question: 'Should I recover my existing commercial roof or do a full tear-off?',
+        answer: 'A recover installs a new membrane over the existing roof and costs less, but building code allows only two roof systems on a building before a tear-off is required — if your roof already has one recover on it, or the existing substrate is wet or deteriorated, a full tear-off is the only code-compliant option.',
+      },
+      {
+        question: 'Does Burch Contracting handle commercial roof leaks and emergency repairs?',
+        answer: 'Yes. We respond to active leaks and storm-related emergencies with temporary weatherproofing, followed by a permanent repair. Because we also handle the interior side of the building, ceiling, drywall, insulation, and flooring damaged by the leak gets repaired under the same contract instead of requiring a second contractor.',
+      },
+      {
+        question: 'Does Burch Contracting offer commercial roof maintenance or inspection agreements?',
+        answer: "Yes, and it's core to how we work with property managers and building owners, not an add-on. Scheduled inspections catch membrane wear, flashing failures, and drainage issues before they become leaks, extending the roof's service life.",
+      },
+      {
+        question: 'Does Burch Contracting handle storm and hail damage insurance claims for commercial roofs?',
+        answer: 'Yes. We document storm and hail damage, work directly with your insurance adjuster, and complete the approved repair or replacement — the same insurance restoration process we run for residential claims, applied to commercial roofing.',
       },
     ],
   },
