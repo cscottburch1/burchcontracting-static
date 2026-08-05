@@ -9,6 +9,9 @@ import {
   SERVICE_FAQS,
   cityFaqs,
   faqPageSchema,
+  PERMIT_OFFICES,
+  SC_BUILDING_CODES_COUNCIL_URL,
+  CITY_PROJECTS,
 } from '../src/data/geo-aeo.js'
 import { SERVICES } from '../src/data/services.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../src/data/site-schema.js'
@@ -269,6 +272,98 @@ function faqHtml(faqs, idPrefix = 'faq') {
     .join('\n')
 }
 
+// Collected across all 8 area pages, printed at the end for
+// CITABILITY-FACTS-NEEDED.md — see Phase 5 notes there.
+const areaFactsNeeded = []
+
+// Real, county-specific permit process — not the same paragraph reworded
+// per city. Greenville/Laurens County link to their real permit offices
+// (same links already used in faqs.html); Spartanburg County (Woodruff)
+// names the real jurisdiction but has no verified office link yet, so
+// that's flagged rather than guessed.
+function permitsSectionHtml(area) {
+  const office = PERMIT_OFFICES[area.county]
+  if (!office) throw new Error(`${area.slug}: no PERMIT_OFFICES entry for county "${area.county}"`)
+  if (!office.url) {
+    areaFactsNeeded.push({ area: area.name, field: `Verified ${area.county} building permits office URL (page currently omits the link, names the county only)` })
+  }
+  const officeLinkHtml = office.url
+    ? `<a href="${esc(office.url)}" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">${esc(office.name)}</a>`
+    : esc(office.name)
+  return `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-4">Permits in ${esc(area.name)}, ${esc(area.county)}</h2>
+          <p class="text-slate-600 leading-relaxed">Projects in ${esc(area.name)} fall under ${officeLinkHtml}, working from the <a href="${SC_BUILDING_CODES_COUNCIL_URL}" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">South Carolina Building Codes Council</a>'s statewide code. As a licensed general contractor (SC #${esc(SITE.license)}), Burch Contracting pulls the required permits and schedules inspections through ${esc(area.county)} directly, so you don't have to.</p>
+        </div>
+      </section>`
+}
+
+// Real completed projects for this city where they exist (see
+// CITY_PROJECTS in geo-aeo.js — the same facts power projects.html's
+// case-study cards); an honest FACT-NEEDED prompt where they don't. Per
+// the ground rules, an empty flagged section beats invented local detail.
+function cityProjectsSectionHtml(area) {
+  const projects = CITY_PROJECTS[area.slug]
+  if (projects?.length) {
+    const cards = projects
+      .map(
+        (p) => `            <div class="bg-white border border-slate-200 rounded-xl p-6">
+              <p class="text-blue-700 text-xs font-semibold uppercase tracking-wide mb-2">${esc(p.category)}</p>
+              <h3 class="font-bold text-slate-900 text-lg mb-2">${esc(p.title)}</h3>
+              <p class="text-slate-600 text-sm leading-relaxed">${esc(p.description)}</p>
+            </div>`
+      )
+      .join('\n')
+    return `      <section class="bg-white py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-2">Recent ${esc(area.name)} Projects</h2>
+          <p class="text-slate-600 mb-6">See the full write-up on our <a href="/projects.html" class="text-blue-700 hover:text-blue-800 underline">projects page</a>.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+${cards}
+          </div>
+        </div>
+      </section>`
+  }
+  areaFactsNeeded.push({ area: area.name, field: '2-3 real completed projects in this specific city (scope, and a cost band if comfortable sharing) — no filler written in the meantime' })
+  return `      <section class="bg-white py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-3">Recent ${esc(area.name)} Projects</h2>
+          <p class="text-slate-400 italic">Project write-ups for ${esc(area.name)} are being finalized. See our <a href="/projects.html" class="text-blue-700 hover:text-blue-800 underline not-italic">full projects page</a> in the meantime.</p>
+        </div>
+      </section>`
+}
+
+// Local building conditions — genuinely new per-city facts (soil, slope,
+// HOA prevalence, flood risk) that don't exist anywhere else on the site
+// yet. 100% FACT-NEEDED by design: writing plausible-sounding claims here
+// (e.g. guessing at soil type) is exactly the kind of invented local
+// detail the ground rules call out as most damaging to contractor trust.
+const LOCAL_CONDITION_FIELDS = ['Typical soil/site conditions', 'Typical lot slope', 'How common HOA review is', 'Flood zone / drainage considerations']
+function localConditionsSectionHtml(area) {
+  for (const field of LOCAL_CONDITION_FIELDS) {
+    areaFactsNeeded.push({ area: area.name, field })
+  }
+  const rows = LOCAL_CONDITION_FIELDS.map(
+    (field) => `                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">${esc(field)}</th>
+                  <td class="px-4 py-3 text-slate-400 italic text-sm">Not yet published</td>
+                </tr>`
+  ).join('\n')
+  return `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-4">Local Building Conditions in ${esc(area.name)}</h2>
+          <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Site-specific factors we account for when we scope a ${esc(area.name)} project</caption>
+              <tbody>
+${rows}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>`
+}
+
 function serviceAreaPage(area) {
   const faqs = cityFaqs(area)
   // Same promotion pattern as generate-services.mjs: the first 2 city FAQs
@@ -466,6 +561,9 @@ ${neighborhoods}
         </div>
       </section>
 
+${permitsSectionHtml(area)}
+${cityProjectsSectionHtml(area)}
+${localConditionsSectionHtml(area)}
       <section class="bg-white py-16 lg:py-20 border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl font-bold text-slate-900 mb-8">Our Services in ${esc(area.name)}</h2>
@@ -738,3 +836,7 @@ writeFileSync(resolve(root, 'faqs.html'), faqsPage())
 writeFileSync(resolve(root, 'public/sitemap.xml'), generateSitemap())
 
 console.log(`Generated ${SERVICE_AREAS.length} service area pages, faqs.html, and sitemap.xml`)
+if (areaFactsNeeded.length) {
+  console.log(`\n${areaFactsNeeded.length} FACT-NEEDED item(s) from service-area pages (add to CITABILITY-FACTS-NEEDED.md):`)
+  for (const f of areaFactsNeeded) console.log(`  - [${f.area}] ${f.field}`)
+}

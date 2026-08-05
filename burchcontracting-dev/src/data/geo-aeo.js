@@ -11,6 +11,41 @@ export const SITE = {
   ogImage: '/images/custom-deck-greenville-sc.webp',
 }
 
+// Real permit-office links only — the same 3 already used in faqs.html's
+// permit table (see generate-geo-aeo.mjs's faqsPage()). Spartanburg County
+// (Woodruff) has no office link here because none has been verified yet —
+// see CITABILITY-FACTS-NEEDED.md rather than guessing a URL.
+export const PERMIT_OFFICES = {
+  'Greenville County': { name: 'Greenville County Building Safety', url: 'https://www.greenvillecounty.org/buildingsafety/Permits.aspx' },
+  'Laurens County': { name: 'Laurens County Building Codes', url: 'https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php' },
+  'Spartanburg County': { name: 'Spartanburg County Building Codes', url: null },
+}
+export const SC_BUILDING_CODES_COUNCIL_URL = 'https://llr.sc.gov/bcc/'
+
+// Real completed projects (see projects.html) mapped to the service-area
+// page for their city — reused, not duplicated content: the same facts
+// power both projects.html's case-study card and this page's "Featured
+// Project" section. Keep in sync with projects.html's project cards and
+// generate-trust-layer.mjs's CASE_STUDY_MATERIALS if either changes.
+// Cities with no entry here get a FACT-NEEDED prompt instead (see
+// generate-geo-aeo.mjs's cityProjectsSectionHtml()).
+export const CITY_PROJECTS = {
+  greenville: [
+    { title: 'Custom Multi-Level Deck', description: 'Multi-level wood deck with outdoor bar, fire pit, and built-in seating for entertaining.', category: 'Decks' },
+  ],
+  'fountain-inn': [
+    { title: 'Screened Porch Addition', description: "New screened porch addition tied into the home's existing roofline and trim details.", category: 'Screened Porches' },
+    { title: 'Room Addition', description: 'Ground-floor room addition with siding and roofline matched to the existing home.', category: 'Room Additions' },
+  ],
+  simpsonville: [
+    { title: 'Detached Two-Car Garage', description: 'Gray siding with white trim, dual garage doors, and landscaped approach pad.', category: 'Garages' },
+  ],
+  woodruff: [
+    { title: 'Bath-to-Shower Conversion', description: 'Tub removed and replaced with a tiled walk-in shower, new fixtures, and updated surround.', category: 'ADA Bath to Shower' },
+    { title: 'Walk-In Shower Remodel', description: 'Modern step-in shower with glass enclosure and updated wall tile throughout the bath.', category: 'Remodeling' },
+  ],
+}
+
 export const SERVICE_AREAS = [
   {
     slug: 'simpsonville',

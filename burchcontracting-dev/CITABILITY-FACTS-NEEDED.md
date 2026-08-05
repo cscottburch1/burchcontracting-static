@@ -4,9 +4,59 @@ Plain-English questions, grouped by page/topic, ordered roughly by scoring
 impact. None of this was invented — every item below is a real gap found
 while adding structure/schema, not filler. Estimated total time: **~10
 minutes** for Phase 1's 2 items, **~35-45 minutes** for Phase 4's project
-questions below (7 projects x ~4 quick questions each). Phase 5 (per-city
-local detail — permits, HOA prevalence, 2-3 more real projects per city)
-will add the bulk of what's left; budget a longer sitting once it lands.
+questions, **~30-40 minutes** for Phase 5's 8-city local-conditions grid
+below (4 quick questions x 8 cities, most answerable in one or two
+sentences each) plus a few minutes per city for the 4 cities with no
+project yet. Total remaining: roughly **75-90 minutes** across everything
+in this file.
+
+---
+
+## Phase 5 — Service-area local detail (8 cities)
+
+Each of the 8 `/service-areas/*.html` pages now has a real, county-specific
+permits section (Greenville/Laurens County link to their real permits
+office; the other real facts — neighborhoods, drive time, insights — were
+already on these pages before this project started). Two things are
+genuinely missing per city:
+
+### A. Local Building Conditions (all 8 cities, same 4 questions each)
+Shows "Not yet published" on every page right now. For each of Simpsonville,
+Fountain Inn, Mauldin, Greenville, Five Forks, Woodruff, Laurens, and Gray
+Court:
+1. Typical soil/site conditions you run into there?
+2. Typical lot slope (flat, rolling, steep lots common)?
+3. How common is HOA review/approval in this area?
+4. Any flood zone or drainage considerations worth noting?
+
+A short, honest answer per city is fine — "mostly flat, red clay, HOA
+common in newer subdivisions, no particular flood concerns" is a
+perfectly good answer for one city. Doesn't need to be different for
+every city if it genuinely isn't.
+
+### B. Missing real projects (4 of 8 cities have none yet)
+Mauldin, Five Forks, Laurens, and Gray Court have no project case study on
+their page — Greenville, Fountain Inn, Simpsonville, and Woodruff already
+do (reused from `/projects.html`, see Phase 4). 2-3 real completed
+projects per city (scope + rough cost band, same format as the Phase 4
+list) would close this gap and be reused across `/projects.html` and that
+city's page simultaneously.
+
+### C. Spartanburg County permits office link (Woodruff only)
+The page names "Spartanburg County" as the jurisdiction (that's real —
+already stated in geo-aeo.js's insights) but has no specific permits-office
+URL the way Greenville and Laurens counties do. If you have one, it's a
+one-line add.
+
+### D. A known limitation, not a question for Scott
+Direct pairwise text comparison across the 8 pages currently shows
+41-51% overlap (target from the original plan: under 30%). This isn't
+filler — it's the shared section scaffolding ("About [City]", "Our
+Services in [City]", the FAQ intro line, the CTA) that's genuinely the
+same pattern reworded per city, plus (correctly) near-identical permits
+paragraphs for the 5 cities that share Greenville County's office. Filling
+in A and B above will narrow this — real per-city facts are the actual
+fix, not further phrasing tweaks to already-honest boilerplate.
 
 ---
 
