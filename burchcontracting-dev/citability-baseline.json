@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-05T16:38:50.097Z",
+  "generatedAt": "2026-08-05T16:52:57.568Z",
   "pageCount": 41,
   "missingFiles": [],
-  "averageScore": 67,
+  "averageScore": 72,
   "pages": [
     {
       "id": "terms-of-service",
@@ -45,82 +45,42 @@
       }
     },
     {
-      "id": "projects",
-      "url": "/projects.html",
-      "file": "projects.html",
-      "total": 59,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 67,
-        "statisticalDensity": 62,
-        "uniqueness": 42
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/17 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 0 FAQ blocks, 16 H2/H3, 0/15 sections in 100-220wd band",
-        "statisticalDensity": "10 numeric tokens / 401 words (2.5 per 100w, target 4+)",
-        "uniqueness": "6 place names, 2 license mentions, first-person=false, max cross-page containment overlap 9%"
-      }
-    },
-    {
       "id": "area-five-forks",
       "url": "/service-areas/five-forks.html",
       "file": "service-areas/five-forks.html",
-      "total": 60,
+      "total": 62,
       "subScores": {
-        "answerQuality": 28,
+        "answerQuality": 35,
         "selfContainment": 100,
-        "structure": 79,
-        "statisticalDensity": 69,
+        "structure": 81,
+        "statisticalDensity": 70,
         "uniqueness": 22
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "5 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
         "selfContainment": "0/13 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "15 numeric tokens / 544 words (2.8 per 100w, target 4+)",
+        "structure": "0 table(s), 0 dl, 1 ol, 1 FAQ blocks, 23 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "15 numeric tokens / 539 words (2.8 per 100w, target 4+)",
         "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%"
-      }
-    },
-    {
-      "id": "area-gray-court",
-      "url": "/service-areas/gray-court.html",
-      "file": "service-areas/gray-court.html",
-      "total": 60,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 79,
-        "statisticalDensity": 71,
-        "uniqueness": 21
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/14 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "16 numeric tokens / 562 words (2.8 per 100w, target 4+)",
-        "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 49%"
       }
     },
     {
       "id": "area-mauldin",
       "url": "/service-areas/mauldin.html",
       "file": "service-areas/mauldin.html",
-      "total": 60,
+      "total": 62,
       "subScores": {
-        "answerQuality": 28,
+        "answerQuality": 35,
         "selfContainment": 100,
-        "structure": 79,
+        "structure": 81,
         "statisticalDensity": 70,
         "uniqueness": 22
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "5 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
         "selfContainment": "0/14 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "15 numeric tokens / 537 words (2.8 per 100w, target 4+)",
+        "structure": "0 table(s), 0 dl, 1 ol, 1 FAQ blocks, 23 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "15 numeric tokens / 532 words (2.8 per 100w, target 4+)",
         "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%"
       }
     },
@@ -128,80 +88,20 @@
       "id": "area-simpsonville",
       "url": "/service-areas/simpsonville.html",
       "file": "service-areas/simpsonville.html",
-      "total": 60,
+      "total": 62,
       "subScores": {
-        "answerQuality": 28,
+        "answerQuality": 35,
         "selfContainment": 100,
-        "structure": 79,
-        "statisticalDensity": 68,
+        "structure": 81,
+        "statisticalDensity": 69,
         "uniqueness": 22
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "5 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
         "selfContainment": "0/15 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 20 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "15 numeric tokens / 549 words (2.7 per 100w, target 4+)",
+        "structure": "0 table(s), 0 dl, 1 ol, 1 FAQ blocks, 24 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "15 numeric tokens / 544 words (2.8 per 100w, target 4+)",
         "uniqueness": "10 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%"
-      }
-    },
-    {
-      "id": "area-greenville",
-      "url": "/service-areas/greenville.html",
-      "file": "service-areas/greenville.html",
-      "total": 61,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 79,
-        "statisticalDensity": 75,
-        "uniqueness": 22
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/13 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "16 numeric tokens / 535 words (3.0 per 100w, target 4+)",
-        "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%"
-      }
-    },
-    {
-      "id": "area-laurens",
-      "url": "/service-areas/laurens.html",
-      "file": "service-areas/laurens.html",
-      "total": 62,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 79,
-        "statisticalDensity": 80,
-        "uniqueness": 21
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/13 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "17 numeric tokens / 530 words (3.2 per 100w, target 4+)",
-        "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 49%"
-      }
-    },
-    {
-      "id": "area-woodruff",
-      "url": "/service-areas/woodruff.html",
-      "file": "service-areas/woodruff.html",
-      "total": 62,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 79,
-        "statisticalDensity": 77,
-        "uniqueness": 23
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/13 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "16 numeric tokens / 520 words (3.1 per 100w, target 4+)",
-        "uniqueness": "10 place names, 5 license mentions, first-person=true, max cross-page containment overlap 46%"
       }
     },
     {
@@ -210,618 +110,718 @@
       "file": "commercial-roofing/index.html",
       "total": 63,
       "subScores": {
-        "answerQuality": 33,
+        "answerQuality": 35,
         "selfContainment": 100,
-        "structure": 88,
+        "structure": 87,
         "statisticalDensity": 68,
         "uniqueness": 24
       },
       "detail": {
-        "answerQuality": "3 question headings (coverage 75%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "7 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
         "selfContainment": "0/12 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 2 ol, 5 FAQ blocks, 12 H2/H3, 1/6 sections in 100-220wd band",
-        "statisticalDensity": "20 numeric tokens / 734 words (2.7 per 100w, target 4+)",
+        "structure": "0 table(s), 0 dl, 2 ol, 1 FAQ blocks, 16 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "20 numeric tokens / 731 words (2.7 per 100w, target 4+)",
         "uniqueness": "1 place names, 2 license mentions, first-person=true, max cross-page containment overlap 30%"
       }
     },
     {
-      "id": "area-fountain-inn",
-      "url": "/service-areas/fountain-inn.html",
-      "file": "service-areas/fountain-inn.html",
+      "id": "area-greenville",
+      "url": "/service-areas/greenville.html",
+      "file": "service-areas/greenville.html",
       "total": 63,
       "subScores": {
-        "answerQuality": 28,
+        "answerQuality": 35,
         "selfContainment": 100,
-        "structure": 79,
-        "statisticalDensity": 85,
+        "structure": 81,
+        "statisticalDensity": 75,
         "uniqueness": 22
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/14 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "19 numeric tokens / 560 words (3.4 per 100w, target 4+)",
+        "answerQuality": "5 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/13 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 1 ol, 1 FAQ blocks, 23 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "16 numeric tokens / 530 words (3.0 per 100w, target 4+)",
         "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%"
       }
     },
     {
-      "id": "faqs",
-      "url": "/faqs.html",
-      "file": "faqs.html",
-      "total": 65,
+      "id": "area-woodruff",
+      "url": "/service-areas/woodruff.html",
+      "file": "service-areas/woodruff.html",
+      "total": 64,
       "subScores": {
-        "answerQuality": 28,
+        "answerQuality": 35,
         "selfContainment": 100,
         "structure": 81,
-        "statisticalDensity": 83,
-        "uniqueness": 33
+        "statisticalDensity": 78,
+        "uniqueness": 23
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/33 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 1 ol, 28 FAQ blocks, 19 H2/H3, 1/10 sections in 100-220wd band",
-        "statisticalDensity": "49 numeric tokens / 1473 words (3.3 per 100w, target 4+)",
-        "uniqueness": "11 place names, 4 license mentions, first-person=true, max cross-page containment overlap 30%"
+        "answerQuality": "5 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/13 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 1 ol, 1 FAQ blocks, 23 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "16 numeric tokens / 515 words (3.1 per 100w, target 4+)",
+        "uniqueness": "10 place names, 5 license mentions, first-person=true, max cross-page containment overlap 46%"
+      }
+    },
+    {
+      "id": "area-gray-court",
+      "url": "/service-areas/gray-court.html",
+      "file": "service-areas/gray-court.html",
+      "total": 66,
+      "subScores": {
+        "answerQuality": 48,
+        "selfContainment": 100,
+        "structure": 81,
+        "statisticalDensity": 72,
+        "uniqueness": 21
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 1 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/14 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 1 ol, 1 FAQ blocks, 23 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "16 numeric tokens / 557 words (2.9 per 100w, target 4+)",
+        "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 49%"
       }
     },
     {
       "id": "insurance-restoration",
       "url": "/insurance-restoration",
       "file": "insurance-restoration/index.html",
-      "total": 66,
+      "total": 67,
       "subScores": {
-        "answerQuality": 30,
+        "answerQuality": 35,
         "selfContainment": 92,
         "structure": 85,
         "statisticalDensity": 100,
         "uniqueness": 22
       },
       "detail": {
-        "answerQuality": "2 question headings (coverage 50%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "6 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
         "selfContainment": "1/12 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 2 ol, 5 FAQ blocks, 9 H2/H3, 0/5 sections in 100-220wd band",
-        "statisticalDensity": "20 numeric tokens / 489 words (4.1 per 100w, target 4+)",
+        "structure": "0 table(s), 0 dl, 2 ol, 1 FAQ blocks, 13 H2/H3, 0/9 sections in 100-220wd band",
+        "statisticalDensity": "20 numeric tokens / 486 words (4.1 per 100w, target 4+)",
         "uniqueness": "1 place names, 2 license mentions, first-person=false, max cross-page containment overlap 22%"
       }
     },
     {
-      "id": "ada-compliance",
-      "url": "/ada-compliance",
-      "file": "ada-compliance/index.html",
-      "total": 69,
+      "id": "area-laurens",
+      "url": "/service-areas/laurens.html",
+      "file": "service-areas/laurens.html",
+      "total": 68,
       "subScores": {
-        "answerQuality": 33,
+        "answerQuality": 48,
         "selfContainment": 100,
-        "structure": 85,
-        "statisticalDensity": 100,
-        "uniqueness": 24
+        "structure": 81,
+        "statisticalDensity": 81,
+        "uniqueness": 21
       },
       "detail": {
-        "answerQuality": "3 question headings (coverage 75%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/12 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 2 ol, 5 FAQ blocks, 12 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "21 numeric tokens / 515 words (4.1 per 100w, target 4+)",
-        "uniqueness": "1 place names, 2 license mentions, first-person=false, max cross-page containment overlap 22%"
+        "answerQuality": "5 question headings (coverage 100%), 1 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/13 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 1 ol, 1 FAQ blocks, 23 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "17 numeric tokens / 525 words (3.2 per 100w, target 4+)",
+        "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 49%"
+      }
+    },
+    {
+      "id": "area-fountain-inn",
+      "url": "/service-areas/fountain-inn.html",
+      "file": "service-areas/fountain-inn.html",
+      "total": 69,
+      "subScores": {
+        "answerQuality": 48,
+        "selfContainment": 100,
+        "structure": 81,
+        "statisticalDensity": 86,
+        "uniqueness": 22
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 1 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/14 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 1 ol, 1 FAQ blocks, 23 H2/H3, 1/10 sections in 100-220wd band",
+        "statisticalDensity": "19 numeric tokens / 555 words (3.4 per 100w, target 4+)",
+        "uniqueness": "9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%"
+      }
+    },
+    {
+      "id": "projects",
+      "url": "/projects.html",
+      "file": "projects.html",
+      "total": 70,
+      "subScores": {
+        "answerQuality": 65,
+        "selfContainment": 100,
+        "structure": 67,
+        "statisticalDensity": 70,
+        "uniqueness": 43
+      },
+      "detail": {
+        "answerQuality": "3 question headings (coverage 75%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/19 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 1 ol, 0 FAQ blocks, 18 H2/H3, 0/17 sections in 100-220wd band",
+        "statisticalDensity": "14 numeric tokens / 499 words (2.8 per 100w, target 4+)",
+        "uniqueness": "10 place names, 2 license mentions, first-person=true, max cross-page containment overlap 22%"
       }
     },
     {
       "id": "ada-bath-to-shower",
       "url": "/ada-bath-to-shower",
       "file": "ada-bath-to-shower/index.html",
-      "total": 70,
+      "total": 72,
       "subScores": {
-        "answerQuality": 33,
+        "answerQuality": 54,
         "selfContainment": 100,
         "structure": 85,
         "statisticalDensity": 100,
-        "uniqueness": 30
+        "uniqueness": 7
       },
       "detail": {
-        "answerQuality": "3 question headings (coverage 75%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "7 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
         "selfContainment": "0/12 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 2 ol, 5 FAQ blocks, 12 H2/H3, 0/6 sections in 100-220wd band",
-        "statisticalDensity": "26 numeric tokens / 513 words (5.1 per 100w, target 4+)",
-        "uniqueness": "1 place names, 2 license mentions, first-person=false, max cross-page containment overlap 14%"
+        "structure": "0 table(s), 0 dl, 2 ol, 1 FAQ blocks, 16 H2/H3, 0/10 sections in 100-220wd band",
+        "statisticalDensity": "26 numeric tokens / 510 words (5.1 per 100w, target 4+)",
+        "uniqueness": "1 place names, 2 license mentions, first-person=false, max cross-page containment overlap 40%"
       }
     },
     {
-      "id": "adu-builder",
-      "url": "/adu-builder",
-      "file": "adu-builder/index.html",
-      "total": 70,
+      "id": "ada-compliance",
+      "url": "/ada-compliance",
+      "file": "ada-compliance/index.html",
+      "total": 72,
       "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 91,
-        "structure": 88,
+        "answerQuality": 44,
+        "selfContainment": 100,
+        "structure": 85,
         "statisticalDensity": 100,
-        "uniqueness": 50
+        "uniqueness": 24
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "1/11 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 6 H2/H3, 2/5 sections in 100-220wd band",
-        "statisticalDensity": "68 numeric tokens / 587 words (11.6 per 100w, target 4+)",
-        "uniqueness": "4 place names, 2 license mentions, first-person=true, max cross-page containment overlap 14%"
+        "answerQuality": "7 question headings (coverage 100%), 1 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/12 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 2 ol, 1 FAQ blocks, 16 H2/H3, 0/10 sections in 100-220wd band",
+        "statisticalDensity": "21 numeric tokens / 512 words (4.1 per 100w, target 4+)",
+        "uniqueness": "1 place names, 2 license mentions, first-person=false, max cross-page containment overlap 22%"
       }
     },
     {
       "id": "remodeling",
       "url": "/remodeling",
       "file": "remodeling/index.html",
-      "total": 70,
+      "total": 72,
       "subScores": {
-        "answerQuality": 28,
+        "answerQuality": 48,
         "selfContainment": 100,
-        "structure": 85,
+        "structure": 87,
         "statisticalDensity": 100,
-        "uniqueness": 43
+        "uniqueness": 17
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "5 question headings (coverage 100%), 1 with a qualifying direct-answer paragraph",
         "selfContainment": "0/11 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 6 H2/H3, 1/5 sections in 100-220wd band",
-        "statisticalDensity": "45 numeric tokens / 597 words (7.5 per 100w, target 4+)",
-        "uniqueness": "1 place names, 2 license mentions, first-person=true, max cross-page containment overlap 14%"
-      }
-    },
-    {
-      "id": "calc-covered-patios",
-      "url": "/calculator/covered-patios.html",
-      "file": "calculator/covered-patios.html",
-      "total": 70,
-      "subScores": {
-        "answerQuality": 44,
-        "selfContainment": 100,
-        "structure": 83,
-        "statisticalDensity": 100,
-        "uniqueness": 18
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "34 numeric tokens / 247 words (13.8 per 100w, target 4+)",
-        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 39%"
-      }
-    },
-    {
-      "id": "calc-decks",
-      "url": "/calculator/decks.html",
-      "file": "calculator/decks.html",
-      "total": 70,
-      "subScores": {
-        "answerQuality": 44,
-        "selfContainment": 100,
-        "structure": 83,
-        "statisticalDensity": 100,
-        "uniqueness": 18
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "40 numeric tokens / 223 words (17.9 per 100w, target 4+)",
-        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 39%"
-      }
-    },
-    {
-      "id": "calc-kitchen-remodel",
-      "url": "/calculator/kitchen-remodel.html",
-      "file": "calculator/kitchen-remodel.html",
-      "total": 70,
-      "subScores": {
-        "answerQuality": 44,
-        "selfContainment": 100,
-        "structure": 83,
-        "statisticalDensity": 100,
-        "uniqueness": 17
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "34 numeric tokens / 213 words (16.0 per 100w, target 4+)",
-        "uniqueness": "3 place names, 2 license mentions, first-person=false, max cross-page containment overlap 39%"
-      }
-    },
-    {
-      "id": "calc-whole-home-remodel",
-      "url": "/calculator/whole-home-remodel.html",
-      "file": "calculator/whole-home-remodel.html",
-      "total": 70,
-      "subScores": {
-        "answerQuality": 44,
-        "selfContainment": 100,
-        "structure": 83,
-        "statisticalDensity": 100,
-        "uniqueness": 17
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "36 numeric tokens / 206 words (17.5 per 100w, target 4+)",
-        "uniqueness": "3 place names, 2 license mentions, first-person=false, max cross-page containment overlap 39%"
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 10 H2/H3, 1/9 sections in 100-220wd band",
+        "statisticalDensity": "45 numeric tokens / 594 words (7.6 per 100w, target 4+)",
+        "uniqueness": "1 place names, 2 license mentions, first-person=true, max cross-page containment overlap 43%"
       }
     },
     {
       "id": "services",
       "url": "/services.html",
       "file": "services.html",
-      "total": 71,
+      "total": 73,
       "subScores": {
-        "answerQuality": 35,
+        "answerQuality": 46,
         "selfContainment": 100,
-        "structure": 93,
+        "structure": 89,
         "statisticalDensity": 76,
         "uniqueness": 57
       },
       "detail": {
-        "answerQuality": "4 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "6 question headings (coverage 100%), 1 with a qualifying direct-answer paragraph",
         "selfContainment": "0/13 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 2 ol, 4 FAQ blocks, 29 H2/H3, 3/6 sections in 100-220wd band",
-        "statisticalDensity": "18 numeric tokens / 596 words (3.0 per 100w, target 4+)",
+        "structure": "0 table(s), 0 dl, 2 ol, 2 FAQ blocks, 31 H2/H3, 2/8 sections in 100-220wd band",
+        "statisticalDensity": "18 numeric tokens / 594 words (3.0 per 100w, target 4+)",
         "uniqueness": "10 place names, 4 license mentions, first-person=true, max cross-page containment overlap 9%"
-      }
-    },
-    {
-      "id": "contact",
-      "url": "/contact.html",
-      "file": "contact.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 89,
-        "statisticalDensity": 100,
-        "uniqueness": 43
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/6 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 0 dl, 2 ol, 0 FAQ blocks, 5 H2/H3, 2/2 sections in 100-220wd band",
-        "statisticalDensity": "29 numeric tokens / 352 words (8.2 per 100w, target 4+)",
-        "uniqueness": "7 place names, 2 license mentions, first-person=false, max cross-page containment overlap 11%"
-      }
-    },
-    {
-      "id": "additions",
-      "url": "/additions",
-      "file": "additions/index.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 85,
-        "statisticalDensity": 100,
-        "uniqueness": 48
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/12 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 6 H2/H3, 1/5 sections in 100-220wd band",
-        "statisticalDensity": "40 numeric tokens / 596 words (6.7 per 100w, target 4+)",
-        "uniqueness": "4 place names, 2 license mentions, first-person=true, max cross-page containment overlap 16%"
-      }
-    },
-    {
-      "id": "commercial-upfits",
-      "url": "/commercial-upfits",
-      "file": "commercial-upfits/index.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 88,
-        "statisticalDensity": 100,
-        "uniqueness": 41
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/11 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 6 H2/H3, 2/5 sections in 100-220wd band",
-        "statisticalDensity": "51 numeric tokens / 580 words (8.8 per 100w, target 4+)",
-        "uniqueness": "1 place names, 2 license mentions, first-person=true, max cross-page containment overlap 14%"
-      }
-    },
-    {
-      "id": "garages",
-      "url": "/garages",
-      "file": "garages/index.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 85,
-        "statisticalDensity": 100,
-        "uniqueness": 47
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/12 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 6 H2/H3, 1/5 sections in 100-220wd band",
-        "statisticalDensity": "59 numeric tokens / 630 words (9.4 per 100w, target 4+)",
-        "uniqueness": "4 place names, 3 license mentions, first-person=true, max cross-page containment overlap 16%"
-      }
-    },
-    {
-      "id": "handyman",
-      "url": "/handyman",
-      "file": "handyman/index.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 88,
-        "statisticalDensity": 100,
-        "uniqueness": 42
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/10 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 4 FAQ blocks, 6 H2/H3, 2/5 sections in 100-220wd band",
-        "statisticalDensity": "38 numeric tokens / 539 words (7.1 per 100w, target 4+)",
-        "uniqueness": "1 place names, 2 license mentions, first-person=true, max cross-page containment overlap 14%"
-      }
-    },
-    {
-      "id": "outdoor-living-screened-porches",
-      "url": "/outdoor-living/screened-porches",
-      "file": "outdoor-living/screened-porches/index.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 88,
-        "statisticalDensity": 100,
-        "uniqueness": 44
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/11 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 6 H2/H3, 2/5 sections in 100-220wd band",
-        "statisticalDensity": "40 numeric tokens / 645 words (6.2 per 100w, target 4+)",
-        "uniqueness": "2 place names, 2 license mentions, first-person=true, max cross-page containment overlap 15%"
-      }
-    },
-    {
-      "id": "outdoor-living-covered-patios",
-      "url": "/outdoor-living/covered-patios",
-      "file": "outdoor-living/covered-patios/index.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 28,
-        "selfContainment": 100,
-        "structure": 85,
-        "statisticalDensity": 100,
-        "uniqueness": 46
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/12 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 6 H2/H3, 1/5 sections in 100-220wd band",
-        "statisticalDensity": "42 numeric tokens / 625 words (6.7 per 100w, target 4+)",
-        "uniqueness": "4 place names, 2 license mentions, first-person=true, max cross-page containment overlap 16%"
-      }
-    },
-    {
-      "id": "calc-additions",
-      "url": "/calculator/additions.html",
-      "file": "calculator/additions.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 44,
-        "selfContainment": 100,
-        "structure": 83,
-        "statisticalDensity": 100,
-        "uniqueness": 20
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "39 numeric tokens / 238 words (16.4 per 100w, target 4+)",
-        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 36%"
-      }
-    },
-    {
-      "id": "calc-basement-finishing",
-      "url": "/calculator/basement-finishing.html",
-      "file": "calculator/basement-finishing.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 44,
-        "selfContainment": 100,
-        "structure": 83,
-        "statisticalDensity": 100,
-        "uniqueness": 21
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "36 numeric tokens / 252 words (14.3 per 100w, target 4+)",
-        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 36%"
-      }
-    },
-    {
-      "id": "calc-bath-remodel",
-      "url": "/calculator/bath-remodel.html",
-      "file": "calculator/bath-remodel.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 44,
-        "selfContainment": 100,
-        "structure": 83,
-        "statisticalDensity": 100,
-        "uniqueness": 23
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/6 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "34 numeric tokens / 242 words (14.0 per 100w, target 4+)",
-        "uniqueness": "3 place names, 2 license mentions, first-person=false, max cross-page containment overlap 32%"
-      }
-    },
-    {
-      "id": "calc-garages",
-      "url": "/calculator/garages.html",
-      "file": "calculator/garages.html",
-      "total": 71,
-      "subScores": {
-        "answerQuality": 44,
-        "selfContainment": 100,
-        "structure": 83,
-        "statisticalDensity": 100,
-        "uniqueness": 20
-      },
-      "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "46 numeric tokens / 235 words (19.6 per 100w, target 4+)",
-        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 36%"
       }
     },
     {
       "id": "index",
       "url": "/",
       "file": "index.html",
-      "total": 72,
+      "total": 74,
       "subScores": {
-        "answerQuality": 35,
+        "answerQuality": 44,
         "selfContainment": 100,
-        "structure": 89,
-        "statisticalDensity": 91,
-        "uniqueness": 51
+        "structure": 88,
+        "statisticalDensity": 92,
+        "uniqueness": 48
       },
       "detail": {
-        "answerQuality": "4 question headings (coverage 100%), 0 with a qualifying direct-answer paragraph",
+        "answerQuality": "7 question headings (coverage 100%), 1 with a qualifying direct-answer paragraph",
         "selfContainment": "0/41 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 1 dl, 1 ol, 10 FAQ blocks, 41 H2/H3, 2/7 sections in 100-220wd band",
-        "statisticalDensity": "52 numeric tokens / 1423 words (3.7 per 100w, target 4+)",
-        "uniqueness": "11 place names, 8 license mentions, first-person=true, max cross-page containment overlap 13%"
+        "structure": "0 table(s), 1 dl, 1 ol, 7 FAQ blocks, 44 H2/H3, 2/10 sections in 100-220wd band",
+        "statisticalDensity": "52 numeric tokens / 1420 words (3.7 per 100w, target 4+)",
+        "uniqueness": "11 place names, 8 license mentions, first-person=true, max cross-page containment overlap 16%"
       }
     },
     {
-      "id": "basement-finishing",
-      "url": "/basement-finishing",
-      "file": "basement-finishing/index.html",
-      "total": 72,
+      "id": "calc-bath-remodel",
+      "url": "/calculator/bath-remodel.html",
+      "file": "calculator/bath-remodel.html",
+      "total": 74,
       "subScores": {
-        "answerQuality": 28,
+        "answerQuality": 68,
         "selfContainment": 100,
-        "structure": 90,
+        "structure": 78,
         "statisticalDensity": 100,
-        "uniqueness": 46
+        "uniqueness": 10
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/12 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 11 H2/H3, 2/6 sections in 100-220wd band",
-        "statisticalDensity": "54 numeric tokens / 654 words (8.3 per 100w, target 4+)",
-        "uniqueness": "2 place names, 2 license mentions, first-person=true, max cross-page containment overlap 14%"
+        "answerQuality": "4 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/9 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "40 numeric tokens / 379 words (10.6 per 100w, target 4+)",
+        "uniqueness": "3 place names, 2 license mentions, first-person=true, max cross-page containment overlap 58%"
       }
     },
     {
-      "id": "outdoor-living-decks",
-      "url": "/outdoor-living/decks",
-      "file": "outdoor-living/decks/index.html",
-      "total": 72,
+      "id": "calc-covered-patios",
+      "url": "/calculator/covered-patios.html",
+      "file": "calculator/covered-patios.html",
+      "total": 74,
       "subScores": {
-        "answerQuality": 28,
+        "answerQuality": 68,
         "selfContainment": 100,
-        "structure": 85,
+        "structure": 78,
         "statisticalDensity": 100,
-        "uniqueness": 50
+        "uniqueness": 9
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/11 paragraphs open with an unresolved reference",
-        "structure": "2 table(s), 0 dl, 1 ol, 5 FAQ blocks, 6 H2/H3, 1/5 sections in 100-220wd band",
-        "statisticalDensity": "40 numeric tokens / 608 words (6.6 per 100w, target 4+)",
-        "uniqueness": "4 place names, 3 license mentions, first-person=true, max cross-page containment overlap 15%"
+        "answerQuality": "4 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "36 numeric tokens / 395 words (9.1 per 100w, target 4+)",
+        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 46%"
+      }
+    },
+    {
+      "id": "calc-kitchen-remodel",
+      "url": "/calculator/kitchen-remodel.html",
+      "file": "calculator/kitchen-remodel.html",
+      "total": 74,
+      "subScores": {
+        "answerQuality": 68,
+        "selfContainment": 100,
+        "structure": 78,
+        "statisticalDensity": 100,
+        "uniqueness": 6
+      },
+      "detail": {
+        "answerQuality": "4 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "40 numeric tokens / 350 words (11.4 per 100w, target 4+)",
+        "uniqueness": "3 place names, 2 license mentions, first-person=true, max cross-page containment overlap 63%"
       }
     },
     {
       "id": "calc-porch",
       "url": "/calculator/porch.html",
       "file": "calculator/porch.html",
-      "total": 72,
+      "total": 74,
       "subScores": {
-        "answerQuality": 44,
+        "answerQuality": 68,
         "selfContainment": 100,
-        "structure": 83,
+        "structure": 78,
         "statisticalDensity": 100,
-        "uniqueness": 27
+        "uniqueness": 6
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "30 numeric tokens / 227 words (13.2 per 100w, target 4+)",
-        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 29%"
+        "answerQuality": "4 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "32 numeric tokens / 398 words (8.0 per 100w, target 4+)",
+        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 48%"
+      }
+    },
+    {
+      "id": "calc-whole-home-remodel",
+      "url": "/calculator/whole-home-remodel.html",
+      "file": "calculator/whole-home-remodel.html",
+      "total": 74,
+      "subScores": {
+        "answerQuality": 68,
+        "selfContainment": 100,
+        "structure": 78,
+        "statisticalDensity": 100,
+        "uniqueness": 8
+      },
+      "detail": {
+        "answerQuality": "4 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "42 numeric tokens / 343 words (12.2 per 100w, target 4+)",
+        "uniqueness": "3 place names, 2 license mentions, first-person=true, max cross-page containment overlap 63%"
+      }
+    },
+    {
+      "id": "outdoor-living-screened-porches",
+      "url": "/outdoor-living/screened-porches",
+      "file": "outdoor-living/screened-porches/index.html",
+      "total": 75,
+      "subScores": {
+        "answerQuality": 61,
+        "selfContainment": 100,
+        "structure": 88,
+        "statisticalDensity": 100,
+        "uniqueness": 13
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/11 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 10 H2/H3, 2/9 sections in 100-220wd band",
+        "statisticalDensity": "40 numeric tokens / 642 words (6.2 per 100w, target 4+)",
+        "uniqueness": "2 place names, 2 license mentions, first-person=true, max cross-page containment overlap 48%"
       }
     },
     {
       "id": "calc-ada-bath-shower",
       "url": "/calculator/ada-bath-shower.html",
       "file": "calculator/ada-bath-shower.html",
-      "total": 73,
+      "total": 75,
       "subScores": {
-        "answerQuality": 44,
+        "answerQuality": 68,
         "selfContainment": 100,
-        "structure": 83,
+        "structure": 78,
         "statisticalDensity": 100,
-        "uniqueness": 33
+        "uniqueness": 17
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/5 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "31 numeric tokens / 242 words (12.8 per 100w, target 4+)",
-        "uniqueness": "4 place names, 2 license mentions, first-person=false, max cross-page containment overlap 22%"
+        "answerQuality": "4 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "33 numeric tokens / 384 words (8.6 per 100w, target 4+)",
+        "uniqueness": "4 place names, 2 license mentions, first-person=false, max cross-page containment overlap 40%"
+      }
+    },
+    {
+      "id": "faqs",
+      "url": "/faqs.html",
+      "file": "faqs.html",
+      "total": 76,
+      "subScores": {
+        "answerQuality": 74,
+        "selfContainment": 100,
+        "structure": 80,
+        "statisticalDensity": 83,
+        "uniqueness": 32
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/33 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 1 ol, 24 FAQ blocks, 23 H2/H3, 1/14 sections in 100-220wd band",
+        "statisticalDensity": "49 numeric tokens / 1469 words (3.3 per 100w, target 4+)",
+        "uniqueness": "11 place names, 4 license mentions, first-person=true, max cross-page containment overlap 31%"
+      }
+    },
+    {
+      "id": "additions",
+      "url": "/additions",
+      "file": "additions/index.html",
+      "total": 76,
+      "subScores": {
+        "answerQuality": 61,
+        "selfContainment": 100,
+        "structure": 87,
+        "statisticalDensity": 100,
+        "uniqueness": 24
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/12 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 10 H2/H3, 1/9 sections in 100-220wd band",
+        "statisticalDensity": "40 numeric tokens / 593 words (6.7 per 100w, target 4+)",
+        "uniqueness": "4 place names, 2 license mentions, first-person=true, max cross-page containment overlap 42%"
+      }
+    },
+    {
+      "id": "handyman",
+      "url": "/handyman",
+      "file": "handyman/index.html",
+      "total": 76,
+      "subScores": {
+        "answerQuality": 48,
+        "selfContainment": 100,
+        "structure": 87,
+        "statisticalDensity": 100,
+        "uniqueness": 43
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 1 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/9 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 0 FAQ blocks, 9 H2/H3, 1/8 sections in 100-220wd band",
+        "statisticalDensity": "38 numeric tokens / 520 words (7.3 per 100w, target 4+)",
+        "uniqueness": "1 place names, 2 license mentions, first-person=true, max cross-page containment overlap 13%"
+      }
+    },
+    {
+      "id": "outdoor-living-decks",
+      "url": "/outdoor-living/decks",
+      "file": "outdoor-living/decks/index.html",
+      "total": 76,
+      "subScores": {
+        "answerQuality": 61,
+        "selfContainment": 100,
+        "structure": 87,
+        "statisticalDensity": 100,
+        "uniqueness": 22
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/11 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 10 H2/H3, 1/9 sections in 100-220wd band",
+        "statisticalDensity": "40 numeric tokens / 605 words (6.6 per 100w, target 4+)",
+        "uniqueness": "4 place names, 3 license mentions, first-person=true, max cross-page containment overlap 47%"
+      }
+    },
+    {
+      "id": "outdoor-living-covered-patios",
+      "url": "/outdoor-living/covered-patios",
+      "file": "outdoor-living/covered-patios/index.html",
+      "total": 76,
+      "subScores": {
+        "answerQuality": 61,
+        "selfContainment": 100,
+        "structure": 87,
+        "statisticalDensity": 100,
+        "uniqueness": 19
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/12 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 10 H2/H3, 1/9 sections in 100-220wd band",
+        "statisticalDensity": "42 numeric tokens / 622 words (6.8 per 100w, target 4+)",
+        "uniqueness": "4 place names, 2 license mentions, first-person=true, max cross-page containment overlap 46%"
       }
     },
     {
       "id": "calc-estimate",
       "url": "/calculator/estimate.html",
       "file": "calculator/estimate.html",
-      "total": 73,
+      "total": 76,
       "subScores": {
-        "answerQuality": 44,
+        "answerQuality": 68,
         "selfContainment": 100,
-        "structure": 83,
+        "structure": 78,
         "statisticalDensity": 100,
-        "uniqueness": 36
+        "uniqueness": 25
       },
       "detail": {
-        "answerQuality": "1 question headings (coverage 25%), 1 with a qualifying direct-answer paragraph",
-        "selfContainment": "0/4 paragraphs open with an unresolved reference",
-        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 2 H2/H3, 1/1 sections in 100-220wd band",
-        "statisticalDensity": "22 numeric tokens / 262 words (8.4 per 100w, target 4+)",
-        "uniqueness": "5 place names, 4 license mentions, first-person=false, max cross-page containment overlap 18%"
+        "answerQuality": "4 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/7 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "25 numeric tokens / 382 words (6.5 per 100w, target 4+)",
+        "uniqueness": "7 place names, 6 license mentions, first-person=false, max cross-page containment overlap 31%"
+      }
+    },
+    {
+      "id": "contact",
+      "url": "/contact.html",
+      "file": "contact.html",
+      "total": 78,
+      "subScores": {
+        "answerQuality": 61,
+        "selfContainment": 100,
+        "structure": 84,
+        "statisticalDensity": 100,
+        "uniqueness": 37
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/10 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 0 dl, 2 ol, 0 FAQ blocks, 9 H2/H3, 2/6 sections in 100-220wd band",
+        "statisticalDensity": "36 numeric tokens / 513 words (7.0 per 100w, target 4+)",
+        "uniqueness": "11 place names, 2 license mentions, first-person=true, max cross-page containment overlap 31%"
+      }
+    },
+    {
+      "id": "calc-garages",
+      "url": "/calculator/garages.html",
+      "file": "calculator/garages.html",
+      "total": 78,
+      "subScores": {
+        "answerQuality": 84,
+        "selfContainment": 100,
+        "structure": 78,
+        "statisticalDensity": 100,
+        "uniqueness": 12
+      },
+      "detail": {
+        "answerQuality": "4 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "50 numeric tokens / 387 words (12.9 per 100w, target 4+)",
+        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 43%"
+      }
+    },
+    {
+      "id": "commercial-upfits",
+      "url": "/commercial-upfits",
+      "file": "commercial-upfits/index.html",
+      "total": 79,
+      "subScores": {
+        "answerQuality": 61,
+        "selfContainment": 100,
+        "structure": 88,
+        "statisticalDensity": 100,
+        "uniqueness": 42
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 2 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/11 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 10 H2/H3, 2/9 sections in 100-220wd band",
+        "statisticalDensity": "51 numeric tokens / 577 words (8.8 per 100w, target 4+)",
+        "uniqueness": "1 place names, 2 license mentions, first-person=true, max cross-page containment overlap 13%"
+      }
+    },
+    {
+      "id": "garages",
+      "url": "/garages",
+      "file": "garages/index.html",
+      "total": 79,
+      "subScores": {
+        "answerQuality": 74,
+        "selfContainment": 100,
+        "structure": 87,
+        "statisticalDensity": 100,
+        "uniqueness": 23
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/12 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 10 H2/H3, 1/9 sections in 100-220wd band",
+        "statisticalDensity": "59 numeric tokens / 627 words (9.4 per 100w, target 4+)",
+        "uniqueness": "4 place names, 3 license mentions, first-person=true, max cross-page containment overlap 43%"
+      }
+    },
+    {
+      "id": "calc-additions",
+      "url": "/calculator/additions.html",
+      "file": "calculator/additions.html",
+      "total": 79,
+      "subScores": {
+        "answerQuality": 84,
+        "selfContainment": 100,
+        "structure": 78,
+        "statisticalDensity": 100,
+        "uniqueness": 13
+      },
+      "detail": {
+        "answerQuality": "4 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "42 numeric tokens / 388 words (10.8 per 100w, target 4+)",
+        "uniqueness": "5 place names, 2 license mentions, first-person=false, max cross-page containment overlap 42%"
+      }
+    },
+    {
+      "id": "basement-finishing",
+      "url": "/basement-finishing",
+      "file": "basement-finishing/index.html",
+      "total": 80,
+      "subScores": {
+        "answerQuality": 74,
+        "selfContainment": 100,
+        "structure": 88,
+        "statisticalDensity": 100,
+        "uniqueness": 24
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/12 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 15 H2/H3, 2/10 sections in 100-220wd band",
+        "statisticalDensity": "54 numeric tokens / 651 words (8.3 per 100w, target 4+)",
+        "uniqueness": "2 place names, 2 license mentions, first-person=true, max cross-page containment overlap 38%"
+      }
+    },
+    {
+      "id": "calc-decks",
+      "url": "/calculator/decks.html",
+      "file": "calculator/decks.html",
+      "total": 80,
+      "subScores": {
+        "answerQuality": 84,
+        "selfContainment": 100,
+        "structure": 78,
+        "statisticalDensity": 100,
+        "uniqueness": 23
+      },
+      "detail": {
+        "answerQuality": "4 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "43 numeric tokens / 391 words (11.0 per 100w, target 4+)",
+        "uniqueness": "7 place names, 3 license mentions, first-person=true, max cross-page containment overlap 47%"
       }
     },
     {
       "id": "about",
       "url": "/about.html",
       "file": "about.html",
-      "total": 80,
+      "total": 81,
       "subScores": {
-        "answerQuality": 65,
-        "selfContainment": 93,
+        "answerQuality": 74,
+        "selfContainment": 94,
         "structure": 85,
         "statisticalDensity": 100,
-        "uniqueness": 53
+        "uniqueness": 47
       },
       "detail": {
-        "answerQuality": "3 question headings (coverage 75%), 2 with a qualifying direct-answer paragraph",
-        "selfContainment": "1/15 paragraphs open with an unresolved reference",
-        "structure": "0 table(s), 2 dl, 1 ol, 0 FAQ blocks, 13 H2/H3, 0/4 sections in 100-220wd band",
-        "statisticalDensity": "26 numeric tokens / 460 words (5.7 per 100w, target 4+)",
-        "uniqueness": "3 place names, 8 license mentions, first-person=true, max cross-page containment overlap 9%"
+        "answerQuality": "5 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "1/17 paragraphs open with an unresolved reference",
+        "structure": "0 table(s), 2 dl, 1 ol, 0 FAQ blocks, 15 H2/H3, 0/6 sections in 100-220wd band",
+        "statisticalDensity": "29 numeric tokens / 542 words (5.4 per 100w, target 4+)",
+        "uniqueness": "3 place names, 8 license mentions, first-person=true, max cross-page containment overlap 16%"
+      }
+    },
+    {
+      "id": "calc-basement-finishing",
+      "url": "/calculator/basement-finishing.html",
+      "file": "calculator/basement-finishing.html",
+      "total": 81,
+      "subScores": {
+        "answerQuality": 84,
+        "selfContainment": 100,
+        "structure": 78,
+        "statisticalDensity": 100,
+        "uniqueness": 29
+      },
+      "detail": {
+        "answerQuality": "4 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "0/8 paragraphs open with an unresolved reference",
+        "structure": "1 table(s), 1 dl, 0 ol, 0 FAQ blocks, 5 H2/H3, 1/4 sections in 100-220wd band",
+        "statisticalDensity": "40 numeric tokens / 377 words (10.6 per 100w, target 4+)",
+        "uniqueness": "5 place names, 2 license mentions, first-person=true, max cross-page containment overlap 38%"
+      }
+    },
+    {
+      "id": "adu-builder",
+      "url": "/adu-builder",
+      "file": "adu-builder/index.html",
+      "total": 82,
+      "subScores": {
+        "answerQuality": 74,
+        "selfContainment": 91,
+        "structure": 88,
+        "statisticalDensity": 100,
+        "uniqueness": 51
+      },
+      "detail": {
+        "answerQuality": "5 question headings (coverage 100%), 3 with a qualifying direct-answer paragraph",
+        "selfContainment": "1/11 paragraphs open with an unresolved reference",
+        "structure": "2 table(s), 0 dl, 1 ol, 1 FAQ blocks, 10 H2/H3, 2/9 sections in 100-220wd band",
+        "statisticalDensity": "68 numeric tokens / 584 words (11.6 per 100w, target 4+)",
+        "uniqueness": "4 place names, 2 license mentions, first-person=true, max cross-page containment overlap 13%"
       }
     }
   ]

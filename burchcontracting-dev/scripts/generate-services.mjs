@@ -650,14 +650,46 @@ ${service.benefits
       </section>`
     : ''
 
-  const faqSectionHtml = faqs.length
+  // First 2 FAQs (cost + timeline, by convention of how SERVICE_FAQS is
+  // ordered — see service-faqs.js) get promoted to visible <h2> question
+  // headings with a direct-answer paragraph, not just accordion <summary>
+  // text. AI extractors look for an H1/H2 phrased as a question immediately
+  // followed by a compact answer; an accordion's <summary> isn't a heading
+  // at all, so it wasn't satisfying that pattern even though the same text
+  // was already on the page. The remaining FAQs stay in the accordion below
+  // — no content is removed, just the first two get a second, structurally
+  // stronger presentation. FAQPage JSON-LD still covers the full `faqs`
+  // array either way, since both forms are visible on-page.
+  // 4, not 2: Phase 2's own acceptance bar is "no fewer than 4 question-form
+  // headings" per page. SERVICE_FAQS entries run 4-5 per service, so this
+  // promotes nearly everything and leaves at most one in the accordion.
+  const promotedFaqs = faqs.slice(0, 4)
+  const remainingFaqs = faqs.slice(4)
+
+  const promotedAnswersSectionHtml = promotedFaqs.length
+    ? `
+      <section class="bg-white py-12 lg:py-16 border-t border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+${promotedFaqs
+        .map(
+          (faq) => `          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-3">${esc(faq.question)}</h2>
+            <p class="text-slate-600 leading-relaxed">${esc(faq.answer)}</p>
+          </div>`
+        )
+        .join('\n')}
+        </div>
+      </section>`
+    : ''
+
+  const faqSectionHtml = remainingFaqs.length
     ? `
       <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100" aria-labelledby="${service.id}-faqs-heading">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 id="${service.id}-faqs-heading" class="text-3xl font-bold text-slate-900 mb-3 text-center">${esc(service.title)} FAQs</h2>
+          <h2 id="${service.id}-faqs-heading" class="text-3xl font-bold text-slate-900 mb-3 text-center">More ${esc(service.title)} Questions</h2>
           <p class="text-slate-600 text-center mb-8">Direct answers for homeowners and AI search — licensed, local, and accountable.</p>
           <div class="space-y-4">
-${faqHtml(faqs, service.id)}
+${faqHtml(remainingFaqs, service.id)}
           </div>
         </div>
       </section>`
@@ -692,7 +724,7 @@ ${seoHead({ title, description, canonical })}
 ${header}
     <main id="main-content">
 ${heroSectionHtml}
-
+${promotedAnswersSectionHtml}
 ${commonProjectsSectionHtml}
 ${serviceCategoriesSectionHtml}
 ${pricingSectionHtml}

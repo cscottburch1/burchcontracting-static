@@ -271,6 +271,34 @@ function faqHtml(faqs, idPrefix = 'faq') {
 
 function serviceAreaPage(area) {
   const faqs = cityFaqs(area)
+  // Same promotion pattern as generate-services.mjs: the first 2 city FAQs
+  // (does-Burch-serve-this-city + drive-time, per cityFaqs()'s own order)
+  // get a visible <h2> question heading right under the hero instead of
+  // only living in the accordion further down — an accordion <summary>
+  // isn't a heading, so it wasn't satisfying "H1/H2 phrased as a question"
+  // even though the text was already there. Nothing is removed from the
+  // accordion's content set for FAQPage schema purposes; the remaining 3
+  // stay visible in the accordion below.
+  // 4, not 2: Phase 2's own acceptance bar is "no fewer than 4 question-form
+  // headings" per page. cityFaqs() always returns 5, so this leaves exactly
+  // 1 in the accordion below.
+  const promotedFaqs = faqs.slice(0, 4)
+  const remainingFaqs = faqs.slice(4)
+  const promotedFaqSectionHtml = promotedFaqs.length
+    ? `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+${promotedFaqs
+        .map(
+          (faq) => `          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-3">${esc(faq.question)}</h2>
+            <p class="text-slate-600 leading-relaxed">${esc(faq.answer)}</p>
+          </div>`
+        )
+        .join('\n')}
+        </div>
+      </section>
+`
+    : ''
   const canonical = `${SITE.domain}/service-areas/${area.slug}.html`
   const title = `Deck Builder, Garage Contractor & Home Additions ${area.name} SC | Burch Contracting`
   const description = `Burch Contracting builds decks, screened porches, garages, and room additions in ${area.name}, SC. SC License #${SITE.license}. BBB A+. Free consultations. ${area.driveTime}.`
@@ -374,6 +402,7 @@ ${header}
         </div>
       </section>
 
+${promotedFaqSectionHtml}
       <section class="bg-white py-16 lg:py-20 border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div class="lg:col-span-2">
@@ -415,10 +444,10 @@ ${services}
 
       <section class="bg-slate-50 py-16 lg:py-20" aria-labelledby="faqs-${area.slug}">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 id="faqs-${area.slug}" class="text-3xl font-bold text-slate-900 mb-3">${esc(area.name)}, SC — Common Questions</h2>
+          <h2 id="faqs-${area.slug}" class="text-3xl font-bold text-slate-900 mb-3">More ${esc(area.name)}, SC Questions</h2>
           <p class="text-slate-600 mb-8">Direct answers for homeowners and AI search — licensed, local, and accountable.</p>
           <div class="space-y-4">
-${faqHtml(faqs, area.slug)}
+${faqHtml(remainingFaqs, area.slug)}
           </div>
 ${authorBox(area.name)}
           <p class="mt-6 text-center"><a href="/faqs.html" class="text-blue-700 hover:text-blue-800 font-semibold text-sm">View all FAQs &rarr;</a></p>
@@ -461,7 +490,27 @@ function faqsPage() {
     ...SERVICE_FAQS.flatMap((group) => group.faqs),
   ]
 
-  const globalSection = faqHtml(GLOBAL_FAQS, 'global')
+  // Same promotion pattern as service/service-area pages: first 2 global
+  // FAQs (licensing + service area, per GLOBAL_FAQS's own order) become a
+  // visible <h2> question heading right under the hero; the rest stay in
+  // the "General Questions" accordion below.
+  const promotedFaqs = GLOBAL_FAQS.slice(0, 4)
+  const remainingGlobalFaqs = GLOBAL_FAQS.slice(4)
+  const promotedFaqSectionHtml = `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+${promotedFaqs
+    .map(
+      (faq) => `          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-3">${esc(faq.question)}</h2>
+            <p class="text-slate-600 leading-relaxed">${esc(faq.answer)}</p>
+          </div>`
+    )
+    .join('\n')}
+        </div>
+      </section>
+`
+
+  const globalSection = faqHtml(remainingGlobalFaqs, 'global')
   const serviceSections = SERVICE_FAQS.map(
     (group) => `          <div class="mb-12">
             <h2 class="text-2xl font-bold text-slate-900 mb-5">${esc(group.category)}</h2>
@@ -533,6 +582,7 @@ ${header}
         </div>
       </section>
 
+${promotedFaqSectionHtml}
       <section class="bg-white py-16 lg:py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-2xl font-bold text-slate-900 mb-5">General Questions</h2>
