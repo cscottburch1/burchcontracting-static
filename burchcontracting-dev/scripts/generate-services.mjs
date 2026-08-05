@@ -605,6 +605,80 @@ ${authorBox()}
       </section>`
     : ''
 
+  // Phase 3 structure bar: every page needs >=1 real <table>. Services
+  // with commonProjects/pricingTiers/flatFee already render one; the 4
+  // that don't (commercial-roofing, insurance-restoration, ada-compliance,
+  // ada-bath-to-shower) get one built from data already on the page —
+  // serviceCategories where present (a "what's included" breakdown of the
+  // same category/items lists already shown as cards below), or
+  // howItWorks otherwise (the same 3-step process already shown as an
+  // ordered list). No new facts, just a second, tabular presentation of
+  // data that's already there — see generate-services.mjs's
+  // serviceCategoriesSectionHtml / howItWorksSectionHtml for the source.
+  const hasOtherTable = Boolean(service.commonProjects || service.pricingTiers || service.flatFee)
+  const fallbackTableSectionHtml =
+    hasOtherTable
+      ? ''
+      : service.serviceCategories
+        ? `
+      <section class="bg-slate-50 py-12 lg:py-16 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-6">${esc(service.title)} at a Glance</h2>
+          <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">${esc(service.title)} scope by category</caption>
+              <thead class="bg-slate-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Category</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">What's Included</th>
+                </tr>
+              </thead>
+              <tbody>
+${service.serviceCategories
+            .map(
+              (cat) => `                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left align-top whitespace-nowrap">${esc(cat.name)}</th>
+                  <td class="px-4 py-4 text-slate-600 text-sm leading-relaxed">${cat.items.map(esc).join('; ')}</td>
+                </tr>`
+            )
+            .join('\n')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>`
+        : service.howItWorks
+          ? `
+      <section class="bg-slate-50 py-12 lg:py-16 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-6">${esc(service.title)} Process at a Glance</h2>
+          <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">${esc(service.title)} process, step by step</caption>
+              <thead class="bg-slate-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Step</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Stage</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">What Happens</th>
+                </tr>
+              </thead>
+              <tbody>
+${service.howItWorks
+            .map(
+              (step, i) => `                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left align-top">${i + 1}</th>
+                  <td class="px-4 py-4 text-slate-900 font-semibold align-top whitespace-nowrap">${esc(step.title)}</td>
+                  <td class="px-4 py-4 text-slate-600 text-sm leading-relaxed">${esc(step.description)}</td>
+                </tr>`
+            )
+            .join('\n')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>`
+          : ''
+
   const authorOnlySectionHtml = !service.commonProjects && !service.pricingTiers && !service.flatFee && !service.serviceCategories
     ? `
       <section class="bg-white py-12 border-t border-slate-100">
@@ -727,6 +801,7 @@ ${heroSectionHtml}
 ${promotedAnswersSectionHtml}
 ${commonProjectsSectionHtml}
 ${serviceCategoriesSectionHtml}
+${fallbackTableSectionHtml}
 ${pricingSectionHtml}
 ${authorOnlySectionHtml}
 ${additionalCostsHtml}

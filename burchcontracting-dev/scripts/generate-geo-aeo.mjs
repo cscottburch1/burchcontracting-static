@@ -433,6 +433,39 @@ ${neighborhoods}
         </div>
       </section>
 
+      <section class="bg-white py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-6">${esc(area.name)}, SC Service Snapshot</h2>
+          <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Quick facts for Burch Contracting projects in ${esc(area.name)}, SC</caption>
+              <tbody>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">County</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${esc(area.county)}</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Drive Time from Our Gray Court Office</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${esc(area.driveTime)}</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Neighborhoods Served</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${area.neighborhoods.map((n) => esc(n.name)).join('; ')}</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Core Services Offered</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${CORE_SERVICES.map((s) => esc(s.name)).join('; ')}</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Contractor Licenses</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">SC #${SITE.license} &middot; NC #${SITE.licenseNC}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <section class="bg-white py-16 lg:py-20 border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl font-bold text-slate-900 mb-8">Our Services in ${esc(area.name)}</h2>
@@ -591,7 +624,31 @@ ${globalSection}
           </div>
 ${serviceSections}
 ${authorBox('Upstate SC')}
-          <p class="mt-8 text-sm text-slate-500">Codes &amp; permits: <a href="https://llr.sc.gov/bcc/" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">South Carolina Building Codes Council</a> &middot; <a href="https://www.greenvillecounty.org/buildingsafety/Permits.aspx" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Greenville County building permits</a> &middot; <a href="https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Laurens County building permits &amp; documents</a></p>
+          <div class="mt-10 overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Building permit &amp; code offices for counties Burch Contracting serves</caption>
+              <thead class="bg-slate-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Jurisdiction</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Office</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Statewide (SC)</th>
+                  <td class="px-4 py-3 text-sm"><a href="https://llr.sc.gov/bcc/" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">South Carolina Building Codes Council</a></td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Greenville County</th>
+                  <td class="px-4 py-3 text-sm"><a href="https://www.greenvillecounty.org/buildingsafety/Permits.aspx" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Greenville County building permits</a></td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Laurens County</th>
+                  <td class="px-4 py-3 text-sm"><a href="https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Laurens County building permits &amp; documents</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
