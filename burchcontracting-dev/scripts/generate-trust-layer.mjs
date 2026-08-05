@@ -24,7 +24,7 @@ import { fileURLToPath } from 'node:url'
 import { SCOTT_PERSON_SCHEMA, ORGANIZATION_SCHEMA, articleSchema } from '../src/data/site-schema.js'
 import { CONTENT_DATES } from '../src/data/content-dates.js'
 import { SERVICE_FAQS } from '../src/data/service-faqs.js'
-import { GLOBAL_FAQS } from '../src/data/geo-aeo.js'
+import { GLOBAL_FAQS, faqPageSchema } from '../src/data/geo-aeo.js'
 import { SERVICES, SITE } from '../src/data/services.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -98,6 +98,22 @@ const PROMOTE_FROM_OWN_ACCORDION = {
     'How do I get a free consultation and ballpark estimate?',
     'Is Burch Contracting licensed and insured?',
   ],
+}
+
+// Phase 6: FAQPage schema for calculators, built from whatever H2+<p>
+// question/answer pairs are already visibly rendered on the page (its own
+// AEO-table question plus the 3 promoted from service-faqs.js in Phase 2)
+// — not a second, separately-typed copy. This guarantees the schema can
+// never say something the visible page doesn't, which is the actual
+// Google requirement FAQPage schema has to satisfy.
+function extractH2QAPairs(html) {
+  const pairs = []
+  const re = /<h2[^>]*>([\s\S]*?)<\/h2>\s*<p[^>]*>([\s\S]*?)<\/p>/g
+  let m
+  while ((m = re.exec(html))) {
+    pairs.push({ question: stripTags(m[1]), answer: stripTags(m[2]) })
+  }
+  return pairs
 }
 
 function promoteFromAccordion(html, questionText) {
@@ -509,9 +525,42 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
     dateModified: dates.dateModified,
   })
 
+  // Phase 6: calculators get FAQPage schema. Deliberately NOT built from
+  // all 4 visible H2 blocks — 3 of those 4 (Phase 2's promoted timeline/
+  // material/permit questions) are the same SERVICE_FAQS entries already
+  // promoted onto that calculator's parent service page, so including them
+  // here too would put the identical Q&A in two pages' FAQPage schema,
+  // which Phase 6's own ground rules flag as damaging to uniqueness. Only
+  // the calculator's own AEO-table question (extractH2QAPairs()[0], unique
+  // per calculator, authored in generate-calculator-tables.mjs) plus 2 new
+  // methodology questions — genuinely calculator-specific, naming the
+  // service and reusing each page's own already-computed numbers — go in
+  // the schema. The 3 visible-but-schema-excluded blocks stay on the page
+  // exactly as Phase 2 left them; this only changes what's in the JSON-LD.
+  const graph = [SCOTT_PERSON_SCHEMA, article]
+  if (relFile.startsWith('calculator/')) {
+    const qaPairs = extractH2QAPairs(html)
+    const ownQuestion = qaPairs[0]
+    const serviceName = headline.replace(/\s*Cost Calculator\s*$/i, '').trim() || 'this project'
+    const methodologyFaqs = ownQuestion
+      ? [
+          ownQuestion,
+          {
+            question: `Is this ${serviceName} cost estimate accurate?`,
+            answer: `This is a planning estimate based on typical Upstate SC ${serviceName.toLowerCase()} costs, size, and the tier you select — actual pricing depends on your site conditions and finish selections. Every Burch Contracting quote includes a transparent 20% overhead and profit, the same formula used sitewide, with no hidden markup.`,
+          },
+          {
+            question: `What would push my ${serviceName.toLowerCase()} project to the high end of this range?`,
+            answer: `Site access, structural complexity, premium materials, and custom features push a project toward the high end of the range shown above; a straightforward scope in standard materials lands toward the low end. Scott confirms exactly where your project falls during a free consultation.`,
+          },
+        ]
+      : []
+    if (methodologyFaqs.length) graph.push(faqPageSchema(methodologyFaqs))
+  }
+
   const schemaJson = JSON.stringify({
     '@context': 'https://schema.org',
-    '@graph': [SCOTT_PERSON_SCHEMA, article],
+    '@graph': graph,
   })
   const schemaBlock = `    <script type="application/ld+json">${schemaJson}</script>`
 
