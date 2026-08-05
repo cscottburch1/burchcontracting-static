@@ -2,7 +2,7 @@
 
 Generated: 2026-08-05
 Pages scored: 41
-**Average citability score: 66/100**
+**Average citability score: 67/100**
 
 Sorted worst-first. Sub-scores are 0-100; overall = 25% Answer + 20% Self-Containment + 20% Structure + 20% Stats + 15% Uniqueness.
 
@@ -14,44 +14,44 @@ This is a local heuristic proxy for the SEOmator GEO audit, not a reproduction o
 |---|---|---|---|---|---|---|
 | /terms-of-service.html | **47** | 25 | 71 | 64 | 38 | 38 |
 | /privacy-policy.html | **51** | 28 | 83 | 62 | 53 | 32 |
-| /projects.html | **52** | 28 | 100 | 67 | 27 | 42 |
-| /service-areas/five-forks.html | **56** | 28 | 100 | 79 | 51 | 23 |
-| /service-areas/simpsonville.html | **56** | 28 | 100 | 79 | 51 | 23 |
-| /service-areas/gray-court.html | **57** | 28 | 100 | 79 | 54 | 22 |
-| /service-areas/mauldin.html | **57** | 28 | 100 | 79 | 52 | 23 |
-| /service-areas/greenville.html | **58** | 28 | 100 | 79 | 57 | 23 |
-| /service-areas/laurens.html | **58** | 28 | 100 | 79 | 62 | 22 |
-| /service-areas/woodruff.html | **58** | 28 | 100 | 79 | 58 | 24 |
-| /service-areas/fountain-inn.html | **60** | 28 | 100 | 79 | 68 | 23 |
-| /commercial-roofing | **61** | 33 | 100 | 88 | 58 | 24 |
-| /faqs.html | **63** | 28 | 100 | 81 | 76 | 33 |
-| /insurance-restoration | **64** | 30 | 92 | 85 | 87 | 23 |
-| /ada-compliance | **67** | 33 | 100 | 85 | 88 | 25 |
-| /ada-bath-to-shower | **70** | 33 | 100 | 85 | 100 | 31 |
+| /projects.html | **59** | 28 | 100 | 67 | 62 | 42 |
+| /service-areas/five-forks.html | **60** | 28 | 100 | 79 | 69 | 22 |
+| /service-areas/gray-court.html | **60** | 28 | 100 | 79 | 71 | 21 |
+| /service-areas/mauldin.html | **60** | 28 | 100 | 79 | 70 | 22 |
+| /service-areas/simpsonville.html | **60** | 28 | 100 | 79 | 68 | 22 |
+| /service-areas/greenville.html | **61** | 28 | 100 | 79 | 75 | 22 |
+| /service-areas/laurens.html | **62** | 28 | 100 | 79 | 80 | 21 |
+| /service-areas/woodruff.html | **62** | 28 | 100 | 79 | 77 | 23 |
+| /commercial-roofing | **63** | 33 | 100 | 88 | 68 | 24 |
+| /service-areas/fountain-inn.html | **63** | 28 | 100 | 79 | 85 | 22 |
+| /faqs.html | **65** | 28 | 100 | 81 | 83 | 33 |
+| /insurance-restoration | **66** | 30 | 92 | 85 | 100 | 22 |
+| /ada-compliance | **69** | 33 | 100 | 85 | 100 | 24 |
+| /ada-bath-to-shower | **70** | 33 | 100 | 85 | 100 | 30 |
 | /adu-builder | **70** | 28 | 91 | 88 | 100 | 50 |
 | /remodeling | **70** | 28 | 100 | 85 | 100 | 43 |
-| /calculator/kitchen-remodel.html | **70** | 44 | 100 | 81 | 100 | 18 |
-| /calculator/whole-home-remodel.html | **70** | 44 | 100 | 81 | 100 | 18 |
-| / | **71** | 35 | 100 | 89 | 83 | 52 |
+| /calculator/covered-patios.html | **70** | 44 | 100 | 83 | 100 | 18 |
+| /calculator/decks.html | **70** | 44 | 100 | 83 | 100 | 18 |
+| /calculator/kitchen-remodel.html | **70** | 44 | 100 | 83 | 100 | 17 |
+| /calculator/whole-home-remodel.html | **70** | 44 | 100 | 83 | 100 | 17 |
 | /services.html | **71** | 35 | 100 | 93 | 76 | 57 |
-| /contact.html | **71** | 28 | 100 | 87 | 100 | 43 |
-| /additions | **71** | 28 | 100 | 85 | 100 | 49 |
-| /commercial-upfits | **71** | 28 | 100 | 88 | 100 | 42 |
+| /contact.html | **71** | 28 | 100 | 89 | 100 | 43 |
+| /additions | **71** | 28 | 100 | 85 | 100 | 48 |
+| /commercial-upfits | **71** | 28 | 100 | 88 | 100 | 41 |
 | /garages | **71** | 28 | 100 | 85 | 100 | 47 |
-| /handyman | **71** | 28 | 100 | 88 | 100 | 43 |
-| /outdoor-living/screened-porches | **71** | 28 | 100 | 88 | 100 | 45 |
+| /handyman | **71** | 28 | 100 | 88 | 100 | 42 |
+| /outdoor-living/screened-porches | **71** | 28 | 100 | 88 | 100 | 44 |
 | /outdoor-living/covered-patios | **71** | 28 | 100 | 85 | 100 | 46 |
-| /calculator/additions.html | **71** | 44 | 100 | 81 | 100 | 24 |
-| /calculator/basement-finishing.html | **71** | 44 | 100 | 81 | 100 | 23 |
-| /calculator/bath-remodel.html | **71** | 44 | 100 | 81 | 100 | 25 |
-| /calculator/covered-patios.html | **71** | 44 | 100 | 81 | 100 | 22 |
-| /calculator/decks.html | **71** | 44 | 100 | 81 | 100 | 22 |
-| /calculator/garages.html | **71** | 44 | 100 | 81 | 100 | 23 |
+| /calculator/additions.html | **71** | 44 | 100 | 83 | 100 | 20 |
+| /calculator/basement-finishing.html | **71** | 44 | 100 | 83 | 100 | 21 |
+| /calculator/bath-remodel.html | **71** | 44 | 100 | 83 | 100 | 23 |
+| /calculator/garages.html | **71** | 44 | 100 | 83 | 100 | 20 |
+| / | **72** | 35 | 100 | 89 | 91 | 51 |
 | /basement-finishing | **72** | 28 | 100 | 90 | 100 | 46 |
-| /outdoor-living/decks | **72** | 28 | 100 | 85 | 100 | 51 |
-| /calculator/porch.html | **72** | 44 | 100 | 81 | 100 | 33 |
-| /calculator/ada-bath-shower.html | **73** | 44 | 100 | 81 | 100 | 40 |
-| /calculator/estimate.html | **75** | 44 | 100 | 81 | 100 | 50 |
+| /outdoor-living/decks | **72** | 28 | 100 | 85 | 100 | 50 |
+| /calculator/porch.html | **72** | 44 | 100 | 83 | 100 | 27 |
+| /calculator/ada-bath-shower.html | **73** | 44 | 100 | 83 | 100 | 33 |
+| /calculator/estimate.html | **73** | 44 | 100 | 83 | 100 | 36 |
 | /about.html | **80** | 65 | 93 | 85 | 100 | 53 |
 
 ## Detail (worst 10 pages)
@@ -70,58 +70,58 @@ This is a local heuristic proxy for the SEOmator GEO audit, not a reproduction o
 - **statisticalDensity**: 5 numeric tokens / 238 words (2.1 per 100w, target 4+)
 - **uniqueness**: 0 place names, 0 license mentions, first-person=false, max cross-page containment overlap 0%
 
-### /projects.html — 52/100
+### /projects.html — 59/100
 - **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
-- **selfContainment**: 0/16 paragraphs open with an unresolved reference
-- **structure**: 0 table(s), 0 dl, 1 ol, 0 FAQ blocks, 15 H2/H3, 0/15 sections in 100-220wd band
-- **statisticalDensity**: 4 numeric tokens / 371 words (1.1 per 100w, target 4+)
-- **uniqueness**: 6 place names, 0 license mentions, first-person=false, max cross-page containment overlap 0%
+- **selfContainment**: 0/17 paragraphs open with an unresolved reference
+- **structure**: 0 table(s), 0 dl, 1 ol, 0 FAQ blocks, 16 H2/H3, 0/15 sections in 100-220wd band
+- **statisticalDensity**: 10 numeric tokens / 401 words (2.5 per 100w, target 4+)
+- **uniqueness**: 6 place names, 2 license mentions, first-person=false, max cross-page containment overlap 9%
 
-### /service-areas/five-forks.html — 56/100
+### /service-areas/five-forks.html — 60/100
 - **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
 - **selfContainment**: 0/13 paragraphs open with an unresolved reference
 - **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band
-- **statisticalDensity**: 11 numeric tokens / 539 words (2.0 per 100w, target 4+)
-- **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 47%
+- **statisticalDensity**: 15 numeric tokens / 544 words (2.8 per 100w, target 4+)
+- **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%
 
-### /service-areas/simpsonville.html — 56/100
+### /service-areas/gray-court.html — 60/100
+- **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
+- **selfContainment**: 0/14 paragraphs open with an unresolved reference
+- **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band
+- **statisticalDensity**: 16 numeric tokens / 562 words (2.8 per 100w, target 4+)
+- **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 49%
+
+### /service-areas/mauldin.html — 60/100
+- **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
+- **selfContainment**: 0/14 paragraphs open with an unresolved reference
+- **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band
+- **statisticalDensity**: 15 numeric tokens / 537 words (2.8 per 100w, target 4+)
+- **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%
+
+### /service-areas/simpsonville.html — 60/100
 - **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
 - **selfContainment**: 0/15 paragraphs open with an unresolved reference
 - **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 20 H2/H3, 0/6 sections in 100-220wd band
-- **statisticalDensity**: 11 numeric tokens / 544 words (2.0 per 100w, target 4+)
-- **uniqueness**: 10 place names, 5 license mentions, first-person=true, max cross-page containment overlap 47%
+- **statisticalDensity**: 15 numeric tokens / 549 words (2.7 per 100w, target 4+)
+- **uniqueness**: 10 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%
 
-### /service-areas/gray-court.html — 57/100
+### /service-areas/greenville.html — 61/100
 - **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
-- **selfContainment**: 0/14 paragraphs open with an unresolved reference
+- **selfContainment**: 0/13 paragraphs open with an unresolved reference
 - **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band
-- **statisticalDensity**: 12 numeric tokens / 557 words (2.2 per 100w, target 4+)
+- **statisticalDensity**: 16 numeric tokens / 535 words (3.0 per 100w, target 4+)
 - **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%
 
-### /service-areas/mauldin.html — 57/100
-- **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
-- **selfContainment**: 0/14 paragraphs open with an unresolved reference
-- **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band
-- **statisticalDensity**: 11 numeric tokens / 532 words (2.1 per 100w, target 4+)
-- **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 47%
-
-### /service-areas/greenville.html — 58/100
+### /service-areas/laurens.html — 62/100
 - **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
 - **selfContainment**: 0/13 paragraphs open with an unresolved reference
 - **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band
-- **statisticalDensity**: 12 numeric tokens / 530 words (2.3 per 100w, target 4+)
-- **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 47%
+- **statisticalDensity**: 17 numeric tokens / 530 words (3.2 per 100w, target 4+)
+- **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 49%
 
-### /service-areas/laurens.html — 58/100
+### /service-areas/woodruff.html — 62/100
 - **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
 - **selfContainment**: 0/13 paragraphs open with an unresolved reference
 - **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band
-- **statisticalDensity**: 13 numeric tokens / 525 words (2.5 per 100w, target 4+)
-- **uniqueness**: 9 place names, 5 license mentions, first-person=true, max cross-page containment overlap 48%
-
-### /service-areas/woodruff.html — 58/100
-- **answerQuality**: 1 question headings (coverage 25%), 0 with a qualifying direct-answer paragraph
-- **selfContainment**: 0/13 paragraphs open with an unresolved reference
-- **structure**: 0 table(s), 0 dl, 1 ol, 5 FAQ blocks, 19 H2/H3, 0/6 sections in 100-220wd band
-- **statisticalDensity**: 12 numeric tokens / 515 words (2.3 per 100w, target 4+)
-- **uniqueness**: 10 place names, 5 license mentions, first-person=true, max cross-page containment overlap 45%
+- **statisticalDensity**: 16 numeric tokens / 520 words (3.1 per 100w, target 4+)
+- **uniqueness**: 10 place names, 5 license mentions, first-person=true, max cross-page containment overlap 46%

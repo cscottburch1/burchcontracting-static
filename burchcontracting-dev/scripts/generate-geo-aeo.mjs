@@ -11,10 +11,16 @@ import {
   faqPageSchema,
 } from '../src/data/geo-aeo.js'
 import { SERVICES } from '../src/data/services.js'
-import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA } from '../src/data/site-schema.js'
+import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../src/data/site-schema.js'
+import { CONTENT_DATES } from '../src/data/content-dates.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const areaDir = resolve(root, 'service-areas')
+
+// Real git-history-derived dates for everything driven by geo-aeo.js (see
+// scripts/compute-content-dates.mjs). '2026-07-19' fallback matches the
+// site relaunch date used elsewhere when content-dates.js lacks an entry.
+const AREA_DATES = CONTENT_DATES?.['__datafile__src/data/geo-aeo.js'] ?? { datePublished: '2026-07-19', dateModified: '2026-07-19' }
 
 function esc(value) {
   return String(value)
@@ -233,11 +239,19 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
     </footer>`
 
 function authorBox(cityName) {
+  // cityName is 'Upstate SC' itself on faqs.html (a sitewide page, not a
+  // single city) — "serving Upstate SC, SC and Upstate SC" reads as a typo,
+  // so that one case drops the redundant second clause.
+  const servingLine =
+    cityName === 'Upstate SC'
+      ? '35+ years serving Upstate SC.'
+      : `35+ years serving ${esc(cityName)}, SC and Upstate SC.`
   return `          <aside class="mt-12 bg-slate-50 border border-slate-100 rounded-2xl p-6 lg:p-8" itemscope itemtype="https://schema.org/Person">
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
             <h3 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h3>
             <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
-            <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | NC Licensed (Limited) #${SITE.licenseNC} | 35+ years serving ${esc(cityName)}, SC and Upstate SC. Scott Burch oversees every project with transparent pricing and hands-on job-site accountability.</p>
+            <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | NC Licensed (Limited) #${SITE.licenseNC} | ${servingLine} Scott Burch oversees every project with transparent pricing and hands-on job-site accountability.</p>
+            <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${AREA_DATES.datePublished}">${AREA_DATES.datePublished}</time> &middot; Last reviewed: <time datetime="${AREA_DATES.dateModified}">${AREA_DATES.dateModified}</time></p>
           </aside>`
 }
 
@@ -266,6 +280,7 @@ function serviceAreaPage(area) {
     '@graph': [
       LOCAL_BUSINESS_SCHEMA,
       ORGANIZATION_SCHEMA,
+      SCOTT_PERSON_SCHEMA,
       faqPageSchema(faqs),
       {
         '@type': 'Service',
@@ -278,6 +293,13 @@ function serviceAreaPage(area) {
         },
         serviceType: ['Deck Builder', 'Garage Construction', 'Screened Porches', 'Room Additions', 'Remodeling', 'Insurance Restoration', 'ADA Compliance'],
       },
+      articleSchema({
+        headline: `Deck Builder, Garage Contractor & Home Additions in ${area.name}, SC`,
+        description,
+        url: canonical,
+        datePublished: AREA_DATES.datePublished,
+        dateModified: AREA_DATES.dateModified,
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -461,6 +483,14 @@ ${faqHtml(group.faqs, group.category.toLowerCase().replace(/\s+/g, '-'))}
     '@graph': [
       LOCAL_BUSINESS_SCHEMA,
       ORGANIZATION_SCHEMA,
+      SCOTT_PERSON_SCHEMA,
+      articleSchema({
+        headline: 'Frequently Asked Questions',
+        description,
+        url: canonical,
+        datePublished: AREA_DATES.datePublished,
+        dateModified: AREA_DATES.dateModified,
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [

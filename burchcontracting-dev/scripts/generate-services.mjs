@@ -3,15 +3,20 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { SITE, SERVICES } from '../src/data/services.js'
 import { SERVICE_FAQS } from '../src/data/service-faqs.js'
-import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA } from '../src/data/site-schema.js'
+import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../src/data/site-schema.js'
+import { CONTENT_DATES } from '../src/data/content-dates.js'
+
+// Real git-history-derived dates for everything driven by services.js (see
+// scripts/compute-content-dates.mjs). Falls back to LAST_UPDATED_ISO below
+// if the dates file hasn't been (re)generated yet, so a missing/stale
+// content-dates.js can't silently break the build.
+const SERVICE_DATES = CONTENT_DATES?.['__datafile__src/data/services.js']
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
-// Site relaunch date (see LAUNCH-CHECKLIST.md) — used as datePublished/
-// dateModified across service pages until real per-page edit history exists.
-// Bump LAST_UPDATED_ISO/DISPLAY together when content actually changes.
+// Fallback only, used if src/data/content-dates.js is missing or doesn't
+// have an entry yet — real dates now come from git history (see above).
 const LAST_UPDATED_ISO = '2026-07-19'
-const LAST_UPDATED_DISPLAY = 'July 2026'
 
 function esc(value) {
   return String(value)
@@ -281,12 +286,14 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
     </script>`
 
 function authorBox() {
+  const published = SERVICE_DATES?.datePublished ?? LAST_UPDATED_ISO
+  const modified = SERVICE_DATES?.dateModified ?? LAST_UPDATED_ISO
   return `          <aside class="mt-12 bg-slate-50 border border-slate-100 rounded-2xl p-6 lg:p-8" itemscope itemtype="https://schema.org/Person">
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
             <h3 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h3>
             <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
             <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | NC Licensed (Limited) #${SITE.licenseNC} | ${SITE.experience} years | ${SITE.rating} Google Rating | BBB ${SITE.bbb} Rated</p>
-            <p class="text-slate-600 text-sm mt-3 leading-relaxed">Last updated: <span id="last-updated">${LAST_UPDATED_DISPLAY}</span></p>
+            <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${published}">${published}</time> &middot; Last reviewed: <time datetime="${modified}">${modified}</time></p>
           </aside>`
 }
 
@@ -310,15 +317,16 @@ function servicePage(service) {
   const description = service.description
   const faqs = SERVICE_FAQS[service.id] || []
 
-  const personId = `${SITE.url}/#scott-burch`
+  const published = SERVICE_DATES?.datePublished ?? LAST_UPDATED_ISO
+  const modified = SERVICE_DATES?.dateModified ?? LAST_UPDATED_ISO
 
   const serviceSchema = {
     '@type': 'Service',
     name: service.title,
     description: service.description,
-    datePublished: LAST_UPDATED_ISO,
-    dateModified: LAST_UPDATED_ISO,
-    author: { '@id': personId },
+    datePublished: published,
+    dateModified: modified,
+    author: { '@id': SCOTT_PERSON_SCHEMA['@id'] },
     provider: { '@id': LOCAL_BUSINESS_SCHEMA['@id'] },
     areaServed: {
       '@type': 'State',
@@ -326,26 +334,18 @@ function servicePage(service) {
     },
   }
 
-  const personSchema = {
-    '@type': 'Person',
-    '@id': personId,
-    name: SITE.owner,
-    jobTitle: 'General Contractor',
-    hasCredential: [
-      {
-        '@type': 'EducationalOccupationalCredential',
-        credentialCategory: 'license',
-        recognizedBy: { '@type': 'Organization', name: 'South Carolina LLR' },
-        identifier: SITE.license,
-      },
-      {
-        '@type': 'EducationalOccupationalCredential',
-        credentialCategory: 'license',
-        recognizedBy: { '@type': 'Organization', name: 'North Carolina Licensing Board for General Contractors' },
-        identifier: SITE.licenseNC,
-      },
-    ],
-  }
+  // Article node — the audit's "Article + Author" gap. Reuses the same
+  // Service description/dates rather than hand-typing a second headline,
+  // since they describe the same page and drifting them apart would just
+  // be a second place for the description to go stale.
+  const articleNode = articleSchema({
+    headline: service.h1 ?? service.title,
+    description: service.description,
+    url: canonical,
+    datePublished: published,
+    dateModified: modified,
+    image: service.heroImage ? `${SITE.url}${service.heroImage}` : undefined,
+  })
 
   if (service.flatFee) {
     serviceSchema.offers = {
@@ -356,7 +356,7 @@ function servicePage(service) {
     }
   }
 
-  const schemaGraph = [LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, serviceSchema, personSchema]
+  const schemaGraph = [LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, serviceSchema, articleNode]
 
   if (service.howItWorks) {
     schemaGraph.push({
