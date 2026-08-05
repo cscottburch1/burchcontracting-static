@@ -1,8 +1,160 @@
 # Citability Report
 
-Generated: 2026-08-05
-Pages scored: 41
-**Average citability score: 71/100**
+**Final summary — Phases 0 through 7 complete.** Everything below the
+`---` is the local scorer's auto-generated current-state snapshot (worst-
+first table + calibration notes); this section is the hand-written
+before/after wrap-up, current as of the Phase 7 commit. Re-running
+`node tools/citability-score.js` regenerates everything below the `---`
+but will not update this section — refresh it by hand if scores move
+again after real content lands (see CITABILITY-FACTS-NEEDED.md).
+
+## Executive summary
+
+| | Phase 0 baseline | After Phase 7 |
+|---|---|---|
+| Average (local scorer, 41 pages) | 66/100 | 71/100 |
+| Pages that improved | — | 35 of 41 |
+| Pages unchanged | — | 5 (2 intentionally out of scope: privacy-policy.html, terms-of-service.html; 3 calculators within scorer noise) |
+| Pages that declined | — | 1 (calculator/estimate.html, -1 — noise, not a regression) |
+| Worst single page | 47 (terms-of-service.html) | 47 (terms-of-service.html, untouched by design) |
+| Biggest single-page gain | — | +17 (projects.html: 52 → 69) |
+
+The **real** SEOmator audit scored the site 53/100 on AI Citability. This
+local scorer is a proxy, not a reproduction of that tool (see calibration
+notes below the `---`) — its 66 baseline doesn't mean "the audit was
+wrong," it means the two tools weigh things differently. Re-running the
+actual SEOmator audit is the only way to confirm the real-world delta;
+this file's job is to show *direction and magnitude* of change from the
+mechanical work (Lever B), and to make clear how much of the *remaining*
+gap is now sitting behind real answers in CITABILITY-FACTS-NEEDED.md
+(Lever A) rather than more formatting.
+
+## What's locked behind FACT-NEEDED answers
+
+Every phase's mechanical work is done and committed. What's left on the
+table specifically requires Scott, not more code:
+
+- **Real project data (Phase 4, highest leverage)** — 31 FACT-NEEDED
+  fields across 7 real, photo-backed projects (size, duration, cost band,
+  a problem solved). This is the single biggest lever: filling it in
+  raises `/projects.html` directly and feeds `/service-areas/*` and the
+  service hub pages simultaneously, since the same facts get reused there.
+- **Service-area local conditions (Phase 5)** — 32 FACT-NEEDED fields (4
+  per city × 8 cities: soil, slope, HOA prevalence, flood considerations),
+  plus 4 more cities' worth of real local projects (Mauldin, Five Forks,
+  Laurens, Gray Court currently have none). This is what's keeping the
+  8 service-area pages at the bottom of the table below — their Answer/
+  Structure/Stats sub-scores are already strong; Uniqueness is what's
+  waiting on real facts.
+- **Calculator pricing methodology (Phase 7)** — 1 question, covers all
+  11 calculator pages at once.
+- **2 smaller Phase 1 items** — an earlier-origin-date question and
+  additional `sameAs` profiles, ~10 minutes total, lowest priority.
+
+Total remaining ask: **roughly 75-90 minutes of Scott's time**, concentrated
+almost entirely in real project facts. No further code work unlocks these
+numbers — see CITABILITY-FACTS-NEEDED.md for the exact question list.
+
+## Before / after, all 41 pages (sorted by current score)
+
+| Page | Before (Phase 0) | After (Phase 7) | Delta |
+|---|---|---|---|
+| /terms-of-service.html | 47 | **47** | 0 |
+| /privacy-policy.html | 51 | **51** | 0 |
+| /service-areas/five-forks.html | 56 | **61** | +5 |
+| /service-areas/simpsonville.html | 56 | **61** | +5 |
+| /service-areas/mauldin.html | 57 | **61** | +4 |
+| /commercial-roofing | 61 | **62** | +1 |
+| /service-areas/greenville.html | 58 | **62** | +4 |
+| /service-areas/woodruff.html | 58 | **63** | +5 |
+| /service-areas/gray-court.html | 57 | **64** | +7 |
+| /service-areas/fountain-inn.html | 60 | **66** | +6 |
+| /service-areas/laurens.html | 58 | **66** | +8 |
+| /insurance-restoration | 64 | **68** | +4 |
+| /projects.html | 52 | **69** | +17 |
+| /ada-compliance | 67 | **70** | +3 |
+| /calculator/kitchen-remodel.html | 70 | **70** | 0 |
+| /calculator/bath-remodel.html | 71 | **71** | 0 |
+| /calculator/whole-home-remodel.html | 70 | **71** | +1 |
+| /ada-bath-to-shower | 70 | **72** | +2 |
+| /calculator/porch.html | 72 | **72** | 0 |
+| /remodeling | 70 | **73** | +3 |
+| /calculator/covered-patios.html | 71 | **73** | +2 |
+| /calculator/ada-bath-shower.html | 73 | **74** | +1 |
+| /calculator/estimate.html | 75 | **74** | -1 |
+| / | 71 | **76** | +5 |
+| /handyman | 71 | **76** | +5 |
+| /outdoor-living/screened-porches | 71 | **76** | +5 |
+| /outdoor-living/covered-patios | 71 | **76** | +5 |
+| /faqs.html | 63 | **77** | +14 |
+| /additions | 71 | **77** | +6 |
+| /outdoor-living/decks | 72 | **77** | +5 |
+| /calculator/additions.html | 71 | **77** | +6 |
+| /calculator/garages.html | 71 | **77** | +6 |
+| /services.html | 71 | **78** | +7 |
+| /contact.html | 71 | **79** | +8 |
+| /commercial-upfits | 71 | **79** | +8 |
+| /calculator/basement-finishing.html | 71 | **79** | +8 |
+| /calculator/decks.html | 71 | **79** | +8 |
+| /basement-finishing | 72 | **80** | +8 |
+| /garages | 71 | **80** | +9 |
+| /about.html | 80 | **82** | +2 |
+| /adu-builder | 70 | **82** | +12 |
+
+## Summary of audit findings that didn't reproduce or were self-contradictory
+
+Compiled across all 7 phases — see each phase's commit message for full
+detail on the specific finding:
+
+1. **BreadcrumbList "contradiction"** (Phase 0) — the audit listed it under
+   both "Schema Types Found" and "Missing Recommended Schemas." Not
+   actually a contradiction: it's present on 40/41 pages, correctly absent
+   only on `index.html` (standard guidance — a homepage doesn't need a
+   breadcrumb to itself).
+2. **"Only 'some' service pages have FAQPage schema"** (Phase 0/6) — it
+   was already on all 14 service pages, all 8 service-area pages,
+   `faqs.html`, `services.html`, and `index.html` before this project
+   started. The only real gap was the 11 calculator pages (fixed, Phase 6).
+3. **Bylines "missing"** (Phase 0/1) — already on 24/41 pages via a shared
+   component. Real gap was narrower: 16 pages (calculators + about/
+   contact/projects/index/services.html).
+4. **"Organization.sameAs missing profiles / LinkedIn-only"** (Phase 0) —
+   already had 5 real, non-placeholder profiles. Two stale internal docs
+   (`SCHEMAS-BY-PAGE.md`, `STRUCTURED-DATA-AUDIT.md`, dated 2026-06-30)
+   still describe `PLACEHOLDER_` URLs and are almost certainly what
+   confused the crawl or a prior review — not the live state.
+5. **Calculator "Answer Quality collapses to 50 because the number is
+   buried in prose"** (Phase 0/2) — false as stated; calculators already
+   had a proper `<h2>question</h2>` → direct-answer pattern. The real
+   issue was breadth (1 question heading, not 4+), fixed in Phase 2.
+6. **"Seven" service-area pages** (Phase 0) — there are 8 (five-forks,
+   fountain-inn, gray-court, greenville, laurens, mauldin, simpsonville,
+   woodruff).
+7. **Service-area pages "generic templated skeletons"** (Phase 0/5) — each
+   city already had real, unique `about` prose and 2-3 named real
+   neighborhoods with housing-stock era before this project started; that
+   part of the audit's characterization overstated the problem. The real,
+   confirmed issue (Phase 5) is structural: 41-51% cross-page text overlap
+   remains even after adding real per-city permits/projects content — see
+   Phase 5's commit for the direct measurement.
+8. **"Indexability failure" / missing meta description** (Phase 1) — no
+   page was found with an absent description tag (checked all 41). The
+   real, much larger issue was systemic over-length (24 of 41 pages over
+   155 chars) — a different problem than "indexability," fixed in Phase 7.
+9. **Phase 6's suggested page list** ("/adu-builder, /insurance-
+   restoration, /commercial-upfits, /ada-compliance, /ada-bath-to-shower,
+   /commercial-roofing" need FAQ schema) — all six already had it before
+   this project started; see finding #2.
+
+## Out of scope, confirmed still out of scope
+
+**Brand Authority (54/100 in the real audit)** — Wikidata entity, YouTube,
+Reddit, additional `sameAs` profiles. Entirely off-site, no code change
+touches it. `llms.txt` (Phase 7) now names the BBB profile as a third-
+party-verifiable source, which is the one piece of this that overlapped
+with in-scope work.
+
+---
 
 Sorted worst-first. Sub-scores are 0-100; overall = 25% Answer + 20% Self-Containment + 20% Structure + 20% Stats + 15% Uniqueness.
 
