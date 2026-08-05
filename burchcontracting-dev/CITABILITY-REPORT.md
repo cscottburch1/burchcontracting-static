@@ -2,7 +2,7 @@
 
 Generated: 2026-08-05
 Pages scored: 41
-**Average citability score: 72/100**
+**Average citability score: 71/100**
 
 Sorted worst-first. Sub-scores are 0-100; overall = 25% Answer + 20% Self-Containment + 20% Structure + 20% Stats + 15% Uniqueness.
 
@@ -26,31 +26,31 @@ This is a local heuristic proxy for the SEOmator GEO audit, not a reproduction o
 | /insurance-restoration | **68** | 35 | 92 | 87 | 100 | 24 |
 | /projects.html | **69** | 65 | 100 | 85 | 46 | 46 |
 | /ada-compliance | **70** | 44 | 100 | 85 | 91 | 27 |
-| /ada-bath-to-shower | **72** | 54 | 100 | 85 | 100 | 8 |
-| /remodeling | **72** | 48 | 100 | 87 | 100 | 17 |
-| /calculator/bath-remodel.html | **74** | 68 | 100 | 78 | 100 | 10 |
-| /calculator/covered-patios.html | **74** | 68 | 100 | 78 | 100 | 9 |
-| /calculator/kitchen-remodel.html | **74** | 68 | 100 | 78 | 100 | 6 |
-| /calculator/porch.html | **74** | 68 | 100 | 78 | 100 | 6 |
-| /calculator/whole-home-remodel.html | **74** | 68 | 100 | 78 | 100 | 8 |
-| /outdoor-living/screened-porches | **75** | 61 | 100 | 88 | 100 | 13 |
-| /calculator/ada-bath-shower.html | **75** | 68 | 100 | 78 | 100 | 17 |
-| / | **76** | 43 | 100 | 89 | 100 | 48 |
-| /additions | **76** | 61 | 100 | 87 | 100 | 24 |
+| /calculator/kitchen-remodel.html | **70** | 68 | 89 | 78 | 100 | 0 |
+| /calculator/bath-remodel.html | **71** | 68 | 90 | 78 | 100 | 3 |
+| /calculator/whole-home-remodel.html | **71** | 68 | 89 | 78 | 100 | 2 |
+| /ada-bath-to-shower | **72** | 54 | 100 | 85 | 100 | 13 |
+| /calculator/porch.html | **72** | 68 | 89 | 78 | 100 | 12 |
+| /remodeling | **73** | 48 | 100 | 87 | 100 | 23 |
+| /calculator/covered-patios.html | **73** | 68 | 89 | 78 | 100 | 14 |
+| /calculator/ada-bath-shower.html | **74** | 68 | 89 | 78 | 100 | 21 |
+| /calculator/estimate.html | **74** | 68 | 88 | 74 | 100 | 29 |
+| / | **76** | 43 | 100 | 89 | 100 | 50 |
 | /handyman | **76** | 48 | 100 | 87 | 100 | 43 |
-| /outdoor-living/decks | **76** | 61 | 100 | 87 | 100 | 22 |
-| /outdoor-living/covered-patios | **76** | 61 | 100 | 87 | 100 | 19 |
-| /calculator/estimate.html | **76** | 68 | 100 | 78 | 100 | 25 |
-| /faqs.html | **77** | 74 | 100 | 86 | 83 | 32 |
+| /outdoor-living/screened-porches | **76** | 61 | 100 | 88 | 100 | 21 |
+| /outdoor-living/covered-patios | **76** | 61 | 100 | 87 | 100 | 25 |
+| /faqs.html | **77** | 74 | 100 | 86 | 83 | 33 |
+| /additions | **77** | 61 | 100 | 87 | 100 | 29 |
+| /outdoor-living/decks | **77** | 61 | 100 | 87 | 100 | 28 |
+| /calculator/additions.html | **77** | 84 | 89 | 78 | 100 | 17 |
+| /calculator/garages.html | **77** | 84 | 89 | 78 | 100 | 16 |
 | /services.html | **78** | 46 | 100 | 88 | 100 | 57 |
-| /calculator/garages.html | **78** | 84 | 100 | 78 | 100 | 12 |
 | /contact.html | **79** | 61 | 100 | 89 | 100 | 38 |
 | /commercial-upfits | **79** | 61 | 100 | 88 | 100 | 42 |
-| /garages | **79** | 74 | 100 | 87 | 100 | 23 |
-| /calculator/additions.html | **79** | 84 | 100 | 78 | 100 | 13 |
-| /basement-finishing | **80** | 74 | 100 | 88 | 100 | 24 |
-| /calculator/decks.html | **80** | 84 | 100 | 78 | 100 | 23 |
-| /calculator/basement-finishing.html | **81** | 84 | 100 | 78 | 100 | 29 |
+| /calculator/basement-finishing.html | **79** | 84 | 89 | 78 | 100 | 33 |
+| /calculator/decks.html | **79** | 84 | 89 | 78 | 100 | 28 |
+| /basement-finishing | **80** | 74 | 100 | 88 | 100 | 29 |
+| /garages | **80** | 74 | 100 | 87 | 100 | 28 |
 | /about.html | **82** | 74 | 94 | 85 | 100 | 48 |
 | /adu-builder | **82** | 74 | 91 | 88 | 100 | 51 |
 

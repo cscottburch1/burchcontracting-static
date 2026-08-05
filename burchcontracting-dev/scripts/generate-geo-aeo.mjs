@@ -396,7 +396,10 @@ ${promotedFaqs
     : ''
   const canonical = `${SITE.domain}/service-areas/${area.slug}.html`
   const title = `Deck Builder, Garage Contractor & Home Additions ${area.name} SC | Burch Contracting`
-  const description = `Burch Contracting builds decks, screened porches, garages, and room additions in ${area.name}, SC. SC License #${SITE.license}. BBB A+. Free consultations. ${area.driveTime}.`
+  // Leads with a number (drive time) per Phase 7 — real, area-specific, and
+  // distinct per city rather than a reworded generic opener.
+  const driveTimeLead = area.driveTime === 'Our office location' ? 'Our home office' : `${area.driveTime.replace(' from office', '')} from our office`
+  const description = `${driveTimeLead} — decks, garages & additions in ${area.name}, SC. SC Licensed #${SITE.license}, BBB A+, free consultations.`
 
   const schema = {
     '@context': 'https://schema.org',
@@ -615,11 +618,12 @@ ${footer}
 function faqsPage() {
   const canonical = `${SITE.domain}/faqs.html`
   const title = 'FAQs | Burch Contracting Upstate SC Contractor'
-  const description = 'Answers about decks, screened porches, garages, additions, licensing, pricing, and service areas from Burch Contracting — SC License #CLG118679 | NC License (Limited) #107292.'
   const allFaqs = [
     ...GLOBAL_FAQS,
     ...SERVICE_FAQS.flatMap((group) => group.faqs),
   ]
+  // Leads with a number (the real, computed count) per Phase 7.
+  const description = `${allFaqs.length} real answers on decks, additions, garages & permits in Upstate SC. SC Licensed #${SITE.license}, BBB A+ contractor.`
 
   // Same promotion pattern as service/service-area pages: first 2 global
   // FAQs (licensing + service area, per GLOBAL_FAQS's own order) become a

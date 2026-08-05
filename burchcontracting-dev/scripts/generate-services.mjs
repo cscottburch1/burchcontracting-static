@@ -459,7 +459,11 @@ ${service.additionalCosts
         )
         .join('\n')
     : service.calculator
-      ? `            <a href="/calculator/${service.calculator}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost</a>`
+      ? // Anchor text carries the cost range itself (Phase 7: "each service
+        // page links to its calculator with anchor text containing the
+        // price range") rather than a generic "Calculate Your Cost" —
+        // reuses stats.costRange, already computed elsewhere on this page.
+        `            <a href="/calculator/${service.calculator}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost — ${esc(service.stats.costRange)}</a>`
       : ''
 
   const commonProjectsSectionHtml = service.commonProjects

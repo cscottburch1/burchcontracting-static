@@ -5,10 +5,26 @@ impact. None of this was invented — every item below is a real gap found
 while adding structure/schema, not filler. Estimated total time: **~10
 minutes** for Phase 1's 2 items, **~35-45 minutes** for Phase 4's project
 questions, **~30-40 minutes** for Phase 5's 8-city local-conditions grid
-below (4 quick questions x 8 cities, most answerable in one or two
-sentences each) plus a few minutes per city for the 4 cities with no
-project yet. Total remaining: roughly **75-90 minutes** across everything
-in this file.
+(4 quick questions x 8 cities, most answerable in one or two sentences
+each) plus a few minutes per city for the 4 cities with no project yet,
+**~2 minutes** for Phase 7's one methodology question. Total remaining:
+roughly **75-90 minutes** across everything in this file.
+
+---
+
+## Phase 7 — Calculator methodology (one answer covers all 11 pages)
+
+Every calculator now has a "How We Price This" box explaining the
+*formula* (base cost/sq ft, adjusted for material/complexity/site, plus
+20% overhead & profit — all real, already published). What it can't say
+yet is what real-world data set the *base rates* themselves — the
+starting numbers the formula adjusts from.
+
+**Question for Scott:** Are the base cost-per-square-foot figures in
+`calculator-config.js` built from Burch Contracting's own completed-
+project invoices (which years?), current supplier/material quotes, or
+some combination? A one-sentence answer is enough — this fills in the
+one placeholder currently showing on all 11 calculator pages.
 
 ---
 
