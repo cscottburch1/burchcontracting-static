@@ -9,12 +9,21 @@ import {
   SERVICE_FAQS,
   cityFaqs,
   faqPageSchema,
+  PERMIT_OFFICES,
+  SC_BUILDING_CODES_COUNCIL_URL,
+  CITY_PROJECTS,
 } from '../src/data/geo-aeo.js'
 import { SERVICES } from '../src/data/services.js'
-import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA } from '../src/data/site-schema.js'
+import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../src/data/site-schema.js'
+import { CONTENT_DATES } from '../src/data/content-dates.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const areaDir = resolve(root, 'service-areas')
+
+// Real git-history-derived dates for everything driven by geo-aeo.js (see
+// scripts/compute-content-dates.mjs). '2026-07-19' fallback matches the
+// site relaunch date used elsewhere when content-dates.js lacks an entry.
+const AREA_DATES = CONTENT_DATES?.['__datafile__src/data/geo-aeo.js'] ?? { datePublished: '2026-07-19', dateModified: '2026-07-19' }
 
 function esc(value) {
   return String(value)
@@ -233,11 +242,19 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
     </footer>`
 
 function authorBox(cityName) {
+  // cityName is 'Upstate SC' itself on faqs.html (a sitewide page, not a
+  // single city) — "serving Upstate SC, SC and Upstate SC" reads as a typo,
+  // so that one case drops the redundant second clause.
+  const servingLine =
+    cityName === 'Upstate SC'
+      ? '35+ years serving Upstate SC.'
+      : `35+ years serving ${esc(cityName)}, SC and Upstate SC.`
   return `          <aside class="mt-12 bg-slate-50 border border-slate-100 rounded-2xl p-6 lg:p-8" itemscope itemtype="https://schema.org/Person">
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
             <h3 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h3>
             <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
-            <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | NC Licensed (Limited) #${SITE.licenseNC} | 35+ years serving ${esc(cityName)}, SC and Upstate SC. Scott Burch oversees every project with transparent pricing and hands-on job-site accountability.</p>
+            <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | NC Licensed (Limited) #${SITE.licenseNC} | ${servingLine} Scott Burch oversees every project with transparent pricing and hands-on job-site accountability.</p>
+            <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${AREA_DATES.datePublished}">${AREA_DATES.datePublished}</time> &middot; Last reviewed: <time datetime="${AREA_DATES.dateModified}">${AREA_DATES.dateModified}</time></p>
           </aside>`
 }
 
@@ -255,17 +272,141 @@ function faqHtml(faqs, idPrefix = 'faq') {
     .join('\n')
 }
 
+// Collected across all 8 area pages, printed at the end for
+// CITABILITY-FACTS-NEEDED.md — see Phase 5 notes there.
+const areaFactsNeeded = []
+
+// Real, county-specific permit process — not the same paragraph reworded
+// per city. Greenville/Laurens County link to their real permit offices
+// (same links already used in faqs.html); Spartanburg County (Woodruff)
+// names the real jurisdiction but has no verified office link yet, so
+// that's flagged rather than guessed.
+function permitsSectionHtml(area) {
+  const office = PERMIT_OFFICES[area.county]
+  if (!office) throw new Error(`${area.slug}: no PERMIT_OFFICES entry for county "${area.county}"`)
+  if (!office.url) {
+    areaFactsNeeded.push({ area: area.name, field: `Verified ${area.county} building permits office URL (page currently omits the link, names the county only)` })
+  }
+  const officeLinkHtml = office.url
+    ? `<a href="${esc(office.url)}" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">${esc(office.name)}</a>`
+    : esc(office.name)
+  return `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-4">Permits in ${esc(area.name)}, ${esc(area.county)}</h2>
+          <p class="text-slate-600 leading-relaxed">Projects in ${esc(area.name)} fall under ${officeLinkHtml}, working from the <a href="${SC_BUILDING_CODES_COUNCIL_URL}" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">South Carolina Building Codes Council</a>'s statewide code. As a licensed general contractor (SC #${esc(SITE.license)}), Burch Contracting pulls the required permits and schedules inspections through ${esc(area.county)} directly, so you don't have to.</p>
+        </div>
+      </section>`
+}
+
+// Real completed projects for this city where they exist (see
+// CITY_PROJECTS in geo-aeo.js — the same facts power projects.html's
+// case-study cards); an honest FACT-NEEDED prompt where they don't. Per
+// the ground rules, an empty flagged section beats invented local detail.
+function cityProjectsSectionHtml(area) {
+  const projects = CITY_PROJECTS[area.slug]
+  if (projects?.length) {
+    const cards = projects
+      .map(
+        (p) => `            <div class="bg-white border border-slate-200 rounded-xl p-6">
+              <p class="text-blue-700 text-xs font-semibold uppercase tracking-wide mb-2">${esc(p.category)}</p>
+              <h3 class="font-bold text-slate-900 text-lg mb-2">${esc(p.title)}</h3>
+              <p class="text-slate-600 text-sm leading-relaxed">${esc(p.description)}</p>
+            </div>`
+      )
+      .join('\n')
+    return `      <section class="bg-white py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-2">Recent ${esc(area.name)} Projects</h2>
+          <p class="text-slate-600 mb-6">See the full write-up on our <a href="/projects.html" class="text-blue-700 hover:text-blue-800 underline">projects page</a>.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+${cards}
+          </div>
+        </div>
+      </section>`
+  }
+  areaFactsNeeded.push({ area: area.name, field: '2-3 real completed projects in this specific city (scope, and a cost band if comfortable sharing) — no filler written in the meantime' })
+  return `      <section class="bg-white py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-3">Recent ${esc(area.name)} Projects</h2>
+          <p class="text-slate-400 italic">Project write-ups for ${esc(area.name)} are being finalized. See our <a href="/projects.html" class="text-blue-700 hover:text-blue-800 underline not-italic">full projects page</a> in the meantime.</p>
+        </div>
+      </section>`
+}
+
+// Local building conditions — genuinely new per-city facts (soil, slope,
+// HOA prevalence, flood risk) that don't exist anywhere else on the site
+// yet. 100% FACT-NEEDED by design: writing plausible-sounding claims here
+// (e.g. guessing at soil type) is exactly the kind of invented local
+// detail the ground rules call out as most damaging to contractor trust.
+const LOCAL_CONDITION_FIELDS = ['Typical soil/site conditions', 'Typical lot slope', 'How common HOA review is', 'Flood zone / drainage considerations']
+function localConditionsSectionHtml(area) {
+  for (const field of LOCAL_CONDITION_FIELDS) {
+    areaFactsNeeded.push({ area: area.name, field })
+  }
+  const rows = LOCAL_CONDITION_FIELDS.map(
+    (field) => `                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">${esc(field)}</th>
+                  <td class="px-4 py-3 text-slate-400 italic text-sm">Not yet published</td>
+                </tr>`
+  ).join('\n')
+  return `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-4">Local Building Conditions in ${esc(area.name)}</h2>
+          <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Site-specific factors we account for when we scope a ${esc(area.name)} project</caption>
+              <tbody>
+${rows}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>`
+}
+
 function serviceAreaPage(area) {
   const faqs = cityFaqs(area)
+  // Same promotion pattern as generate-services.mjs: the first 2 city FAQs
+  // (does-Burch-serve-this-city + drive-time, per cityFaqs()'s own order)
+  // get a visible <h2> question heading right under the hero instead of
+  // only living in the accordion further down — an accordion <summary>
+  // isn't a heading, so it wasn't satisfying "H1/H2 phrased as a question"
+  // even though the text was already there. Nothing is removed from the
+  // accordion's content set for FAQPage schema purposes; the remaining 3
+  // stay visible in the accordion below.
+  // 4, not 2: Phase 2's own acceptance bar is "no fewer than 4 question-form
+  // headings" per page. cityFaqs() always returns 5, so this leaves exactly
+  // 1 in the accordion below.
+  const promotedFaqs = faqs.slice(0, 4)
+  const remainingFaqs = faqs.slice(4)
+  const promotedFaqSectionHtml = promotedFaqs.length
+    ? `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+${promotedFaqs
+        .map(
+          (faq) => `          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-3">${esc(faq.question)}</h2>
+            <p class="text-slate-600 leading-relaxed">${esc(faq.answer)}</p>
+          </div>`
+        )
+        .join('\n')}
+        </div>
+      </section>
+`
+    : ''
   const canonical = `${SITE.domain}/service-areas/${area.slug}.html`
   const title = `Deck Builder, Garage Contractor & Home Additions ${area.name} SC | Burch Contracting`
-  const description = `Burch Contracting builds decks, screened porches, garages, and room additions in ${area.name}, SC. SC License #${SITE.license}. BBB A+. Free consultations. ${area.driveTime}.`
+  // Leads with a number (drive time) per Phase 7 — real, area-specific, and
+  // distinct per city rather than a reworded generic opener.
+  const driveTimeLead = area.driveTime === 'Our office location' ? 'Our home office' : `${area.driveTime.replace(' from office', '')} from our office`
+  const description = `${driveTimeLead} — decks, garages & additions in ${area.name}, SC. SC Licensed #${SITE.license}, BBB A+, free consultations.`
 
   const schema = {
     '@context': 'https://schema.org',
     '@graph': [
       LOCAL_BUSINESS_SCHEMA,
       ORGANIZATION_SCHEMA,
+      SCOTT_PERSON_SCHEMA,
       faqPageSchema(faqs),
       {
         '@type': 'Service',
@@ -278,6 +419,13 @@ function serviceAreaPage(area) {
         },
         serviceType: ['Deck Builder', 'Garage Construction', 'Screened Porches', 'Room Additions', 'Remodeling', 'Insurance Restoration', 'ADA Compliance'],
       },
+      articleSchema({
+        headline: `Deck Builder, Garage Contractor & Home Additions in ${area.name}, SC`,
+        description,
+        url: canonical,
+        datePublished: AREA_DATES.datePublished,
+        dateModified: AREA_DATES.dateModified,
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -352,6 +500,7 @@ ${header}
         </div>
       </section>
 
+${promotedFaqSectionHtml}
       <section class="bg-white py-16 lg:py-20 border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div class="lg:col-span-2">
@@ -382,6 +531,42 @@ ${neighborhoods}
         </div>
       </section>
 
+      <section class="bg-white py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-6">${esc(area.name)}, SC Service Snapshot</h2>
+          <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Quick facts for Burch Contracting projects in ${esc(area.name)}, SC</caption>
+              <tbody>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">County</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${esc(area.county)}</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Drive Time from Our Gray Court Office</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${esc(area.driveTime)}</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Neighborhoods Served</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${area.neighborhoods.map((n) => esc(n.name)).join('; ')}</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Core Services Offered</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${CORE_SERVICES.map((s) => esc(s.name)).join('; ')}</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Contractor Licenses</th>
+                  <td class="px-4 py-3 text-slate-600 text-sm">SC #${SITE.license} &middot; NC #${SITE.licenseNC}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+${permitsSectionHtml(area)}
+${cityProjectsSectionHtml(area)}
+${localConditionsSectionHtml(area)}
       <section class="bg-white py-16 lg:py-20 border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl font-bold text-slate-900 mb-8">Our Services in ${esc(area.name)}</h2>
@@ -393,10 +578,10 @@ ${services}
 
       <section class="bg-slate-50 py-16 lg:py-20" aria-labelledby="faqs-${area.slug}">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 id="faqs-${area.slug}" class="text-3xl font-bold text-slate-900 mb-3">${esc(area.name)}, SC — Common Questions</h2>
+          <h2 id="faqs-${area.slug}" class="text-3xl font-bold text-slate-900 mb-3">More ${esc(area.name)}, SC Questions</h2>
           <p class="text-slate-600 mb-8">Direct answers for homeowners and AI search — licensed, local, and accountable.</p>
           <div class="space-y-4">
-${faqHtml(faqs, area.slug)}
+${faqHtml(remainingFaqs, area.slug)}
           </div>
 ${authorBox(area.name)}
           <p class="mt-6 text-center"><a href="/faqs.html" class="text-blue-700 hover:text-blue-800 font-semibold text-sm">View all FAQs &rarr;</a></p>
@@ -433,13 +618,34 @@ ${footer}
 function faqsPage() {
   const canonical = `${SITE.domain}/faqs.html`
   const title = 'FAQs | Burch Contracting Upstate SC Contractor'
-  const description = 'Answers about decks, screened porches, garages, additions, licensing, pricing, and service areas from Burch Contracting — SC License #CLG118679 | NC License (Limited) #107292.'
   const allFaqs = [
     ...GLOBAL_FAQS,
     ...SERVICE_FAQS.flatMap((group) => group.faqs),
   ]
+  // Leads with a number (the real, computed count) per Phase 7.
+  const description = `${allFaqs.length} real answers on decks, additions, garages & permits in Upstate SC. SC Licensed #${SITE.license}, BBB A+ contractor.`
 
-  const globalSection = faqHtml(GLOBAL_FAQS, 'global')
+  // Same promotion pattern as service/service-area pages: first 2 global
+  // FAQs (licensing + service area, per GLOBAL_FAQS's own order) become a
+  // visible <h2> question heading right under the hero; the rest stay in
+  // the "General Questions" accordion below.
+  const promotedFaqs = GLOBAL_FAQS.slice(0, 4)
+  const remainingGlobalFaqs = GLOBAL_FAQS.slice(4)
+  const promotedFaqSectionHtml = `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+${promotedFaqs
+    .map(
+      (faq) => `          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-3">${esc(faq.question)}</h2>
+            <p class="text-slate-600 leading-relaxed">${esc(faq.answer)}</p>
+          </div>`
+    )
+    .join('\n')}
+        </div>
+      </section>
+`
+
+  const globalSection = faqHtml(remainingGlobalFaqs, 'global')
   const serviceSections = SERVICE_FAQS.map(
     (group) => `          <div class="mb-12">
             <h2 class="text-2xl font-bold text-slate-900 mb-5">${esc(group.category)}</h2>
@@ -461,6 +667,14 @@ ${faqHtml(group.faqs, group.category.toLowerCase().replace(/\s+/g, '-'))}
     '@graph': [
       LOCAL_BUSINESS_SCHEMA,
       ORGANIZATION_SCHEMA,
+      SCOTT_PERSON_SCHEMA,
+      articleSchema({
+        headline: 'Frequently Asked Questions',
+        description,
+        url: canonical,
+        datePublished: AREA_DATES.datePublished,
+        dateModified: AREA_DATES.dateModified,
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -503,6 +717,7 @@ ${header}
         </div>
       </section>
 
+${promotedFaqSectionHtml}
       <section class="bg-white py-16 lg:py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-2xl font-bold text-slate-900 mb-5">General Questions</h2>
@@ -511,7 +726,31 @@ ${globalSection}
           </div>
 ${serviceSections}
 ${authorBox('Upstate SC')}
-          <p class="mt-8 text-sm text-slate-500">Codes &amp; permits: <a href="https://llr.sc.gov/bcc/" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">South Carolina Building Codes Council</a> &middot; <a href="https://www.greenvillecounty.org/buildingsafety/Permits.aspx" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Greenville County building permits</a> &middot; <a href="https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Laurens County building permits &amp; documents</a></p>
+          <div class="mt-10 overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Building permit &amp; code offices for counties Burch Contracting serves</caption>
+              <thead class="bg-slate-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Jurisdiction</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Office</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Statewide (SC)</th>
+                  <td class="px-4 py-3 text-sm"><a href="https://llr.sc.gov/bcc/" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">South Carolina Building Codes Council</a></td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Greenville County</th>
+                  <td class="px-4 py-3 text-sm"><a href="https://www.greenvillecounty.org/buildingsafety/Permits.aspx" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Greenville County building permits</a></td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Laurens County</th>
+                  <td class="px-4 py-3 text-sm"><a href="https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">Laurens County building permits &amp; documents</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -601,3 +840,7 @@ writeFileSync(resolve(root, 'faqs.html'), faqsPage())
 writeFileSync(resolve(root, 'public/sitemap.xml'), generateSitemap())
 
 console.log(`Generated ${SERVICE_AREAS.length} service area pages, faqs.html, and sitemap.xml`)
+if (areaFactsNeeded.length) {
+  console.log(`\n${areaFactsNeeded.length} FACT-NEEDED item(s) from service-area pages (add to CITABILITY-FACTS-NEEDED.md):`)
+  for (const f of areaFactsNeeded) console.log(`  - [${f.area}] ${f.field}`)
+}

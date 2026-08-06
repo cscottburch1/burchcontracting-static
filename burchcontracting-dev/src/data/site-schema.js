@@ -71,3 +71,53 @@ export const ORGANIZATION_SCHEMA = {
     'https://www.bbb.org/us/sc/gray-court/profile/home-additions/burch-contracting-llc-0673-90007875',
   ],
 }
+
+/**
+ * Canonical Person node for Scott Burch, shared by every page's Article
+ * schema (see articleSchema() below) via @id reference — same pattern
+ * generate-services.mjs already used for its per-page Service.author before
+ * this existed. One definition here so hasCredential/jobTitle can't drift
+ * per page the way sameAs once did (see LOCAL_BUSINESS_SCHEMA comment).
+ */
+export const SCOTT_PERSON_SCHEMA = {
+  '@type': 'Person',
+  '@id': 'https://burchcontracting.com/#scott-burch',
+  name: 'C. Scott Burch',
+  jobTitle: 'Owner & Lead Contractor',
+  url: 'https://burchcontracting.com/about.html',
+  worksFor: { '@id': 'https://burchcontracting.com/#organization' },
+  hasCredential: [
+    {
+      '@type': 'EducationalOccupationalCredential',
+      credentialCategory: 'license',
+      recognizedBy: { '@type': 'Organization', name: 'South Carolina LLR' },
+      identifier: 'CLG118679',
+    },
+    {
+      '@type': 'EducationalOccupationalCredential',
+      credentialCategory: 'license',
+      recognizedBy: { '@type': 'Organization', name: 'North Carolina Licensing Board for General Contractors' },
+      identifier: '107292',
+    },
+  ],
+}
+
+/**
+ * Article schema for a content page. datePublished/dateModified should come
+ * from src/data/content-dates.js (real git-history-derived dates), not be
+ * guessed — see that file's generator, scripts/compute-content-dates.mjs,
+ * for why they're checked in rather than computed live at build time.
+ */
+export function articleSchema({ headline, description, url, datePublished, dateModified, image }) {
+  return {
+    '@type': 'Article',
+    headline,
+    description,
+    url,
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    author: { '@id': SCOTT_PERSON_SCHEMA['@id'] },
+    publisher: { '@id': ORGANIZATION_SCHEMA['@id'] },
+    ...(image ? { image } : {}),
+  }
+}

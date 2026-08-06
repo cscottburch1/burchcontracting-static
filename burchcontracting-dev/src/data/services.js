@@ -612,7 +612,7 @@ export const SERVICES = [
     title: 'Commercial Roofing',
     slug: 'commercial-roofing',
     category: 'Commercial',
-    description: 'Commercial roof installation, repair, and maintenance: TPO, EPDM, PVC, modified bitumen, standing seam and R-panel metal, and silicone/acrylic coatings. Licensed general contractor serving Upstate SC.',
+    description: '35+ years installing TPO, EPDM, PVC & metal roofing for Upstate SC commercial buildings. Free consultation, licensed contractor.',
     h1: 'Commercial Roofing Contractor - Upstate SC',
     heroImage: '/images/commercial-tpo-roof.jpg',
     intro: "Most roofers only touch the roof. When a leak, a tear-off, or a storm claim damages what's underneath — ceilings, drywall, insulation, flooring — I handle that too, as one contract with one point of contact instead of a roofer and a separate remodeling contractor. From flat-roof systems to standing seam metal, tear-offs to recover, and ongoing maintenance agreements, every project is licensed, code-compliant, and personally overseen.",
@@ -913,7 +913,7 @@ export const SERVICES = [
     title: 'Handyman Services',
     slug: 'handyman',
     category: 'Handyman & Repairs',
-    description: 'Small plumbing, electrical, carpentry, and painting jobs — a lower-tier service for homeowners who need a task list handled without a full remodel. Licensed contractor serving Upstate SC since 1995.',
+    description: 'Handyman jobs $125-$4,400 in Upstate SC: plumbing, electrical, carpentry & painting. Licensed contractor, serving since 1995.',
     h1: 'Handyman Services - Upstate SC',
     intro: "From a single outlet swap to a water heater replacement, I handle the smaller jobs too — plumbing fixtures, electrical, doors and windows, carpentry, drywall repair, and interior painting. Same licensing and accountability as every larger project, just sized for a shorter task list.",
     stats: {

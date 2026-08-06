@@ -3,15 +3,20 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { SITE, SERVICES } from '../src/data/services.js'
 import { SERVICE_FAQS } from '../src/data/service-faqs.js'
-import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA } from '../src/data/site-schema.js'
+import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../src/data/site-schema.js'
+import { CONTENT_DATES } from '../src/data/content-dates.js'
+
+// Real git-history-derived dates for everything driven by services.js (see
+// scripts/compute-content-dates.mjs). Falls back to LAST_UPDATED_ISO below
+// if the dates file hasn't been (re)generated yet, so a missing/stale
+// content-dates.js can't silently break the build.
+const SERVICE_DATES = CONTENT_DATES?.['__datafile__src/data/services.js']
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
-// Site relaunch date (see LAUNCH-CHECKLIST.md) — used as datePublished/
-// dateModified across service pages until real per-page edit history exists.
-// Bump LAST_UPDATED_ISO/DISPLAY together when content actually changes.
+// Fallback only, used if src/data/content-dates.js is missing or doesn't
+// have an entry yet — real dates now come from git history (see above).
 const LAST_UPDATED_ISO = '2026-07-19'
-const LAST_UPDATED_DISPLAY = 'July 2026'
 
 function esc(value) {
   return String(value)
@@ -281,12 +286,14 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
     </script>`
 
 function authorBox() {
+  const published = SERVICE_DATES?.datePublished ?? LAST_UPDATED_ISO
+  const modified = SERVICE_DATES?.dateModified ?? LAST_UPDATED_ISO
   return `          <aside class="mt-12 bg-slate-50 border border-slate-100 rounded-2xl p-6 lg:p-8" itemscope itemtype="https://schema.org/Person">
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
             <h3 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h3>
             <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
             <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | NC Licensed (Limited) #${SITE.licenseNC} | ${SITE.experience} years | ${SITE.rating} Google Rating | BBB ${SITE.bbb} Rated</p>
-            <p class="text-slate-600 text-sm mt-3 leading-relaxed">Last updated: <span id="last-updated">${LAST_UPDATED_DISPLAY}</span></p>
+            <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${published}">${published}</time> &middot; Last reviewed: <time datetime="${modified}">${modified}</time></p>
           </aside>`
 }
 
@@ -310,15 +317,16 @@ function servicePage(service) {
   const description = service.description
   const faqs = SERVICE_FAQS[service.id] || []
 
-  const personId = `${SITE.url}/#scott-burch`
+  const published = SERVICE_DATES?.datePublished ?? LAST_UPDATED_ISO
+  const modified = SERVICE_DATES?.dateModified ?? LAST_UPDATED_ISO
 
   const serviceSchema = {
     '@type': 'Service',
     name: service.title,
     description: service.description,
-    datePublished: LAST_UPDATED_ISO,
-    dateModified: LAST_UPDATED_ISO,
-    author: { '@id': personId },
+    datePublished: published,
+    dateModified: modified,
+    author: { '@id': SCOTT_PERSON_SCHEMA['@id'] },
     provider: { '@id': LOCAL_BUSINESS_SCHEMA['@id'] },
     areaServed: {
       '@type': 'State',
@@ -326,26 +334,18 @@ function servicePage(service) {
     },
   }
 
-  const personSchema = {
-    '@type': 'Person',
-    '@id': personId,
-    name: SITE.owner,
-    jobTitle: 'General Contractor',
-    hasCredential: [
-      {
-        '@type': 'EducationalOccupationalCredential',
-        credentialCategory: 'license',
-        recognizedBy: { '@type': 'Organization', name: 'South Carolina LLR' },
-        identifier: SITE.license,
-      },
-      {
-        '@type': 'EducationalOccupationalCredential',
-        credentialCategory: 'license',
-        recognizedBy: { '@type': 'Organization', name: 'North Carolina Licensing Board for General Contractors' },
-        identifier: SITE.licenseNC,
-      },
-    ],
-  }
+  // Article node — the audit's "Article + Author" gap. Reuses the same
+  // Service description/dates rather than hand-typing a second headline,
+  // since they describe the same page and drifting them apart would just
+  // be a second place for the description to go stale.
+  const articleNode = articleSchema({
+    headline: service.h1 ?? service.title,
+    description: service.description,
+    url: canonical,
+    datePublished: published,
+    dateModified: modified,
+    image: service.heroImage ? `${SITE.url}${service.heroImage}` : undefined,
+  })
 
   if (service.flatFee) {
     serviceSchema.offers = {
@@ -356,7 +356,7 @@ function servicePage(service) {
     }
   }
 
-  const schemaGraph = [LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, serviceSchema, personSchema]
+  const schemaGraph = [LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, serviceSchema, articleNode]
 
   if (service.howItWorks) {
     schemaGraph.push({
@@ -459,7 +459,11 @@ ${service.additionalCosts
         )
         .join('\n')
     : service.calculator
-      ? `            <a href="/calculator/${service.calculator}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost</a>`
+      ? // Anchor text carries the cost range itself (Phase 7: "each service
+        // page links to its calculator with anchor text containing the
+        // price range") rather than a generic "Calculate Your Cost" —
+        // reuses stats.costRange, already computed elsewhere on this page.
+        `            <a href="/calculator/${service.calculator}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost — ${esc(service.stats.costRange)}</a>`
       : ''
 
   const commonProjectsSectionHtml = service.commonProjects
@@ -605,6 +609,80 @@ ${authorBox()}
       </section>`
     : ''
 
+  // Phase 3 structure bar: every page needs >=1 real <table>. Services
+  // with commonProjects/pricingTiers/flatFee already render one; the 4
+  // that don't (commercial-roofing, insurance-restoration, ada-compliance,
+  // ada-bath-to-shower) get one built from data already on the page —
+  // serviceCategories where present (a "what's included" breakdown of the
+  // same category/items lists already shown as cards below), or
+  // howItWorks otherwise (the same 3-step process already shown as an
+  // ordered list). No new facts, just a second, tabular presentation of
+  // data that's already there — see generate-services.mjs's
+  // serviceCategoriesSectionHtml / howItWorksSectionHtml for the source.
+  const hasOtherTable = Boolean(service.commonProjects || service.pricingTiers || service.flatFee)
+  const fallbackTableSectionHtml =
+    hasOtherTable
+      ? ''
+      : service.serviceCategories
+        ? `
+      <section class="bg-slate-50 py-12 lg:py-16 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-6">${esc(service.title)} at a Glance</h2>
+          <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">${esc(service.title)} scope by category</caption>
+              <thead class="bg-slate-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Category</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">What's Included</th>
+                </tr>
+              </thead>
+              <tbody>
+${service.serviceCategories
+            .map(
+              (cat) => `                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left align-top whitespace-nowrap">${esc(cat.name)}</th>
+                  <td class="px-4 py-4 text-slate-600 text-sm leading-relaxed">${cat.items.map(esc).join('; ')}</td>
+                </tr>`
+            )
+            .join('\n')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>`
+        : service.howItWorks
+          ? `
+      <section class="bg-slate-50 py-12 lg:py-16 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-bold text-slate-900 mb-6">${esc(service.title)} Process at a Glance</h2>
+          <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <table class="w-full border-collapse text-left">
+              <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">${esc(service.title)} process, step by step</caption>
+              <thead class="bg-slate-50">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Step</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Stage</th>
+                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">What Happens</th>
+                </tr>
+              </thead>
+              <tbody>
+${service.howItWorks
+            .map(
+              (step, i) => `                <tr class="border-t border-slate-200">
+                  <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left align-top">${i + 1}</th>
+                  <td class="px-4 py-4 text-slate-900 font-semibold align-top whitespace-nowrap">${esc(step.title)}</td>
+                  <td class="px-4 py-4 text-slate-600 text-sm leading-relaxed">${esc(step.description)}</td>
+                </tr>`
+            )
+            .join('\n')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>`
+          : ''
+
   const authorOnlySectionHtml = !service.commonProjects && !service.pricingTiers && !service.flatFee && !service.serviceCategories
     ? `
       <section class="bg-white py-12 border-t border-slate-100">
@@ -650,14 +728,46 @@ ${service.benefits
       </section>`
     : ''
 
-  const faqSectionHtml = faqs.length
+  // First 2 FAQs (cost + timeline, by convention of how SERVICE_FAQS is
+  // ordered — see service-faqs.js) get promoted to visible <h2> question
+  // headings with a direct-answer paragraph, not just accordion <summary>
+  // text. AI extractors look for an H1/H2 phrased as a question immediately
+  // followed by a compact answer; an accordion's <summary> isn't a heading
+  // at all, so it wasn't satisfying that pattern even though the same text
+  // was already on the page. The remaining FAQs stay in the accordion below
+  // — no content is removed, just the first two get a second, structurally
+  // stronger presentation. FAQPage JSON-LD still covers the full `faqs`
+  // array either way, since both forms are visible on-page.
+  // 4, not 2: Phase 2's own acceptance bar is "no fewer than 4 question-form
+  // headings" per page. SERVICE_FAQS entries run 4-5 per service, so this
+  // promotes nearly everything and leaves at most one in the accordion.
+  const promotedFaqs = faqs.slice(0, 4)
+  const remainingFaqs = faqs.slice(4)
+
+  const promotedAnswersSectionHtml = promotedFaqs.length
+    ? `
+      <section class="bg-white py-12 lg:py-16 border-t border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+${promotedFaqs
+        .map(
+          (faq) => `          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-3">${esc(faq.question)}</h2>
+            <p class="text-slate-600 leading-relaxed">${esc(faq.answer)}</p>
+          </div>`
+        )
+        .join('\n')}
+        </div>
+      </section>`
+    : ''
+
+  const faqSectionHtml = remainingFaqs.length
     ? `
       <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100" aria-labelledby="${service.id}-faqs-heading">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 id="${service.id}-faqs-heading" class="text-3xl font-bold text-slate-900 mb-3 text-center">${esc(service.title)} FAQs</h2>
+          <h2 id="${service.id}-faqs-heading" class="text-3xl font-bold text-slate-900 mb-3 text-center">More ${esc(service.title)} Questions</h2>
           <p class="text-slate-600 text-center mb-8">Direct answers for homeowners and AI search — licensed, local, and accountable.</p>
           <div class="space-y-4">
-${faqHtml(faqs, service.id)}
+${faqHtml(remainingFaqs, service.id)}
           </div>
         </div>
       </section>`
@@ -692,9 +802,10 @@ ${seoHead({ title, description, canonical })}
 ${header}
     <main id="main-content">
 ${heroSectionHtml}
-
+${promotedAnswersSectionHtml}
 ${commonProjectsSectionHtml}
 ${serviceCategoriesSectionHtml}
+${fallbackTableSectionHtml}
 ${pricingSectionHtml}
 ${authorOnlySectionHtml}
 ${additionalCostsHtml}
