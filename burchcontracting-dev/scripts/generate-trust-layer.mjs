@@ -682,13 +682,17 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
   // check-build.mjs's double-encoded-ampersand check exists to catch);
   // false for raw strings straight from a .js data file, which still need
   // esc().
+  // Lookup-sourced pages (calculators, estimate, about, contact, projects)
+  // always recompute from their data-file source, even if ANSWERS_START is
+  // already present — they're pure lookups, so re-running safely picks up
+  // an edit to service-faqs.js/geo-aeo.js instead of silently going stale.
+  // Only PROMOTE_FROM_OWN_ACCORDION is gated on "already present": it's
+  // destructive (removes the source <details> from the accordion as it
+  // promotes it), so re-running it after the accordion entry is already
+  // gone would just fail to find it.
   let extraFaqs = []
   const answersAlreadyPresent = html.includes(ANSWERS_START)
-  if (answersAlreadyPresent) {
-    // Idempotent re-run: the block is already there (and, for the
-    // accordion-promotion pages, its source <details> entries were already
-    // removed on the first run) — nothing to recompute.
-  } else if (faqSourceId) {
+  if (faqSourceId) {
     extraFaqs = (SERVICE_FAQS[faqSourceId] ?? []).slice(1, 4).map((f) => ({ ...f, alreadyEscaped: false }))
   } else if (relFile === 'calculator/estimate.html') {
     extraFaqs = ESTIMATE_FAQ_INDICES.map((i) => ({ ...GLOBAL_FAQS[i], alreadyEscaped: false }))
@@ -698,6 +702,10 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
     extraFaqs = CONTACT_FAQ_INDICES.map((i) => ({ ...GLOBAL_FAQS[i], alreadyEscaped: false }))
   } else if (relFile === 'projects.html') {
     extraFaqs = PROJECTS_FAQ_INDICES.map((i) => ({ ...GLOBAL_FAQS[i], alreadyEscaped: false }))
+  } else if (answersAlreadyPresent) {
+    // Idempotent re-run of an accordion-promotion page: its source
+    // <details> entries were already removed on the first run — nothing to
+    // recompute.
   } else if (PROMOTE_FROM_OWN_ACCORDION[relFile]) {
     for (const q of PROMOTE_FROM_OWN_ACCORDION[relFile]) {
       const result = promoteFromAccordion(html, q)

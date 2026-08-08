@@ -64,11 +64,11 @@ export const SERVICE_FAQS = {
   'screened-porches': [
     {
       question: 'How much does a screened porch cost in Upstate SC?',
-      answer: 'Screened porches typically run $15,000 to $65,000. A basic screened porch on a concrete pad or existing deck sits at the lower end, a mid-range three-season room with EZE-Breeze windows in the middle, and a premium climate-controlled porch with insulation and HVAC at the top. Use our porch calculator for an estimate on your specific project.'
+      answer: 'Screened porches typically run $15,000 to $65,000: a basic enclosure on an existing deck at the low end, a mid-range three-season room with EZE-Breeze windows in the middle, and a premium climate-controlled porch with insulation and HVAC at the top.'
     },
     {
       question: 'What is the difference between a screened porch and a three-season room?',
-      answer: 'A basic screened porch uses fiberglass screening for bug-free open-air use. A three-season room upgrades to an EZE-Breeze vinyl window system so you can adjust ventilation and use the space in more of the year. A premium climate-controlled porch adds insulated walls and roof plus an HVAC extension for true year-round comfort.'
+      answer: 'A basic screened porch uses fiberglass screening for bug-free open-air use. A three-season room upgrades to an EZE-Breeze vinyl window system for adjustable ventilation. A premium climate-controlled porch adds insulated walls, roof, and an HVAC extension for true year-round comfort.'
     },
     {
       question: 'How long does it take to build a screened porch?',
@@ -87,7 +87,7 @@ export const SERVICE_FAQS = {
   'covered-patios': [
     {
       question: 'How much does a covered patio cost?',
-      answer: 'Covered patios typically range from $15,000 to $45,000, or roughly $75 to $150 per square foot. A basic roof over an existing slab is most affordable, a mid-range outdoor room with decorative columns and lighting sits in the middle, and a premium outdoor living space with a kitchen or fireplace is the top tier.'
+      answer: 'Covered patios typically range from $15,000 to $45,000, or $75-$150 per square foot: a basic roof over an existing slab at the low end, a mid-range outdoor room with columns and lighting in the middle, and a premium space with a kitchen or fireplace at the top.'
     },
     {
       question: 'What is the difference between a covered patio and a screened porch?',
