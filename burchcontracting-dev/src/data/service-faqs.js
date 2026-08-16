@@ -285,12 +285,12 @@ export const SERVICE_FAQS = {
       answer: 'Ask for their SC Residential Builders Commission license number and verify it directly on the South Carolina LLR website — it takes about a minute. Burch Contracting holds SC General Contractor License #CLG118679 and NC General Contractor License (Limited) #107292, and we’re glad to have you verify either one before signing anything.'
     },
     {
-      question: 'Do you offer financing or payment schedules?',
-      answer: 'We discuss payment schedule options during your free consultation, tailored to your project size and scope. Contact us for the specifics that apply to your remodel.'
+      question: 'Do you offer financing?',
+      answer: 'No, we don’t offer financing. Payment is arranged directly with us under the terms in your written contract — ask during your consultation how we structure payments for a project of your size.'
     },
     {
       question: 'What warranty do you provide on bathroom remodels?',
-      answer: 'Workmanship is covered under the terms outlined in your written contract, and manufacturer warranties on fixtures, tile, and materials pass through to you directly. Ask us for the specific warranty terms that apply to your project during your consultation — we’ll put them in writing before work begins.'
+      answer: 'Workmanship is covered by a 1-year warranty. On top of that, every product — fixtures, tile, tub, vanity — carries its manufacturer’s warranty, which transfers to you as the homeowner under that manufacturer’s written terms.'
     },
     {
       question: 'How do I get started and what does the first visit cost?',
