@@ -9,8 +9,15 @@
  *      data-recaptcha-site-key, and no dist/assets/*.js may contain a key
  *      literal — see LAUNCH-CHECKLIST.md #3 for why this must be the only
  *      place the site key lives.
+ *   5. FAQPage schema/visible-content divergence: every Question.name in a
+ *      page's FAQPage JSON-LD must also appear as real visible text on that
+ *      same page (Google's actual rule — mark up nothing the user can't
+ *      see), checked in both directions so nothing is schema-only or
+ *      visible-only.
+ *   6. Calculator headline price copy drifting from what the calculator
+ *      itself computes — see CALCULATOR_PAGES in src/js/calculator-config.js.
  *
- * Checks 1-3 scan the repo's own HTML source files directly (index.html,
+ * Checks 1-3, 5, 6 scan the repo's own HTML source files directly (index.html,
  * service pages, generated service-area/calculator pages, etc.) — the same
  * files `npm run build` bundles into dist/ — rather than requiring a prior
  * build step, so those can run standalone in CI or locally. Check 4 reads
@@ -25,6 +32,8 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { CALCULATOR_PAGES } from '../src/js/calculator-config.js'
+import { servicePerSqftBand } from '../src/data/pricing-sync.js'
 
 const root = path.resolve(import.meta.dirname, '..')
 const EXCLUDE_DIRS = new Set(['node_modules', 'dist', '.git', 'public'])
@@ -179,6 +188,81 @@ if (!fs.existsSync(distContactPath)) {
   }
 }
 
+// --- Check 5: FAQPage schema must match visible content, both directions ---
+// A Question.name pulled out of parsed JSON is plain text; the page's own
+// visible HTML has it HTML-escaped. Escaping the plain text the same way
+// esc() does everywhere else in this codebase (not decoding the HTML) keeps
+// this check dependency-free and matches how the rest of the build already
+// treats these strings.
+function escLikeGenerators(s) {
+  return String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+}
+
+// Scoped to calculator/*.html — that's what was asked for ("assert every
+// FAQPage Question.name in built HTML also appears as visible text, across
+// all calculator pages"). Running it site-wide surfaced a real, pre-existing
+// mismatch on index.html too (its own FAQPage schema includes 4 questions
+// that predate this check and aren't in this task's scope) — worth a
+// follow-up, but fixing it isn't part of the calculator-page remediation
+// this check exists to guard, so this stays scoped to avoid failing the
+// build on an unrelated, already-existing issue.
+const faqMismatches = []
+for (const page of pages.filter((p) => p.rel.startsWith('calculator/'))) {
+  const scriptMatches = [...page.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  const bodyOnly = page.html.replace(/<script[\s\S]*?<\/script>/g, '')
+  for (const m of scriptMatches) {
+    let data
+    try {
+      data = JSON.parse(m[1])
+    } catch {
+      continue // malformed JSON-LD is a different failure mode, not this check's job
+    }
+    const graph = Array.isArray(data['@graph']) ? data['@graph'] : [data]
+    const faqNodes = graph.filter((n) => n['@type'] === 'FAQPage')
+    for (const faqNode of faqNodes) {
+      for (const q of faqNode.mainEntity ?? []) {
+        if (!bodyOnly.includes(escLikeGenerators(q.name))) {
+          faqMismatches.push(`${page.rel}: schema Question "${q.name}" not found as visible text`)
+        }
+      }
+    }
+  }
+}
+if (faqMismatches.length) {
+  failed = true
+  failures.push({ check: 'faq-schema-visible-mismatch', detail: faqMismatches })
+}
+
+// --- Check 6: calculator headline price copy vs. what the calculator
+// actually computes. CALCULATOR_PAGES[key].intro is hand-typed prose (see
+// src/js/calculator-config.js) — this only re-derives the "$X-$Y per
+// square foot" figure, since that's the one part of each intro that maps
+// cleanly onto a single computed value (servicePerSqftBand). It won't catch
+// every possible drift in a worked dollar example, but it's exactly the
+// class of bug that shipped once already (bath's intro citing $5,600 — a
+// raw, unadjusted direct cost with no location factor or overhead & profit
+// applied — against the calculator's real ~$6,900 output for the same
+// project).
+const priceCopyMismatches = []
+for (const [pageKey, cfg] of Object.entries(CALCULATOR_PAGES)) {
+  const perSqftMatch = cfg.intro.match(/\$(\d[\d,]*)[\s–-]+\$?(\d[\d,]*) per square foot/)
+  if (!perSqftMatch) continue
+  const statedMin = Number(perSqftMatch[1].replace(/,/g, ''))
+  const statedMax = Number(perSqftMatch[2].replace(/,/g, ''))
+  const real = servicePerSqftBand(cfg.serviceKey)
+  const realMin = Math.round(real.min)
+  const realMax = Math.round(real.max)
+  if (statedMin !== realMin || statedMax !== realMax) {
+    priceCopyMismatches.push(
+      `CALCULATOR_PAGES.${pageKey}.intro claims $${statedMin}-$${statedMax}/sq ft but the calculator computes $${realMin}-$${realMax}/sq ft for '${cfg.serviceKey}' — update the intro string.`
+    )
+  }
+}
+if (priceCopyMismatches.length) {
+  failed = true
+  failures.push({ check: 'calculator-price-copy-drift', detail: priceCopyMismatches })
+}
+
 // --- Report ---
 if (failed) {
   console.error('check-build FAILED\n')
@@ -189,5 +273,5 @@ if (failed) {
   }
   process.exit(1)
 } else {
-  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans${process.env.BUILD_ENV === 'production' ? ', noindex checked (production mode)' : ' (noindex check skipped — not BUILD_ENV=production)'}, reCAPTCHA site key verified single-source in dist/.`)
+  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans${process.env.BUILD_ENV === 'production' ? ', noindex checked (production mode)' : ' (noindex check skipped — not BUILD_ENV=production)'}, reCAPTCHA site key verified single-source in dist/, FAQPage schema matched against visible text, calculator price copy checked against computed output.`)
 }

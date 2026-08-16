@@ -116,6 +116,7 @@ function initCalculator(root, page, options = {}) {
       const parsed = Number(target.value)
       if (parsed >= 1) state.sqft = parsed
       markComplete()
+      updateSqftUI(root, state, PRICING_CONFIG.sizeRanges[state.serviceKey])
       updateResults()
     }
     if (target.dataset.adder) {
@@ -132,6 +133,7 @@ function initCalculator(root, page, options = {}) {
         state.sqftInput = String(state.sqft)
         e.target.value = state.sqftInput
       }
+      updateSqftUI(root, state, PRICING_CONFIG.sizeRanges[state.serviceKey])
       updateResults()
     }
   }, true)
@@ -154,8 +156,17 @@ function computeEstimate(service, state) {
     return sum + adder.cost * qty
   }, 0)
 
+  // No upper bound on the input itself (typing 9999 is allowed — the UI
+  // flags it instead, see renderInputs' amber notice), but the formula
+  // itself is never allowed to run past the configured typical-range
+  // ceiling: linear sqft × $/SF math produces an unbounded, meaningless
+  // dollar figure for a value nobody would actually build (a bathroom
+  // priced as if it were 9,999 SF).
+  const sizeRange = PRICING_CONFIG.sizeRanges[state.serviceKey]
+  const cappedSquareFootage = sizeRange ? Math.min(state.sqft, sizeRange.max) : state.sqft
+
   return calculateEstimate({
-    squareFootage: state.sqft,
+    squareFootage: cappedSquareFootage,
     baseDirectCost: rate.directCost,
     locationFactor: location.factor,
     materialFactor: state.material,
@@ -167,6 +178,34 @@ function computeEstimate(service, state) {
   })
 }
 
+// Shared between the initial render (renderInputs) and the live keystroke
+// update (the 'input' listener, which deliberately does NOT do a full
+// render() — replacing #calc-inputs' innerHTML on every keystroke would
+// blow away focus and cursor position while typing). Both call these same
+// two functions so the amber over-range state can never drift between
+// "what shows on first render" and "what shows as you type".
+function sqftInputClasses(state, sizeRange) {
+  const base = 'mb-2 w-full rounded-lg border px-4 py-3 text-slate-900 focus:outline-none focus:ring-2'
+  return state.sqft > sizeRange.max
+    ? `${base} border-amber-400 focus:border-amber-500 focus:ring-amber-400`
+    : `${base} border-slate-300 focus:border-blue-600 focus:ring-blue-600`
+}
+
+function sqftWarningHtml(state, sizeRange) {
+  if (state.sqft <= sizeRange.max) return '<div class="mb-5"></div>'
+  return `<p class="mb-5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900 leading-relaxed">Above the typical ${sizeRange.max.toLocaleString()} SF range for this project type — the estimate below is capped at ${sizeRange.max.toLocaleString()} SF as a rough ceiling. For a project this size, <a href="/contact.html" class="font-semibold underline hover:text-amber-950">request a custom quote</a> instead of relying on this calculator.</p>`
+}
+
+// Keeps the sqft input's amber/blue border and the warning message in sync
+// on every keystroke via direct DOM updates, not a full render() — see the
+// comment on sqftInputClasses for why a full re-render isn't used here.
+function updateSqftUI(root, state, sizeRange) {
+  const input = root.querySelector('#sqft-input')
+  const warning = root.querySelector('#sqft-warning')
+  if (input) input.className = sqftInputClasses(state, sizeRange)
+  if (warning) warning.innerHTML = sqftWarningHtml(state, sizeRange)
+}
+
 function card(title, body) {
   return `
     <div class="bg-white rounded-xl border border-slate-100 shadow-sm p-6 lg:p-7">
@@ -176,7 +215,7 @@ function card(title, body) {
   `
 }
 
-function factorButtons(entries, selectedKey, action, service) {
+function factorButtons(entries, selectedKey, action, group) {
   return `
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       ${entries
@@ -188,7 +227,7 @@ function factorButtons(entries, selectedKey, action, service) {
                 : 'border-slate-200 text-slate-700 hover:border-blue-300'
             }">
             <div class="font-medium capitalize">${key}</div>
-            <div class="text-xs text-slate-500 mt-0.5">${getFactorLabel(key)}</div>
+            <div class="text-xs text-slate-500 mt-0.5">${getFactorLabel(group, key)}</div>
             <div class="font-mono text-xs font-bold mt-1">${factor.toFixed(2)}×</div>
           </button>
         `)
@@ -284,7 +323,8 @@ function renderInputs(el, service, sizeRange, state, page, unified = false) {
         <label for="sqft-input" class="block text-sm font-semibold text-slate-700 mb-1">Project Size (square feet)</label>
         <p class="text-xs text-slate-500 mb-2">Typical range: ${sizeRange.min.toLocaleString()}–${sizeRange.max.toLocaleString()} SF</p>
         <input type="number" id="sqft-input" min="1" step="1" value="${state.sqftInput}"
-          class="mb-5 w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          class="${sqftInputClasses(state, sizeRange)}" />
+        <div id="sqft-warning">${sqftWarningHtml(state, sizeRange)}</div>
         <label class="block text-sm font-semibold text-slate-700 mb-2">Project Location</label>
         <div class="space-y-2">
           ${Object.entries(PRICING_CONFIG.locationFactors)
@@ -313,15 +353,15 @@ function renderInputs(el, service, sizeRange, state, page, unified = false) {
       `
         <div class="mb-5">
           <label class="block text-sm font-semibold text-slate-700 mb-2">Material Level</label>
-          ${factorButtons(Object.entries(service.materialFactors), state.materialKey, 'select-material')}
+          ${factorButtons(Object.entries(service.materialFactors), state.materialKey, 'select-material', 'material')}
         </div>
         <div class="mb-5">
           <label class="block text-sm font-semibold text-slate-700 mb-2">Project Complexity</label>
-          ${factorButtons(Object.entries(service.complexityFactors), state.complexityKey, 'select-complexity')}
+          ${factorButtons(Object.entries(service.complexityFactors), state.complexityKey, 'select-complexity', 'complexity')}
         </div>
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-2">Site Conditions</label>
-          ${factorButtons(Object.entries(service.siteConditionFactors), state.siteKey, 'select-site')}
+          ${factorButtons(Object.entries(service.siteConditionFactors), state.siteKey, 'select-site', 'site')}
         </div>
       `
     )}

@@ -337,7 +337,7 @@ export const CALCULATOR_PAGES = {
     title: 'Deck Cost Calculator',
     metaTitle: 'Deck Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
     description: 'Estimate custom deck costs in Upstate SC by size, material, and location. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Decks in Upstate SC typically cost $40–$85 per square foot installed — a 12×16 deck (192 sqft) runs $7,400–$8,950 in pressure-treated lumber or $11,350–$13,700 in composite. Size, height, railing, and stairs are the biggest cost drivers.',
+    intro: 'Decks in Upstate SC typically cost $39–$92 per square foot installed — a 12×16 deck (192 sqft) runs $7,400–$8,950 in pressure-treated lumber or $11,350–$13,700 in composite. Size, height, railing, and stairs are the biggest cost drivers.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   garages: {
@@ -360,8 +360,8 @@ export const CALCULATOR_PAGES = {
     serviceKey: 'homeAdditions',
     title: 'Home Addition Cost Calculator',
     metaTitle: 'Room Addition Cost Calculator Upstate SC | Burch Contracting',
-    description: 'Estimate room addition and home expansion costs in Upstate SC. $200–$340/sq ft typical range.',
-    intro: 'Room additions in Upstate SC typically cost $200–$340 per square foot depending on finishes, HVAC, plumbing, and structural complexity — a 400 sqft addition typically runs $78,000–$152,000. Use this calculator for a realistic planning range.',
+    description: 'Estimate room addition and home expansion costs in Upstate SC. $196–$425/sq ft typical range.',
+    intro: 'Room additions in Upstate SC typically cost $196–$425 per square foot depending on finishes, HVAC, plumbing, and structural complexity — a 400 sqft addition typically runs $78,000–$152,000. Use this calculator for a realistic planning range.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   kitchen: {
@@ -369,7 +369,7 @@ export const CALCULATOR_PAGES = {
     title: 'Kitchen Remodel Cost Calculator',
     metaTitle: 'Kitchen Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate kitchen remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Kitchen remodels in Greenville and Laurens County SC typically cost $135–$290 per square foot — a 200 sqft kitchen runs $25,000–$64,500 depending on cabinetry, counters, and layout changes.',
+    intro: 'Kitchen remodels in Greenville and Laurens County SC typically cost $125–$322 per square foot — a 200 sqft kitchen runs $25,000–$64,500 depending on cabinetry, counters, and layout changes.',
     marketArea: 'Greenville County & Laurens County',
   },
   bath: {
@@ -377,7 +377,16 @@ export const CALCULATOR_PAGES = {
     title: 'Bathroom Remodel Cost Calculator',
     metaTitle: 'Bathroom Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate bathroom remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Bathroom remodels in Greenville and Laurens County SC typically run $5,600–$75,000 depending on scope — a small powder room refresh starts around $5,600, while a full primary bath gut renovation with premium finishes can run $65,000–$75,000+.',
+    // Was "$5,600-$75,000 ... starts around $5,600" — $5,600 was $140/SF x 40
+    // SF, a raw direct cost with no location factor or 20% O&P applied. The
+    // calculator itself (and this page's own AEO pricing table) returns
+    // roughly $6,900 for that same 40 SF project, and the pricing table's
+    // real powder-room floor is $5,578-$6,717 at 35 SF (this service's
+    // configured sizeRanges.min). Recomputed from the same formula the
+    // calculator runs — see scripts/check-calculator-copy.mjs, which
+    // asserts this stays true — instead of a second, independently
+    // hand-typed number that can drift from what the tool actually outputs.
+    intro: 'Bathroom remodels in Greenville and Laurens County SC typically run $5,578–$113,098 depending on scope — a small 35 sq ft powder room refresh starts around $5,578, while a full 150 sq ft primary bath gut renovation with premium finishes can run $93,911–$113,098+.',
     marketArea: 'Greenville County & Laurens County',
   },
   wholeHome: {
@@ -385,7 +394,7 @@ export const CALCULATOR_PAGES = {
     title: 'Whole-Home Remodel Cost Calculator',
     metaTitle: 'Whole-Home Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate whole-home remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Whole-home remodels in Greenville and Laurens County SC typically cost $135–$290 per square foot — a 2,000 sqft home runs $250,000–$645,000 depending on scope and finish level.',
+    intro: 'Whole-home remodels in Greenville and Laurens County SC typically cost $125–$322 per square foot — a 2,000 sqft home runs $250,000–$645,000 depending on scope and finish level.',
     marketArea: 'Greenville County & Laurens County',
   },
   coveredPatios: {
@@ -406,26 +415,39 @@ export const CALCULATOR_PAGES = {
   },
 }
 
+// Grouped by factor type, not one flat namespace keyed only by the raw
+// factor key — several services reuse the same key name (most commonly
+// "moderate") across complexityFactors and siteConditionFactors with
+// different intended meanings, and a flat lookup by key alone can't tell
+// those apart. That collision is what previously put complexity's
+// "Custom angles or added elements" under Site Conditions → Moderate.
 const FACTOR_LABELS = {
-  standard: 'Contractor-grade, solid value',
-  upgraded: 'Quality mid-range materials',
-  premium: 'Architectural or luxury grade',
-  builder: 'Basic contractor-grade',
-  simple: 'Standard layout, no special features',
-  moderate: 'Custom angles or added elements',
-  complex: 'Multi-level, curves, or built-ins',
-  flat: 'Level site, easy equipment access',
-  slope: 'Sloped yard or moderate grading',
-  challenging: 'Steep slope or restricted access',
-  existingStructure: 'Adding to an existing structure',
-  newConstruction: 'Full new ground-up construction',
-  structuralChallenges: 'Complex roof or foundation tie-in',
-  straightforward: 'Level site, standard access',
-  difficult: 'Major structural work required',
+  material: {
+    builder: 'Basic contractor-grade',
+    standard: 'Contractor-grade, solid value',
+    upgraded: 'Quality mid-range materials',
+    premium: 'Architectural or luxury grade',
+  },
+  complexity: {
+    simple: 'Standard layout, no special features',
+    moderate: 'Custom angles or added elements',
+    complex: 'Multi-level, curves, or built-ins',
+  },
+  site: {
+    flat: 'Level site, easy equipment access',
+    slope: 'Sloped yard or moderate grading',
+    challenging: 'Steep slope or restricted access',
+    existingStructure: 'Adding to an existing structure',
+    newConstruction: 'Full new ground-up construction',
+    structuralChallenges: 'Complex roof or foundation tie-in',
+    straightforward: 'Level site, standard access',
+    moderate: 'Some access limitations, or minor structural/plumbing prep needed',
+    difficult: 'Major structural work required',
+  },
 }
 
-export function getFactorLabel(key) {
-  return FACTOR_LABELS[key] ?? key
+export function getFactorLabel(group, key) {
+  return FACTOR_LABELS[group]?.[key] ?? key
 }
 
 export function formatCurrency(amount) {
