@@ -818,7 +818,7 @@ ${faqHtml(remainingFaqs, service.id)}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-${seoHead({ title, description, canonical })}
+${seoHead({ title, description, canonical, ...(service.heroImage ? { ogImage: service.heroImage } : {}) })}
     <script type="application/ld+json">${JSON.stringify(schema)}</script>
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -557,6 +557,7 @@ export const SERVICES = [
     category: 'Remodeling',
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     metaTitle: 'Bathroom Remodeling Simpsonville SC | Burch Contracting',
+    heroImage: '/images/bath-shower-conversion-woodruff-sc-1.webp',
     description: 'Bathroom remodeling in Simpsonville, Fountain Inn & Greenville County SC. Transparent per-sqft pricing computed live from our published rates. SC Licensed #CLG118679, 35+ years, BBB A+.',
     h1: 'Bathroom Remodeling Contractor — Simpsonville & Fountain Inn, SC',
     intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${projectCostString('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${projectCostString('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${projectCostString('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${projectCostString('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 35+ years in the trade.`,
