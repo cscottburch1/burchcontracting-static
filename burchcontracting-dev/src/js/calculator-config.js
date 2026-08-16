@@ -1,4 +1,4 @@
-export const PRICING_UPDATED = '2026-07-05'
+export const PRICING_UPDATED = '2026-08-16'
 
 export const PRICING_CONFIG = {
   defaultOverheadAndProfit: 0.20,
@@ -108,12 +108,22 @@ export const PRICING_CONFIG = {
         },
         detachedStandard: {
           label: 'Detached Garage (standard finish)',
-          directCost: 89,
+          // Was 89 (final ~$109/SF) — independently-sourced 2026 Greenville
+          // data puts detached garages at $75-90/SF "basic" and $90-120+/SF
+          // "high-end"; this tier was already pricing like the researched
+          // high-end bracket. Repriced to land at the boundary between the
+          // two ($51,798-$62,381 for a 576 SF two-car, vs. $58,355-$70,277
+          // before) — see the pricing-review conversation, 2026-08-16.
+          directCost: 79,
           description: 'Detached 2-car, standard finishes, electrical, garage door',
         },
         upgradedWorkshop: {
           label: 'Upgraded Workshop/Carriage House',
-          directCost: 119,
+          // Was 119; cut proportionally to detachedStandard's -11.2% so the
+          // gap between tiers stays consistent, landing at $130/SF final —
+          // still clearly the priciest tier and within the researched
+          // high-end $90-120+/SF band's open upper end rather than above it.
+          directCost: 106,
           description: 'Premium finishes, finished walls, upgraded electrical, upgraded door',
         },
       },
@@ -345,7 +355,10 @@ export const CALCULATOR_PAGES = {
     title: 'Garage Cost Calculator',
     metaTitle: 'Garage Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
     description: 'Plan detached and attached garage construction costs in Upstate SC. Transparent pricing with 20% overhead & profit.',
-    intro: 'A standard two-car detached garage (24×24, 576 sqft) in Upstate SC costs $58,000–$70,000 fully finished — slab, framing, roof, doors, and basic electrical. A comparable attached garage runs $39,000–$47,000, and workshop upgrades or larger 3-car footprints (900 sqft) commonly run $122,000–$147,000.',
+    // Recomputed 2026-08-16 alongside the detachedStandard/upgradedWorkshop
+    // rate cut above — see that comment for why. attachedBasic's figure is
+    // unchanged (that tier's rate wasn't touched).
+    intro: 'A standard two-car detached garage (24×24, 576 sqft) in Upstate SC costs $52,000–$62,000 fully finished — slab, framing, roof, doors, and basic electrical. A comparable attached garage runs $39,000–$47,000, and workshop upgrades or larger 3-car footprints (900 sqft) commonly run $109,000–$131,000.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   porch: {
