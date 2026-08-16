@@ -81,6 +81,7 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                     <div>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Remodeling & More</p>
                     <a href="/remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
+                    <a href="/bathroom-remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Bathroom Remodeling</a>
                     <a href="/insurance-restoration" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Commercial</p>
                     <a href="/commercial-upfits" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
@@ -156,6 +157,7 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   <a href="/adu-builder" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
                   <a href="/basement-finishing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
                   <a href="/remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
+                  <a href="/bathroom-remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Bathroom Remodeling</a>
                   <a href="/insurance-restoration" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
                   <a href="/commercial-upfits" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
                   <a href="/commercial-roofing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Roofing</a>
@@ -210,6 +212,7 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
               <li><a href="/garages" class="hover:text-white transition-colors">Garages</a></li>
               <li><a href="/outdoor-living/decks" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
               <li><a href="/remodeling" class="hover:text-white transition-colors">Remodeling</a></li>
+              <li><a href="/bathroom-remodeling" class="hover:text-white transition-colors">Bathroom Remodeling</a></li>
               <li><a href="/commercial-upfits" class="hover:text-white transition-colors">Commercial Upfits</a></li>
               <li><a href="/commercial-roofing" class="hover:text-white transition-colors">Commercial Roofing</a></li>
               <li><a href="/insurance-restoration" class="hover:text-white transition-colors">Insurance Restoration</a></li>
@@ -313,7 +316,12 @@ function faqHtml(faqs, idPrefix = 'faq') {
 
 function servicePage(service) {
   const canonical = `${SITE.url}/${service.slug}`
-  const title = `${service.title} | Burch Contracting`
+  // Nearly every service's <title> is just "{title} | Burch Contracting" —
+  // service.metaTitle is an escape hatch for pages that need a geo-targeted
+  // title tag distinct from the shorter nav/breadcrumb label in
+  // service.title (e.g. "Bathroom Remodeling Simpsonville SC" vs. the
+  // nav's plain "Bathroom Remodeling").
+  const title = service.metaTitle ?? `${service.title} | Burch Contracting`
   const description = service.description
   const faqs = SERVICE_FAQS[service.id] || []
 
@@ -371,14 +379,29 @@ function servicePage(service) {
     })
   }
 
-  schemaGraph.push({
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE.url}/services.html` },
-      { '@type': 'ListItem', position: 3, name: service.title, item: canonical },
-    ],
+  // Most services are one level under Services. A few (e.g. Bathroom
+  // Remodeling under Home Remodeling) sit a level deeper — breadcrumbParent
+  // inserts that intermediate crumb in both the visible nav and this schema
+  // without changing the shape for every other service.
+  const breadcrumbTrail = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE.url}/services.html` },
+  ]
+  if (service.breadcrumbParent) {
+    breadcrumbTrail.push({
+      '@type': 'ListItem',
+      position: 3,
+      name: service.breadcrumbParent.name,
+      item: `${SITE.url}${service.breadcrumbParent.url}`,
+    })
+  }
+  breadcrumbTrail.push({
+    '@type': 'ListItem',
+    position: breadcrumbTrail.length + 1,
+    name: service.title,
+    item: canonical,
   })
+  schemaGraph.push({ '@type': 'BreadcrumbList', itemListElement: breadcrumbTrail })
 
   if (faqs.length) {
     schemaGraph.push({
@@ -532,13 +555,19 @@ ${authorBox()}
       </section>`
   }
 
+  const breadcrumbParentHtml = service.breadcrumbParent
+    ? `              <li><a href="${service.breadcrumbParent.url}" class="hover:text-white transition-colors">${esc(service.breadcrumbParent.name)}</a></li>
+              <li aria-hidden="true"><span>/</span></li>
+`
+    : ''
+
   const heroContentHtml = `          <nav class="mb-4" aria-label="Breadcrumb">
             <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-400">
               <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
               <li aria-hidden="true"><span>/</span></li>
               <li><a href="/services.html" class="hover:text-white transition-colors">Services</a></li>
               <li aria-hidden="true"><span>/</span></li>
-              <li class="text-slate-200" aria-current="page">${esc(service.title)}</li>
+${breadcrumbParentHtml}              <li class="text-slate-200" aria-current="page">${esc(service.title)}</li>
             </ol>
           </nav>
           <p class="text-blue-300 font-semibold text-sm uppercase tracking-widest mb-3">${esc(service.category)}</p>
@@ -789,7 +818,7 @@ ${faqHtml(remainingFaqs, service.id)}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-${seoHead({ title, description, canonical })}
+${seoHead({ title, description, canonical, ...(service.heroImage ? { ogImage: service.heroImage } : {}) })}
     <script type="application/ld+json">${JSON.stringify(schema)}</script>
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -809,7 +838,9 @@ ${fallbackTableSectionHtml}
 ${pricingSectionHtml}
 ${authorOnlySectionHtml}
 ${additionalCostsHtml}
+${service.richContentBeforeProcess ?? ''}
 ${howItWorksSectionHtml}
+${service.richContentAfterProcess ?? ''}
 ${benefitsSectionHtml}
 ${faqSectionHtml}
 ${citationsSectionHtml}
