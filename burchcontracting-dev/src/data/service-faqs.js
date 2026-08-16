@@ -199,6 +199,105 @@ export const SERVICE_FAQS = {
     }
   ],
 
+  'bathroom-remodeling': [
+    {
+      question: 'How much does a bathroom remodel cost in Simpsonville, SC?',
+      answer: 'A bathroom remodel in Simpsonville and Fountain Inn typically runs $6,375 to $30,708 for a full bath, depending on size and scope — a basic 5×8 hall bath refresh starts around $6,375–$7,677, while a mid-range 80 sq ft primary bath runs $25,498–$30,708. Powder rooms start near $3,984, and a full-gut primary bath with custom tile and premium fixtures runs $60,103 and up. Use our bath remodel calculator for an estimate matched to your bathroom’s size and finish level.'
+    },
+    {
+      question: 'How much does a small bathroom remodel cost?',
+      answer: 'A small bathroom — a powder room or a compact 5×8 hall bath — typically costs $3,984 to $7,677 for a basic refresh: new fixtures, vanity, flooring, and paint with the existing layout and plumbing left in place. Moving fixtures or upgrading to a full tile shower in that same small footprint pushes the mid-range tier to roughly $12,749–$15,354.'
+    },
+    {
+      question: 'How much does a master or primary bathroom remodel cost?',
+      answer: 'A primary bathroom remodel typically runs $25,498 to $98,018 depending on size and scope. An 80 sq ft primary bath with a tile shower and updated vanity at the mid-range tier runs about $25,498–$30,708; a full-gut 96 sq ft primary bath with a custom tile shower and double vanity runs $60,103–$72,382; and a large 130+ sq ft spa bath with a freestanding soaking tub, heated floors, and frameless glass runs $81,390–$98,018.'
+    },
+    {
+      question: 'How much does a powder room remodel cost?',
+      answer: 'A powder room (half bath, roughly 25 sq ft) typically costs $3,984 to $4,798 for a basic refresh — new vanity, toilet, floor tile, lighting, and paint, with no tub or shower involved. Since a powder room has no wet area to waterproof, it’s consistently the least expensive full bathroom project we quote.'
+    },
+    {
+      question: 'How long does a bathroom remodel take?',
+      answer: 'Most full bathroom remodels take 2 to 4 weeks of construction. A powder room can finish in as little as 5-8 working days, while a large primary bath with custom glass and long-lead tile can run 5 to 7 weeks. Design, selections, and permitting typically run 1-3 weeks before demolition even starts, in parallel with ordering long-lead materials.'
+    },
+    {
+      question: 'Do I need a permit to remodel a bathroom in Greenville County?',
+      answer: 'Yes, in most cases. Greenville County requires a permit any time a new building is constructed, structural changes are made, or additions are made to an existing structure, and specifically flags bathroom remodels over $5,000 or work touching the foundation, framing, plumbing, electrical, or HVAC. A purely cosmetic refresh — paint, a like-for-like vanity swap, a toilet replaced in the same spot — typically doesn’t need one. We pull all required permits under SC license #CLG118679 as part of the contract.'
+    },
+    {
+      question: 'Do I need a permit in Simpsonville or Fountain Inn city limits?',
+      answer: 'It depends on the address. The City of Simpsonville and the City of Fountain Inn each administer their own permits within municipal limits, while unincorporated areas around both cities fall under Greenville County, and Laurens County covers our Gray Court and Laurens service areas. Rather than guess which jurisdiction applies, we confirm it for your specific address before filing — you don’t need to figure this out yourself.'
+    },
+    {
+      question: 'Can I use my bathroom during the remodel?',
+      answer: 'Not for most of the project if it’s your only bathroom — a full remodel puts the room out of commission from demolition through final fixtures, typically 2 to 4 weeks. If you have a second bathroom in the house, we sequence the work so you have uninterrupted access to it. For single-bathroom homes, we talk through the timeline and any temporary arrangements before demolition starts, not after.'
+    },
+    {
+      question: 'What is included in a bathroom remodel quote?',
+      answer: 'A written, itemized quote covers demolition and haul-off, plumbing and electrical rough-in, waterproofing and shower pan work, tile, vanity and countertop, tub or shower and fixtures, toilet, lighting and mirrors, paint and trim, and permits — one number for the full scope rather than a bid that leaves trades to be priced separately later. We review it with you line by line before any work begins.'
+    },
+    {
+      question: 'Is a bathroom remodel worth it for resale value?',
+      answer: 'Usually, yes, for a minor or mid-range remodel. Midrange bathroom remodels recouped roughly 74-80% of their cost at resale in the 2026 Remodeling Cost vs. Value data — the highest that figure has been since 2007 — while small cosmetic refreshes under $5,000 can return 80-100%. Full luxury renovations return proportionally less, typically 45-60%, because premium finishes don’t add dollar-for-dollar value; a luxury bath is more often bought for daily living than for resale math.'
+    },
+    {
+      question: 'Should I move the plumbing or keep the existing layout?',
+      answer: 'Keeping the existing plumbing locations is the single biggest lever for controlling cost — relocating a toilet, shower, or vanity drain means opening the floor or walls, which is the difference between a basic refresh and a mid-range or full-gut budget. Moving plumbing makes sense when the current layout genuinely doesn’t work (a cramped shower, an awkwardly placed vanity), but it’s rarely worth it purely for aesthetics.'
+    },
+    {
+      question: 'How much does a tub-to-shower conversion cost?',
+      answer: 'An accessible, ADA-style roll-in tub-to-shower conversion — demo, new pan, waterproofing, tile or fiberglass surround, grab bars, and a low-threshold entry — typically runs $10,500 to $19,800 with us. A standard (non-accessible) conversion that keeps a curb and skips ADA-specific items like a roll-in base and extra grab bars usually costs less than that range, since it drops the accessibility-specific line items. See our ADA bath-to-shower conversions for the accessible version and its calculator.'
+    },
+    {
+      question: 'Should I keep a bathtub in the house?',
+      answer: 'If the house has at least one other bathtub, converting a secondary bath to a walk-in shower is increasingly common and won’t hurt resale — 55% of design professionals surveyed for NKBA’s 2026 Bath Trends Report say a larger shower now matters more to buyers than having a bathtub. If this would be the only tub in the house, we generally recommend keeping at least one somewhere, since some buyers with young children specifically look for it.'
+    },
+    {
+      question: 'What is a curbless (zero-entry) shower and what does it cost?',
+      answer: 'A curbless shower has no raised threshold — the floor slopes gently to a drain instead, so you step or roll straight in at the same level as the rest of the bathroom floor. It reads as both modern and more accessible, which is why it shows up on both budget-conscious and luxury remodels. As an upgrade to an existing shower plan, it typically adds around $2,800 to the project.'
+    },
+    {
+      question: 'What is the most common hidden cost in a bathroom remodel?',
+      answer: 'Water damage found once demolition opens the walls or floor — rotted subfloor around an old tub, a slow leak that was never visible from outside the wall, or corroded galvanized supply lines. This is also why we order long-lead materials like custom vanities and specialty tile before demolition starts: it’s the mid-project stall, not the surprise itself, that actually derails a schedule.'
+    },
+    {
+      question: 'How do you protect the rest of my house during construction?',
+      answer: 'We protect adjacent flooring and hallways before demolition starts, seal off the work area to control dust, and haul debris out through a route we walk with you in advance rather than through the rest of the house. Every project is managed personally by Scott Burch, so the same person you talked to during the quote is checking on protection and cleanup throughout.'
+    },
+    {
+      question: 'Do you provide design, or do I need a designer first?',
+      answer: 'We work design-build, handling layout, fixture and tile selections, demolition, structural work, electrical, plumbing, and finishing under one roof. You don’t need to line up a separate designer and contractor — we manage all phases so decisions stay coordinated and on budget instead of getting relayed between two companies.'
+    },
+    {
+      question: 'Who buys the fixtures and tile — you or me?',
+      answer: 'Either way works. Most clients let us source fixtures and tile as part of the itemized quote, which keeps warranty and delivery scheduling under one contract. If you’d rather select and purchase specific pieces yourself — a particular vanity or a tile you’ve already fallen in love with — we build the quote around owner-supplied materials and coordinate delivery timing with the schedule.'
+    },
+    {
+      question: 'What waterproofing system do you use and why does it matter?',
+      answer: 'We use a sheet or liquid waterproofing membrane system (Schluter-KERDI or equivalent) behind tile and under every shower pan, not just a cement backer board on its own. This is the single most important decision nobody sees once the tile goes up — it’s the difference between a shower that lasts decades and one that quietly rots the subfloor within a few years.'
+    },
+    {
+      question: 'What size exhaust fan does my bathroom need?',
+      answer: 'Code requires at least 50 CFM for a fan that runs intermittently (tied to the light switch) or 20 CFM for one that runs continuously at low speed, ducted straight to the exterior — never into the attic. Larger bathrooms, steam showers, or rooms with poor natural airflow often benefit from sizing above the code minimum; undersized or improperly vented ventilation is the most common cause of premature failure in an otherwise well-built bathroom.'
+    },
+    {
+      question: 'How do I know a bathroom contractor is properly licensed in South Carolina?',
+      answer: 'Ask for their SC Residential Builders Commission license number and verify it directly on the South Carolina LLR website — it takes about a minute. Burch Contracting holds SC General Contractor License #CLG118679 and NC General Contractor License (Limited) #107292, and we’re glad to have you verify either one before signing anything.'
+    },
+    {
+      question: 'Do you offer financing or payment schedules?',
+      answer: 'We discuss payment schedule options during your free consultation, tailored to your project size and scope. Contact us for the specifics that apply to your remodel.'
+    },
+    {
+      question: 'What warranty do you provide on bathroom remodels?',
+      answer: 'Workmanship is covered under the terms outlined in your written contract, and manufacturer warranties on fixtures, tile, and materials pass through to you directly. Ask us for the specific warranty terms that apply to your project during your consultation — we’ll put them in writing before work begins.'
+    },
+    {
+      question: 'How do I get started and what does the first visit cost?',
+      answer: 'Call (864) 724-4600 or request a consultation online — the initial visit and ballpark estimate are free. We walk the space, talk through scope and budget, and follow up with a written, itemized quote so you know the real number before committing to anything.'
+    }
+  ],
+
   'commercial-upfits': [
     {
       question: 'How much does a commercial build-out cost?',

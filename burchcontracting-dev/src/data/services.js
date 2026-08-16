@@ -28,7 +28,9 @@ import {
   tierPerSqftBand,
   tierPerSqftString,
   servicePerSqftBand,
+  servicePerSqftString,
 } from './pricing-sync.js'
+import { bathroomRemodelingBeforeProcess, bathroomRemodelingAfterProcess } from './bathroom-remodeling-content.js'
 
 /** Formats a {min,max} band as "$X-Y{suffix}". */
 function formatBand(band, suffix = '/sq ft') {
@@ -541,10 +543,186 @@ export const SERVICES = [
       { id: 'whole-home-remodel', label: 'Whole-Home Cost Calculator' }
     ],
     relatedServices: [
+      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
       { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
       { name: 'Room Additions', url: '/additions' },
       { name: 'Basement Finishing', url: '/basement-finishing' },
       { name: 'ADU Construction', url: '/adu-builder' }
+    ]
+  },
+  {
+    id: 'bathroom-remodeling',
+    title: 'Bathroom Remodeling',
+    slug: 'bathroom-remodeling',
+    category: 'Remodeling',
+    breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
+    metaTitle: 'Bathroom Remodeling Simpsonville SC | Burch Contracting',
+    description: 'Bathroom remodeling in Simpsonville, Fountain Inn & Greenville County SC. Transparent per-sqft pricing computed live from our published rates. SC Licensed #CLG118679, 35+ years, BBB A+.',
+    h1: 'Bathroom Remodeling Contractor — Simpsonville & Fountain Inn, SC',
+    intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${projectCostString('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${projectCostString('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${projectCostString('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${projectCostString('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 35+ years in the trade.`,
+    stats: {
+      costRange: combinedCostString(
+        projectEstimate('bathRemodel', 'basicRefresh', 25),
+        projectEstimate('bathRemodel', 'fullGutRenovation', 130),
+        { plus: true }
+      ) + ' Typical',
+      timeline: '2-4 Weeks Typical',
+      experience: '35+ Years Experience',
+      rating: 'BBB A+ Rated'
+    },
+    pricePerSqFt: servicePerSqftString('bathRemodel'),
+    timeline: '2-4 weeks for a typical full bath; as little as 1 week for a powder room, up to 5-7 weeks for a large custom primary bath with long-lead materials',
+    commonProjects: [
+      {
+        name: 'Powder Room Refresh',
+        size: '~25 sq ft, half bath',
+        cost: projectCostString('bathRemodel', 'basicRefresh', 25),
+        details: 'New vanity, toilet, floor tile, lighting, and paint with the existing layout retained — no tub or shower involved'
+      },
+      {
+        name: 'Hall/Guest Bath — Basic Refresh',
+        size: '5×8 (40 sq ft)',
+        cost: projectCostString('bathRemodel', 'basicRefresh', 40),
+        details: 'New fixtures, vanity, and paint with the existing tub/shower location and plumbing left in place'
+      },
+      {
+        name: 'Hall/Guest Bath — Mid-Range Remodel',
+        size: '5×8 (40 sq ft)',
+        cost: projectCostString('bathRemodel', 'midRangeRemodel', 40),
+        details: 'New tile, vanity, and tub/shower with some layout adjustments — the most common full bathroom remodel scope'
+      },
+      {
+        name: 'Standard Primary Bath',
+        size: '~80 sq ft',
+        cost: projectCostString('bathRemodel', 'midRangeRemodel', 80),
+        details: 'Tile shower, vanity, updated lighting and ventilation, moderate layout changes'
+      },
+      {
+        name: 'Full-Gut Primary Bath',
+        size: '8×12 (96 sq ft)',
+        cost: projectCostString('bathRemodel', 'fullGutRenovation', 96),
+        details: 'Complete reconfiguration, custom tile shower, double vanity, premium fixtures'
+      },
+      {
+        name: 'Large Primary / Spa Bath',
+        size: '130+ sq ft',
+        cost: projectCostString('bathRemodel', 'fullGutRenovation', 130),
+        details: 'Custom tile shower, freestanding soaking tub, heated floors, frameless glass, premium fixtures throughout'
+      }
+    ],
+    pricingTiers: [
+      {
+        name: 'Basic Bath Refresh',
+        range: tierPerSqftString('bathRemodel', 'basicRefresh'),
+        description: 'New fixtures, vanity, flooring, and paint with the existing layout and plumbing locations retained. The right tier for powder rooms and bathrooms that don’t need layout changes.'
+      },
+      {
+        name: 'Mid-Range Bath Remodel',
+        range: tierPerSqftString('bathRemodel', 'midRangeRemodel'),
+        description: 'New tile, vanity, and tub/shower with some layout adjustments. The most common scope for a full hall or primary bathroom remodel.'
+      },
+      {
+        name: 'Full-Gut Renovation',
+        range: tierPerSqftString('bathRemodel', 'fullGutRenovation'),
+        description: 'Complete reconfiguration, relocated plumbing, custom tile shower, and premium fixtures — for primary baths being rebuilt from the studs out.'
+      }
+    ],
+    serviceCategories: [
+      {
+        name: 'Structural & Mechanical',
+        items: [
+          'Demolition and debris haul-off',
+          'Subfloor inspection and rot/water-damage remediation',
+          'Plumbing rough-in: supply lines, drain, vent relocation',
+          'Electrical: dedicated 20-amp circuit, GFCI receptacles, lighting, exhaust fan wiring',
+          'Framing changes for niches, benches, curbless shower drops, or wall relocation',
+          'Shower pan and full waterproofing membrane (Schluter-KERDI or equivalent)',
+          'Backer board and moisture management',
+          'Ventilation — exhaust fan sized and ducted to the exterior'
+        ]
+      },
+      {
+        name: 'Finishes & Fixtures',
+        items: [
+          'Floor tile, wall tile, shower tile, niches, curbs and thresholds',
+          'Vanity, countertop, sink, and faucet',
+          'Tub, shower valve and trim, shower door or glass enclosure',
+          'Toilet',
+          'Mirrors, medicine cabinets, lighting, hardware',
+          'Paint, trim, door and casing work',
+          'Optional upgrades: heated floors, benches, linear drains, steam'
+        ]
+      }
+    ],
+    additionalCosts: [
+      {
+        item: 'Heated Tile Flooring',
+        cost: '+$1,200 per bath',
+        note: 'Electric radiant mat under tile, its own thermostat circuit'
+      },
+      {
+        item: 'Freestanding Soaking Tub',
+        cost: '+$3,500 per tub',
+        note: 'May require floor framing reinforcement depending on the model'
+      },
+      {
+        item: 'Curbless Walk-In Shower Upgrade',
+        cost: '+$2,800 per shower',
+        note: 'Zero-entry pan, sloped floor to a drain instead of a raised threshold'
+      },
+      {
+        item: 'Double Vanity Upgrade',
+        cost: '+$1,800 per vanity',
+        note: 'Widened cabinet, second sink and faucet rough-in'
+      }
+    ],
+    howItWorks: [
+      {
+        title: 'Design & Selections',
+        description: 'Measurements, layout, fixture and tile selections, quote lock, and permit application — runs 1-3 weeks in parallel with ordering long-lead items like custom vanities and specialty tile before demolition even starts.'
+      },
+      {
+        title: 'Demolition & Rough-In',
+        description: 'Protection of adjacent flooring, full demo to the studs, debris haul-off, subfloor inspection, and plumbing/electrical rough-in. This is when hidden problems surface — old galvanized supply lines, water damage, undersized framing.'
+      },
+      {
+        title: 'Waterproofing & Backer Board',
+        description: 'Rough-in inspections passed, insulation, cement board and waterproofing membrane installed, shower pan set and flood-tested, drywall hung and finished.'
+      },
+      {
+        title: 'Tile & Fixtures',
+        description: 'Floor and wall tile set and grouted, tub or shower base installed, vanity and countertop set, toilet and fixtures installed, paint.'
+      },
+      {
+        title: 'Trim, Glass & Final Walkthrough',
+        description: 'Shower glass installed last since it’s measured after tile, then mirrors, lighting, hardware, trim, caulk, final inspection, punch list, and walkthrough.'
+      }
+    ],
+    benefits: [
+      'Owner C. Scott Burch is on-site personally — 35+ years in the trade',
+      'SC Licensed General Contractor #CLG118679 | NC Licensed (Limited) #107292',
+      'BBB A+ Rated · 5.0 Google Rating',
+      'One licensed crew handles design, demo, plumbing, electrical, waterproofing, tile, and finish — one contract, one point of contact',
+      'Written, itemized quotes before work begins',
+      'All required permits pulled under our license — nothing for the homeowner to file',
+      'Long-lead materials ordered before demolition to avoid a mid-project stall',
+      'Serving Simpsonville, Fountain Inn, Five Forks, Mauldin, Greenville, Woodruff, Laurens, and Gray Court'
+    ],
+    citations: [
+      { url: 'https://www.greenvillecounty.org/buildingsafety/Permits.aspx', text: 'Greenville County Building Safety — Permits' },
+      { url: 'https://llr.sc.gov/bcc/BCAdoption.aspx', text: 'SC Building Codes Council — Code Adoption' }
+    ],
+    richContentBeforeProcess: bathroomRemodelingBeforeProcess({
+      luxuryBath: projectEstimate('bathRemodel', 'fullGutRenovation', 96).customHigh
+    }),
+    richContentAfterProcess: bathroomRemodelingAfterProcess(),
+    calculator: 'bath-remodel',
+    relatedServices: [
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'Room Additions', url: '/additions' },
+      { name: 'ADA Compliance', url: '/ada-compliance' }
     ]
   },
   {
@@ -903,6 +1081,7 @@ export const SERVICES = [
     ],
     calculator: 'ada-bath-shower',
     relatedServices: [
+      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
       { name: 'ADA Compliance & Accessibility', url: '/ada-compliance' },
       { name: 'Home Remodeling', url: '/remodeling' },
       { name: 'Insurance Restoration', url: '/insurance-restoration' }

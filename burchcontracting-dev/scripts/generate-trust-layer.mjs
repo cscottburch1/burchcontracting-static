@@ -88,12 +88,14 @@ const CALCULATOR_FAQ_SOURCE = {
   'calculator/covered-patios.html': 'covered-patios',
   'calculator/basement-finishing.html': 'basement-finishing',
   'calculator/ada-bath-shower.html': 'ada-bath-to-shower',
-  // The three remodeling calculators share one SERVICE_FAQS entry
-  // ('remodeling') — it isn't kitchen/bath/whole-home-specific, but every
-  // sentence in it is still accurate for all three, so this is real reuse,
-  // not padding.
+  // The kitchen and whole-home calculators still share the generic
+  // 'remodeling' SERVICE_FAQS entry — every sentence in it is accurate for
+  // both, so this is real reuse, not padding. The bath calculator now has
+  // its own dedicated, bath-specific FAQ set (see 'bathroom-remodeling' in
+  // service-faqs.js) since /bathroom-remodeling shipped as its own pillar
+  // page rather than sharing /remodeling's generic answers.
   'calculator/kitchen-remodel.html': 'remodeling',
-  'calculator/bath-remodel.html': 'remodeling',
+  'calculator/bath-remodel.html': 'bathroom-remodeling',
   'calculator/whole-home-remodel.html': 'remodeling',
 }
 

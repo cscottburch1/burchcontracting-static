@@ -185,6 +185,7 @@ export const CORE_SERVICES = [
   { name: 'Garages', url: '/garages', summary: 'Attached and detached garage construction.' },
   { name: 'Room Additions', url: '/additions', summary: 'Ground-floor and second-story home expansions.' },
   { name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
+  { name: 'Bathroom Remodeling', url: '/bathroom-remodeling', summary: 'Full bathroom remodels, from powder rooms to custom primary spa baths.' },
   { name: 'Commercial Upfits', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
   { name: 'Commercial Roofing', url: '/commercial-roofing', summary: 'Flat and metal roof installation, repair, and maintenance.' },
   { name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
