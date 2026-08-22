@@ -158,7 +158,7 @@ export function bathroomRemodelingAfterProcess() {
             </div>
             <div class="bg-white border border-slate-200 rounded-xl p-7">
               <h3 class="font-bold text-slate-900 text-lg mb-2">Aging in place</h3>
-              <p class="text-slate-600 text-sm leading-relaxed">Blocking the walls for future grab bars during a remodel costs almost nothing; adding it after the tile is up costs real money and a torn-out wall. 32% of design professionals now consider aging-in-place design mainstream and another 48% see it as an emerging standard, not a niche request. For a bathroom built specifically around accessibility from the start, see our <a href="/ada-bath-to-shower" class="text-blue-700 hover:text-blue-800 underline">ADA bath-to-shower conversions</a> — that page owns the accessibility-first version of this project.</p>
+              <p class="text-slate-600 text-sm leading-relaxed">Blocking the walls for future grab bars during a remodel costs almost nothing; adding it after the tile is up costs real money and a torn-out wall. 32% of design professionals now consider aging-in-place design mainstream and another 48% see it as an emerging standard, not a niche request. For a bathroom built specifically around accessibility from the start, see our <a href="/ada-bath-to-shower/" class="text-blue-700 hover:text-blue-800 underline">ADA bath-to-shower conversions</a> — that page owns the accessibility-first version of this project.</p>
             </div>
           </div>
         </div>

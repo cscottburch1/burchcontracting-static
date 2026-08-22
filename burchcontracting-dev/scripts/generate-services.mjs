@@ -69,27 +69,27 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   <div class="grid grid-cols-2 gap-x-2 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
                     <div>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Outdoor Living</p>
-                    <a href="/outdoor-living/decks" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Custom Decks</a>
-                    <a href="/outdoor-living/screened-porches" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Screened Porches</a>
-                    <a href="/outdoor-living/covered-patios" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Covered Patios</a>
+                    <a href="/outdoor-living/decks/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Custom Decks</a>
+                    <a href="/outdoor-living/screened-porches/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Screened Porches</a>
+                    <a href="/outdoor-living/covered-patios/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Covered Patios</a>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Construction</p>
-                    <a href="/garages" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Garages</a>
-                    <a href="/additions" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Room Additions</a>
-                    <a href="/adu-builder" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADU Builder</a>
-                    <a href="/basement-finishing" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Basement Finishing</a>
+                    <a href="/garages/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Garages</a>
+                    <a href="/additions/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Room Additions</a>
+                    <a href="/adu-builder/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADU Builder</a>
+                    <a href="/basement-finishing/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Basement Finishing</a>
                     </div>
                     <div>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Remodeling & More</p>
-                    <a href="/remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
-                    <a href="/bathroom-remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Bathroom Remodeling</a>
-                    <a href="/insurance-restoration" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
+                    <a href="/remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
+                    <a href="/bathroom-remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Bathroom Remodeling</a>
+                    <a href="/insurance-restoration/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Commercial</p>
-                    <a href="/commercial-upfits" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
-                    <a href="/commercial-roofing" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Roofing</a>
+                    <a href="/commercial-upfits/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
+                    <a href="/commercial-roofing/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Roofing</a>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Accessibility</p>
-                    <a href="/ada-compliance" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Compliance</a>
-                    <a href="/ada-bath-to-shower" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Bath to Shower</a>
-                    <a href="/handyman" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Handyman Services</a>
+                    <a href="/ada-compliance/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Compliance</a>
+                    <a href="/ada-bath-to-shower/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Bath to Shower</a>
+                    <a href="/handyman/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Handyman Services</a>
                     </div>
                   </div>
                 </div>
@@ -149,21 +149,21 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   <span data-mobile-accordion-icon class="text-sm">+</span>
                 </button>
                 <div data-mobile-accordion-panel="services" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
-                  <a href="/outdoor-living/decks" class="text-slate-700 text-sm py-1 hover:text-blue-700">Custom Decks</a>
-                  <a href="/outdoor-living/screened-porches" class="text-slate-700 text-sm py-1 hover:text-blue-700">Screened Porches</a>
-                  <a href="/outdoor-living/covered-patios" class="text-slate-700 text-sm py-1 hover:text-blue-700">Covered Patios</a>
-                  <a href="/garages" class="text-slate-700 text-sm py-1 hover:text-blue-700">Garages</a>
-                  <a href="/additions" class="text-slate-700 text-sm py-1 hover:text-blue-700">Room Additions</a>
-                  <a href="/adu-builder" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
-                  <a href="/basement-finishing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
-                  <a href="/remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
-                  <a href="/bathroom-remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Bathroom Remodeling</a>
-                  <a href="/insurance-restoration" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
-                  <a href="/commercial-upfits" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
-                  <a href="/commercial-roofing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Roofing</a>
-                  <a href="/ada-compliance" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Compliance</a>
-                  <a href="/ada-bath-to-shower" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Bath to Shower</a>
-                  <a href="/handyman" class="text-slate-700 text-sm py-1 hover:text-blue-700">Handyman Services</a>
+                  <a href="/outdoor-living/decks/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Custom Decks</a>
+                  <a href="/outdoor-living/screened-porches/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Screened Porches</a>
+                  <a href="/outdoor-living/covered-patios/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Covered Patios</a>
+                  <a href="/garages/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Garages</a>
+                  <a href="/additions/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Room Additions</a>
+                  <a href="/adu-builder/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
+                  <a href="/basement-finishing/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
+                  <a href="/remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
+                  <a href="/bathroom-remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Bathroom Remodeling</a>
+                  <a href="/insurance-restoration/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
+                  <a href="/commercial-upfits/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
+                  <a href="/commercial-roofing/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Roofing</a>
+                  <a href="/ada-compliance/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Compliance</a>
+                  <a href="/ada-bath-to-shower/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Bath to Shower</a>
+                  <a href="/handyman/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Handyman Services</a>
                 </div>
 
                 <button type="button" data-mobile-accordion="areas" class="flex items-center justify-between text-left font-semibold text-slate-900 py-2 w-full">
@@ -208,16 +208,16 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
           <div>
             <p class="font-semibold text-white mb-4">Our Services</p>
             <ul class="space-y-2 text-sm">
-              <li><a href="/additions" class="hover:text-white transition-colors">Additions</a></li>
-              <li><a href="/garages" class="hover:text-white transition-colors">Garages</a></li>
-              <li><a href="/outdoor-living/decks" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
-              <li><a href="/remodeling" class="hover:text-white transition-colors">Remodeling</a></li>
-              <li><a href="/bathroom-remodeling" class="hover:text-white transition-colors">Bathroom Remodeling</a></li>
-              <li><a href="/commercial-upfits" class="hover:text-white transition-colors">Commercial Upfits</a></li>
-              <li><a href="/commercial-roofing" class="hover:text-white transition-colors">Commercial Roofing</a></li>
-              <li><a href="/insurance-restoration" class="hover:text-white transition-colors">Insurance Restoration</a></li>
-              <li><a href="/ada-compliance" class="hover:text-white transition-colors">ADA Compliance</a></li>
-              <li><a href="/handyman" class="hover:text-white transition-colors">Handyman Services</a></li>
+              <li><a href="/additions/" class="hover:text-white transition-colors">Additions</a></li>
+              <li><a href="/garages/" class="hover:text-white transition-colors">Garages</a></li>
+              <li><a href="/outdoor-living/decks/" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
+              <li><a href="/remodeling/" class="hover:text-white transition-colors">Remodeling</a></li>
+              <li><a href="/bathroom-remodeling/" class="hover:text-white transition-colors">Bathroom Remodeling</a></li>
+              <li><a href="/commercial-upfits/" class="hover:text-white transition-colors">Commercial Upfits</a></li>
+              <li><a href="/commercial-roofing/" class="hover:text-white transition-colors">Commercial Roofing</a></li>
+              <li><a href="/insurance-restoration/" class="hover:text-white transition-colors">Insurance Restoration</a></li>
+              <li><a href="/ada-compliance/" class="hover:text-white transition-colors">ADA Compliance</a></li>
+              <li><a href="/handyman/" class="hover:text-white transition-colors">Handyman Services</a></li>
             </ul>
           </div>
           <div>
@@ -315,7 +315,13 @@ function faqHtml(faqs, idPrefix = 'faq') {
 }
 
 function servicePage(service) {
-  const canonical = `${SITE.url}/${service.slug}`
+  // Trailing slash matters: these pages build to {slug}/index.html and are
+  // served at /{slug}/ — the host 301-redirects the no-slash path to the
+  // slash version (standard directory-URL behavior), so a canonical without
+  // the trailing slash points at a URL that itself redirects instead of the
+  // actual 200 page. Search engines (Bing flagged this) treat that as a
+  // broken/non-self-referencing canonical.
+  const canonical = `${SITE.url}/${service.slug}/`
   // Nearly every service's <title> is just "{title} | Burch Contracting" —
   // service.metaTitle is an escape hatch for pages that need a geo-targeted
   // title tag distinct from the shorter nav/breadcrumb label in
