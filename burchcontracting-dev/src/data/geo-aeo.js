@@ -203,7 +203,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How do I get a free consultation from Burch Contracting?',
-    answer: 'Call (864) 724-4600 or submit the contact form at burchcontracting.com/contact.html. Scott will review your project scope and provide a free ballpark price range. A detailed written estimate, concept drawings, or floor plans are available for a fee, fully credited toward your project if you hire us.',
+    answer: 'Call (864) 724-4600 or fill out our online project request form. Scott will review your project scope and provide a free ballpark price range. A detailed written estimate, concept drawings, or floor plans are available for a fee, fully credited toward your project if you hire us.',
   },
   {
     question: 'Does Scott Burch work on the job site?',

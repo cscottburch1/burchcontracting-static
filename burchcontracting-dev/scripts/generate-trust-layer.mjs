@@ -735,9 +735,22 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 ${extraFaqs
       .map(
-        (faq) => `          <div>
+        // contact.html only, first item (the "how do I get a free
+        // consultation" question): pair it with a real jump-to-form button
+        // rather than leaving the reader to scroll and find the form
+        // themselves. #request-form is the id on the form card in
+        // contact.html's hand-authored markup.
+        (faq, i) => `          <div>
             <h2 class="text-2xl font-bold text-slate-900 mb-3">${faq.alreadyEscaped ? faq.question : esc(faq.question)}</h2>
-            <p class="text-slate-600 leading-relaxed">${faq.alreadyEscaped ? faq.answer : esc(faq.answer)}</p>
+            <p class="text-slate-600 leading-relaxed">${faq.alreadyEscaped ? faq.answer : esc(faq.answer)}</p>${
+              relFile === 'contact.html' && i === 0
+                ? `
+            <a href="#request-form" class="mt-5 inline-flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+              Jump to the Contact Form
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+            </a>`
+                : ''
+            }
           </div>`
       )
       .join('\n')}
