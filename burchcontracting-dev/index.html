@@ -175,7 +175,9 @@
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
     <link rel="stylesheet" href="/src/css/main.css" />
   </head>
   <body class="font-sans text-slate-800 bg-white antialiased">
@@ -502,7 +504,7 @@
             </article>
             <article class="group bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md hover:border-blue-100 transition-all duration-200">
               <div class="relative h-40">
-                <img src="/images/commercial-tpo-roof.jpg" alt="White TPO commercial roof membrane on a flat roof building in Upstate South Carolina" width="400" height="160" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+                <img src="/images/commercial-tpo-roof.webp" alt="White TPO commercial roof membrane on a flat roof building in Upstate South Carolina" width="400" height="160" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent flex items-end p-5">
                   <h3 class="text-lg font-bold text-white">Commercial Roofing</h3>
                 </div>
