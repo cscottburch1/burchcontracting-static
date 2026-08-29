@@ -191,7 +191,14 @@ function writeSection(fileName, sectionHtml) {
   let updated
   if (html.includes(START_MARKER)) {
     const re = new RegExp(`${escapeRe(START_MARKER)}[\\s\\S]*?${escapeRe(END_MARKER)}`)
-    updated = html.replace(re, block)
+    // Replacer FUNCTION, not a plain string: `block` is a pricing table full
+    // of dollar amounts, and String.replace() treats "$$"/"$&"/"$`"/"$'" in
+    // a replacement *string* as special patterns — a function's return
+    // value is always inserted literally. See generate-trust-layer.mjs's
+    // replaceOrInsertAfter() for the confirmed real-world case this guards
+    // against (LOCAL_BUSINESS_SCHEMA's priceRange: '$$' silently became
+    // '$' before that fix).
+    updated = html.replace(re, () => block)
   } else {
     // First run: insert right after the interactive calculator's own
     // section (immediately before </main>), so the SSR table renders
@@ -200,7 +207,7 @@ function writeSection(fileName, sectionHtml) {
     if (!html.includes(anchor)) {
       throw new Error(`${fileName}: could not find "${anchor}" to insert pricing table before`)
     }
-    updated = html.replace(anchor, `${block}\n${anchor}`)
+    updated = html.replace(anchor, () => `${block}\n${anchor}`)
   }
 
   fs.writeFileSync(filePath, updated, 'utf-8')

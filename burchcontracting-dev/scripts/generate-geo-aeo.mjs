@@ -25,6 +25,10 @@ const areaDir = resolve(root, 'service-areas')
 // site relaunch date used elsewhere when content-dates.js lacks an entry.
 const AREA_DATES = CONTENT_DATES?.['__datafile__src/data/geo-aeo.js'] ?? { datePublished: '2026-07-19', dateModified: '2026-07-19' }
 
+// Same idea, for everything driven by services.js (used by generateSitemap()
+// below for the dedicated service pages).
+const SERVICES_DATES = CONTENT_DATES?.['__datafile__src/data/services.js'] ?? { datePublished: '2026-07-19', dateModified: '2026-07-19' }
+
 function esc(value) {
   return String(value)
     .replace(/&(?!(?:[a-zA-Z][a-zA-Z0-9]*|#\d+|#x[0-9a-fA-F]+);)/g, '&amp;')
@@ -788,29 +792,43 @@ ${footer}
 </html>`
 }
 
+// lastmod must equal the actual page's actual last content change, not the
+// date the sitemap happened to be built — a blanket build-date stamp on
+// every URL is exactly what makes Google stop trusting (and eventually
+// ignore) lastmod across the whole file. Real per-page dates come from
+// CONTENT_DATES (scripts/compute-content-dates.mjs, itself derived from
+// git history — see that file's header for why it's checked in rather than
+// computed live). changefreq/priority are dropped entirely per Google's own
+// guidance that both are ignored.
 function generateSitemap() {
-  const today = new Date().toISOString().slice(0, 10)
+  // Hand-authored static pages: dateKey is the file's own key in
+  // CONTENT_DATES. Generated pages (faqs.html, service pages, service-area
+  // pages) use their driving datafile's shared date instead — see
+  // AREA_DATES / SERVICES_DATES above.
   const staticPages = [
-    ['/', 'weekly', '1.0'],
-    ['/services.html', 'weekly', '0.9'],
-    ['/projects.html', 'weekly', '0.8'],
-    ['/about.html', 'monthly', '0.8'],
-    ['/contact.html', 'monthly', '0.9'],
-    ['/faqs.html', 'monthly', '0.8'],
-    ['/calculator/decks.html', 'monthly', '0.7'],
-    ['/calculator/garages.html', 'monthly', '0.7'],
-    ['/calculator/porch.html', 'monthly', '0.7'],
-    ['/calculator/additions.html', 'monthly', '0.7'],
-    ['/calculator/estimate.html', 'monthly', '0.7'],
-    ['/calculator/kitchen-remodel.html', 'monthly', '0.7'],
-    ['/calculator/bath-remodel.html', 'monthly', '0.7'],
-    ['/calculator/whole-home-remodel.html', 'monthly', '0.7'],
-    ['/calculator/ada-bath-shower.html', 'monthly', '0.7'],
-    ['/calculator/basement-finishing.html', 'monthly', '0.7'],
-    ['/calculator/covered-patios.html', 'monthly', '0.7'],
-    ['/privacy-policy.html', 'yearly', '0.3'],
-    ['/terms-of-service.html', 'yearly', '0.3'],
-  ]
+    ['/', 'index.html'],
+    ['/services.html', 'services.html'],
+    ['/projects.html', 'projects.html'],
+    ['/about.html', 'about.html'],
+    ['/contact.html', 'contact.html'],
+    ['/faqs.html', AREA_DATES],
+    ['/calculator/decks.html', 'calculator/decks.html'],
+    ['/calculator/garages.html', 'calculator/garages.html'],
+    ['/calculator/porch.html', 'calculator/porch.html'],
+    ['/calculator/additions.html', 'calculator/additions.html'],
+    ['/calculator/estimate.html', 'calculator/estimate.html'],
+    ['/calculator/kitchen-remodel.html', 'calculator/kitchen-remodel.html'],
+    ['/calculator/bath-remodel.html', 'calculator/bath-remodel.html'],
+    ['/calculator/whole-home-remodel.html', 'calculator/whole-home-remodel.html'],
+    ['/calculator/ada-bath-shower.html', 'calculator/ada-bath-shower.html'],
+    ['/calculator/basement-finishing.html', 'calculator/basement-finishing.html'],
+    ['/calculator/covered-patios.html', 'calculator/covered-patios.html'],
+    ['/privacy-policy.html', 'privacy-policy.html'],
+    ['/terms-of-service.html', 'terms-of-service.html'],
+  ].map(([path, dateKeyOrDates]) => [
+    path,
+    typeof dateKeyOrDates === 'string' ? (CONTENT_DATES?.[dateKeyOrDates] ?? AREA_DATES) : dateKeyOrDates,
+  ])
 
   // Derived from SERVICES (src/data/services.js) so every dedicated
   // service page — including future ones — is automatically indexed
@@ -820,17 +838,15 @@ function generateSitemap() {
   // sitemap entry without it sends crawlers through an avoidable redirect
   // instead of the actual 200 URL. Matches the canonical fix in
   // generate-services.mjs (servicePage()) — same root cause, same slug list.
-  const servicePages = SERVICES.map((service) => [`/${service.slug}/`, 'monthly', '0.8'])
+  const servicePages = SERVICES.map((service) => [`/${service.slug}/`, SERVICES_DATES])
 
-  const areaPages = SERVICE_AREAS.map((area) => [`/service-areas/${area.slug}.html`, 'monthly', '0.75'])
+  const areaPages = SERVICE_AREAS.map((area) => [`/service-areas/${area.slug}.html`, AREA_DATES])
 
   const urls = [...staticPages, ...servicePages, ...areaPages]
     .map(
-      ([path, changefreq, priority]) => `  <url>
+      ([path, dates]) => `  <url>
     <loc>${SITE.domain}${path}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
+    <lastmod>${dates.dateModified}</lastmod>
   </url>`
     )
     .join('\n')

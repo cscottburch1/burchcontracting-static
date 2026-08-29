@@ -32,6 +32,11 @@ export const LOCAL_BUSINESS_SCHEMA = {
   },
   geo: { '@type': 'GeoCoordinates', latitude: 34.6465, longitude: -82.1158 },
   openingHours: 'Mo-Fr 08:00-17:00',
+  // LocalBusiness and Organization otherwise describe the same company
+  // with no stated relationship between the two @ids — an ambiguous
+  // entity graph. This is the one-line fix, done here so every page that
+  // imports LOCAL_BUSINESS_SCHEMA picks it up automatically.
+  parentOrganization: { '@id': 'https://burchcontracting.com/#organization' },
   areaServed: [
     { '@type': 'City', name: 'Simpsonville' },
     { '@type': 'City', name: 'Fountain Inn' },
@@ -103,14 +108,31 @@ export const SCOTT_PERSON_SCHEMA = {
 }
 
 /**
+ * Canonical WebSite node — the site as a whole, referenced by every page's
+ * WebPage node via isPartOf (see webPageSchema() below).
+ */
+export const WEBSITE_SCHEMA = {
+  '@type': 'WebSite',
+  '@id': 'https://burchcontracting.com/#website',
+  url: 'https://burchcontracting.com/',
+  name: 'Burch Contracting',
+  publisher: { '@id': ORGANIZATION_SCHEMA['@id'] },
+}
+
+/**
  * Article schema for a content page. datePublished/dateModified should come
  * from src/data/content-dates.js (real git-history-derived dates), not be
  * guessed — see that file's generator, scripts/compute-content-dates.mjs,
  * for why they're checked in rather than computed live at build time.
+ *
+ * Carries its own '@id' (url + '#article') so a page's WebPage node can
+ * reference it via mainEntityOfPage without a second, redundant copy of
+ * the same facts.
  */
 export function articleSchema({ headline, description, url, datePublished, dateModified, image }) {
   return {
     '@type': 'Article',
+    '@id': `${url}#article`,
     headline,
     description,
     url,
@@ -119,5 +141,21 @@ export function articleSchema({ headline, description, url, datePublished, dateM
     author: { '@id': SCOTT_PERSON_SCHEMA['@id'] },
     publisher: { '@id': ORGANIZATION_SCHEMA['@id'] },
     ...(image ? { image } : {}),
+  }
+}
+
+/**
+ * WebPage node for a page whose main content is the given Article — links
+ * the two per Google's recommended CreativeWork/WebPage pairing instead of
+ * leaving Article as a free-floating node with no page-level wrapper.
+ */
+export function webPageSchema({ url, name, articleId }) {
+  return {
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name,
+    isPartOf: { '@id': WEBSITE_SCHEMA['@id'] },
+    mainEntityOfPage: { '@id': articleId },
   }
 }
