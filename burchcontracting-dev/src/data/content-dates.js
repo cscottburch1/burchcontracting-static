@@ -3,6 +3,16 @@
  * Re-run that script to refresh after real content changes. See its header
  * comment for why these are checked in rather than computed at build time.
  * Generated: 2026-08-05
+ *
+ * privacy-policy.html / terms-of-service.html added by hand on 2026-08-16
+ * (script now covers them going forward — see HAND_AUTHORED in
+ * compute-content-dates.mjs) using their second-most-recent commit, not
+ * their most recent: today's most recent commit on nearly every hand-
+ * authored file in this repo was a mechanical sitewide nav-link addition,
+ * not a real content change, and re-running the script wholesale today
+ * would have stamped that same non-event across every entry in this file —
+ * precisely the "everything shows today" problem the sitemap lastmod fix
+ * (see generate-geo-aeo.mjs's generateSitemap()) exists to get away from.
  */
 export const CONTENT_DATES = {
   "index.html": {
@@ -23,6 +33,14 @@ export const CONTENT_DATES = {
   },
   "services.html": {
     "datePublished": "2026-06-01",
+    "dateModified": "2026-07-23"
+  },
+  "privacy-policy.html": {
+    "datePublished": "2026-07-10",
+    "dateModified": "2026-07-23"
+  },
+  "terms-of-service.html": {
+    "datePublished": "2026-07-10",
     "dateModified": "2026-07-23"
   },
   "calculator/ada-bath-shower.html": {

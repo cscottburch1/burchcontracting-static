@@ -51,6 +51,7 @@ function gitDates(relPath) {
 // Hand-authored pages: dates come straight from the HTML file's own history.
 const HAND_AUTHORED = [
   'index.html', 'about.html', 'contact.html', 'projects.html', 'services.html',
+  'privacy-policy.html', 'terms-of-service.html',
   'calculator/ada-bath-shower.html', 'calculator/additions.html',
   'calculator/basement-finishing.html', 'calculator/bath-remodel.html',
   'calculator/covered-patios.html', 'calculator/decks.html',
