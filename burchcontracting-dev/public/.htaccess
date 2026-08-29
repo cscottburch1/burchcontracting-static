@@ -65,8 +65,8 @@ RewriteRule ^services/?$ /services.html [R=301,L]
 RewriteRule ^areas/?$ /#service-areas [R=301,L,NE]
 RewriteRule ^service-areas/?$ /#service-areas [R=301,L,NE]
 
-RewriteRule ^garage-builder/?$ /garages [R=301,L]
-RewriteRule ^room-additions/?$ /additions [R=301,L]
+RewriteRule ^garage-builder/?$ /garages/ [R=301,L]
+RewriteRule ^room-additions/?$ /additions/ [R=301,L]
 
 RewriteRule ^calculator/decks-screened-porches/?$ /calculator/porch.html [R=301,L]
 RewriteRule ^cost/?$ /calculator/estimate.html [R=301,L]
@@ -136,30 +136,30 @@ RewriteRule ^(deck-builder|garage-builder|room-additions|screened-porches|adu-bu
 
 # travelers-rest, duncan, taylors: no page anywhere. Fall through to the service
 # page rather than a city page — preserves service intent, loses geo intent.
-RewriteRule ^deck-builder/[a-z-]+/?$ /outdoor-living/decks [R=301,L]
-RewriteRule ^screened-porches/[a-z-]+/?$ /outdoor-living/screened-porches [R=301,L]
-RewriteRule ^garage-builder/[a-z-]+/?$ /garages [R=301,L]
-RewriteRule ^room-additions/[a-z-]+/?$ /additions [R=301,L]
-RewriteRule ^adu-builder/[a-z-]+/?$ /adu-builder [R=301,L]
+RewriteRule ^deck-builder/[a-z-]+/?$ /outdoor-living/decks/ [R=301,L]
+RewriteRule ^screened-porches/[a-z-]+/?$ /outdoor-living/screened-porches/ [R=301,L]
+RewriteRule ^garage-builder/[a-z-]+/?$ /garages/ [R=301,L]
+RewriteRule ^room-additions/[a-z-]+/?$ /additions/ [R=301,L]
+RewriteRule ^adu-builder/[a-z-]+/?$ /adu-builder/ [R=301,L]
 
 # --- Family 3: /locations tree ------------------------------------------------
 # /locations/{service}-{city}-sc  (e.g. /locations/deck-builder-simpsonville-sc)
 # Flattened to the service page. If GSC shows traffic here, hand-map instead.
 
-RewriteRule ^locations/deck-builder-[a-z-]+-sc/?$ /outdoor-living/decks [R=301,L]
+RewriteRule ^locations/deck-builder-[a-z-]+-sc/?$ /outdoor-living/decks/ [R=301,L]
 # FIXED: the real legacy slug is "screened-porch-builder-{city}-sc" (confirmed
 # via GSC — e.g. /locations/screened-porch-builder-greenville-sc, 71
 # impressions), not "screened-porches-{city}-sc" as originally drafted. The
 # original pattern wouldn't 404 (the generic /locations/[a-z-]+ catch-all
 # below still catches it) but would send real traffic to the homepage anchor
 # instead of the actually-relevant screened-porches page.
-RewriteRule ^locations/screened-porch-builder-[a-z-]+-sc/?$ /outdoor-living/screened-porches [R=301,L]
-RewriteRule ^locations/garage-builder-[a-z-]+-sc/?$ /garages [R=301,L]
-RewriteRule ^locations/room-additions-[a-z-]+-sc/?$ /additions [R=301,L]
-RewriteRule ^locations/adu-builder-[a-z-]+-sc/?$ /adu-builder [R=301,L]
-RewriteRule ^locations/kitchen-remodeling-[a-z-]+-sc/?$ /calculator/kitchen-remodel.html [R=301,L]
+RewriteRule ^locations/screened-porch-builder-[a-z-]+-sc/?$ /outdoor-living/screened-porches/ [R=301,L]
+RewriteRule ^locations/garage-builder-[a-z-]+-sc/?$ /garages/ [R=301,L]
+RewriteRule ^locations/room-additions-[a-z-]+-sc/?$ /additions/ [R=301,L]
+RewriteRule ^locations/adu-builder-[a-z-]+-sc/?$ /adu-builder/ [R=301,L]
+RewriteRule ^locations/kitchen-remodeling-[a-z-]+-sc/?$ /kitchen-remodeling/ [R=301,L]
 RewriteRule ^locations/bathroom-remodeling-[a-z-]+-sc/?$ /calculator/bath-remodel.html [R=301,L]
-RewriteRule ^locations/basement-finishing-[a-z-]+-sc/?$ /basement-finishing [R=301,L]
+RewriteRule ^locations/basement-finishing-[a-z-]+-sc/?$ /basement-finishing/ [R=301,L]
 
 # The /locations index itself, and any unmatched child (safety net — this
 # already prevents the above gaps from 404ing, just with less topical
@@ -171,19 +171,19 @@ RewriteRule ^locations/[a-z-]+/?$ /#service-areas [R=301,L,NE]
 # garage-builder and room-additions bare paths are already handled above.
 # These are the ones that were not:
 
-RewriteRule ^deck-builder/?$ /outdoor-living/decks [R=301,L]
-RewriteRule ^screened-porches/?$ /outdoor-living/screened-porches [R=301,L]
+RewriteRule ^deck-builder/?$ /outdoor-living/decks/ [R=301,L]
+RewriteRule ^screened-porches/?$ /outdoor-living/screened-porches/ [R=301,L]
 
 # --- Family 5: /services/{slug} -----------------------------------------------
 # The rule above only covers bare "^services/?$". Children 404'd until now.
 # VERIFY the full child list against GSC — this is what could be observed
 # without it.
 
-RewriteRule ^services/additions/?$ /additions [R=301,L]
-RewriteRule ^services/decks/?$ /outdoor-living/decks [R=301,L]
-RewriteRule ^services/screened-porches/?$ /outdoor-living/screened-porches [R=301,L]
-RewriteRule ^services/garages/?$ /garages [R=301,L]
-RewriteRule ^services/remodeling/?$ /remodeling [R=301,L]
+RewriteRule ^services/additions/?$ /additions/ [R=301,L]
+RewriteRule ^services/decks/?$ /outdoor-living/decks/ [R=301,L]
+RewriteRule ^services/screened-porches/?$ /outdoor-living/screened-porches/ [R=301,L]
+RewriteRule ^services/garages/?$ /garages/ [R=301,L]
+RewriteRule ^services/remodeling/?$ /remodeling/ [R=301,L]
 RewriteRule ^services/[a-z-]+/?$ /services.html [R=301,L]
 
 # --- Family 6: calculators ----------------------------------------------------
@@ -215,7 +215,7 @@ RewriteRule ^calculator/basement-finishing/?$ /calculator/basement-finishing.htm
 # Handyman now has a real service page on the new site (added 2026-07-11,
 # built from the old Next.js site's real handyman calculator pricing data)
 # — was falling into the generic estimator (61 impressions).
-RewriteRule ^calculator/handyman/?$ /handyman [R=301,L]
+RewriteRule ^calculator/handyman/?$ /handyman/ [R=301,L]
 
 # Bare "/calculators" (plural) — distinct legacy URL, 1 click / 64 impressions.
 RewriteRule ^calculators/?$ /calculator/estimate.html [R=301,L]
@@ -241,7 +241,7 @@ RewriteRule ^cost/room-addition-cost-[a-z-]+-sc/?$ /calculator/additions.html [R
 RewriteRule ^cost/screened-porch-vs-sunroom-sc/?$ /calculator/porch.html [R=301,L]
 RewriteRule ^cost/garage-construction-cost-[a-z-]+-sc/?$ /calculator/garages.html [R=301,L]
 RewriteRule ^cost/cost-to-build-a-deck-[a-z-]+-sc/?$ /calculator/decks.html [R=301,L]
-RewriteRule ^cost/kitchen-remodel-cost-[a-z-]+-sc/?$ /calculator/kitchen-remodel.html [R=301,L]
+RewriteRule ^cost/kitchen-remodel-cost-[a-z-]+-sc/?$ /kitchen-remodeling/ [R=301,L]
 RewriteRule ^cost/bathroom-remodel-cost-[a-z-]+-sc/?$ /calculator/bath-remodel.html [R=301,L]
 # RESOLVED 2026-07-12: repointed from the service page to the new real
 # basement-finishing calculator now that one exists.
@@ -259,27 +259,27 @@ RewriteRule ^cost/[a-z0-9-]+/?$ /calculator/estimate.html [R=301,L]
 # directly rather than left to a generic fallback.
 
 RewriteRule ^bath_remodeling/?$ /calculator/bath-remodel.html [R=301,L]
-RewriteRule ^kitchen-remodeling/?$ /calculator/kitchen-remodel.html [R=301,L]
-RewriteRule ^kitchen_remodeling/?$ /calculator/kitchen-remodel.html [R=301,L]
-RewriteRule ^basement_remodeling/?$ /basement-finishing [R=301,L]
-RewriteRule ^room_additions/?$ /additions [R=301,L]
-RewriteRule ^commercial-renovations/?$ /commercial-upfits [R=301,L]
-RewriteRule ^commercial_remodeling_company/?$ /commercial-upfits [R=301,L]
-RewriteRule ^screened_patios/?$ /outdoor-living/screened-porches [R=301,L]
+# REMOVED 2026-08-29: /kitchen-remodeling/ is now a real generated page
+RewriteRule ^kitchen_remodeling/?$ /kitchen-remodeling/ [R=301,L]
+RewriteRule ^basement_remodeling/?$ /basement-finishing/ [R=301,L]
+RewriteRule ^room_additions/?$ /additions/ [R=301,L]
+RewriteRule ^commercial-renovations/?$ /commercial-upfits/ [R=301,L]
+RewriteRule ^commercial_remodeling_company/?$ /commercial-upfits/ [R=301,L]
+RewriteRule ^screened_patios/?$ /outdoor-living/screened-porches/ [R=301,L]
 
 # RESOLVED 2026-07-11 (owner decision): handyman is now a real lower-tier
 # service on the new site (see /handyman); these two legacy URLs (0 clicks,
 # 13+6 impressions) now have a real target instead of being left open.
-RewriteRule ^handyman-services-estimator/?$ /handyman [R=301,L]
-RewriteRule ^handyman-services-near-you/?$ /handyman [R=301,L]
+RewriteRule ^handyman-services-estimator/?$ /handyman/ [R=301,L]
+RewriteRule ^handyman-services-near-you/?$ /handyman/ [R=301,L]
 
 # UPDATED 2026-07-23: commercial roofing is now a real service on the new
 # site (see /commercial-roofing) — superseding the 2026-07-11 decision that
 # sent these to the services listing.
-RewriteRule ^commercial-roofing_company/?$ /commercial-roofing [R=301,L]
-RewriteRule ^roofing/?$ /commercial-roofing [R=301,L]
-RewriteRule ^commercial-roof-repair/?$ /commercial-roofing [R=301,L]
-RewriteRule ^flat-roof(ing)?/?$ /commercial-roofing [R=301,L]
+RewriteRule ^commercial-roofing_company/?$ /commercial-roofing/ [R=301,L]
+RewriteRule ^roofing/?$ /commercial-roofing/ [R=301,L]
+RewriteRule ^commercial-roof-repair/?$ /commercial-roofing/ [R=301,L]
+RewriteRule ^flat-roof(ing)?/?$ /commercial-roofing/ [R=301,L]
 
 # RESOLVED 2026-07-11 (owner decision): no admin/employee/subcontractor
 # application features on the new site yet. /admin is intentionally left
@@ -303,8 +303,8 @@ RewriteRule ^clients/?$ /contact.html [R=301,L]
 # Unambiguous single-page matches, all 0 clicks / low impressions:
 RewriteRule ^pricing/?$ /services.html [R=301,L]
 RewriteRule ^request_a_free_estimate/?$ /contact.html [R=301,L]
-RewriteRule ^commercial-services/?$ /commercial-upfits [R=301,L]
-RewriteRule ^home-renovations/?$ /remodeling [R=301,L]
+RewriteRule ^commercial-services/?$ /commercial-upfits/ [R=301,L]
+RewriteRule ^home-renovations/?$ /remodeling/ [R=301,L]
 # No single "outdoor living" hub page exists on the new site (only the three
 # child pages) — services.html covers the same ground at the top level.
 RewriteRule ^outdoor-living/?$ /services.html [R=301,L]
