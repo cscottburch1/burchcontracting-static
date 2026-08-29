@@ -298,6 +298,33 @@ export const SERVICE_FAQS = {
     }
   ],
 
+  'kitchen-remodeling': [
+    {
+      question: 'How much does a kitchen remodel cost in Simpsonville and Greenville, SC?',
+      answer: 'It depends on tier more than square footage. A standard refresh (refaced or stock cabinets, laminate counters, existing layout) sits at the bottom of the pricing table on this page; a mid-range remodel with new cabinetry, quartz or granite counters, and tile backsplash is where most Upstate SC projects land; premium custom kitchens with layout changes occupy the top tier. Every figure on this page is computed live from our published per-square-foot rates with a fixed 20% overhead and profit — use the kitchen calculator for a range built from your dimensions and selections.'
+    },
+    {
+      question: 'Should I reface my cabinets or replace them?',
+      answer: 'Reface if your cabinet boxes are structurally solid and the layout already works for how you cook — new doors, drawer fronts, and veneer deliver a visual reset for meaningfully less than replacement. Replace if storage, workflow, or layout is the actual problem, because refacing cannot fix any of those. We give you a straight answer on which situation your kitchen is in during the free consultation, including when refacing is the right call and we make less money.'
+    },
+    {
+      question: 'How long does a kitchen remodel take?',
+      answer: 'Four to seven weeks for a typical full remodel: 3-7 days of demolition, 1-2 weeks of rough-in (electrical, plumbing, structural), then drywall, cabinet installation, countertop templating and fabrication, backsplash, flooring, and appliances. Cosmetic refreshes can finish in 2-3 weeks; premium custom kitchens with long-lead cabinetry run 8-10. Choosing counters and cabinets before demolition is the single biggest thing a homeowner can do to shorten the schedule.'
+    },
+    {
+      question: 'Can we stay in our house during the remodel?',
+      answer: 'Most of our clients do. We help set up a temporary kitchen station before demolition, seal the work zone with dust barriers, and keep water shutoffs short. The stripped-room middle weeks are the wearing part — some families plan a week away during rough-in, and that is usually the only stretch worth leaving for.'
+    },
+    {
+      question: 'Do I need a permit to remodel my kitchen in Greenville County?',
+      answer: 'Not for a same-footprint cosmetic refresh. Yes the moment the project moves plumbing, adds or alters electrical circuits, changes gas lines, or opens a wall. As the licensed general contractor of record (SC #CLG118679), Burch Contracting pulls the required permits and schedules inspections in Greenville, Laurens, and Spartanburg counties, so you don’t have to.'
+    },
+    {
+      question: 'Which kitchen upgrades add the most resale value in Upstate SC?',
+      answer: 'The unglamorous ones buyers now expect: stone countertops, a tiled backsplash, a real lighting plan, and cabinetry that works. Highly personal choices — bold colors, specialty appliances — are worth doing for your own enjoyment, but treat them as spending rather than investing. If resale within a few years is part of your plan, say so at the consultation; it changes which pricing tier we recommend.'
+    }
+  ],
+
   'commercial-upfits': [
     {
       question: 'How much does a commercial build-out cost?',

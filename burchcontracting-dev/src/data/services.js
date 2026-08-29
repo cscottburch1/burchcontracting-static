@@ -31,6 +31,7 @@ import {
   servicePerSqftString,
 } from './pricing-sync.js'
 import { bathroomRemodelingBeforeProcess, bathroomRemodelingAfterProcess } from './bathroom-remodeling-content.js'
+import { kitchenRemodelingBeforeProcess, kitchenRemodelingAfterProcess } from './kitchen-remodeling-content.js'
 
 /** Formats a {min,max} band as "$X-Y{suffix}". */
 function formatBand(band, suffix = '/sq ft') {
@@ -544,6 +545,7 @@ export const SERVICES = [
     ],
     relatedServices: [
       { name: 'Bathroom Remodeling', url: '/bathroom-remodeling/' },
+      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling/' },
       { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower/' },
       { name: 'Room Additions', url: '/additions/' },
       { name: 'Basement Finishing', url: '/basement-finishing/' },
@@ -719,11 +721,139 @@ export const SERVICES = [
     richContentAfterProcess: bathroomRemodelingAfterProcess(),
     calculator: 'bath-remodel',
     relatedServices: [
+      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling/' },
       { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower/' },
       { name: 'Home Remodeling', url: '/remodeling/' },
       { name: 'Basement Finishing', url: '/basement-finishing/' },
       { name: 'Room Additions', url: '/additions/' },
       { name: 'ADA Compliance', url: '/ada-compliance/' }
+    ]
+  },
+  {
+    id: 'kitchen-remodeling',
+    title: 'Kitchen Remodeling',
+    slug: 'kitchen-remodeling',
+    category: 'Remodeling',
+    breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling/' },
+    metaTitle: 'Kitchen Remodeling Simpsonville SC | Burch Contracting',
+    heroImage: '/images/kitchen-remodeling-sc.webp',
+    description: 'Kitchen remodeling in Simpsonville, Fountain Inn & Greenville County SC. Custom cabinets, quartz & granite counters, transparent per-sqft pricing computed from our published rates. SC Licensed #CLG118679, 35+ years, BBB A+.',
+    h1: 'Kitchen Remodeling Contractor — Simpsonville & Fountain Inn, SC',
+    intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${projectCostString('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${projectCostString('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 35+ years in the trade.`,
+    stats: {
+      costRange: combinedCostString(
+        projectEstimate('kitchenRemodel', 'standardRefresh', 100),
+        projectEstimate('kitchenRemodel', 'premiumCustom', 220),
+        { plus: true }
+      ) + ' Typical',
+      timeline: '4-7 Weeks Typical',
+      experience: '35+ Years Experience',
+      rating: 'BBB A+ Rated'
+    },
+    pricePerSqFt: servicePerSqftString('kitchenRemodel'),
+    timeline: '4-7 weeks for a typical full kitchen remodel; a cosmetic refresh can finish in 2-3 weeks, while premium custom kitchens with layout changes and long-lead cabinetry run 8-10 weeks',
+    commonProjects: [
+      {
+        name: 'Galley Kitchen Refresh',
+        size: '~100 sq ft',
+        cost: projectCostString('kitchenRemodel', 'standardRefresh', 100),
+        details: 'Cabinet refacing or stock cabinets, laminate or entry-level stone counters, new sink and fixtures, existing layout retained'
+      },
+      {
+        name: 'Standard Kitchen Refresh',
+        size: '10×12 (120 sq ft)',
+        cost: projectCostString('kitchenRemodel', 'standardRefresh', 120),
+        details: 'New stock cabinetry or refacing, updated counters, backsplash, and lighting with plumbing and appliances kept in place'
+      },
+      {
+        name: 'Mid-Range Kitchen Remodel',
+        size: '10×12 (120 sq ft)',
+        cost: projectCostString('kitchenRemodel', 'midRangeRemodel', 120),
+        details: 'New cabinetry, quartz or granite counters, tile backsplash, updated lighting — the most common full kitchen remodel scope'
+      },
+      {
+        name: 'Large Mid-Range Kitchen',
+        size: '~160 sq ft',
+        cost: projectCostString('kitchenRemodel', 'midRangeRemodel', 160),
+        details: 'Full cabinet and counter replacement with an island addition, appliance relocation, and upgraded electrical'
+      },
+      {
+        name: 'Premium Custom Kitchen',
+        size: '~200 sq ft',
+        cost: projectCostString('kitchenRemodel', 'premiumCustom', 200),
+        details: 'Custom cabinetry, premium stone counters, high-end appliance package, layout changes with wall or opening modifications'
+      },
+      {
+        name: 'Large Custom Kitchen + Butler’s Pantry',
+        size: '220+ sq ft',
+        cost: projectCostString('kitchenRemodel', 'premiumCustom', 220),
+        details: 'Custom millwork, premium appliances, custom range hood, pantry build-out, designer lighting plan'
+      }
+    ],
+    pricingTiers: [
+      {
+        name: 'Standard Kitchen Refresh',
+        range: tierPerSqftString('kitchenRemodel', 'standardRefresh'),
+        description: 'Cabinet refacing or stock cabinets, laminate counters, standard fixtures. The right tier when the layout works and the finishes are what’s dated.'
+      },
+      {
+        name: 'Mid-Range Kitchen Remodel',
+        range: tierPerSqftString('kitchenRemodel', 'midRangeRemodel'),
+        description: 'New cabinetry, quartz or granite counters, tile backsplash, updated lighting. Where most Upstate SC kitchen remodels land.'
+      },
+      {
+        name: 'Premium Custom Kitchen',
+        range: tierPerSqftString('kitchenRemodel', 'premiumCustom'),
+        description: 'Custom cabinetry, premium stone counters, high-end appliances, and layout changes including wall modifications and structural openings.'
+      }
+    ],
+    serviceCategories: [
+      {
+        name: 'Cabinetry & Storage',
+        items: ['Custom and semi-custom cabinet installation', 'Cabinet refacing (doors, drawer fronts, veneer)', 'Kitchen islands and peninsulas', 'Pantry and butler’s pantry build-outs', 'Soft-close hardware and pull-out storage']
+      },
+      {
+        name: 'Counters, Backsplash & Surfaces',
+        items: ['Quartz and granite countertop installation', 'Tile backsplash to ceiling or counter height', 'Sink and faucet replacement', 'Flooring: LVP, tile, and hardwood']
+      },
+      {
+        name: 'Systems & Layout',
+        items: ['Electrical upgrades: circuits, lighting plans, under-cabinet lighting', 'Plumbing reroutes for sinks, islands, and appliances', 'Wall removal and structural openings (engineered and permitted)', 'Range hood venting and appliance installation']
+      }
+    ],
+    additionalCosts: [
+      { item: 'Kitchen island addition', cost: '$4,500 typical (per calculator adder)', note: 'Priced per island added to the layout' },
+      { item: 'High-end appliance package', cost: '$8,000 typical (per calculator adder)', note: 'Priced per full appliance package' },
+      { item: 'Custom range hood', cost: '$1,800 typical (per calculator adder)', note: 'Priced per range hood' },
+      { item: 'Pantry / butler’s pantry addition', cost: '$3,200 typical (per calculator adder)', note: 'Priced per pantry or butler’s pantry build-out' }
+    ],
+    howItWorks: [
+      { step: 1, title: 'Tell Us What You’re Thinking', description: 'Call or use the form — no commitment, just a conversation about your kitchen and what isn’t working.' },
+      { step: 2, title: 'We Come Take a Look', description: 'We measure the space, look at what’s behind the walls where it matters, and talk through layout, finishes, and budget honestly.' },
+      { step: 3, title: 'You Get a Ballpark Price', description: 'A free, no-obligation price range. Want a detailed written estimate or concept drawings? Available for a fee, fully credited back if you hire us.' },
+      { step: 4, title: 'We Build It', description: 'One licensed crew handles demolition through final punch list, with Scott on the job and responsible for the outcome.' }
+    ],
+    benefits: [
+      { title: 'One Licensed Crew, Start to Finish', description: 'Cabinets, counters, tile, plumbing, and electrical coordinated under one SC-licensed general contractor — no juggling subs yourself.' },
+      { title: 'Transparent Computed Pricing', description: 'Every price on this page is computed live from our published rates with a fixed 20% overhead & profit. Change the rates, and the page changes.' },
+      { title: 'Layout Advice Before Demolition', description: 'We map scope, finish level, and schedule before construction begins, so the budget conversation happens on paper instead of mid-project.' },
+      { title: 'Scott Actually Shows Up', description: 'You’re not handed off to a project manager. The owner runs the job.' }
+    ],
+    citations: [
+      { url: 'https://www.greenvillecounty.org/buildingsafety/Permits.aspx', text: 'Greenville County Building Safety — Permits' },
+      { url: 'https://llr.sc.gov/bcc/BCAdoption.aspx', text: 'SC Building Codes Council — Code Adoption' }
+    ],
+    richContentBeforeProcess: kitchenRemodelingBeforeProcess({
+      midKitchen: projectEstimate('kitchenRemodel', 'midRangeRemodel', 120).customHigh,
+      refaceLow: projectEstimate('kitchenRemodel', 'standardRefresh', 100).budgetLow
+    }),
+    richContentAfterProcess: kitchenRemodelingAfterProcess(),
+    calculator: 'kitchen-remodel',
+    relatedServices: [
+      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling/' },
+      { name: 'Home Remodeling', url: '/remodeling/' },
+      { name: 'Basement Finishing', url: '/basement-finishing/' },
+      { name: 'Room Additions', url: '/additions/' }
     ]
   },
   {
@@ -911,6 +1041,7 @@ export const SERVICES = [
     relatedServices: [
       { name: 'Room Additions', url: '/additions/' },
       { name: 'Remodeling Services', url: '/remodeling/' },
+      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling/' },
       { name: 'ADU Construction', url: '/adu-builder/' }
     ]
   },

@@ -66,6 +66,7 @@ export default defineConfig({
         aduBuilder: resolve(root, 'adu-builder/index.html'),
         remodeling: resolve(root, 'remodeling/index.html'),
         bathroomRemodeling: resolve(root, 'bathroom-remodeling/index.html'),
+        kitchenRemodeling: resolve(root, 'kitchen-remodeling/index.html'),
         commercialUpfits: resolve(root, 'commercial-upfits/index.html'),
         commercialRoofing: resolve(root, 'commercial-roofing/index.html'),
         basementFinishing: resolve(root, 'basement-finishing/index.html'),
