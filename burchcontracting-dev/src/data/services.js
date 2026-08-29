@@ -834,10 +834,10 @@ export const SERVICES = [
       { step: 4, title: 'We Build It', description: 'One licensed crew handles demolition through final punch list, with Scott on the job and responsible for the outcome.' }
     ],
     benefits: [
-      { title: 'One Licensed Crew, Start to Finish', description: 'Cabinets, counters, tile, plumbing, and electrical coordinated under one SC-licensed general contractor — no juggling subs yourself.' },
-      { title: 'Transparent Computed Pricing', description: 'Every price on this page is computed live from our published rates with a fixed 20% overhead & profit. Change the rates, and the page changes.' },
-      { title: 'Layout Advice Before Demolition', description: 'We map scope, finish level, and schedule before construction begins, so the budget conversation happens on paper instead of mid-project.' },
-      { title: 'Scott Actually Shows Up', description: 'You’re not handed off to a project manager. The owner runs the job.' }
+      'One licensed crew start to finish — cabinets, counters, tile, plumbing, and electrical under one SC-licensed general contractor',
+      'Every price computed live from our published rates with a fixed 20% overhead & profit',
+      'Layout, finish level, and schedule mapped before demolition, so the budget conversation happens on paper',
+      'Owner C. Scott Burch runs the job personally — no hand-off to a project manager'
     ],
     citations: [
       { url: 'https://www.greenvillecounty.org/buildingsafety/Permits.aspx', text: 'Greenville County Building Safety — Permits' },
