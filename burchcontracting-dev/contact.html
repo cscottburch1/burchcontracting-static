@@ -98,7 +98,9 @@
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
     <link rel="stylesheet" href="/src/css/main.css" />
   </head>
   <body class="font-sans text-slate-800 bg-white antialiased">
@@ -130,27 +132,27 @@
               <div class="grid grid-cols-2 gap-x-2 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
                 <div>
                 <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Outdoor Living</p>
-                <a href="/outdoor-living/decks" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Custom Decks</a>
-                <a href="/outdoor-living/screened-porches" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Screened Porches</a>
-                <a href="/outdoor-living/covered-patios" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Covered Patios</a>
+                <a href="/outdoor-living/decks/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Custom Decks</a>
+                <a href="/outdoor-living/screened-porches/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Screened Porches</a>
+                <a href="/outdoor-living/covered-patios/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Covered Patios</a>
                 <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Construction</p>
-                <a href="/garages" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Garages</a>
-                <a href="/additions" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Room Additions</a>
-                <a href="/adu-builder" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADU Builder</a>
-                <a href="/basement-finishing" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Basement Finishing</a>
+                <a href="/garages/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Garages</a>
+                <a href="/additions/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Room Additions</a>
+                <a href="/adu-builder/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADU Builder</a>
+                <a href="/basement-finishing/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Basement Finishing</a>
                 </div>
                 <div>
                 <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Remodeling & More</p>
-                <a href="/remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
-                    <a href="/bathroom-remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Bathroom Remodeling</a>
-                <a href="/insurance-restoration" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
+                <a href="/remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
+                    <a href="/bathroom-remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Bathroom Remodeling</a>
+                <a href="/insurance-restoration/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
                 <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Commercial</p>
-                <a href="/commercial-upfits" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
-                <a href="/commercial-roofing" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Roofing</a>
+                <a href="/commercial-upfits/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
+                <a href="/commercial-roofing/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Roofing</a>
                 <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Accessibility</p>
-                <a href="/ada-compliance" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Compliance</a>
-                <a href="/ada-bath-to-shower" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Bath to Shower</a>
-                <a href="/handyman" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Handyman Services</a>
+                <a href="/ada-compliance/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Compliance</a>
+                <a href="/ada-bath-to-shower/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Bath to Shower</a>
+                <a href="/handyman/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Handyman Services</a>
                 </div>
               </div>
             </div>
@@ -210,21 +212,21 @@
               <span data-mobile-accordion-icon class="text-sm">+</span>
             </button>
             <div data-mobile-accordion-panel="services" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
-              <a href="/outdoor-living/decks" class="text-slate-700 text-sm py-1 hover:text-blue-700">Custom Decks</a>
-              <a href="/outdoor-living/screened-porches" class="text-slate-700 text-sm py-1 hover:text-blue-700">Screened Porches</a>
-              <a href="/outdoor-living/covered-patios" class="text-slate-700 text-sm py-1 hover:text-blue-700">Covered Patios</a>
-              <a href="/garages" class="text-slate-700 text-sm py-1 hover:text-blue-700">Garages</a>
-              <a href="/additions" class="text-slate-700 text-sm py-1 hover:text-blue-700">Room Additions</a>
-              <a href="/adu-builder" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
-              <a href="/basement-finishing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
-              <a href="/remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
-                  <a href="/bathroom-remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Bathroom Remodeling</a>
-              <a href="/insurance-restoration" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
-              <a href="/commercial-upfits" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
-              <a href="/commercial-roofing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Roofing</a>
-              <a href="/ada-compliance" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Compliance</a>
-              <a href="/ada-bath-to-shower" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Bath to Shower</a>
-              <a href="/handyman" class="text-slate-700 text-sm py-1 hover:text-blue-700">Handyman Services</a>
+              <a href="/outdoor-living/decks/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Custom Decks</a>
+              <a href="/outdoor-living/screened-porches/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Screened Porches</a>
+              <a href="/outdoor-living/covered-patios/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Covered Patios</a>
+              <a href="/garages/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Garages</a>
+              <a href="/additions/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Room Additions</a>
+              <a href="/adu-builder/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
+              <a href="/basement-finishing/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
+              <a href="/remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
+                  <a href="/bathroom-remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Bathroom Remodeling</a>
+              <a href="/insurance-restoration/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
+              <a href="/commercial-upfits/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
+              <a href="/commercial-roofing/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Roofing</a>
+              <a href="/ada-compliance/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Compliance</a>
+              <a href="/ada-bath-to-shower/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Bath to Shower</a>
+              <a href="/handyman/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Handyman Services</a>
             </div>
 
             <button type="button" data-mobile-accordion="areas" class="flex items-center justify-between text-left font-semibold text-slate-900 py-2 w-full">
@@ -292,7 +294,11 @@
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           <div>
             <h2 class="text-2xl font-bold text-slate-900 mb-3">How do I get a free consultation from Burch Contracting?</h2>
-            <p class="text-slate-600 leading-relaxed">Call (864) 724-4600 or submit the contact form at burchcontracting.com/contact.html. Scott will review your project scope and provide a free ballpark price range. A detailed written estimate, concept drawings, or floor plans are available for a fee, fully credited toward your project if you hire us.</p>
+            <p class="text-slate-600 leading-relaxed">Call (864) 724-4600 or fill out our online project request form. Scott will review your project scope and provide a free ballpark price range. A detailed written estimate, concept drawings, or floor plans are available for a fee, fully credited toward your project if you hire us.</p>
+            <a href="#request-form" class="mt-5 inline-flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+              Jump to the Contact Form
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+            </a>
           </div>
           <div>
             <h2 class="text-2xl font-bold text-slate-900 mb-3">What is Burch Contracting's BBB and Google rating?</h2>
@@ -317,7 +323,7 @@
 
             <!-- Estimate form -->
             <div class="lg:col-span-2">
-              <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 lg:p-10">
+              <div id="request-form" class="scroll-mt-28 bg-white rounded-2xl border border-slate-100 shadow-sm p-8 lg:p-10">
                 <h2 class="text-xl font-bold text-slate-900 mb-6">Request Your Free Consultation</h2>
 
                 <div id="form-status" class="hidden mb-6 p-4 rounded-lg text-sm font-medium" role="alert" aria-live="polite"></div>

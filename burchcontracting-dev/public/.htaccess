@@ -258,7 +258,6 @@ RewriteRule ^cost/[a-z0-9-]+/?$ /calculator/estimate.html [R=301,L]
 # unambiguous keyword match to an existing calculator/service page, so mapped
 # directly rather than left to a generic fallback.
 
-RewriteRule ^bathroom-remodeling/?$ /calculator/bath-remodel.html [R=301,L]
 RewriteRule ^bath_remodeling/?$ /calculator/bath-remodel.html [R=301,L]
 RewriteRule ^kitchen-remodeling/?$ /calculator/kitchen-remodel.html [R=301,L]
 RewriteRule ^kitchen_remodeling/?$ /calculator/kitchen-remodel.html [R=301,L]
