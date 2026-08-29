@@ -82,6 +82,7 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Remodeling & More</p>
                     <a href="/remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
                     <a href="/bathroom-remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Bathroom Remodeling</a>
+                    <a href="/kitchen-remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Kitchen Remodeling</a>
                     <a href="/insurance-restoration/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Commercial</p>
                     <a href="/commercial-upfits/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
@@ -158,6 +159,7 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   <a href="/basement-finishing/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
                   <a href="/remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
                   <a href="/bathroom-remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Bathroom Remodeling</a>
+                  <a href="/kitchen-remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Kitchen Remodeling</a>
                   <a href="/insurance-restoration/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
                   <a href="/commercial-upfits/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
                   <a href="/commercial-roofing/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Roofing</a>
@@ -213,6 +215,7 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
               <li><a href="/outdoor-living/decks/" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
               <li><a href="/remodeling/" class="hover:text-white transition-colors">Remodeling</a></li>
               <li><a href="/bathroom-remodeling/" class="hover:text-white transition-colors">Bathroom Remodeling</a></li>
+              <li><a href="/kitchen-remodeling/" class="hover:text-white transition-colors">Kitchen Remodeling</a></li>
               <li><a href="/commercial-upfits/" class="hover:text-white transition-colors">Commercial Upfits</a></li>
               <li><a href="/commercial-roofing/" class="hover:text-white transition-colors">Commercial Roofing</a></li>
               <li><a href="/insurance-restoration/" class="hover:text-white transition-colors">Insurance Restoration</a></li>
