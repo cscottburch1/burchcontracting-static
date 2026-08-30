@@ -33,7 +33,7 @@ jobs:
           cache-dependency-path: burchcontracting-dev/package-lock.json
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       # BUILD_ENV=production activates flip-noindex-production.mjs (see
       # package.json's "build" script).
