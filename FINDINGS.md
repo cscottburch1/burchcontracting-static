@@ -88,3 +88,16 @@ instructions, since reflecting content-date changes in `<lastmod>` by
 hand on every content edit isn't sustainable. Whoever maintains this file
 going forward needs to update `<lastmod>` by hand when a page's content
 meaningfully changes; there's no automation keeping it honest.
+
+## 6. `LAUNCH-CHECKLIST.md` references the now-deleted `SFTP-GUIDE.md`
+
+Task C4 deleted `SFTP-GUIDE.md` (the manual VS Code SFTP right-click
+upload guide, including its `npm run deploy` script call) along with the
+script itself, since the guide's whole premise was the guard-bypassing
+manual workflow the task retires. `LAUNCH-CHECKLIST.md` line 97 links to
+`SFTP-GUIDE.md` in an unrelated context — using an SFTP *client* to
+manually browse the live docroot for diagnostic verification, not to
+upload a build — which is still a legitimate (if now undocumented)
+technique. Left `LAUNCH-CHECKLIST.md` untouched since it's a dated,
+already-finalized audit report, not something in scope for Task C4;
+noting the now-dangling reference here instead of editing that report.

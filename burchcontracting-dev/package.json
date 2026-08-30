@@ -8,8 +8,7 @@
     "prebuild": "node scripts/generate-geo-aeo.mjs && node scripts/generate-services.mjs && node scripts/generate-calculator-tables.mjs && node scripts/generate-trust-layer.mjs",
     "build": "vite build && node scripts/flip-noindex-production.mjs",
     "preview": "vite preview",
-    "check-build": "node scripts/check-build.mjs",
-    "deploy": "npm run build && echo Build complete! Now right-click the dist folder and select 'Upload Folder' using SFTP extension"
+    "check-build": "node scripts/check-build.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
