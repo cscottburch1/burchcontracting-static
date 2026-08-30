@@ -70,24 +70,37 @@ feature-branch tip") resolved sitemap.xml by picking the stale side,
 which is the actual regression commit — not something that happened
 after `7bfd612` as the task assumed.
 
-Restored from `fd7b28e` instead of `7bfd612`; this also matches Task B's
-own acceptance criteria ("2026-08-22 dates restored"), which `7bfd612`
-could never have satisfied. No further action needed — noted here only
-so the discrepancy isn't silently invisible in the commit history.
+This restoration (see #5 below) turned out to be the wrong fix
+regardless of which commit it came from — noted here only so the
+commit-hash discrepancy isn't silently invisible in the history.
 
-## 5. Sitemap `<lastmod>` maintenance is manual, not generator-driven
+## 5. CORRECTED: `public/sitemap.xml` *is* generator-owned — Task B's original fix was wrong and was reverted
 
-`public/sitemap.xml` is a hand-maintained file (confirmed: `npm run
-prebuild` does not touch it — see Task B's ownership check). The dates
-restored in the Task B commit (`2026-08-22` sitewide, `2026-08-29` on the
-new kitchen page) are static values, not derived from `CONTENT_DATES` or
-any other generator data. Task A's generator changes (omitting empty
-Recent-Projects/Local-Building-Conditions sections) changed page content
-without touching sitemap.xml — intentionally left as-is per Task B's
-instructions, since reflecting content-date changes in `<lastmod>` by
-hand on every content edit isn't sustainable. Whoever maintains this file
-going forward needs to update `<lastmod>` by hand when a page's content
-meaningfully changes; there's no automation keeping it honest.
+The Task B commit above (hand-restoring `public/sitemap.xml` with
+static per-page dates + `changefreq`/`priority`) was reverted. It was
+based on an ownership check that returned a false negative: the check
+ran `npm run prebuild` on a clean tree and saw no diff, and concluded
+no generator touches the file. In fact `generate-geo-aeo.mjs` has a
+`generateSitemap()` function that `writeFileSync`s `public/sitemap.xml`
+on every single `prebuild` run — the check's `grep` for candidate
+generator logic never searched for the literal string "sitemap", so it
+missed this function entirely. The "no diff" result was a coincidence:
+at the time of that check, the generator's own (stale-dated) output
+already byte-matched what was committed, so overwriting it with itself
+looked like no drift.
+
+Worse, the generator's current design is deliberately *better* than
+what got hand-restored: its own comment states `changefreq`/`priority`
+are omitted because Google ignores both, and `<lastmod>` per page comes
+from `src/data/content-dates.js` (checked in, refreshed by hand via
+`node scripts/compute-content-dates.mjs`, itself derived from real git
+history — see that script's header for why it isn't computed live in
+CI). The uniform `2026-07-23` dates that looked like "the regression"
+are really just `content-dates.js` being stale (last refreshed
+2026-08-05, predating kitchen-remodeling's existence and every change
+made in this session). The actual fix was to refresh `content-dates.js`
+from current git history and let the generator produce the real sitemap
+from that — see the commit that replaces this one for details.
 
 ## 6. `LAUNCH-CHECKLIST.md` references the now-deleted `SFTP-GUIDE.md`
 
