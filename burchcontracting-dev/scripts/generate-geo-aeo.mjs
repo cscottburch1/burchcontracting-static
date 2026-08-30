@@ -333,12 +333,10 @@ ${cards}
       </section>`
   }
   areaFactsNeeded.push({ area: area.name, field: '2-3 real completed projects in this specific city (scope, and a cost band if comfortable sharing) — no filler written in the meantime' })
-  return `      <section class="bg-white py-12 lg:py-16 border-b border-slate-100">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-2xl font-bold text-slate-900 mb-3">Recent ${esc(area.name)} Projects</h2>
-          <p class="text-slate-400 italic">Project write-ups for ${esc(area.name)} are being finalized. See our <a href="/projects.html" class="text-blue-700 hover:text-blue-800 underline not-italic">full projects page</a> in the meantime.</p>
-        </div>
-      </section>`
+  // No project data for this city yet — omit the section entirely rather
+  // than render a "being finalized" stub. Adding an entry to CITY_PROJECTS
+  // brings the real section back automatically (see the branch above).
+  return ''
 }
 
 // Local building conditions — genuinely new per-city facts (soil, slope,
