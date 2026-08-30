@@ -35,35 +35,29 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      # BUILD_ENV=production is what activates flip-noindex-production.mjs
-      # (see package.json's "build" script) — no-op otherwise, so this is
-      # safe to pass unconditionally. Same condition as the guard step below.
+      # BUILD_ENV=production activates flip-noindex-production.mjs (see
+      # package.json's "build" script).
       - name: Build project
         env:
-          BUILD_ENV: ${{ vars.STAGING_URL == 'https://burchcontracting.com' && 'production' || '' }}
+          BUILD_ENV: production
         run: npm run build
 
       # Fails the workflow (not just a warning) on: &amp;amp; double-encoding,
-      # any sitemap URL with zero inbound internal links, or (only once
-      # cutover has happened — see BUILD_ENV below) noindex still present
-      # anywhere except 404.html. Runs on the regenerated source files from
-      # the build step above, not dist/, and before the FTP deploy step so a
-      # failure blocks the deploy.
+      # any sitemap URL with zero inbound internal links, or noindex still
+      # present anywhere except 404.html. Runs on the regenerated source
+      # files from the build step above, not dist/, and before the FTP
+      # deploy step so a failure blocks the deploy.
       #
-      # BUILD_ENV is only set to "production" once STAGING_URL has been
-      # pointed at the real burchcontracting.com (LAUNCH-CHECKLIST.md #7,
-      # done at cutover) — deliberately NOT unconditional. This workflow
-      # currently deploys to nicheprohub.com on every push to main, and
-      # every one of those 39 pages intentionally carries noindex pre-launch
-      # (see LAUNCH-CHECKLIST.md #1). Setting BUILD_ENV=production
-      # unconditionally right now would fail the noindex check on every
-      # single push starting today and block all further staging deploys
-      # until someone manually flips noindex early — the opposite of the
-      # intent. This condition makes the guard activate automatically at
-      # the same moment cutover happens, with no separate step to remember.
+      # Pre-cutover, this used to key off vars.STAGING_URL so the noindex
+      # check wouldn't fail every push while deploying to a staging domain
+      # (nicheprohub.com) that intentionally carried noindex. Cutover to
+      # burchcontracting.com happened (LAUNCH-CHECKLIST.md #7); hardcoded
+      # now that the conditional's staging branch is permanently dead —
+      # a variable-only toggle to noindex the live site AND disable the
+      # guard that catches it was a real footgun.
       - name: Build guard (check-build)
         env:
-          BUILD_ENV: ${{ vars.STAGING_URL == 'https://burchcontracting.com' && 'production' || '' }}
+          BUILD_ENV: production
         run: npm run check-build
 
       - name: Stamp build version
@@ -96,7 +90,7 @@ jobs:
 
       - name: Verify deployment
         env:
-          SITE_URL: ${{ vars.STAGING_URL || 'https://nicheprohub.com' }}
+          SITE_URL: https://burchcontracting.com
         run: |
           sleep 10
           live=$(curl -fsSL --retry 3 "$SITE_URL/version.txt?nocache=$GITHUB_RUN_ID" | grep '^commit=' | cut -d= -f2)
