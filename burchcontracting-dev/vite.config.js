@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import { readdirSync, existsSync } from 'fs'
 import { resolve } from 'path'
+import { SERVICES } from './src/data/services.js'
 
 const root = import.meta.dirname
 const serviceAreaDir = resolve(root, 'service-areas')
@@ -48,6 +49,18 @@ const calculatorInputs = existsSync(calculatorDir)
     )
   : {}
 
+// Service pages are generated from SERVICES (generate-services.mjs); derive
+// build inputs from the same data so a new service can never be generated
+// but silently left out of dist/ — the covered-patios failure mode (see
+// calculatorInputs comment below). Slugs containing '/' live under
+// outdoor-living/ and are covered by outdoorLivingInputs; skip them here.
+const serviceInputs = Object.fromEntries(
+  SERVICES.filter((s) => !s.slug.includes('/')).map((s) => [
+    `svc_${s.slug.replace(/-/g, '_')}`,
+    resolve(root, s.slug, 'index.html'),
+  ])
+)
+
 export default defineConfig({
   plugins: [tailwindcss()],
   build: {
@@ -62,21 +75,8 @@ export default defineConfig({
         termsOfService: resolve(root, 'terms-of-service.html'),
         projects: resolve(root, 'projects.html'),
         faqs: resolve(root, 'faqs.html'),
-        // Service pages (all use nested directory structure)
-        aduBuilder: resolve(root, 'adu-builder/index.html'),
-        remodeling: resolve(root, 'remodeling/index.html'),
-        bathroomRemodeling: resolve(root, 'bathroom-remodeling/index.html'),
-        kitchenRemodeling: resolve(root, 'kitchen-remodeling/index.html'),
-        commercialUpfits: resolve(root, 'commercial-upfits/index.html'),
-        commercialRoofing: resolve(root, 'commercial-roofing/index.html'),
-        basementFinishing: resolve(root, 'basement-finishing/index.html'),
-        garages: resolve(root, 'garages/index.html'),
-        additions: resolve(root, 'additions/index.html'),
-        insuranceRestoration: resolve(root, 'insurance-restoration/index.html'),
-        adaCompliance: resolve(root, 'ada-compliance/index.html'),
-        adaBathToShower: resolve(root, 'ada-bath-to-shower/index.html'),
-        handyman: resolve(root, 'handyman/index.html'),
         // Generated pages
+        ...serviceInputs,
         ...serviceAreaInputs,
         ...outdoorLivingInputs,
         ...calculatorInputs,

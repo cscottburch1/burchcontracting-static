@@ -12,6 +12,7 @@ import {
   PERMIT_OFFICES,
   SC_BUILDING_CODES_COUNCIL_URL,
   CITY_PROJECTS,
+  LOCAL_CONDITIONS,
 } from '../src/data/geo-aeo.js'
 import { SERVICES } from '../src/data/services.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../src/data/site-schema.js'
@@ -333,12 +334,10 @@ ${cards}
       </section>`
   }
   areaFactsNeeded.push({ area: area.name, field: '2-3 real completed projects in this specific city (scope, and a cost band if comfortable sharing) — no filler written in the meantime' })
-  return `      <section class="bg-white py-12 lg:py-16 border-b border-slate-100">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-2xl font-bold text-slate-900 mb-3">Recent ${esc(area.name)} Projects</h2>
-          <p class="text-slate-400 italic">Project write-ups for ${esc(area.name)} are being finalized. See our <a href="/projects.html" class="text-blue-700 hover:text-blue-800 underline not-italic">full projects page</a> in the meantime.</p>
-        </div>
-      </section>`
+  // No project data for this city yet — omit the section entirely rather
+  // than render a "being finalized" stub. Adding an entry to CITY_PROJECTS
+  // brings the real section back automatically (see the branch above).
+  return ''
 }
 
 // Local building conditions — genuinely new per-city facts (soil, slope,
@@ -348,15 +347,24 @@ ${cards}
 // detail the ground rules call out as most damaging to contractor trust.
 const LOCAL_CONDITION_FIELDS = ['Typical soil/site conditions', 'Typical lot slope', 'How common HOA review is', 'Flood zone / drainage considerations']
 function localConditionsSectionHtml(area) {
+  const data = LOCAL_CONDITIONS[area.slug] || {}
+  const rows = []
   for (const field of LOCAL_CONDITION_FIELDS) {
-    areaFactsNeeded.push({ area: area.name, field })
-  }
-  const rows = LOCAL_CONDITION_FIELDS.map(
-    (field) => `                <tr class="border-t border-slate-200">
+    const value = data[field]
+    if (value) {
+      rows.push(`                <tr class="border-t border-slate-200">
                   <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">${esc(field)}</th>
-                  <td class="px-4 py-3 text-slate-400 italic text-sm">Not yet published</td>
-                </tr>`
-  ).join('\n')
+                  <td class="px-4 py-3 text-slate-600 text-sm">${esc(value)}</td>
+                </tr>`)
+    } else {
+      areaFactsNeeded.push({ area: area.name, field })
+    }
+  }
+  // No populated rows for this city yet — omit the whole section (heading,
+  // intro, and table) rather than render an all-placeholder table. Adding
+  // any field to LOCAL_CONDITIONS for this city brings the section back
+  // automatically, with only the still-missing fields flagged as FACT-NEEDED.
+  if (!rows.length) return ''
   return `      <section class="bg-slate-50 py-12 lg:py-16 border-b border-slate-100">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-2xl font-bold text-slate-900 mb-4">Local Building Conditions in ${esc(area.name)}</h2>
@@ -364,7 +372,7 @@ function localConditionsSectionHtml(area) {
             <table class="w-full border-collapse text-left">
               <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Site-specific factors we account for when we scope a ${esc(area.name)} project</caption>
               <tbody>
-${rows}
+${rows.join('\n')}
               </tbody>
             </table>
           </div>

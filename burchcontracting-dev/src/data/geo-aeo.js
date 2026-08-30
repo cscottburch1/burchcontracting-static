@@ -46,6 +46,16 @@ export const CITY_PROJECTS = {
   ],
 }
 
+// Local building conditions per city (soil/site, lot slope, HOA prevalence,
+// flood/drainage) — genuinely new per-city facts that don't exist anywhere
+// else on the site. 100% FACT-NEEDED by design (see
+// generate-geo-aeo.mjs's LOCAL_CONDITION_FIELDS comment): no city has any
+// of these fields populated yet, so every field on every city currently
+// renders nothing. Add a city as `{ 'Typical soil/site conditions': '...' }`
+// (only the fields you actually have) and the row/section reappears
+// automatically — no generator change needed.
+export const LOCAL_CONDITIONS = {}
+
 export const SERVICE_AREAS = [
   {
     slug: 'simpsonville',
