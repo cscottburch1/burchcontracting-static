@@ -114,3 +114,53 @@ upload a build — which is still a legitimate (if now undocumented)
 technique. Left `LAUNCH-CHECKLIST.md` untouched since it's a dated,
 already-finalized audit report, not something in scope for Task C4;
 noting the now-dangling reference here instead of editing that report.
+
+## 7. `CONTENT_DATES` tracks dates per-datafile, not per-service-entry — kitchen-remodeling's own page schema shows the wrong `datePublished`
+
+`src/data/content-dates.js` keys generated-service-page dates off one
+shared entry, `__datafile__src/data/services.js`, consumed as
+`SERVICE_DATES` in `generate-services.mjs` (feeds each service page's
+own Article schema `datePublished`/`dateModified`) and as
+`SERVICES_DATES` in `generate-geo-aeo.mjs` (feeds the sitemap, but only
+`dateModified` — the sitemap XML has no `datePublished` field at all).
+Because all 16 services share this one datafile-level date pair,
+kitchen-remodeling's own page schema shows `datePublished: 2026-07-02`
+— the date `services.js` was first created, not when kitchen-remodeling
+was actually added (2026-08-29). `dateModified` is correct everywhere,
+including the sitemap `<lastmod>` this task actually needed to fix.
+
+Not a new bug: every service added to `services.js` after 2026-07-02
+already has this same overly-early `datePublished` on its own page
+(e.g. bathroom-remodeling). Confirmed but not fixed here — it's an
+architecture change to `compute-content-dates.mjs`, not a sitemap
+restoration, and out of scope for this task. Shape of a real fix:
+either derive each service's `datePublished` from the first commit that
+introduced its specific slug in `services.js` (e.g. `git log -S"slug:
+'kitchen-remodeling'"`), or add a small explicit per-service overrides
+map that `compute-content-dates.mjs` merges in last.
+
+## 8. Second hand-override of mechanical-only `dateModified` bumps on privacy-policy.html / terms-of-service.html
+
+`compute-content-dates.mjs`'s `git log --follow` picks up whatever
+commit most recently touched a file, with no way to distinguish a real
+content edit from a mechanical one. This file's own header already
+documented one prior override (2026-08-16, when the sitewide nav
+addition was the only recent commit on these two legal pages and got
+excluded via "second-most-recent commit" instead). Re-running the
+script today reproduced the identical situation — the sitewide Kitchen
+Remodeling nav-link commit was again the only recent touch on these two
+pages specifically (every other tracked page also picked up a genuine
+content change in the same window: new sections, removed placeholder
+text, a new service, etc., so their `2026-08-29` bump is legitimate) —
+and was hand-reverted back to `2026-07-23` again, documented in
+`content-dates.js`'s own header this time.
+
+This will be silently lost the next time anyone runs
+`compute-content-dates.mjs` without knowing to re-apply it by hand.
+Durable fix, not built here: either teach the script to diff a page's
+current content against its previous committed version and skip a
+nav/footer-only change (hard to do generally), or add a small committed
+overrides file (e.g. `{"privacy-policy.html": {"dateModified":
+"2026-07-23"}}`) that the script reads and merges in last, so the
+override survives a re-run instead of requiring someone to remember it
+happened before.
