@@ -84,7 +84,8 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
-          protocol: ftp
+          # Hostinger supports explicit FTPS; if a future run fails at connection, revert this commit while investigating.
+          protocol: ftps
           local-dir: ./burchcontracting-dev/dist/
           server-dir: ./
           dangerous-clean-slate: false
