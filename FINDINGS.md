@@ -55,3 +55,36 @@ something introduced by this PR, and touching the generator's write path
 is outside the frozen scope. Worth a follow-up: either normalize line
 endings in the writeFileSync calls, or add a `.gitattributes` rule so git
 stops flagging phantom diffs.
+
+## 4. Task B's cited restore commit (`7bfd612`) was the wrong SHA — used `fd7b28e` instead
+
+Task B (sitemap regression fix) said to restore `public/sitemap.xml` from
+`7bfd612` ("PR #7"). Checked: `7bfd612`'s tree has all 42 URLs on uniform
+`2026-07-23`, zero `<changefreq>`/`<priority>` tags — i.e. it's the *stale*
+version, not the good one. Tracing the file's history: `fd7b28e` ("PR #8",
+one merge later and already an ancestor of `main`) is the commit that
+actually has the real per-page `2026-08-22` dates plus a varied
+`changefreq`/`priority` spread (1.0 down to 0.3 by page importance).
+`7bfd612`'s own merge (parents `fd7b28e` "good" + `6d7e74b` "stale
+feature-branch tip") resolved sitemap.xml by picking the stale side,
+which is the actual regression commit — not something that happened
+after `7bfd612` as the task assumed.
+
+Restored from `fd7b28e` instead of `7bfd612`; this also matches Task B's
+own acceptance criteria ("2026-08-22 dates restored"), which `7bfd612`
+could never have satisfied. No further action needed — noted here only
+so the discrepancy isn't silently invisible in the commit history.
+
+## 5. Sitemap `<lastmod>` maintenance is manual, not generator-driven
+
+`public/sitemap.xml` is a hand-maintained file (confirmed: `npm run
+prebuild` does not touch it — see Task B's ownership check). The dates
+restored in the Task B commit (`2026-08-22` sitewide, `2026-08-29` on the
+new kitchen page) are static values, not derived from `CONTENT_DATES` or
+any other generator data. Task A's generator changes (omitting empty
+Recent-Projects/Local-Building-Conditions sections) changed page content
+without touching sitemap.xml — intentionally left as-is per Task B's
+instructions, since reflecting content-date changes in `<lastmod>` by
+hand on every content edit isn't sustainable. Whoever maintains this file
+going forward needs to update `<lastmod>` by hand when a page's content
+meaningfully changes; there's no automation keeping it honest.
