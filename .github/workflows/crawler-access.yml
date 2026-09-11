@@ -1,0 +1,30 @@
+name: Crawler access check
+
+# Daily guard against search and AI crawlers being refused: fails if any of
+# them gets anything but HTTP 200 on any page of burchcontracting.com, and
+# GitHub emails the failure. This is how a host, CDN or Cloudflare setting
+# change that blocks crawlers gets noticed within a day instead of months.
+# See burchcontracting-dev/scripts/check-crawler-access.mjs.
+
+on:
+  schedule:
+    - cron: '23 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: burchcontracting-dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check every crawler on every page
+        run: node scripts/check-crawler-access.mjs https://burchcontracting.com

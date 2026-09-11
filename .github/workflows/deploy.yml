@@ -85,8 +85,12 @@ jobs:
           dangerous-clean-slate: false
           log-level: verbose
           timeout: 600000
+          # _headers and .assetsignore are Cloudflare-only build files (see
+          # cloudflare.yml); Apache would serve them as plain files.
           exclude: |
             **/api/config.local.php
+            **/_headers
+            **/.assetsignore
 
       - name: Verify deployment
         env:

@@ -1,0 +1,187 @@
+name: Deploy to Cloudflare
+
+# Serves the site's pages from Cloudflare so crawlers never reach Hostinger's
+# server-level rate limit. See burchcontracting-dev/CLOUDFLARE-CUTOVER.md.
+#
+#   main           -> `wrangler deploy` (the live Worker)
+#   other branches -> `wrangler versions upload`: a preview URL only, never
+#                     the live Worker
+#
+# deploy.yml (Hostinger FTP) keeps running on its own: Hostinger serves /api/*
+# (PHP contact form, leads admin) and stays a complete fallback copy.
+#
+# Until the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets exist, every
+# run skips with a notice instead of failing.
+
+on:
+  push:
+    paths:
+      - 'burchcontracting-dev/**'
+      - '.github/workflows/cloudflare.yml'
+      - '.github/scripts/**'
+  workflow_dispatch:
+
+concurrency:
+  group: cloudflare-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: burchcontracting-dev
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Check Cloudflare credentials
+        id: creds
+        working-directory: .
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::notice::Cloudflare secrets are not set yet, so nothing was deployed. See CLOUDFLARE-CUTOVER.md, step 1."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout code
+        if: steps.creds.outputs.ready == 'true'
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: steps.creds.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          # Wrangler 4 requires Node.js 22 or newer.
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: burchcontracting-dev/package-lock.json
+
+      - name: Install dependencies
+        if: steps.creds.outputs.ready == 'true'
+        run: npm ci --no-audit --no-fund
+
+      - name: Build project
+        if: steps.creds.outputs.ready == 'true'
+        env:
+          BUILD_ENV: production
+        run: npm run build
+
+      - name: Build guard (check-build)
+        if: steps.creds.outputs.ready == 'true'
+        env:
+          BUILD_ENV: production
+        run: npm run check-build
+
+      - name: Stamp build version
+        if: steps.creds.outputs.ready == 'true'
+        run: |
+          echo "commit=${GITHUB_SHA}" > dist/version.txt
+          echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
+
+      - name: Deploy (main) or upload preview (other branches)
+        if: steps.creds.outputs.ready == 'true'
+        id: deploy
+        run: |
+          set -o pipefail
+          # This repository is public: strip any account email Wrangler prints
+          # before it reaches the log. (GitHub already masks secret values.)
+          redact() { sed -E 's/[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}/[redacted email]/g'; }
+
+          # A real "routes" key — not the word inside a comment — means the
+          # Worker is attached to the production domain.
+          has_routes=false
+          if grep -qE '^[[:space:]]*"routes"[[:space:]]*:' wrangler.jsonc; then has_routes=true; fi
+
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            npx wrangler deploy 2>&1 | redact | tee wrangler.log
+          elif npx wrangler deployments list > deployments.log 2>&1; then
+            npx wrangler versions upload --message "${GITHUB_REF_NAME} ${GITHUB_SHA::7}" 2>&1 | redact | tee wrangler.log
+          elif [ "$has_routes" = false ]; then
+            # Preview versions need an existing Worker. Before cutover there
+            # are no routes, so a first deploy only reaches workers.dev.
+            echo "Deployments lookup failed (normal when the Worker doesn't exist yet) — its output:"
+            tail -5 deployments.log | redact
+            echo "::notice::First deploy: creating the Worker on workers.dev (no routes, production unaffected)."
+            npx wrangler deploy 2>&1 | redact | tee wrangler.log
+          else
+            tail -20 deployments.log | redact
+            echo "::error::Can't list the Worker's deployments and wrangler.jsonc has routes — refusing to deploy a branch to production."
+            exit 1
+          fi
+          url=$(grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' wrangler.log | tail -1 || true)
+          if [ -z "$url" ]; then
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              # After cutover workers_dev is off and the Worker only answers on the real domain.
+              url="https://burchcontracting.com"
+            else
+              echo "::error::wrangler printed no preview URL — check that preview_urls is true in wrangler.jsonc and the account has a workers.dev subdomain."
+              exit 1
+            fi
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "::notice::Deployed to $url"
+
+      - name: Verify deployment
+        if: steps.creds.outputs.ready == 'true'
+        env:
+          BASE_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          # 1. The new version is the one answering.
+          for attempt in 1 2 3 4 5 6; do
+            live=$(curl -fsSL "$BASE_URL/version.txt?nocache=$GITHUB_RUN_ID-$attempt" | grep '^commit=' | cut -d= -f2 || true)
+            [ "$live" = "$GITHUB_SHA" ] && break
+            sleep 10
+          done
+          echo "Live commit:     $live"
+          echo "Expected commit: $GITHUB_SHA"
+          if [ "$live" != "$GITHUB_SHA" ]; then
+            echo "::error::$BASE_URL is not serving commit $GITHUB_SHA"
+            exit 1
+          fi
+
+          # 2. Every built page is served byte-for-byte (after normalizing
+          #    Cloudflare's email obfuscation, as deploy.yml does).
+          mismatch=0
+          while IFS= read -r -d '' file; do
+            rel="${file#dist/}"
+            case "$rel" in
+              api/*) continue ;;
+            esac
+            if [ "$rel" = "index.html" ]; then
+              url_path="/"
+            elif [ "${rel%/index.html}" != "$rel" ]; then
+              url_path="/${rel%/index.html}/"
+            else
+              url_path="/$rel"
+            fi
+            local_hash=$(python3 ../.github/scripts/strip-cf-email-obfuscation.py "$file" | sha256sum | cut -d' ' -f1)
+            live_hash=$(curl -fsSL "$BASE_URL$url_path?nocache=$GITHUB_RUN_ID" | python3 ../.github/scripts/strip-cf-email-obfuscation.py | sha256sum | cut -d' ' -f1)
+            if [ "$local_hash" != "$live_hash" ]; then
+              echo "::error::Content mismatch on $url_path"
+              mismatch=1
+            fi
+          done < <(find dist -name '*.html' -print0)
+          [ "$mismatch" = "0" ] || exit 1
+          echo "Content check passed: every built page matches $BASE_URL."
+
+          # 3. Same status codes, redirects and security headers as the
+          #    Hostinger site (migration/routing-baseline.json).
+          node scripts/check-routing.mjs "$BASE_URL"
+
+          # 4. Every search and AI crawler gets HTTP 200 on every page.
+          node scripts/check-crawler-access.mjs "$BASE_URL"
+
+          # 5. On the real domain, /api/* still reaches Hostinger's PHP.
+          if [ "$BASE_URL" = "https://burchcontracting.com" ]; then
+            contact_status=$(curl -s -o /dev/null -w '%{http_code}' "$BASE_URL/api/contact.php")
+            echo "contact.php status: $contact_status"
+            if [ "$contact_status" != "405" ]; then
+              echo "::error::api/contact.php returned $contact_status through the Worker, expected 405 from Hostinger"
+              exit 1
+            fi
+          fi
