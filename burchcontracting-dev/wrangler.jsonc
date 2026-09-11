@@ -1,0 +1,35 @@
+// Cloudflare Worker config for burchcontracting.com — see CLOUDFLARE-CUTOVER.md.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "burchcontracting",
+  "main": "cloudflare/worker.js",
+  "compatibility_date": "2026-09-01",
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Exact file paths only. The automatic modes redirect with 307s and would
+    // change live URLs (/about.html -> /about); cloudflare/worker.js handles
+    // folders and redirects exactly as Hostinger did instead.
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+
+  // Lets the Worker import public/.htaccess, the single source of redirect
+  // rules and security headers for both hosts.
+  "rules": [{ "type": "Text", "globs": ["**/.htaccess"], "fallthrough": true }],
+
+  "vars": {
+    // Hostnames where /api/* and /.well-known/* are forwarded to Hostinger.
+    "ORIGIN_HOSTS": "burchcontracting.com"
+  },
+
+  // Pre-cutover: the live Worker answers only on its *.workers.dev address.
+  // The cutover commit adds "routes" for burchcontracting.com and sets
+  // "workers_dev" to false (CLOUDFLARE-CUTOVER.md, step 5). Preview URLs stay
+  // on so non-main branches can be reviewed without touching the live Worker.
+  "workers_dev": true,
+  "preview_urls": true,
+
+  "observability": { "enabled": true }
+}
