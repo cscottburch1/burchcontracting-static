@@ -201,3 +201,13 @@ jobs:
               fi
             done
           fi
+
+      # Runs only after the checks above pass, and only for production. Bing,
+      # Yandex, Seznam and Naver then re-crawl the submitted URLs within
+      # minutes; Bing's index is what Copilot and ChatGPT search read from.
+      # A search engine being slow or rejecting the call shouldn't mark a good
+      # deploy as failed, so this step warns instead of failing.
+      - name: Tell IndexNow to re-crawl
+        if: steps.creds.outputs.ready == 'true' && steps.deploy.outputs.url == 'https://burchcontracting.com'
+        continue-on-error: true
+        run: node scripts/indexnow-submit.mjs
