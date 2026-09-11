@@ -56,7 +56,8 @@ jobs:
         if: steps.creds.outputs.ready == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # Wrangler 4 requires Node.js 22 or newer.
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: burchcontracting-dev/package-lock.json
 
@@ -103,7 +104,7 @@ jobs:
           elif [ "$has_routes" = false ]; then
             # Preview versions need an existing Worker. Before cutover there
             # are no routes, so a first deploy only reaches workers.dev.
-            echo "Deployments lookup failed (expected before the Worker exists):"
+            echo "Deployments lookup failed (normal when the Worker doesn't exist yet) — its output:"
             tail -5 deployments.log | redact
             echo "::notice::First deploy: creating the Worker on workers.dev (no routes, production unaffected)."
             npx wrangler deploy 2>&1 | redact | tee wrangler.log
