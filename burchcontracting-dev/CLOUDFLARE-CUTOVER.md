@@ -66,32 +66,39 @@ Merging deploys the Worker to its `workers.dev` address only. Production is
 still Hostinger. From now on, the daily crawler check fails until cutover.
 That failure is the Hostinger 429s, not a new problem.
 
-## Step 4 — Cloudflare settings (Scott, 5 minutes, before cutover)
+## Step 4 — Cloudflare settings (before cutover)
 
+Two of these are **required**. Today the Hostinger server performs both
+redirects: on 2026-09-11, every `http://` and `www` redirect carried
+`platform: hostinger`. After cutover those requests reach the Worker, and
+Cloudflare's asset server can't redirect them. Without these settings,
+`http://` pages would be served unencrypted and `www` would still hit Hostinger.
+
+- **Required — SSL/TLS → Edge Certificates → Always Use HTTPS:** On.
+- **Required — Rules → Redirect Rules → Create rule →** template **Redirect
+  from WWW to root**. Status 301, preserve query string. It does exactly what
+  Hostinger does now, so it's safe to add before cutover.
 - **SSL/TLS → Overview:** leave the current mode as is. It already reaches
   Hostinger, which `/api` forwarding needs.
-- **SSL/TLS → Edge Certificates → Always Use HTTPS:** On.
-- **Rules → Redirect Rules → Create rule →** template **Redirect from WWW to
-  root**. Status 301, preserve query string. Today Hostinger's `.htaccess`
-  does this; after cutover a `www` request must never reach Hostinger. Safe to
-  add now, since the behavior is identical.
 - **Security → Bots:** Bot Fight Mode off.
 - **AI Crawl Control:** no AI crawler set to Block. Managed robots.txt off.
 - **Caching → Cache Rules:** nothing that caches `/api/*`.
 
 ## Step 5 — Cutover (together, about 15 minutes)
 
-One commit on `main`:
+The cutover is one pull request (branch `cloudflare-cutover`). Merging it is
+the switch:
 
-- `wrangler.jsonc`: add
-  `"routes": [{ "pattern": "burchcontracting.com/*", "zone_name": "burchcontracting.com" }]`
-  and set `"workers_dev": false`.
-- `deploy.yml` → **Verify deployment**: production pages are now verified by
-  `cloudflare.yml`. The Hostinger job keeps only its API checks (contact.php
-  returns 405, config.local.php is never readable).
+- `wrangler.jsonc` gains
+  `"routes": [{ "pattern": "burchcontracting.com/*", "zone_name": "burchcontracting.com" }]`.
+  `workers_dev` stays on because branch preview URLs require it.
+- `cloudflare.yml` verifies `https://burchcontracting.com` itself on `main`,
+  including the `http://` → `https://` and `www` → root redirects.
+- `deploy.yml` verifies Hostinger through `/api/version.txt`, a copy of the
+  version marker that only Hostinger serves. The page-by-page content check is
+  done by `cloudflare.yml`.
 
-When `cloudflare.yml` is green (it runs the full checks against
-`https://burchcontracting.com`):
+When both workflows are green:
 
 1. `curl -sI https://burchcontracting.com/garages/` shows no
    `platform: hostinger` header.

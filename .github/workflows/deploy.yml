@@ -60,10 +60,14 @@ jobs:
           BUILD_ENV: production
         run: npm run check-build
 
+      # api/version.txt is a second copy that only Hostinger serves
+      # (.assetsignore keeps api/ off Cloudflare), so it proves this FTP
+      # deploy landed even though the domain's pages come from Cloudflare.
       - name: Stamp build version
         run: |
           echo "commit=${GITHUB_SHA}" > dist/version.txt
           echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
+          cp dist/version.txt dist/api/version.txt
 
       # Recovery procedure: if the live site is ever stale while runs are
       # green, the FTP action's incremental sync-state file
@@ -92,73 +96,25 @@ jobs:
             **/_headers
             **/.assetsignore
 
+      # Since the Cloudflare cutover, burchcontracting.com's pages are served by
+      # the Cloudflare Worker, and cloudflare.yml checks every page, redirect
+      # and crawler there (including contact.html's reCAPTCHA key, byte for
+      # byte). Hostinger still serves /api/* — reached through the Worker —
+      # and keeps a full fallback copy of the site, so this step checks the
+      # Hostinger side through /api.
+      #
+      # If the cutover is ever rolled back, revert the cutover commit: that
+      # restores the page-by-page content check against Hostinger here.
       - name: Verify deployment
         env:
           SITE_URL: https://burchcontracting.com
         run: |
           sleep 10
-          live=$(curl -fsSL --retry 3 "$SITE_URL/version.txt?nocache=$GITHUB_RUN_ID" | grep '^commit=' | cut -d= -f2)
-          echo "Live commit:     $live"
-          echo "Expected commit: $GITHUB_SHA"
+          live=$(curl -fsSL --retry 3 "$SITE_URL/api/version.txt?nocache=$GITHUB_RUN_ID" | grep '^commit=' | cut -d= -f2)
+          echo "Hostinger commit: $live"
+          echo "Expected commit:  $GITHUB_SHA"
           if [ "$live" != "$GITHUB_SHA" ]; then
-            echo "::error::Deployed version marker does not match this commit — the FTP sync likely skipped files. Delete .ftp-deploy-sync-state.json on the server and re-run."
-            exit 1
-          fi
-          curl -fsSL "$SITE_URL/privacy-policy.html?nocache=$GITHUB_RUN_ID" -o /dev/null || { echo "::error::privacy-policy.html not reachable"; exit 1; }
-
-          # Content-integrity check across every built page. version.txt above
-          # only proves ONE freshly-generated file uploaded — it says nothing
-          # about the rest, since the FTP action's incremental sync can skip
-          # files its (possibly stale) state file thinks are unchanged. That
-          # exact gap once left outdoor-living/decks silently stale while this
-          # step stayed green. Compare a hash of every dist/*.html file against
-          # what's actually live instead of one hardcoded known-bad string on
-          # one page.
-          # api/ is backend PHP territory, not public pages — some paths under
-          # it (e.g. email-templates/) are deliberately blocked via .htaccess
-          # and correctly return 403/empty, which would never hash-match the
-          # built HTML. Only compare pages meant to be served as-is.
-          #
-          # Cloudflare (proxying this domain) rewrites mailto: links and injects
-          # a decoder <script> at the edge on every request (Email Address
-          # Obfuscation, kept on deliberately for spam reduction) — a permanent,
-          # expected transformation, not a deploy bug. Both sides are piped
-          # through strip-cf-email-obfuscation.py to normalize that one known
-          # rewrite away before hashing, so it can't mask a real mismatch.
-          mismatch=0
-          while IFS= read -r -d '' file; do
-            rel="${file#dist/}"
-            case "$rel" in
-              api/*) continue ;;
-            esac
-            if [ "$rel" = "index.html" ]; then
-              url_path="/"
-            elif [ "${rel%/index.html}" != "$rel" ]; then
-              url_path="/${rel%/index.html}/"
-            else
-              url_path="/$rel"
-            fi
-            local_hash=$(python3 ../.github/scripts/strip-cf-email-obfuscation.py "$file" | sha256sum | cut -d' ' -f1)
-            live_hash=$(curl -fsSL "$SITE_URL$url_path?nocache=$GITHUB_RUN_ID" | python3 ../.github/scripts/strip-cf-email-obfuscation.py | sha256sum | cut -d' ' -f1)
-            if [ "$local_hash" != "$live_hash" ]; then
-              echo "::error::Content mismatch on $url_path — built hash $local_hash, live hash $live_hash. FTP sync likely skipped this file; delete .ftp-deploy-sync-state.json on the server and re-run."
-              mismatch=1
-            fi
-          done < <(find dist -name '*.html' -print0)
-          if [ "$mismatch" = "1" ]; then
-            exit 1
-          fi
-          echo "Content-integrity check passed: every built page matches live."
-
-          # reCAPTCHA site key is read from this data attribute at runtime (see
-          # src/js/main.js) — confirm the live page matches what's actually in
-          # the repo at this commit, not a stale or hand-edited copy.
-          expected_key=$(grep -o 'data-recaptcha-site-key="[^"]*"' contact.html | head -1)
-          live_key=$(curl -fsSL "$SITE_URL/contact.html?nocache=$GITHUB_RUN_ID" | grep -o 'data-recaptcha-site-key="[^"]*"' | head -1)
-          echo "Expected recaptcha key attr: $expected_key"
-          echo "Live recaptcha key attr:     $live_key"
-          if [ -z "$live_key" ] || [ "$live_key" != "$expected_key" ]; then
-            echo "::error::Live data-recaptcha-site-key does not match contact.html in this commit — contact form will fail reCAPTCHA."
+            echo "::error::Hostinger's api/version.txt does not match this commit — the FTP sync likely skipped files. Delete .ftp-deploy-sync-state.json on the server and re-run."
             exit 1
           fi
 
@@ -178,4 +134,4 @@ jobs:
             exit 1
           fi
 
-          echo "Deploy verified: server matches $GITHUB_SHA"
+          echo "Deploy verified: Hostinger matches $GITHUB_SHA"

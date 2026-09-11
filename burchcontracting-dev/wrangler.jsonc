@@ -24,10 +24,17 @@
     "ORIGIN_HOSTS": "burchcontracting.com"
   },
 
-  // Pre-cutover: the live Worker answers only on its *.workers.dev address.
-  // The cutover commit adds "routes" for burchcontracting.com and sets
-  // "workers_dev" to false (CLOUDFLARE-CUTOVER.md, step 5). Preview URLs stay
-  // on so non-main branches can be reviewed without touching the live Worker.
+  // Serves burchcontracting.com. The DNS record still points at Hostinger:
+  // the route sends requests to this Worker first, and deleting the route
+  // (Cloudflare dashboard → Workers & Pages → burchcontracting → Settings →
+  // Domains & Routes) sends traffic straight back to Hostinger. Needs "Always
+  // Use HTTPS" and a www → root Redirect Rule in the zone, because Hostinger
+  // used to perform both redirects (CLOUDFLARE-CUTOVER.md, step 4).
+  "routes": [{ "pattern": "burchcontracting.com/*", "zone_name": "burchcontracting.com" }],
+
+  // workers.dev stays on because branch preview URLs require it. Every page's
+  // canonical tag points at burchcontracting.com, so search engines don't
+  // treat that copy as a second site.
   "workers_dev": true,
   "preview_urls": true,
 
