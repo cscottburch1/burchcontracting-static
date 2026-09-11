@@ -87,17 +87,29 @@ jobs:
         id: deploy
         run: |
           set -o pipefail
+          # This repository is public: strip any account email Wrangler prints
+          # before it reaches the log. (GitHub already masks secret values.)
+          redact() { sed -E 's/[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}/[redacted email]/g'; }
+
+          # A real "routes" key — not the word inside a comment — means the
+          # Worker is attached to the production domain.
+          has_routes=false
+          if grep -qE '^[[:space:]]*"routes"[[:space:]]*:' wrangler.jsonc; then has_routes=true; fi
+
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            npx wrangler deploy 2>&1 | tee wrangler.log
-          elif npx wrangler deployments list > /dev/null 2>&1; then
-            npx wrangler versions upload --message "${GITHUB_REF_NAME} ${GITHUB_SHA::7}" 2>&1 | tee wrangler.log
-          elif ! grep -q '"routes"' wrangler.jsonc; then
+            npx wrangler deploy 2>&1 | redact | tee wrangler.log
+          elif npx wrangler deployments list > deployments.log 2>&1; then
+            npx wrangler versions upload --message "${GITHUB_REF_NAME} ${GITHUB_SHA::7}" 2>&1 | redact | tee wrangler.log
+          elif [ "$has_routes" = false ]; then
             # Preview versions need an existing Worker. Before cutover there
             # are no routes, so a first deploy only reaches workers.dev.
+            echo "Deployments lookup failed (expected before the Worker exists):"
+            tail -5 deployments.log | redact
             echo "::notice::First deploy: creating the Worker on workers.dev (no routes, production unaffected)."
-            npx wrangler deploy 2>&1 | tee wrangler.log
+            npx wrangler deploy 2>&1 | redact | tee wrangler.log
           else
-            echo "::error::Can't reach the Worker's deployments, and wrangler.jsonc has routes — refusing to deploy a branch to production."
+            tail -20 deployments.log | redact
+            echo "::error::Can't list the Worker's deployments and wrangler.jsonc has routes — refusing to deploy a branch to production."
             exit 1
           fi
           url=$(grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' wrangler.log | tail -1 || true)
