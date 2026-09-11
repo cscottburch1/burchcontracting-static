@@ -68,6 +68,9 @@ export const ORGANIZATION_SCHEMA = {
   name: 'Burch Contracting',
   url: 'https://burchcontracting.com/',
   logo: 'https://burchcontracting.com/images/burch-contracting-logo.webp',
+  // TODO: add Wikidata Q-ID URL once item is created
+  // TODO: add YouTube channel URL once created
+  // TODO: add X/Twitter profile URL if one exists
   sameAs: [
     'https://share.google/punCyIgljtaPkt03e',
     'https://www.facebook.com/BurchContracting',
