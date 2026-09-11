@@ -113,13 +113,13 @@ jobs:
             echo "::error::Can't list the Worker's deployments and wrangler.jsonc has routes — refusing to deploy a branch to production."
             exit 1
           fi
-          url=$(grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' wrangler.log | tail -1 || true)
-          if [ -z "$url" ]; then
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              # After cutover workers_dev is off and the Worker only answers on the real domain.
-              url="https://burchcontracting.com"
-            else
-              echo "::error::wrangler printed no preview URL — check that preview_urls is true in wrangler.jsonc and the account has a workers.dev subdomain."
+          if [ "$GITHUB_REF" = "refs/heads/main" ] && [ "$has_routes" = true ]; then
+            # The Worker serves the real domain, so verify production itself.
+            url="https://burchcontracting.com"
+          else
+            url=$(grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' wrangler.log | tail -1 || true)
+            if [ -z "$url" ]; then
+              echo "::error::wrangler printed no workers.dev URL — check that workers_dev and preview_urls are true in wrangler.jsonc."
               exit 1
             fi
           fi
@@ -176,7 +176,10 @@ jobs:
           # 4. Every search and AI crawler gets HTTP 200 on every page.
           node scripts/check-crawler-access.mjs "$BASE_URL"
 
-          # 5. On the real domain, /api/* still reaches Hostinger's PHP.
+          # 5. On the real domain: /api/* still reaches Hostinger's PHP, and
+          #    http:// and www redirect exactly as Hostinger's .htaccess did
+          #    (Cloudflare's Always Use HTTPS and a www Redirect Rule do this
+          #    now — CLOUDFLARE-CUTOVER.md, step 4).
           if [ "$BASE_URL" = "https://burchcontracting.com" ]; then
             contact_status=$(curl -s -o /dev/null -w '%{http_code}' "$BASE_URL/api/contact.php")
             echo "contact.php status: $contact_status"
@@ -184,4 +187,17 @@ jobs:
               echo "::error::api/contact.php returned $contact_status through the Worker, expected 405 from Hostinger"
               exit 1
             fi
+
+            for pair in \
+              "http://burchcontracting.com/garages/?utm_source=ci|https://burchcontracting.com/garages/?utm_source=ci" \
+              "https://www.burchcontracting.com/garages/?utm_source=ci|https://burchcontracting.com/garages/?utm_source=ci"; do
+              from="${pair%%|*}"
+              want="${pair#*|}"
+              got=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "$from")
+              echo "$from -> $got"
+              if [ "$got" != "301 $want" ]; then
+                echo "::error::$from should 301 to $want — check Always Use HTTPS and the www Redirect Rule (CLOUDFLARE-CUTOVER.md, step 4)"
+                exit 1
+              fi
+            done
           fi
