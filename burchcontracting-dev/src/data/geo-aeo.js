@@ -114,7 +114,7 @@ export const SERVICE_AREAS = [
     driveTime: '25 min from office',
     tagline: 'Upstate Hub',
     highlight: 'From Taylors to the Eastside, we take on Greenville-area projects where homeowners want a licensed GC who handles permits, inspections, and finish quality.',
-    about: 'Greenville is the economic center of the Upstate. Whether you are updating a bungalow near downtown, adding a screened porch in a suburban neighborhood, or building a detached garage, Burch Contracting brings 35+ years of local building experience.',
+    about: 'Greenville is the economic center of the Upstate. Whether you are updating a bungalow near downtown, adding a screened porch in a suburban neighborhood, or building a detached garage, Burch Contracting brings 30+ years of local building experience.',
     neighborhoods: [
       { name: 'North Main & Augusta Road', detail: 'Established neighborhoods with renovation-friendly housing stock.' },
       { name: 'Taylors fringe', detail: 'Suburban lots suited for garages, decks, and additions.' },
@@ -249,7 +249,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How long has Burch Contracting been in business?',
-    answer: 'Scott Burch started in construction in 1987, received his residential builder\'s license in 1995, and founded Burch Contracting the same year. The company has served Upstate SC homeowners for more than 35 years.',
+    answer: 'Scott Burch started in construction in 1987, received his residential builder\'s license in 1995, and founded Burch Contracting the same year. The company has served Upstate SC homeowners for more than 30 years.',
   },
 ]
 
