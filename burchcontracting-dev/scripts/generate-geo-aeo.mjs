@@ -15,6 +15,8 @@ import {
   LOCAL_CONDITIONS,
 } from '../src/data/geo-aeo.js'
 import { SERVICES } from '../src/data/services.js'
+import { COST_GUIDES } from '../src/data/guides-cost.js'
+import { ARTICLES } from '../src/data/guides-articles.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../src/data/site-schema.js'
 import { CONTENT_DATES } from '../src/data/content-dates.js'
 import { SITE_ORIGIN, pageUrl } from '../src/data/url-map.js'
@@ -127,6 +129,7 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   </div>
                 </div>
               </div>
+                <a href="/cost" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Cost Guides</a>
                 <a href="/projects" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Projects</a>
                 <a href="/about" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">About</a>
                 <a href="/contact" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Contact</a>
@@ -195,6 +198,7 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   <a href="/service-areas/laurens" class="text-slate-700 text-sm py-1 hover:text-blue-700">Laurens</a>
                   <a href="/service-areas/gray-court" class="text-slate-700 text-sm py-1 hover:text-blue-700">Gray Court</a>
                 </div>
+                <a href="/cost" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Cost Guides</a>
                 <a href="/projects" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Projects</a>
                 <a href="/about" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">About</a>
                 <a href="/contact" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Contact</a>
@@ -850,7 +854,23 @@ function generateSitemap() {
 
   const areaPages = SERVICE_AREAS.map((area) => [pageUrl(`service-areas/${area.slug}.html`), AREA_DATES])
 
-  const urls = [...staticPages, ...servicePages, ...areaPages]
+  // Cost guides and articles (scripts/generate-guides.mjs). Derived from the
+  // same data the generator uses, so a restored guide can't be published and
+  // then left out of the sitemap. Their datePublished is the archived original
+  // (see RESTORED_PUBLISHED there); lastmod here is the data file's real git
+  // dateModified, which is what lastmod is actually for.
+  const guideDates = {
+    cost: CONTENT_DATES?.['__datafile__src/data/guides-cost.js'] ?? AREA_DATES,
+    blog: CONTENT_DATES?.['__datafile__src/data/guides-articles.js'] ?? AREA_DATES,
+  }
+  const guidePages = [
+    [pageUrl('cost/index.html'), guideDates.cost],
+    ...COST_GUIDES.map((guide) => [pageUrl(`cost/${guide.slug}.html`), guideDates.cost]),
+    [pageUrl('blog/index.html'), guideDates.blog],
+    ...ARTICLES.map((guide) => [pageUrl(`blog/${guide.slug}.html`), guideDates.blog]),
+  ]
+
+  const urls = [...staticPages, ...servicePages, ...areaPages, ...guidePages]
     .map(
       ([path, dates]) => `  <url>
     <loc>${SITE.domain}${path}</loc>

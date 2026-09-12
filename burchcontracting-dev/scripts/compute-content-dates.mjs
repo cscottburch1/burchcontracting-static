@@ -66,6 +66,8 @@ const HAND_AUTHORED = [
 const DATA_FILE_SOURCES = [
   { dataFile: 'src/data/services.js', fallbackFile: 'scripts/generate-services.mjs' },
   { dataFile: 'src/data/geo-aeo.js', fallbackFile: 'scripts/generate-geo-aeo.mjs' },
+  { dataFile: 'src/data/guides-cost.js', fallbackFile: 'scripts/generate-guides.mjs' },
+  { dataFile: 'src/data/guides-articles.js', fallbackFile: 'scripts/generate-guides.mjs' },
 ]
 
 const result = {}
