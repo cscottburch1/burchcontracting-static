@@ -141,7 +141,7 @@ export const SERVICE_FAQS = {
     },
     {
       question: 'Can you match a new addition to my existing home?',
-      answer: 'Yes. Matching the roofline, siding, trim, and interior finishes so the addition blends seamlessly with your existing home is a core part of how we work. With 35+ years building in the Upstate, we source materials to match older homes as closely as possible.'
+      answer: 'Yes. Matching the roofline, siding, trim, and interior finishes so the addition blends seamlessly with your existing home is a core part of how we work. With 30+ years building in the Upstate, we source materials to match older homes as closely as possible.'
     },
     {
       question: 'What types of additions do you build?',
@@ -432,7 +432,7 @@ export const SERVICE_FAQS = {
     },
     {
       question: 'Will the work meet current ADA standards?',
-      answer: 'Yes. We evaluate the space against current ADA standards, identify what needs to change, and complete the modifications to code. With 35+ years of local experience handling permits and inspections, compliance is built into how we work.'
+      answer: 'Yes. We evaluate the space against current ADA standards, identify what needs to change, and complete the modifications to code. With 30+ years of local experience handling permits and inspections, compliance is built into how we work.'
     },
     {
       question: 'How much do accessibility modifications cost?',

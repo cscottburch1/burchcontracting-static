@@ -648,7 +648,7 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
             <h3 class="text-xl font-bold text-slate-900" itemprop="name"><a href="/about" class="hover:text-blue-700 transition-colors">C. Scott Burch</a></h3>
             <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
-            <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #CLG118679 | NC Licensed (Limited) #107292 | 35+ years serving Upstate SC.</p>
+            <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #CLG118679 | NC Licensed (Limited) #107292 | 30+ years serving Upstate SC.</p>
             <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${dates.datePublished}">${dates.datePublished}</time> &middot; Last reviewed: <time datetime="${dates.dateModified}">${dates.dateModified}</time></p>
           </aside>
         </div>

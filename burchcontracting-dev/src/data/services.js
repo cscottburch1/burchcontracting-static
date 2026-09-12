@@ -56,7 +56,7 @@ export const SITE = {
   licenseNC: '107292',
   owner: 'C. Scott Burch',
   established: '1995',
-  experience: '35+',
+  experience: '30+',
   rating: '5.0',
   bbb: 'A+',
   url: 'https://burchcontracting.com',
@@ -75,7 +75,7 @@ export const SERVICES = [
     stats: {
       costRange: formatBand(servicePerSqftBand('decks'), ' Per Sq Ft'),
       timeline: '2-4 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: formatBand(servicePerSqftBand('decks')),
@@ -135,7 +135,7 @@ export const SERVICES = [
     stats: {
       costRange: '$15,000-$65,000 Range',
       timeline: '3-6 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: spanPerSqft(
@@ -202,7 +202,7 @@ export const SERVICES = [
         { plus: true }
       ),
       timeline: '2-5 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: formatBand(servicePerSqftBand('coveredPatios')),
@@ -275,7 +275,7 @@ export const SERVICES = [
       // left as the original hand-authored figure.
       costRange: '$39,000-$145,000 Range',
       timeline: '6-10 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: 'Varies by type',
@@ -347,7 +347,7 @@ export const SERVICES = [
         ' Per Sq Ft'
       ),
       timeline: '8-16 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: spanPerSqft(
@@ -415,7 +415,7 @@ export const SERVICES = [
     stats: {
       costRange: '$65,000-$220,000 Range',
       timeline: '10-16 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rental: 'Income $850-$1,500/mo'
     },
     pricePerSqFt: '$110-185/sq ft',
@@ -478,7 +478,7 @@ export const SERVICES = [
       // why that one isn't rolled into this headline figure).
       costRange: '$5,600-$75,000 Typical',
       timeline: '2-8 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: 'Varies by scope',
@@ -566,9 +566,9 @@ export const SERVICES = [
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     metaTitle: 'Bathroom Remodeling Simpsonville SC | Burch Contracting',
     heroImage: '/images/bath-shower-conversion-woodruff-sc-1.webp',
-    description: 'Bathroom remodeling in Simpsonville, Fountain Inn & Greenville County SC. Transparent per-sqft pricing computed live from our published rates. SC Licensed #CLG118679, 35+ years, BBB A+.',
+    description: 'Bathroom remodeling in Simpsonville, Fountain Inn & Greenville County SC. Transparent per-sqft pricing computed live from our published rates. SC Licensed #CLG118679, 30+ years, BBB A+.',
     h1: 'Bathroom Remodeling Contractor — Simpsonville & Fountain Inn, SC',
-    intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${projectCostString('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${projectCostString('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${projectCostString('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${projectCostString('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 35+ years in the trade.`,
+    intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${projectCostString('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${projectCostString('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${projectCostString('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${projectCostString('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
       costRange: combinedCostString(
         projectEstimate('bathRemodel', 'basicRefresh', 25),
@@ -576,7 +576,7 @@ export const SERVICES = [
         { plus: true }
       ) + ' Typical',
       timeline: '2-4 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: servicePerSqftString('bathRemodel'),
@@ -708,7 +708,7 @@ export const SERVICES = [
       }
     ],
     benefits: [
-      'Owner C. Scott Burch is on-site personally — 35+ years in the trade',
+      'Owner C. Scott Burch is on-site personally — 30+ years in the trade',
       'SC Licensed General Contractor #CLG118679 | NC Licensed (Limited) #107292',
       'BBB A+ Rated · 5.0 Google Rating',
       'One licensed crew handles design, demo, plumbing, electrical, waterproofing, tile, and finish — one contract, one point of contact',
@@ -743,9 +743,9 @@ export const SERVICES = [
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     metaTitle: 'Kitchen Remodeling Simpsonville SC | Burch Contracting',
     heroImage: '/images/kitchen-remodeling-sc.webp',
-    description: 'Kitchen remodeling in Simpsonville, Fountain Inn & Greenville County SC. Custom cabinets, quartz & granite counters, transparent per-sqft pricing computed from our published rates. SC Licensed #CLG118679, 35+ years, BBB A+.',
+    description: 'Kitchen remodeling in Simpsonville, Fountain Inn & Greenville County SC. Custom cabinets, quartz & granite counters, transparent per-sqft pricing computed from our published rates. SC Licensed #CLG118679, 30+ years, BBB A+.',
     h1: 'Kitchen Remodeling Contractor — Simpsonville & Fountain Inn, SC',
-    intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${projectCostString('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${projectCostString('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 35+ years in the trade.`,
+    intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${projectCostString('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${projectCostString('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
       costRange: combinedCostString(
         projectEstimate('kitchenRemodel', 'standardRefresh', 100),
@@ -753,7 +753,7 @@ export const SERVICES = [
         { plus: true }
       ) + ' Typical',
       timeline: '4-7 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: servicePerSqftString('kitchenRemodel'),
@@ -873,7 +873,7 @@ export const SERVICES = [
     stats: {
       costRange: '$30-100+ Per Sq Ft',
       timeline: '4-16 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: '$30-100+/sq ft',
@@ -927,14 +927,14 @@ export const SERVICES = [
     title: 'Commercial Roofing',
     slug: 'commercial-roofing',
     category: 'Commercial',
-    description: '35+ years installing TPO, EPDM, PVC & metal roofing for Upstate SC commercial buildings. Free consultation, licensed contractor.',
+    description: '30+ years installing TPO, EPDM, PVC & metal roofing for Upstate SC commercial buildings. Free consultation, licensed contractor.',
     h1: 'Commercial Roofing Contractor - Upstate SC',
     heroImage: '/images/commercial-tpo-roof.webp',
     intro: "Most roofers only touch the roof. When a leak, a tear-off, or a storm claim damages what's underneath — ceilings, drywall, insulation, flooring — I handle that too, as one contract with one point of contact instead of a roofer and a separate remodeling contractor. From flat-roof systems to standing seam metal, tear-offs to recover, and ongoing maintenance agreements, every project is licensed, code-compliant, and personally overseen.",
     stats: {
       costRange: 'Custom Quote',
       timeline: 'Varies by Scope',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     serviceCategories: [
@@ -975,7 +975,7 @@ export const SERVICES = [
       'One contract for the roof and everything under it — ceiling, drywall, insulation, flooring — instead of a roofer and a separate remodeling contractor',
       'Direct insurance claim support for storm and hail damage, the same process used for residential restoration',
       'Scheduled maintenance and inspection agreements to catch problems before they become leaks',
-      '35+ years local experience with permits and inspections'
+      '30+ years local experience with permits and inspections'
     ],
     calculator: null,
     relatedServices: [
@@ -995,7 +995,7 @@ export const SERVICES = [
     stats: {
       costRange: '$30-75 Per Sq Ft',
       timeline: '6-10 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: '$30-75/sq ft',
@@ -1062,7 +1062,7 @@ export const SERVICES = [
     stats: {
       costRange: 'Custom Quote',
       timeline: 'Varies by Scope',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     howItWorks: [
@@ -1083,7 +1083,7 @@ export const SERVICES = [
       'Free consultation and ballpark range',
       'Clear communication with insurance companies',
       'Scott on the job site',
-      '35+ years local experience'
+      '30+ years local experience'
     ],
     calculator: null,
     relatedServices: [
@@ -1106,7 +1106,7 @@ export const SERVICES = [
     stats: {
       costRange: 'Custom Quote',
       timeline: 'Varies by Scope',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     serviceCategories: [
@@ -1149,7 +1149,7 @@ export const SERVICES = [
       'Full compliance with current ADA standards',
       'Improved safety for residents, employees, and customers',
       'Greater independence and accessibility at home',
-      '35+ years local experience with permits and inspections'
+      '30+ years local experience with permits and inspections'
     ],
     calculator: null,
     relatedServices: [
@@ -1174,7 +1174,7 @@ export const SERVICES = [
     stats: {
       costRange: '$10,500-$19,800 Typical',
       timeline: '1-2 Weeks Typical',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     serviceCategories: [
@@ -1236,7 +1236,7 @@ export const SERVICES = [
     stats: {
       costRange: '$125-$4,400 Typical',
       timeline: 'Same-Day to 1 Week',
-      experience: '35+ Years Experience',
+      experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
     pricePerSqFt: 'Priced per task',

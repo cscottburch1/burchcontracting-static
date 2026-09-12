@@ -56,27 +56,6 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [L,R=301]
 </IfModule>
 
 
-# --- Restored URL scheme (src/data/url-map.js) --------------------------
-# Pages are served without .html and without a trailing slash: /about comes
-# from about.html, /garage-builder from garage-builder/index.html. Those are
-# the addresses the retired Next.js site used and that the rest of the web
-# still links to — the 2026-07 rebuild's /about.html and /garages/ forms 301
-# here (second block below). Cloudflare does the same two jobs from
-# dist/_redirects and cloudflare/worker.js.
-#
-# DirectorySlash Off is required: without it mod_dir 301-redirects
-# /garage-builder to /garage-builder/ before these rules run, which would
-# leave every service page's canonical pointing at a redirect.
-DirectorySlash Off
-Options -Indexes
-
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.+)$ /$1.html [L]
-
-RewriteCond %{REQUEST_FILENAME}/index.html -f
-RewriteRule ^(.+?)/?$ /$1/index.html [L]
-
 # --- Trailing-slash forms -> the canonical URL --------------------------
 # The retired Next.js site redirected these, and they are still linked from
 # elsewhere on the web (see migration/legacy-urls.txt).
@@ -152,6 +131,31 @@ RewriteRule ^additions$ /room-additions [R=301,L]
 RewriteRule ^handyman/$ /handyman [R=301,L]
 RewriteRule ^garages/$ /garage-builder [R=301,L]
 RewriteRule ^garages$ /garage-builder [R=301,L]
+
+# --- Restored URL scheme (src/data/url-map.js) --------------------------
+# These come AFTER the 301s above on purpose: a retired file left on disk
+# (e.g. additions/index.html after the rename) must still redirect, not be
+# served. cloudflare/worker.js checks its redirect table first for the same
+# reason.
+# Pages are served without .html and without a trailing slash: /about comes
+# from about.html, /garage-builder from garage-builder/index.html. Those are
+# the addresses the retired Next.js site used and that the rest of the web
+# still links to — the 2026-07 rebuild's /about.html and /garages/ forms 301
+# here (second block below). Cloudflare does the same two jobs from
+# dist/_redirects and cloudflare/worker.js.
+#
+# DirectorySlash Off is required: without it mod_dir 301-redirects
+# /garage-builder to /garage-builder/ before these rules run, which would
+# leave every service page's canonical pointing at a redirect.
+DirectorySlash Off
+Options -Indexes
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ /$1.html [L]
+
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.+?)/?$ /$1/index.html [L]
 
 # --- Old Next.js site URLs -> new static site URLs ---------------------
 

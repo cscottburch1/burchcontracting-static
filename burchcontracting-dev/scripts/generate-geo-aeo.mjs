@@ -257,8 +257,8 @@ function authorBox(cityName) {
   // so that one case drops the redundant second clause.
   const servingLine =
     cityName === 'Upstate SC'
-      ? '35+ years serving Upstate SC.'
-      : `35+ years serving ${esc(cityName)}, SC and Upstate SC.`
+      ? '30+ years serving Upstate SC.'
+      : `30+ years serving ${esc(cityName)}, SC and Upstate SC.`
   return `          <aside class="mt-12 bg-slate-50 border border-slate-100 rounded-2xl p-6 lg:p-8" itemscope itemtype="https://schema.org/Person">
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
             <h3 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h3>
