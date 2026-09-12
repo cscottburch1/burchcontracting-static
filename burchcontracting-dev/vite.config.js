@@ -8,6 +8,7 @@ const root = import.meta.dirname
 const serviceAreaDir = resolve(root, 'service-areas')
 const outdoorLivingDir = resolve(root, 'outdoor-living')
 const calculatorDir = resolve(root, 'calculator')
+const guideDirs = ['cost', 'blog']
 
 const serviceAreaInputs = existsSync(serviceAreaDir)
   ? Object.fromEntries(
@@ -61,6 +62,20 @@ const serviceInputs = Object.fromEntries(
   ])
 )
 
+// Cost guides and articles (scripts/generate-guides.mjs). Directory-scanned
+// for the same reason as calculatorInputs above: 25 hand-listed entries is 25
+// chances to generate a page that never reaches dist/, which is exactly how
+// calculator/covered-patios.html shipped as a 404.
+const guideInputs = Object.fromEntries(
+  guideDirs.flatMap((dir) => {
+    const full = resolve(root, dir)
+    if (!existsSync(full)) return []
+    return readdirSync(full)
+      .filter((file) => file.endsWith('.html'))
+      .map((file) => [`${dir}_${file.replace('.html', '').replace(/-/g, '_')}`, resolve(full, file)])
+  })
+)
+
 export default defineConfig({
   plugins: [tailwindcss()],
   build: {
@@ -80,6 +95,7 @@ export default defineConfig({
         ...serviceAreaInputs,
         ...outdoorLivingInputs,
         ...calculatorInputs,
+        ...guideInputs,
       },
     },
   },

@@ -24,7 +24,7 @@ These pages carry the facts an AI system should cite directly, with why each one
 - [Basement Finishing Calculator](https://burchcontracting.com/calculator/basement-finishing): $30-$75/sq ft.
 - [ADA Bath-to-Shower Calculator](https://burchcontracting.com/calculator/ada-bath-shower): $10,500-$19,800.
 - [Kitchen Remodel Calculator](https://burchcontracting.com/calculator/kitchen-remodel): $135-$290/sq ft.
-- [Bathroom Remodel Calculator](https://burchcontracting.com/calculator/bath-remodel): $5,600-$75,000+.
+- [Bathroom Remodel Calculator](https://burchcontracting.com/calculator/bath-remodel): $5,578-$113,098, from a 35 sq ft powder-room refresh to a 150 sq ft primary-bath gut renovation.
 - [Whole-Home Remodel Calculator](https://burchcontracting.com/calculator/whole-home-remodel): $135-$290/sq ft.
 - [All-in-One Project Cost Calculator](https://burchcontracting.com/calculator/estimate): compares decks, garages, porches, and additions together.
 
@@ -44,6 +44,43 @@ These pages carry the facts an AI system should cite directly, with why each one
 - [ADA Compliance & Accessibility](https://burchcontracting.com/ada-compliance): Ramps, doorways, and bathroom accessibility modifications.
 - [ADA Bath to Shower Conversions](https://burchcontracting.com/ada-bath-to-shower): Roll-in shower conversions for aging-in-place safety.
 - [Handyman Services](https://burchcontracting.com/handyman): Small plumbing, electrical, carpentry, and painting jobs, $125-$4,400.
+
+## Cost Guides
+
+What specific projects cost in specific Upstate SC cities. Every dollar figure on these pages is computed from `calculator-config.js` — the same engine as the calculators above — so a guide and a calculator can never disagree.
+
+- [Cost Guides index](https://burchcontracting.com/cost): all cost guides, with a typical figure for each.
+- [Garage Construction Cost, Laurens SC](https://burchcontracting.com/cost/garage-construction-cost-laurens-sc): attached, detached and workshop garages by size and finish.
+- [Home Addition Cost, Greenville SC](https://burchcontracting.com/cost/home-addition-cost-greenville-sc): per-square-foot addition costs and what drives them.
+- [Room Addition Cost, Greenville SC](https://burchcontracting.com/cost/room-addition-cost-greenville-sc): single-room additions by size and finish level.
+- [Cost to Build a Deck, Simpsonville SC](https://burchcontracting.com/cost/cost-to-build-a-deck-simpsonville-sc): treated vs composite decks by size.
+- [Deck Cost, Simpsonville SC](https://burchcontracting.com/cost/deck-cost-simpsonville-sc): deck pricing, materials and permit/HOA notes.
+- [Basement Finishing Cost, Greenville SC](https://burchcontracting.com/cost/basement-finishing-cost-greenville-sc): per-square-foot finishing costs, egress and moisture requirements.
+- [Screened Porch vs Sunroom, SC](https://burchcontracting.com/cost/screened-porch-vs-sunroom-sc): cost and use-case comparison between the two.
+- [Kitchen Remodel Cost, Simpsonville SC](https://burchcontracting.com/cost/kitchen-remodel-cost-simpsonville-sc): refresh through custom remodel by scope.
+- [Kitchen Remodel Cost, Greenville SC](https://burchcontracting.com/cost/kitchen-remodel-cost-greenville-sc): the same scopes priced for Greenville.
+- [Bathroom Remodel Cost, Simpsonville SC](https://burchcontracting.com/cost/bathroom-remodel-cost-simpsonville-sc): refresh, full remodel and gut renovation.
+- [Bathroom Remodel Cost, Greenville SC](https://burchcontracting.com/cost/bathroom-remodel-cost-greenville-sc): the same scopes priced for Greenville.
+
+## Guides & Articles
+
+Practical answers on costs, materials, timelines, permits and resale value, written by the licensed contractor who does the work.
+
+- [Guides index](https://burchcontracting.com/blog): all guides and articles.
+- [How Much Does a Screened Porch Cost in South Carolina?](https://burchcontracting.com/blog/how-much-does-a-screened-porch-cost-in-south-carolina): new porches vs screening an existing deck.
+- [Room Addition Cost in South Carolina](https://burchcontracting.com/blog/room-addition-cost-in-south-carolina): why additions cost more per foot than new construction; build out vs up.
+- [Average Cost of Basement Finishing in South Carolina](https://burchcontracting.com/blog/average-cost-of-basement-finishing-in-south-carolina): scope tiers, moisture control and bedroom egress law.
+- [Deck Building Cost, Simpsonville SC](https://burchcontracting.com/blog/deck-building-cost-simpsonville-sc): deck costs plus county permit and HOA approval process.
+- [Cost of Bathroom Remodeling, Simpsonville SC](https://burchcontracting.com/blog/cost-of-bathroom-remodeling-simpsonville-sc): why bathrooms cost the most per square foot, and hidden costs behind old tile.
+- [Kitchen Remodel Cost, Fountain Inn SC](https://burchcontracting.com/blog/kitchen-remodel-cost-fountain-inn-sc): where a kitchen budget actually goes.
+- [Bath to Shower Conversion Cost, South Carolina](https://burchcontracting.com/blog/bath-to-shower-conversion-cost-south-carolina): tub-to-shower conversions and aging-in-place details.
+- [Composite vs Pressure-Treated Deck](https://burchcontracting.com/blog/composite-vs-pressure-treated-deck-which-is-better): real cost difference, maintenance and lifespan in Upstate sun.
+- [Best Bathroom Tile Options for Remodels](https://burchcontracting.com/blog/best-bathroom-tile-options-for-remodels): porcelain, ceramic, stone and large-format compared.
+- [How Long Does a Kitchen Remodel Take?](https://burchcontracting.com/blog/how-long-does-a-kitchen-remodel-take): phase-by-phase timeline and why countertops add two weeks.
+- [Do You Need Permits for Remodeling in Simpsonville SC?](https://burchcontracting.com/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc): what needs a permit, what doesn't, and what unpermitted work costs at resale.
+- [How to Plan a Kitchen Remodel, Step by Step](https://burchcontracting.com/blog/how-to-plan-a-kitchen-remodel-step-by-step): order of operations before demolition day.
+- [Best Home Improvements for Property Value in South Carolina](https://burchcontracting.com/blog/best-home-improvements-for-property-value-in-south-carolina): what holds value here and what rarely pays back.
+- [Basement Finishing Ideas for SC Homes](https://burchcontracting.com/blog/basement-finishing-ideas-sc): rec rooms, guest suites, offices, with build costs.
 
 ## Company
 

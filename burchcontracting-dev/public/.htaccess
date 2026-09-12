@@ -171,7 +171,8 @@ RewriteRule ^service-areas/?$ /#service-areas [R=301,L,NE]
 # removed (now served directly at /room-additions): RewriteRule ^room-additions/?$ /additions/ [R=301,L]
 
 RewriteRule ^calculator/decks-screened-porches/?$ /calculator/porch [R=301,L]
-RewriteRule ^cost/?$ /calculator/estimate [R=301,L]
+# removed (now served directly at /cost — the real cost-guide hub, see
+# scripts/generate-guides.mjs): RewriteRule ^cost/?$ /calculator/estimate [R=301,L]
 # removed (now served directly at /calculator/decks): RewriteRule ^calculator/decks/?$ /calculator/decks.html [R=301,L]
 # removed (now served directly at /calculator/garages): RewriteRule ^calculator/garages/?$ /calculator/garages.html [R=301,L]
 
