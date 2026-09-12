@@ -406,7 +406,7 @@
       }
     },
     "/blog": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -419,7 +419,7 @@
       }
     },
     "/blog/average-cost-of-basement-finishing-in-south-carolina": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -432,7 +432,7 @@
       }
     },
     "/blog/basement-finishing-ideas-sc": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -445,7 +445,7 @@
       }
     },
     "/blog/bath-to-shower-conversion-cost-south-carolina": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -458,7 +458,7 @@
       }
     },
     "/blog/best-bathroom-tile-options-for-remodels": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -471,7 +471,7 @@
       }
     },
     "/blog/best-home-improvements-for-property-value-in-south-carolina": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -484,7 +484,7 @@
       }
     },
     "/blog/composite-vs-pressure-treated-deck-which-is-better": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -497,7 +497,7 @@
       }
     },
     "/blog/cost-of-bathroom-remodeling-simpsonville-sc": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -510,7 +510,7 @@
       }
     },
     "/blog/deck-building-cost-simpsonville-sc": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -523,7 +523,7 @@
       }
     },
     "/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -536,7 +536,7 @@
       }
     },
     "/blog/how-long-does-a-kitchen-remodel-take": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -549,7 +549,7 @@
       }
     },
     "/blog/how-much-does-a-screened-porch-cost-in-south-carolina": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -562,7 +562,7 @@
       }
     },
     "/blog/how-to-plan-a-kitchen-remodel-step-by-step": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -575,7 +575,7 @@
       }
     },
     "/blog/kitchen-remodel-cost-fountain-inn-sc": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -588,7 +588,7 @@
       }
     },
     "/blog/room-addition-cost-in-south-carolina": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -1602,9 +1602,9 @@
       }
     },
     "/cost": {
-      "status": 301,
-      "location": "/calculator/estimate",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1615,9 +1615,9 @@
       }
     },
     "/cost/basement-finishing-cost-greenville-sc": {
-      "status": 301,
-      "location": "/calculator/basement-finishing",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1628,9 +1628,9 @@
       }
     },
     "/cost/bathroom-remodel-cost-greenville-sc": {
-      "status": 301,
-      "location": "/calculator/bath-remodel",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1641,9 +1641,9 @@
       }
     },
     "/cost/bathroom-remodel-cost-simpsonville-sc": {
-      "status": 301,
-      "location": "/calculator/bath-remodel",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1654,9 +1654,9 @@
       }
     },
     "/cost/cost-to-build-a-deck-simpsonville-sc": {
-      "status": 301,
-      "location": "/calculator/decks",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1667,9 +1667,9 @@
       }
     },
     "/cost/deck-cost-simpsonville-sc": {
-      "status": 301,
-      "location": "/calculator/estimate",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1680,9 +1680,9 @@
       }
     },
     "/cost/garage-construction-cost-laurens-sc": {
-      "status": 301,
-      "location": "/calculator/garages",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1693,9 +1693,9 @@
       }
     },
     "/cost/home-addition-cost-greenville-sc": {
-      "status": 301,
-      "location": "/calculator/additions",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1706,9 +1706,9 @@
       }
     },
     "/cost/kitchen-remodel-cost-greenville-sc": {
-      "status": 301,
-      "location": "/kitchen-remodeling",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1719,9 +1719,9 @@
       }
     },
     "/cost/kitchen-remodel-cost-simpsonville-sc": {
-      "status": 301,
-      "location": "/kitchen-remodeling",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1732,9 +1732,9 @@
       }
     },
     "/cost/room-addition-cost-greenville-sc": {
-      "status": 301,
-      "location": "/calculator/additions",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1745,9 +1745,9 @@
       }
     },
     "/cost/screened-porch-vs-sunroom-sc": {
-      "status": 301,
-      "location": "/calculator/porch",
-      "contentType": null,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -5229,5 +5229,6 @@
       }
     }
   },
-  "recordedNote": "Recorded from a local wrangler dev serving the same dist/ that deploys to production; the origin is normalized so CI can compare against either host."
+  "recordedNote": "402 paths recorded from live production (recordedFrom) on 2026-09-12. The 27 /cost and /blog entries were then amended to 200 after scripts/generate-guides.mjs restored those pages: each was verified returning 200 on the Cloudflare preview a599c45c before this file was updated, and all 12 search/AI crawlers got 200 on all 73 sitemap URLs there. Every other entry is the untouched production capture.",
+  "amendedAt": "2026-09-12T03:06:11.747Z"
 }
