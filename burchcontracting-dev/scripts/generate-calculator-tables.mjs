@@ -102,10 +102,10 @@ for (const page of STANDARD_PAGES) {
 // --- estimate.html: summary across the 4 core project types ------------
 {
   const CORE = [
-    { calcKey: 'decks', label: 'Decks', url: '/calculator/decks.html' },
-    { calcKey: 'garages', label: 'Garages', url: '/calculator/garages.html' },
-    { calcKey: 'porch', label: 'Screened Porches', url: '/calculator/porch.html' },
-    { calcKey: 'additions', label: 'Room Additions', url: '/calculator/additions.html' },
+    { calcKey: 'decks', label: 'Decks', url: '/calculator/decks' },
+    { calcKey: 'garages', label: 'Garages', url: '/calculator/garages' },
+    { calcKey: 'porch', label: 'Screened Porches', url: '/calculator/porch' },
+    { calcKey: 'additions', label: 'Room Additions', url: '/calculator/additions' },
   ]
   const rows = CORE.map(({ calcKey, label, url }) => {
     const cfg = CALCULATOR_PAGES[calcKey]

@@ -158,7 +158,7 @@ export function bathroomRemodelingAfterProcess() {
             </div>
             <div class="bg-white border border-slate-200 rounded-xl p-7">
               <h3 class="font-bold text-slate-900 text-lg mb-2">Aging in place</h3>
-              <p class="text-slate-600 text-sm leading-relaxed">Blocking the walls for future grab bars during a remodel costs almost nothing; adding it after the tile is up costs real money and a torn-out wall. 32% of design professionals now consider aging-in-place design mainstream and another 48% see it as an emerging standard, not a niche request. For a bathroom built specifically around accessibility from the start, see our <a href="/ada-bath-to-shower/" class="text-blue-700 hover:text-blue-800 underline">ADA bath-to-shower conversions</a> — that page owns the accessibility-first version of this project.</p>
+              <p class="text-slate-600 text-sm leading-relaxed">Blocking the walls for future grab bars during a remodel costs almost nothing; adding it after the tile is up costs real money and a torn-out wall. 32% of design professionals now consider aging-in-place design mainstream and another 48% see it as an emerging standard, not a niche request. For a bathroom built specifically around accessibility from the start, see our <a href="/ada-bath-to-shower" class="text-blue-700 hover:text-blue-800 underline">ADA bath-to-shower conversions</a> — that page owns the accessibility-first version of this project.</p>
             </div>
           </div>
         </div>
@@ -169,14 +169,14 @@ export function bathroomRemodelingAfterProcess() {
           <h2 class="text-3xl font-bold text-slate-900 mb-4">Bathroom Remodeling in Simpsonville &amp; Fountain Inn, SC</h2>
           <p class="text-slate-600 leading-relaxed mb-8">Simpsonville and Fountain Inn anchor the Golden Strip corridor southeast of Greenville, where subdivision development has run heavy for the better part of two decades. That means a large concentration of homes built roughly between 2000 and 2015 — houses now old enough that builder-grade bathrooms, cultured-marble countertops, and fiberglass tub surrounds are due for replacement, and where the primary bathroom is often the last original room left in the house. We also remodel bathrooms in Five Forks, Mauldin, Greenville, Woodruff, Laurens, and Gray Court.</p>
           <div class="flex flex-wrap gap-3">
-            <a href="/service-areas/simpsonville.html" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Simpsonville</a>
-            <a href="/service-areas/fountain-inn.html" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Fountain Inn</a>
-            <a href="/service-areas/five-forks.html" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Five Forks</a>
-            <a href="/service-areas/mauldin.html" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Mauldin</a>
-            <a href="/service-areas/greenville.html" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Greenville</a>
-            <a href="/service-areas/woodruff.html" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Woodruff</a>
-            <a href="/service-areas/laurens.html" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Laurens</a>
-            <a href="/service-areas/gray-court.html" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Gray Court</a>
+            <a href="/service-areas/simpsonville" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Simpsonville</a>
+            <a href="/service-areas/fountain-inn" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Fountain Inn</a>
+            <a href="/service-areas/five-forks" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Five Forks</a>
+            <a href="/service-areas/mauldin" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Mauldin</a>
+            <a href="/service-areas/greenville" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Greenville</a>
+            <a href="/service-areas/woodruff" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Woodruff</a>
+            <a href="/service-areas/laurens" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Laurens</a>
+            <a href="/service-areas/gray-court" class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-200 hover:text-blue-700 transition-colors">Gray Court</a>
           </div>
         </div>
       </section>`

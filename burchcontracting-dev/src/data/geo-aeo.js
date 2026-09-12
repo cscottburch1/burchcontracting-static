@@ -190,16 +190,16 @@ export const SERVICE_AREAS = [
 ]
 
 export const CORE_SERVICES = [
-  { name: 'Custom Decks', url: '/outdoor-living/decks/', summary: 'Wood and composite decks for outdoor entertaining.' },
-  { name: 'Screened Porches', url: '/outdoor-living/screened-porches/', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
-  { name: 'Garages', url: '/garages/', summary: 'Attached and detached garage construction.' },
-  { name: 'Room Additions', url: '/additions/', summary: 'Ground-floor and second-story home expansions.' },
-  { name: 'Remodeling', url: '/remodeling/', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
-  { name: 'Bathroom Remodeling', url: '/bathroom-remodeling/', summary: 'Full bathroom remodels, from powder rooms to custom primary spa baths.' },
-  { name: 'Commercial Upfits', url: '/commercial-upfits/', summary: 'Office upfits and tenant improvements.' },
-  { name: 'Commercial Roofing', url: '/commercial-roofing/', summary: 'Flat and metal roof installation, repair, and maintenance.' },
-  { name: 'Insurance Restoration', url: '/insurance-restoration/', summary: 'Storm damage, water damage, and insurance claim repairs.' },
-  { name: 'ADA Compliance', url: '/ada-compliance/', summary: 'Accessibility modifications for homes and businesses.' },
+  { name: 'Custom Decks', url: '/outdoor-living/decks', summary: 'Wood and composite decks for outdoor entertaining.' },
+  { name: 'Screened Porches', url: '/outdoor-living/screened-porches', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
+  { name: 'Garages', url: '/garage-builder', summary: 'Attached and detached garage construction.' },
+  { name: 'Room Additions', url: '/room-additions', summary: 'Ground-floor and second-story home expansions.' },
+  { name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
+  { name: 'Bathroom Remodeling', url: '/bathroom-remodeling', summary: 'Full bathroom remodels, from powder rooms to custom primary spa baths.' },
+  { name: 'Commercial Upfits', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
+  { name: 'Commercial Roofing', url: '/commercial-roofing', summary: 'Flat and metal roof installation, repair, and maintenance.' },
+  { name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
+  { name: 'ADA Compliance', url: '/ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
 ]
 
 export const GLOBAL_FAQS = [
@@ -225,15 +225,15 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How much does a deck cost in Upstate SC?',
-    answer: 'Custom decks in Upstate SC typically range from $33,000 to $58,000 depending on size, materials, railing, and site conditions. Use the deck cost calculator at burchcontracting.com/calculator/decks.html or request a free consultation for an exact quote.',
+    answer: 'Custom decks in Upstate SC typically range from $33,000 to $58,000 depending on size, materials, railing, and site conditions. Use the deck cost calculator at burchcontracting.com/calculator/decks or request a free consultation for an exact quote.',
   },
   {
     question: 'How much does a screened porch cost in Simpsonville SC?',
-    answer: 'Screened porches in Simpsonville and surrounding areas typically run $15,000 to $65,000 for new construction. Converting an existing deck can save 50–70% since the framing and floor are already in place. Use the porch calculator at burchcontracting.com/calculator/porch.html for a planning estimate.',
+    answer: 'Screened porches in Simpsonville and surrounding areas typically run $15,000 to $65,000 for new construction. Converting an existing deck can save 50–70% since the framing and floor are already in place. Use the porch calculator at burchcontracting.com/calculator/porch for a planning estimate.',
   },
   {
     question: 'How much does a detached garage cost in Upstate SC?',
-    answer: 'Detached two-car garages (576 sqft) in Upstate SC commonly range from $52,000 to $62,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $109,000 to $131,000. Use the garage calculator at burchcontracting.com/calculator/garages.html or contact us for a detailed quote.',
+    answer: 'Detached two-car garages (576 sqft) in Upstate SC commonly range from $52,000 to $62,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $109,000 to $131,000. Use the garage calculator at burchcontracting.com/calculator/garages or contact us for a detailed quote.',
   },
   {
     question: 'How much does a room addition cost per square foot?',
@@ -375,7 +375,7 @@ export function cityFaqs(area) {
     },
     {
       question: `How do I get a construction estimate in ${area.name}, SC?`,
-      answer: `Call (864) 724-4600 or request an estimate at burchcontracting.com/contact.html. Scott Burch will visit your ${area.name} property and provide a written quote with scope, price, and timeline.`,
+      answer: `Call (864) 724-4600 or request an estimate at burchcontracting.com/contact. Scott Burch will visit your ${area.name} property and provide a written quote with scope, price, and timeline.`,
     },
   ]
 }

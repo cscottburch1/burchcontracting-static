@@ -9,10 +9,15 @@
     "directory": "./dist",
     "binding": "ASSETS",
     // Exact file paths only. The automatic modes redirect with 307s and would
-    // change live URLs (/about.html -> /about); cloudflare/worker.js handles
-    // folders and redirects exactly as Hostinger did instead.
+    // change live URLs; cloudflare/worker.js maps clean URLs to files and
+    // issues the 301s itself.
     "html_handling": "none",
-    "not_found_handling": "none"
+    "not_found_handling": "none",
+    // The Worker must see every request before the asset server. Without this,
+    // /about.html is served as a file and can never 301 to /about — and a
+    // _redirects rule for it would also rewrite the Worker's own asset
+    // lookups, making /about redirect to itself. See cloudflare/worker.js.
+    "run_worker_first": true
   },
 
   // Lets the Worker import public/.htaccess, the single source of redirect

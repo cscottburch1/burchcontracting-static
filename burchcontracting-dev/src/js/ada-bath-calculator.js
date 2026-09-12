@@ -264,7 +264,7 @@ function renderResults(el, state) {
       }
       <p class="mb-4 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">Prices are estimates for Upstate SC in 2026. Final quote after a free site visit, once tub size, plumbing access, and wall condition are confirmed.</p>
       <div class="space-y-3 print:hidden">
-        <a href="/contact.html" class="flex items-center justify-center gap-2 w-full bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">Get Your Free On-Site Consultation</a>
+        <a href="/contact" class="flex items-center justify-center gap-2 w-full bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">Get Your Free On-Site Consultation</a>
         <a href="tel:+18647244600" class="flex items-center justify-center gap-2 w-full border-2 border-slate-300 hover:bg-slate-50 text-slate-800 px-6 py-3 rounded-lg font-semibold text-sm transition-colors">(864) 724-4600</a>
         <button type="button" data-action="print" class="w-full rounded-lg border-2 border-slate-300 bg-white px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 transition-colors text-sm">Save / Print This Estimate</button>
       </div>

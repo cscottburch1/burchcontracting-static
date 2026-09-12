@@ -92,7 +92,7 @@ export const SCOTT_PERSON_SCHEMA = {
   '@id': 'https://burchcontracting.com/#scott-burch',
   name: 'C. Scott Burch',
   jobTitle: 'Owner & Lead Contractor',
-  url: 'https://burchcontracting.com/about.html',
+  url: 'https://burchcontracting.com/about',
   worksFor: { '@id': 'https://burchcontracting.com/#organization' },
   hasCredential: [
     {

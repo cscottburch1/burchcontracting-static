@@ -20,6 +20,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { findRedirect, parseRedirectRules } from '../cloudflare/htaccess.js'
+import { MOVED_URLS, PAGE_URLS } from '../src/data/url-map.js'
 
 const root = path.resolve(import.meta.dirname, '..')
 const distDir = path.join(root, 'dist')
@@ -84,15 +85,30 @@ const problems = []
 const notes = []
 const distFiles = walk(distDir).map((file) => path.relative(distDir, file).split(path.sep).join('/'))
 
-// On Hostinger, RewriteRules also apply to paths that are real files; on
-// Cloudflare the file wins. Guard against a rule ever shadowing a real file.
+// Both hosts now redirect the .html form of a page to its clean URL, and both
+// are meant to: Apache through the rules in public/.htaccess, Cloudflare
+// through cloudflare/worker.js, which runs before the asset server
+// (run_worker_first). So a rule pointing at a file's clean URL is correct.
+//
+// What would be a real fault is a rule that sends a file somewhere OTHER than
+// its own public URL — that would shadow a real page, the way the legacy
+// "^calculator/([a-z-]+)/?$" catch-all briefly hijacked /calculator/garages.
 const rules = parseRedirectRules(fs.readFileSync(path.join(root, 'public/.htaccess'), 'utf8'))
 for (const rel of distFiles) {
+  if (rel.startsWith('api/') || !rel.endsWith('.html')) continue
   const hit = findRedirect(rules, `/${rel}`)
-  if (hit && !rel.startsWith('api/')) problems.push(`/${rel}: .htaccess redirects this existing file to ${hit.location} — Cloudflare would serve the file instead`)
+  if (!hit) continue
+  const ownUrl = PAGE_URLS[rel]
+  if (ownUrl && hit.location === ownUrl) continue
+  problems.push(`/${rel}: .htaccess redirects this existing page to ${hit.location}, not to its own URL (${ownUrl ?? 'unmapped'}) — a rule is shadowing a real page`)
 }
 
-const paths = [...new Set([...pagePaths(), ...legacyPaths(), ...FIXED_PATHS])].sort()
+// The 2026-07 rebuild's URLs are probed from the map, not from dist/. They are
+// the addresses Google indexed for the eight weeks before the restore, so they
+// have to keep redirecting for good — and /garages/ and /additions/ no longer
+// exist as directories, so deriving them from the build would silently drop
+// exactly the URLs that matter most.
+const paths = [...new Set([...pagePaths(), ...Object.keys(MOVED_URLS), ...legacyPaths(), ...FIXED_PATHS])].sort()
 const results = Object.fromEntries(await mapLimit(paths, 4, async (p) => [p, await probe(p)]))
 
 if (record) {

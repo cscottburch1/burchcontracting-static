@@ -119,9 +119,9 @@ export const SERVICES = [
     ],
     calculator: 'decks',
     relatedServices: [
-      { name: 'Screened Porch Additions', url: '/outdoor-living/screened-porches/' },
-      { name: 'Covered Patios', url: '/outdoor-living/covered-patios/' },
-      { name: 'Room Additions', url: '/additions/' }
+      { name: 'Screened Porch Additions', url: '/outdoor-living/screened-porches' },
+      { name: 'Covered Patios', url: '/outdoor-living/covered-patios' },
+      { name: 'Room Additions', url: '/room-additions' }
     ]
   },
   {
@@ -182,9 +182,9 @@ export const SERVICES = [
     ],
     calculator: 'porch',
     relatedServices: [
-      { name: 'Custom Deck Building', url: '/outdoor-living/decks/' },
-      { name: 'Covered Patios', url: '/outdoor-living/covered-patios/' },
-      { name: 'Room Additions', url: '/additions/' }
+      { name: 'Custom Deck Building', url: '/outdoor-living/decks' },
+      { name: 'Covered Patios', url: '/outdoor-living/covered-patios' },
+      { name: 'Room Additions', url: '/room-additions' }
     ]
   },
   {
@@ -251,15 +251,19 @@ export const SERVICES = [
       { text: 'Laurens County building permits & documents', url: 'https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php' }
     ],
     relatedServices: [
-      { name: 'Custom Deck Building', url: '/outdoor-living/decks/' },
-      { name: 'Screened Porches', url: '/outdoor-living/screened-porches/' },
-      { name: 'Room Additions', url: '/additions/' }
+      { name: 'Custom Deck Building', url: '/outdoor-living/decks' },
+      { name: 'Screened Porches', url: '/outdoor-living/screened-porches' },
+      { name: 'Room Additions', url: '/room-additions' }
     ]
   },
   {
     id: 'garages',
     title: 'Garage Builder',
-    slug: 'garages',
+    // Slug restored to the legacy Next.js path: the 2026-07 rename to
+    // /garages cost this page 20 ranking positions and two thirds of its
+    // clicks (migration/baseline-2026-09.md). id stays 'garages' — it keys
+    // FAQs and content dates, not URLs.
+    slug: 'garage-builder',
     category: 'Construction',
     description: 'Custom garage construction: detached, attached, workshop, and garage apartments. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Garage Builder - Upstate SC',
@@ -321,15 +325,17 @@ export const SERVICES = [
       { text: 'Laurens County building permits & documents', url: 'https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php' }
     ],
     relatedServices: [
-      { name: 'ADU Construction', url: '/adu-builder/' },
-      { name: 'Room Additions', url: '/additions/' },
-      { name: 'Basement Finishing', url: '/basement-finishing/' }
+      { name: 'ADU Construction', url: '/adu-builder' },
+      { name: 'Room Additions', url: '/room-additions' },
+      { name: 'Basement Finishing', url: '/basement-finishing' }
     ]
   },
   {
     id: 'additions',
     title: 'Room Additions',
-    slug: 'additions',
+    // Slug restored to the legacy Next.js path (see the garage-builder note
+    // above). id stays 'additions'.
+    slug: 'room-additions',
     category: 'Construction',
     description: 'Custom room additions: bedrooms, master suites, sunrooms, in-law suites. Full design-build service from foundation to finish.',
     h1: 'Room Addition Contractor - Upstate SC',
@@ -393,9 +399,9 @@ export const SERVICES = [
       { text: 'Laurens County building permits & documents', url: 'https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php' }
     ],
     relatedServices: [
-      { name: 'Basement Finishing', url: '/basement-finishing/' },
-      { name: 'ADU Construction', url: '/adu-builder/' },
-      { name: 'Garage Builder', url: '/garages/' }
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'ADU Construction', url: '/adu-builder' },
+      { name: 'Garage Builder', url: '/garage-builder' }
     ]
   },
   {
@@ -454,9 +460,9 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
-      { name: 'Garage Builder', url: '/garages/' },
-      { name: 'Room Additions', url: '/additions/' },
-      { name: 'Basement Finishing', url: '/basement-finishing/' }
+      { name: 'Garage Builder', url: '/garage-builder' },
+      { name: 'Room Additions', url: '/room-additions' },
+      { name: 'Basement Finishing', url: '/basement-finishing' }
     ]
   },
   {
@@ -544,12 +550,12 @@ export const SERVICES = [
       { id: 'whole-home-remodel', label: 'Whole-Home Cost Calculator' }
     ],
     relatedServices: [
-      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling/' },
-      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling/' },
-      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower/' },
-      { name: 'Room Additions', url: '/additions/' },
-      { name: 'Basement Finishing', url: '/basement-finishing/' },
-      { name: 'ADU Construction', url: '/adu-builder/' }
+      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
+      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling' },
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Room Additions', url: '/room-additions' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'ADU Construction', url: '/adu-builder' }
     ]
   },
   {
@@ -557,7 +563,7 @@ export const SERVICES = [
     title: 'Bathroom Remodeling',
     slug: 'bathroom-remodeling',
     category: 'Remodeling',
-    breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling/' },
+    breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     metaTitle: 'Bathroom Remodeling Simpsonville SC | Burch Contracting',
     heroImage: '/images/bath-shower-conversion-woodruff-sc-1.webp',
     description: 'Bathroom remodeling in Simpsonville, Fountain Inn & Greenville County SC. Transparent per-sqft pricing computed live from our published rates. SC Licensed #CLG118679, 35+ years, BBB A+.',
@@ -721,12 +727,12 @@ export const SERVICES = [
     richContentAfterProcess: bathroomRemodelingAfterProcess(),
     calculator: 'bath-remodel',
     relatedServices: [
-      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling/' },
-      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower/' },
-      { name: 'Home Remodeling', url: '/remodeling/' },
-      { name: 'Basement Finishing', url: '/basement-finishing/' },
-      { name: 'Room Additions', url: '/additions/' },
-      { name: 'ADA Compliance', url: '/ada-compliance/' }
+      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling' },
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'Room Additions', url: '/room-additions' },
+      { name: 'ADA Compliance', url: '/ada-compliance' }
     ]
   },
   {
@@ -734,7 +740,7 @@ export const SERVICES = [
     title: 'Kitchen Remodeling',
     slug: 'kitchen-remodeling',
     category: 'Remodeling',
-    breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling/' },
+    breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     metaTitle: 'Kitchen Remodeling Simpsonville SC | Burch Contracting',
     heroImage: '/images/kitchen-remodeling-sc.webp',
     description: 'Kitchen remodeling in Simpsonville, Fountain Inn & Greenville County SC. Custom cabinets, quartz & granite counters, transparent per-sqft pricing computed from our published rates. SC Licensed #CLG118679, 35+ years, BBB A+.',
@@ -850,10 +856,10 @@ export const SERVICES = [
     richContentAfterProcess: kitchenRemodelingAfterProcess(),
     calculator: 'kitchen-remodel',
     relatedServices: [
-      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling/' },
-      { name: 'Home Remodeling', url: '/remodeling/' },
-      { name: 'Basement Finishing', url: '/basement-finishing/' },
-      { name: 'Room Additions', url: '/additions/' }
+      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'Room Additions', url: '/room-additions' }
     ]
   },
   {
@@ -911,9 +917,9 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
-      { name: 'Remodeling Services', url: '/remodeling/' },
-      { name: 'Room Additions', url: '/additions/' },
-      { name: 'General Contracting', url: '/services.html' }
+      { name: 'Remodeling Services', url: '/remodeling' },
+      { name: 'Room Additions', url: '/room-additions' },
+      { name: 'General Contracting', url: '/services' }
     ]
   },
   {
@@ -973,9 +979,9 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
-      { name: 'Insurance Restoration', url: '/insurance-restoration/' },
-      { name: 'Commercial Upfits', url: '/commercial-upfits/' },
-      { name: 'General Contracting', url: '/services.html' }
+      { name: 'Insurance Restoration', url: '/insurance-restoration' },
+      { name: 'Commercial Upfits', url: '/commercial-upfits' },
+      { name: 'General Contracting', url: '/services' }
     ]
   },
   {
@@ -1039,10 +1045,10 @@ export const SERVICES = [
     ],
     calculator: 'basement-finishing',
     relatedServices: [
-      { name: 'Room Additions', url: '/additions/' },
-      { name: 'Remodeling Services', url: '/remodeling/' },
-      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling/' },
-      { name: 'ADU Construction', url: '/adu-builder/' }
+      { name: 'Room Additions', url: '/room-additions' },
+      { name: 'Remodeling Services', url: '/remodeling' },
+      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling' },
+      { name: 'ADU Construction', url: '/adu-builder' }
     ]
   },
   {
@@ -1081,11 +1087,11 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
-      { name: 'Commercial Roofing', url: '/commercial-roofing/' },
-      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower/' },
-      { name: 'Home Remodeling', url: '/remodeling/' },
-      { name: 'Basement Finishing', url: '/basement-finishing/' },
-      { name: 'Room Additions', url: '/additions/' }
+      { name: 'Commercial Roofing', url: '/commercial-roofing' },
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'Room Additions', url: '/room-additions' }
     ]
   },
   {
@@ -1147,10 +1153,10 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
-      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower/' },
-      { name: 'Home Remodeling', url: '/remodeling/' },
-      { name: 'Basement Finishing', url: '/basement-finishing/' },
-      { name: 'Commercial Upfits', url: '/commercial-upfits/' }
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'Commercial Upfits', url: '/commercial-upfits' }
     ]
   },
   {
@@ -1213,10 +1219,10 @@ export const SERVICES = [
     ],
     calculator: 'ada-bath-shower',
     relatedServices: [
-      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling/' },
-      { name: 'ADA Compliance & Accessibility', url: '/ada-compliance/' },
-      { name: 'Home Remodeling', url: '/remodeling/' },
-      { name: 'Insurance Restoration', url: '/insurance-restoration/' }
+      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
+      { name: 'ADA Compliance & Accessibility', url: '/ada-compliance' },
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'Insurance Restoration', url: '/insurance-restoration' }
     ]
   },
   {
@@ -1274,9 +1280,9 @@ export const SERVICES = [
     ],
     calculator: null,
     relatedServices: [
-      { name: 'Home Remodeling', url: '/remodeling/' },
-      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower/' },
-      { name: 'Insurance Restoration', url: '/insurance-restoration/' }
+      { name: 'Home Remodeling', url: '/remodeling' },
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Insurance Restoration', url: '/insurance-restoration' }
     ]
   }
 ];

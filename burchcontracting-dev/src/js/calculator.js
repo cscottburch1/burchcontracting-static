@@ -193,7 +193,7 @@ function sqftInputClasses(state, sizeRange) {
 
 function sqftWarningHtml(state, sizeRange) {
   if (state.sqft <= sizeRange.max) return '<div class="mb-5"></div>'
-  return `<p class="mb-5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900 leading-relaxed">Above the typical ${sizeRange.max.toLocaleString()} SF range for this project type — the estimate below is capped at ${sizeRange.max.toLocaleString()} SF as a rough ceiling. For a project this size, <a href="/contact.html" class="font-semibold underline hover:text-amber-950">request a custom quote</a> instead of relying on this calculator.</p>`
+  return `<p class="mb-5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900 leading-relaxed">Above the typical ${sizeRange.max.toLocaleString()} SF range for this project type — the estimate below is capped at ${sizeRange.max.toLocaleString()} SF as a rough ceiling. For a project this size, <a href="/contact" class="font-semibold underline hover:text-amber-950">request a custom quote</a> instead of relying on this calculator.</p>`
 }
 
 // Keeps the sqft input's amber/blue border and the warning message in sync
@@ -463,7 +463,7 @@ function renderResults(el, service, state, estimate, page) {
           : ''
       }
       <div class="space-y-3 print:hidden">
-        <a href="/contact.html" class="flex items-center justify-center gap-2 w-full bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">Get Your Free On-Site Consultation</a>
+        <a href="/contact" class="flex items-center justify-center gap-2 w-full bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">Get Your Free On-Site Consultation</a>
         <a href="tel:+18647244600" class="flex items-center justify-center gap-2 w-full border-2 border-slate-300 hover:bg-slate-50 text-slate-800 px-6 py-3 rounded-lg font-semibold text-sm transition-colors">(864) 724-4600</a>
         <button type="button" data-action="print" class="w-full rounded-lg border-2 border-slate-300 bg-white px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 transition-colors text-sm">Save / Print This Estimate</button>
       </div>
@@ -477,6 +477,6 @@ function renderMobileBar(el, estimate) {
       <div class="text-xs text-blue-200">Most Common Estimate</div>
       <div class="text-xl font-bold text-white">${formatCurrency(estimate.mostCommon)}</div>
     </div>
-    <a href="/contact.html" class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 transition-colors">Get Free Quote</a>
+    <a href="/contact" class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 transition-colors">Get Free Quote</a>
   `
 }
