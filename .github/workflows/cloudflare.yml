@@ -146,26 +146,25 @@ jobs:
 
           # 2. Every built page is served byte-for-byte (after normalizing
           #    Cloudflare's email obfuscation, as deploy.yml does).
+          #
+          #    Each page's URL comes from src/data/url-map.js, not from its
+          #    filename. Guessing from the filename asked for /about.html and
+          #    /garage-builder/, which now 301 to the clean URL, and asked for
+          #    /404.html, which correctly returns 404 — failing the whole job
+          #    on a curl error rather than a real mismatch.
           mismatch=0
-          while IFS= read -r -d '' file; do
-            rel="${file#dist/}"
-            case "$rel" in
-              api/*) continue ;;
-            esac
-            if [ "$rel" = "index.html" ]; then
-              url_path="/"
-            elif [ "${rel%/index.html}" != "$rel" ]; then
-              url_path="/${rel%/index.html}/"
-            else
-              url_path="/$rel"
-            fi
-            local_hash=$(python3 ../.github/scripts/strip-cf-email-obfuscation.py "$file" | sha256sum | cut -d' ' -f1)
+          while IFS='|' read -r rel url_path; do
+            [ -n "$rel" ] || continue
+            local_hash=$(python3 ../.github/scripts/strip-cf-email-obfuscation.py "dist/$rel" | sha256sum | cut -d' ' -f1)
             live_hash=$(curl -fsSL "$BASE_URL$url_path?nocache=$GITHUB_RUN_ID" | python3 ../.github/scripts/strip-cf-email-obfuscation.py | sha256sum | cut -d' ' -f1)
             if [ "$local_hash" != "$live_hash" ]; then
-              echo "::error::Content mismatch on $url_path"
+              echo "::error::Content mismatch on $url_path (built from $rel)"
               mismatch=1
             fi
-          done < <(find dist -name '*.html' -print0)
+          done < <(node --input-type=module -e '
+            import { PAGE_URLS } from "./src/data/url-map.js";
+            for (const [file, url] of Object.entries(PAGE_URLS)) console.log(`${file}|${url}`);
+          ')
           [ "$mismatch" = "0" ] || exit 1
           echo "Content check passed: every built page matches $BASE_URL."
 
