@@ -26,6 +26,7 @@ import { CONTENT_DATES } from '../src/data/content-dates.js'
 import { SERVICE_FAQS } from '../src/data/service-faqs.js'
 import { GLOBAL_FAQS, faqPageSchema } from '../src/data/geo-aeo.js'
 import { SERVICES, SITE } from '../src/data/services.js'
+import { SITE_ORIGIN, pageUrl } from '../src/data/url-map.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -72,12 +73,12 @@ const SCHEMA_ONLY_FILES = ['services.html']
 const CALCULATOR_PARENT_SERVICE_URL = {
   ...Object.fromEntries(
     SERVICES.flatMap((s) => {
-      if (s.calculator) return [[`calculator/${s.calculator}.html`, `/${s.slug}/`]]
-      if (s.calculators) return s.calculators.map((c) => [`calculator/${c.id}.html`, `/${s.slug}/`])
+      if (s.calculator) return [[`calculator/${s.calculator}.html`, pageUrl(`${s.slug}/index.html`)]]
+      if (s.calculators) return s.calculators.map((c) => [`calculator/${c.id}.html`, pageUrl(`${s.slug}/index.html`)])
       return []
     })
   ),
-  'calculator/estimate.html': '/services.html',
+  'calculator/estimate.html': pageUrl('services.html'),
 }
 
 const CALCULATOR_FAQ_SOURCE = {
@@ -193,7 +194,7 @@ const PARENT_LINK_END = '    <!-- TRUST-LAYER-PARENT-LINK:END -->'
 // Scott's own invoices? supplier quotes? both?) is asked ONCE, not once per
 // calculator, since it's the same underlying question for all 11.
 function parentServiceLinkHtml(serviceUrl) {
-  const label = serviceUrl === '/services.html' ? 'See All Services & Pricing' : 'View Full Service Details'
+  const label = serviceUrl === '/services' ? 'See All Services & Pricing' : 'View Full Service Details'
   return `      <section class="bg-blue-50 border-b border-blue-100 py-4 print:hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <a href="${esc(serviceUrl)}" class="inline-flex items-center gap-2 text-blue-700 hover:text-blue-800 font-semibold text-sm">&larr; ${esc(label)}</a>
@@ -215,7 +216,7 @@ function methodologyBoxHtml(dates) {
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="bg-white border border-blue-200 rounded-xl p-6">
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-2">How We Price This</p>
-            <p class="text-slate-600 text-sm leading-relaxed">These ranges are computed from Burch Contracting's own pricing formula: a base direct cost per square foot — built from current Upstate SC market data, BLS labor statistics combined with local supplier and subcontractor pricing — adjusted for material, complexity, and site conditions, plus a fixed 20% overhead &amp; profit (see <a href="/services.html" class="text-blue-700 hover:text-blue-800 underline">services.html</a> for the full comparison). Base rates are reviewed as material and labor costs shift; this page was last updated <time datetime="${dates.dateModified}">${dates.dateModified}</time> by C. Scott Burch.</p>
+            <p class="text-slate-600 text-sm leading-relaxed">These ranges are computed from Burch Contracting's own pricing formula: a base direct cost per square foot — built from current Upstate SC market data, BLS labor statistics combined with local supplier and subcontractor pricing — adjusted for material, complexity, and site conditions, plus a fixed 20% overhead &amp; profit (see <a href="/services" class="text-blue-700 hover:text-blue-800 underline">services.html</a> for the full comparison). Base rates are reviewed as material and labor costs shift; this page was last updated <time datetime="${dates.dateModified}">${dates.dateModified}</time> by C. Scott Burch.</p>
           </div>
         </div>
       </section>`
@@ -233,7 +234,7 @@ function costOverviewTableHtml(heading) {
       (s) => `                <tr class="border-t border-slate-200">
                   <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">${esc(s.title)}</th>
                   <td class="px-4 py-3 text-blue-700 font-semibold whitespace-nowrap">${esc(s.stats.costRange)}</td>
-                  <td class="px-4 py-3 text-sm">${s.calculator ? `<a href="/calculator/${esc(s.calculator)}.html" class="text-blue-700 hover:text-blue-800 underline">Calculate your cost &rarr;</a>` : `<a href="/${esc(s.slug)}/" class="text-blue-700 hover:text-blue-800 underline">Learn more &rarr;</a>`}</td>
+                  <td class="px-4 py-3 text-sm">${s.calculator ? `<a href="${pageUrl(`calculator/${s.calculator}.html`)}" class="text-blue-700 hover:text-blue-800 underline">Calculate your cost &rarr;</a>` : `<a href="${pageUrl(`${s.slug}/index.html`)}" class="text-blue-700 hover:text-blue-800 underline">Learn more &rarr;</a>`}</td>
                 </tr>`
     )
     .join('\n')
@@ -359,8 +360,8 @@ function servicesComparisonTableHtml() {
     const permit = PERMIT_REQUIRED[s.slug] ?? 'Case-by-case'
     const chooseIf = CHOOSE_IF[s.slug] ?? ''
     const linkHtml = s.calculator
-      ? `<a href="/calculator/${esc(s.calculator)}.html" class="text-blue-700 hover:text-blue-800 underline">Calculator</a> &middot; <a href="/${esc(s.slug)}/" class="text-blue-700 hover:text-blue-800 underline">Details</a>`
-      : `<a href="/${esc(s.slug)}/" class="text-blue-700 hover:text-blue-800 underline">Details</a>`
+      ? `<a href="${pageUrl(`calculator/${s.calculator}.html`)}" class="text-blue-700 hover:text-blue-800 underline">Calculator</a> &middot; <a href="${pageUrl(`${s.slug}/index.html`)}" class="text-blue-700 hover:text-blue-800 underline">Details</a>`
+      : `<a href="${pageUrl(`${s.slug}/index.html`)}" class="text-blue-700 hover:text-blue-800 underline">Details</a>`
     return `                <tr class="border-t border-slate-200">
                   <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left align-top whitespace-nowrap">${esc(s.title)}</th>
                   <td class="px-4 py-4 text-blue-700 font-semibold align-top whitespace-nowrap">${esc(s.stats.costRange)}</td>
@@ -412,7 +413,7 @@ function fixServiceGridBudgets(html) {
     // one of those first and never reach the actual card. Scan every
     // occurrence of the href and fix the one whose <a>...</a> block
     // actually contains the placeholder text.
-    const hrefAttr = `href="/${s.slug}/"`
+    const hrefAttr = `href="${pageUrl(`${s.slug}/index.html`)}"`
     let searchFrom = 0
     while (true) {
       const cardStart = updated.indexOf(hrefAttr, searchFrom)
@@ -593,14 +594,15 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
     // maintained copies — see the breadcrumb-URL and business/org-linking
     // bugs this replaces). Generated here instead, from the same canonical
     // data every other page generator uses, so it can't drift per-page again.
+    // CALCULATOR_PARENT_SERVICE_URL already holds final URLs from
+    // src/data/url-map.js, so there are no .html or trailing-slash special
+    // cases left and structured data never points at a redirect.
     const parentPath = CALCULATOR_PARENT_SERVICE_URL[relFile]
-    const parentIsFlatFile = parentPath.endsWith('.html')
-    // Directory-style service URLs (no .html extension) 301 to their
-    // trailing-slash form — see generate-services.mjs's canonicals, which
-    // intentionally omit the slash and eat that one redirect hop; structured
-    // data should point straight at the final URL instead of a redirect.
-    const parentUrl = `${SITE.url}${parentPath}${parentIsFlatFile ? '' : '/'}`
-    const parentName = parentIsFlatFile ? 'Services' : (SERVICES.find((s) => `/${s.slug}` === parentPath)?.title ?? 'Services')
+    const parentUrl = `${SITE_ORIGIN}${parentPath}`
+    const parentName =
+      parentPath === pageUrl('services.html')
+        ? 'Services'
+        : (SERVICES.find((s) => pageUrl(`${s.slug}/index.html`) === parentPath)?.title ?? 'Services')
     const calculatorName = `${serviceName} Calculator`
 
     graph.push(
@@ -612,7 +614,7 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE.url}/services.html` },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_ORIGIN}${pageUrl('services.html')}` },
           { '@type': 'ListItem', position: 3, name: parentName, item: parentUrl },
           { '@type': 'ListItem', position: 4, name: calculatorName, item: canonical },
         ],
@@ -644,7 +646,7 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <aside class="bg-slate-50 border border-slate-100 rounded-2xl p-6 lg:p-8" itemscope itemtype="https://schema.org/Person">
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
-            <h3 class="text-xl font-bold text-slate-900" itemprop="name"><a href="/about.html" class="hover:text-blue-700 transition-colors">C. Scott Burch</a></h3>
+            <h3 class="text-xl font-bold text-slate-900" itemprop="name"><a href="/about" class="hover:text-blue-700 transition-colors">C. Scott Burch</a></h3>
             <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
             <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #CLG118679 | NC Licensed (Limited) #107292 | 35+ years serving Upstate SC.</p>
             <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${dates.datePublished}">${dates.datePublished}</time> &middot; Last reviewed: <time datetime="${dates.dateModified}">${dates.dateModified}</time></p>

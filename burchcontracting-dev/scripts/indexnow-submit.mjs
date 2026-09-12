@@ -8,7 +8,7 @@
  *
  *   node scripts/indexnow-submit.mjs                     # every sitemap URL
  *   node scripts/indexnow-submit.mjs --dry-run           # print, send nothing
- *   node scripts/indexnow-submit.mjs --url https://burchcontracting.com/faqs.html
+ *   node scripts/indexnow-submit.mjs --url https://burchcontracting.com/faqs
  *
  * The key is a public file in public/ named <key>.txt whose only content is
  * <key> — that file is how the search engines verify a submission belongs to

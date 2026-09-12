@@ -57,17 +57,17 @@ const CALCULATORS = [
 
 const PAGES = [
   { id: 'index', file: 'index.html', url: '/' },
-  { id: 'services', file: 'services.html', url: '/services.html' },
-  { id: 'about', file: 'about.html', url: '/about.html' },
-  { id: 'contact', file: 'contact.html', url: '/contact.html' },
-  { id: 'projects', file: 'projects.html', url: '/projects.html' },
-  { id: 'faqs', file: 'faqs.html', url: '/faqs.html' },
+  { id: 'services', file: 'services.html', url: '/services' },
+  { id: 'about', file: 'about.html', url: '/about' },
+  { id: 'contact', file: 'contact.html', url: '/contact' },
+  { id: 'projects', file: 'projects.html', url: '/projects' },
+  { id: 'faqs', file: 'faqs.html', url: '/faqs' },
   ...SERVICE_DIRS.map((d) => ({ id: d, file: `${d}/index.html`, url: `/${d}` })),
   ...OUTDOOR_LIVING.map((d) => ({ id: `outdoor-living-${d}`, file: `outdoor-living/${d}/index.html`, url: `/outdoor-living/${d}` })),
   ...SERVICE_AREAS.map((a) => ({ id: `area-${a}`, file: `service-areas/${a}.html`, url: `/service-areas/${a}.html` })),
   ...CALCULATORS.map((c) => ({ id: `calc-${c}`, file: `calculator/${c}.html`, url: `/calculator/${c}.html` })),
-  { id: 'privacy-policy', file: 'privacy-policy.html', url: '/privacy-policy.html', lowPriority: true },
-  { id: 'terms-of-service', file: 'terms-of-service.html', url: '/terms-of-service.html', lowPriority: true },
+  { id: 'privacy-policy', file: 'privacy-policy.html', url: '/privacy-policy', lowPriority: true },
+  { id: 'terms-of-service', file: 'terms-of-service.html', url: '/terms-of-service', lowPriority: true },
 ]
 
 // --- HTML helpers ---------------------------------------------------------

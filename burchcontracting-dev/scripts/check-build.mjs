@@ -53,10 +53,13 @@ function relPath(f) {
   return path.relative(root, f).split(path.sep).join('/')
 }
 
+// Public URLs carry no .html suffix and no trailing slash — the scheme in
+// src/data/url-map.js, restored from the retired Next.js site. Derived here
+// rather than imported so this guard stays runnable on its own.
 function toPublicUrl(rel) {
   if (rel === 'index.html') return '/'
   if (rel.endsWith('/index.html')) return '/' + rel.slice(0, -'/index.html'.length)
-  return '/' + rel
+  return '/' + rel.replace(/\.html$/, '')
 }
 
 const files = walkHtmlFiles(root)

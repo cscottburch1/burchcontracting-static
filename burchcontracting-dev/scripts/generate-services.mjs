@@ -5,6 +5,7 @@ import { SITE, SERVICES } from '../src/data/services.js'
 import { SERVICE_FAQS } from '../src/data/service-faqs.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../src/data/site-schema.js'
 import { CONTENT_DATES } from '../src/data/content-dates.js'
+import { SITE_ORIGIN, pageUrl } from '../src/data/url-map.js'
 
 // Real git-history-derived dates for everything driven by services.js (see
 // scripts/compute-content-dates.mjs). Falls back to LAST_UPDATED_ISO below
@@ -69,28 +70,28 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   <div class="grid grid-cols-2 gap-x-2 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
                     <div>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Outdoor Living</p>
-                    <a href="/outdoor-living/decks/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Custom Decks</a>
-                    <a href="/outdoor-living/screened-porches/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Screened Porches</a>
-                    <a href="/outdoor-living/covered-patios/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Covered Patios</a>
+                    <a href="/outdoor-living/decks" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Custom Decks</a>
+                    <a href="/outdoor-living/screened-porches" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Screened Porches</a>
+                    <a href="/outdoor-living/covered-patios" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Covered Patios</a>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Construction</p>
-                    <a href="/garages/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Garages</a>
-                    <a href="/additions/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Room Additions</a>
-                    <a href="/adu-builder/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADU Builder</a>
-                    <a href="/basement-finishing/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Basement Finishing</a>
+                    <a href="/garage-builder" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Garages</a>
+                    <a href="/room-additions" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Room Additions</a>
+                    <a href="/adu-builder" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADU Builder</a>
+                    <a href="/basement-finishing" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Basement Finishing</a>
                     </div>
                     <div>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Remodeling & More</p>
-                    <a href="/remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
-                    <a href="/bathroom-remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Bathroom Remodeling</a>
-                    <a href="/kitchen-remodeling/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Kitchen Remodeling</a>
-                    <a href="/insurance-restoration/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
+                    <a href="/remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Home Remodeling</a>
+                    <a href="/bathroom-remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Bathroom Remodeling</a>
+                    <a href="/kitchen-remodeling" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Kitchen Remodeling</a>
+                    <a href="/insurance-restoration" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Insurance Restoration</a>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Commercial</p>
-                    <a href="/commercial-upfits/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
-                    <a href="/commercial-roofing/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Roofing</a>
+                    <a href="/commercial-upfits" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Upfits</a>
+                    <a href="/commercial-roofing" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Commercial Roofing</a>
                     <p class="px-3 pb-1 pt-3 first:pt-0 text-xs font-semibold uppercase tracking-wide text-slate-400">Accessibility</p>
-                    <a href="/ada-compliance/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Compliance</a>
-                    <a href="/ada-bath-to-shower/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Bath to Shower</a>
-                    <a href="/handyman/" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Handyman Services</a>
+                    <a href="/ada-compliance" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Compliance</a>
+                    <a href="/ada-bath-to-shower" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">ADA Bath to Shower</a>
+                    <a href="/handyman" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Handyman Services</a>
                     </div>
                   </div>
                 </div>
@@ -103,21 +104,21 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                 </button>
                 <div class="invisible absolute left-0 top-full w-64 pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
                   <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-lg">
-                    <a href="/service-areas/simpsonville.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Simpsonville</a>
-                    <a href="/service-areas/fountain-inn.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Fountain Inn</a>
-                    <a href="/service-areas/mauldin.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Mauldin</a>
-                    <a href="/service-areas/greenville.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Greenville</a>
-                    <a href="/service-areas/five-forks.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Five Forks</a>
-                    <a href="/service-areas/woodruff.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Woodruff</a>
-                    <a href="/service-areas/laurens.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Laurens</a>
-                    <a href="/service-areas/gray-court.html" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Gray Court</a>
+                    <a href="/service-areas/simpsonville" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Simpsonville</a>
+                    <a href="/service-areas/fountain-inn" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Fountain Inn</a>
+                    <a href="/service-areas/mauldin" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Mauldin</a>
+                    <a href="/service-areas/greenville" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Greenville</a>
+                    <a href="/service-areas/five-forks" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Five Forks</a>
+                    <a href="/service-areas/woodruff" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Woodruff</a>
+                    <a href="/service-areas/laurens" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Laurens</a>
+                    <a href="/service-areas/gray-court" class="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">Gray Court</a>
                   </div>
                 </div>
               </div>
-                <a href="/projects.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Projects</a>
-                <a href="/about.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">About</a>
-                <a href="/contact.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Contact</a>
-                <a href="/contact.html" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors duration-200">
+                <a href="/projects" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Projects</a>
+                <a href="/about" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">About</a>
+                <a href="/contact" class="text-slate-600 hover:text-blue-700 font-medium text-sm transition-colors">Contact</a>
+                <a href="/contact" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-colors duration-200">
                   Get Your Free Consultation
                 </a>
               </div>
@@ -150,22 +151,22 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   <span data-mobile-accordion-icon class="text-sm">+</span>
                 </button>
                 <div data-mobile-accordion-panel="services" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
-                  <a href="/outdoor-living/decks/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Custom Decks</a>
-                  <a href="/outdoor-living/screened-porches/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Screened Porches</a>
-                  <a href="/outdoor-living/covered-patios/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Covered Patios</a>
-                  <a href="/garages/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Garages</a>
-                  <a href="/additions/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Room Additions</a>
-                  <a href="/adu-builder/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
-                  <a href="/basement-finishing/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
-                  <a href="/remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
-                  <a href="/bathroom-remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Bathroom Remodeling</a>
-                  <a href="/kitchen-remodeling/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Kitchen Remodeling</a>
-                  <a href="/insurance-restoration/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
-                  <a href="/commercial-upfits/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
-                  <a href="/commercial-roofing/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Roofing</a>
-                  <a href="/ada-compliance/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Compliance</a>
-                  <a href="/ada-bath-to-shower/" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Bath to Shower</a>
-                  <a href="/handyman/" class="text-slate-700 text-sm py-1 hover:text-blue-700">Handyman Services</a>
+                  <a href="/outdoor-living/decks" class="text-slate-700 text-sm py-1 hover:text-blue-700">Custom Decks</a>
+                  <a href="/outdoor-living/screened-porches" class="text-slate-700 text-sm py-1 hover:text-blue-700">Screened Porches</a>
+                  <a href="/outdoor-living/covered-patios" class="text-slate-700 text-sm py-1 hover:text-blue-700">Covered Patios</a>
+                  <a href="/garage-builder" class="text-slate-700 text-sm py-1 hover:text-blue-700">Garages</a>
+                  <a href="/room-additions" class="text-slate-700 text-sm py-1 hover:text-blue-700">Room Additions</a>
+                  <a href="/adu-builder" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADU Builder</a>
+                  <a href="/basement-finishing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Basement Finishing</a>
+                  <a href="/remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Home Remodeling</a>
+                  <a href="/bathroom-remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Bathroom Remodeling</a>
+                  <a href="/kitchen-remodeling" class="text-slate-700 text-sm py-1 hover:text-blue-700">Kitchen Remodeling</a>
+                  <a href="/insurance-restoration" class="text-slate-700 text-sm py-1 hover:text-blue-700">Insurance Restoration</a>
+                  <a href="/commercial-upfits" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Upfits</a>
+                  <a href="/commercial-roofing" class="text-slate-700 text-sm py-1 hover:text-blue-700">Commercial Roofing</a>
+                  <a href="/ada-compliance" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Compliance</a>
+                  <a href="/ada-bath-to-shower" class="text-slate-700 text-sm py-1 hover:text-blue-700">ADA Bath to Shower</a>
+                  <a href="/handyman" class="text-slate-700 text-sm py-1 hover:text-blue-700">Handyman Services</a>
                 </div>
 
                 <button type="button" data-mobile-accordion="areas" class="flex items-center justify-between text-left font-semibold text-slate-900 py-2 w-full">
@@ -173,19 +174,19 @@ const header = `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur borde
                   <span data-mobile-accordion-icon class="text-sm">+</span>
                 </button>
                 <div data-mobile-accordion-panel="areas" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
-                  <a href="/service-areas/simpsonville.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Simpsonville</a>
-                  <a href="/service-areas/fountain-inn.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Fountain Inn</a>
-                  <a href="/service-areas/mauldin.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Mauldin</a>
-                  <a href="/service-areas/greenville.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Greenville</a>
-                  <a href="/service-areas/five-forks.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Five Forks</a>
-                  <a href="/service-areas/woodruff.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Woodruff</a>
-                  <a href="/service-areas/laurens.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Laurens</a>
-                  <a href="/service-areas/gray-court.html" class="text-slate-700 text-sm py-1 hover:text-blue-700">Gray Court</a>
+                  <a href="/service-areas/simpsonville" class="text-slate-700 text-sm py-1 hover:text-blue-700">Simpsonville</a>
+                  <a href="/service-areas/fountain-inn" class="text-slate-700 text-sm py-1 hover:text-blue-700">Fountain Inn</a>
+                  <a href="/service-areas/mauldin" class="text-slate-700 text-sm py-1 hover:text-blue-700">Mauldin</a>
+                  <a href="/service-areas/greenville" class="text-slate-700 text-sm py-1 hover:text-blue-700">Greenville</a>
+                  <a href="/service-areas/five-forks" class="text-slate-700 text-sm py-1 hover:text-blue-700">Five Forks</a>
+                  <a href="/service-areas/woodruff" class="text-slate-700 text-sm py-1 hover:text-blue-700">Woodruff</a>
+                  <a href="/service-areas/laurens" class="text-slate-700 text-sm py-1 hover:text-blue-700">Laurens</a>
+                  <a href="/service-areas/gray-court" class="text-slate-700 text-sm py-1 hover:text-blue-700">Gray Court</a>
                 </div>
-                <a href="/projects.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Projects</a>
-                <a href="/about.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">About</a>
-                <a href="/contact.html" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Contact</a>
-                <a href="/contact.html" class="mt-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2.5 rounded-lg font-semibold text-sm text-center transition-colors">
+                <a href="/projects" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Projects</a>
+                <a href="/about" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">About</a>
+                <a href="/contact" class="text-slate-700 hover:text-blue-700 hover:bg-slate-50 font-medium px-3 py-2 rounded-lg text-sm transition-colors">Contact</a>
+                <a href="/contact" class="mt-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2.5 rounded-lg font-semibold text-sm text-center transition-colors">
                   Get Your Free Consultation
                 </a>
               </div>
@@ -210,26 +211,26 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
           <div>
             <p class="font-semibold text-white mb-4">Our Services</p>
             <ul class="space-y-2 text-sm">
-              <li><a href="/additions/" class="hover:text-white transition-colors">Additions</a></li>
-              <li><a href="/garages/" class="hover:text-white transition-colors">Garages</a></li>
-              <li><a href="/outdoor-living/decks/" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
-              <li><a href="/remodeling/" class="hover:text-white transition-colors">Remodeling</a></li>
-              <li><a href="/bathroom-remodeling/" class="hover:text-white transition-colors">Bathroom Remodeling</a></li>
-              <li><a href="/kitchen-remodeling/" class="hover:text-white transition-colors">Kitchen Remodeling</a></li>
-              <li><a href="/commercial-upfits/" class="hover:text-white transition-colors">Commercial Upfits</a></li>
-              <li><a href="/commercial-roofing/" class="hover:text-white transition-colors">Commercial Roofing</a></li>
-              <li><a href="/insurance-restoration/" class="hover:text-white transition-colors">Insurance Restoration</a></li>
-              <li><a href="/ada-compliance/" class="hover:text-white transition-colors">ADA Compliance</a></li>
-              <li><a href="/handyman/" class="hover:text-white transition-colors">Handyman Services</a></li>
+              <li><a href="/room-additions" class="hover:text-white transition-colors">Additions</a></li>
+              <li><a href="/garage-builder" class="hover:text-white transition-colors">Garages</a></li>
+              <li><a href="/outdoor-living/decks" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
+              <li><a href="/remodeling" class="hover:text-white transition-colors">Remodeling</a></li>
+              <li><a href="/bathroom-remodeling" class="hover:text-white transition-colors">Bathroom Remodeling</a></li>
+              <li><a href="/kitchen-remodeling" class="hover:text-white transition-colors">Kitchen Remodeling</a></li>
+              <li><a href="/commercial-upfits" class="hover:text-white transition-colors">Commercial Upfits</a></li>
+              <li><a href="/commercial-roofing" class="hover:text-white transition-colors">Commercial Roofing</a></li>
+              <li><a href="/insurance-restoration" class="hover:text-white transition-colors">Insurance Restoration</a></li>
+              <li><a href="/ada-compliance" class="hover:text-white transition-colors">ADA Compliance</a></li>
+              <li><a href="/handyman" class="hover:text-white transition-colors">Handyman Services</a></li>
             </ul>
           </div>
           <div>
             <p class="font-semibold text-white mb-4">Service Areas</p>
             <ul class="space-y-2 text-sm">
-              <li><a href="/service-areas/simpsonville.html" class="hover:text-white transition-colors">Simpsonville, SC</a></li>
-              <li><a href="/service-areas/mauldin.html" class="hover:text-white transition-colors">Mauldin, SC</a></li>
-              <li><a href="/service-areas/fountain-inn.html" class="hover:text-white transition-colors">Fountain Inn, SC</a></li>
-              <li><a href="/service-areas/woodruff.html" class="hover:text-white transition-colors">Woodruff, SC</a></li>
+              <li><a href="/service-areas/simpsonville" class="hover:text-white transition-colors">Simpsonville, SC</a></li>
+              <li><a href="/service-areas/mauldin" class="hover:text-white transition-colors">Mauldin, SC</a></li>
+              <li><a href="/service-areas/fountain-inn" class="hover:text-white transition-colors">Fountain Inn, SC</a></li>
+              <li><a href="/service-areas/woodruff" class="hover:text-white transition-colors">Woodruff, SC</a></li>
               <li><a href="/#service-areas" class="hover:text-white transition-colors">All Service Areas</a></li>
             </ul>
           </div>
@@ -258,8 +259,8 @@ const footer = `    <footer class="bg-slate-950 text-slate-400">
         <div class="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500">
           <p>&copy; <span id="year"></span> Burch Contracting. All rights reserved.</p>
           <p class="flex items-center gap-4">
-            <a href="/privacy-policy.html" class="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="/terms-of-service.html" class="hover:text-white transition-colors">Terms of Service</a>
+            <a href="/privacy-policy" class="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="/terms-of-service" class="hover:text-white transition-colors">Terms of Service</a>
           </p>
         </div>
       </div>
@@ -318,13 +319,11 @@ function faqHtml(faqs, idPrefix = 'faq') {
 }
 
 function servicePage(service) {
-  // Trailing slash matters: these pages build to {slug}/index.html and are
-  // served at /{slug}/ — the host 301-redirects the no-slash path to the
-  // slash version (standard directory-URL behavior), so a canonical without
-  // the trailing slash points at a URL that itself redirects instead of the
-  // actual 200 page. Search engines (Bing flagged this) treat that as a
-  // broken/non-self-referencing canonical.
-  const canonical = `${SITE.url}/${service.slug}/`
+  // Every URL comes from src/data/url-map.js, the single source of truth, so
+  // a canonical can never point at a URL that itself redirects. These pages
+  // build to {slug}/index.html and are served at /{slug} — the trailing-slash
+  // and .html forms 301 here.
+  const canonical = `${SITE_ORIGIN}${pageUrl(`${service.slug}/index.html`)}`
   // Nearly every service's <title> is just "{title} | Burch Contracting" —
   // service.metaTitle is an escape hatch for pages that need a geo-targeted
   // title tag distinct from the shorter nav/breadcrumb label in
@@ -394,7 +393,7 @@ function servicePage(service) {
   // without changing the shape for every other service.
   const breadcrumbTrail = [
     { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE.url}/services.html` },
+    { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_ORIGIN}${pageUrl('services.html')}` },
   ]
   if (service.breadcrumbParent) {
     breadcrumbTrail.push({
@@ -487,7 +486,7 @@ ${service.additionalCosts
   const calculatorButton = service.calculators
     ? service.calculators
         .map(
-          (calc) => `            <a href="/calculator/${calc.id}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">${esc(calc.label)}</a>`
+          (calc) => `            <a href="${pageUrl(`calculator/${calc.id}.html`)}" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">${esc(calc.label)}</a>`
         )
         .join('\n')
     : service.calculator
@@ -495,7 +494,7 @@ ${service.additionalCosts
         // page links to its calculator with anchor text containing the
         // price range") rather than a generic "Calculate Your Cost" —
         // reuses stats.costRange, already computed elsewhere on this page.
-        `            <a href="/calculator/${service.calculator}.html" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost — ${esc(service.stats.costRange)}</a>`
+        `            <a href="${pageUrl(`calculator/${service.calculator}.html`)}" class="bg-white hover:bg-slate-50 text-blue-700 border-2 border-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Calculate Your Cost — ${esc(service.stats.costRange)}</a>`
       : ''
 
   const commonProjectsSectionHtml = service.commonProjects
@@ -574,7 +573,7 @@ ${authorBox()}
             <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-400">
               <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
               <li aria-hidden="true"><span>/</span></li>
-              <li><a href="/services.html" class="hover:text-white transition-colors">Services</a></li>
+              <li><a href="/services" class="hover:text-white transition-colors">Services</a></li>
               <li aria-hidden="true"><span>/</span></li>
 ${breadcrumbParentHtml}              <li class="text-slate-200" aria-current="page">${esc(service.title)}</li>
             </ol>
@@ -601,7 +600,7 @@ ${breadcrumbParentHtml}              <li class="text-slate-200" aria-current="pa
             </div>
           </div>
           <div class="flex flex-col sm:flex-row gap-4">
-            <a href="/contact.html" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">Get Free Consultation</a>
+            <a href="/contact" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">Get Free Consultation</a>
             <a href="tel:${SITE.phoneLink}" class="border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">${SITE.phone}</a>
 ${calculatorButton}
           </div>`
@@ -870,7 +869,7 @@ ${relatedServicesHtml}
           <h2 class="text-3xl font-bold text-white mb-4">Ready to Start Your ${esc(service.title)} Project?</h2>
           <p class="text-blue-100 text-lg mb-8">Free consultation and ballpark estimate. ${SITE.bbb} BBB Rating, ${SITE.rating} Google Rating, ${SITE.experience} years serving Upstate SC.</p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact.html" class="bg-white hover:bg-slate-100 text-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Request Free Consultation</a>
+            <a href="/contact" class="bg-white hover:bg-slate-100 text-blue-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors">Request Free Consultation</a>
             <a href="tel:${SITE.phoneLink}" class="border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">${SITE.phone}</a>
           </div>
         </div>

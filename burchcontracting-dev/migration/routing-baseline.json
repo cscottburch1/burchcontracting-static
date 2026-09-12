@@ -1,6 +1,6 @@
 {
   "recordedFrom": "https://burchcontracting.com",
-  "recordedAt": "2026-09-11T20:01:34.357Z",
+  "recordedAt": "2026-09-12T00:52:59.250Z",
   "results": {
     "/": {
       "status": 200,
@@ -16,10 +16,17 @@
       }
     },
     "/.htaccess": {
-      "status": 403,
+      "status": 404,
       "location": null,
       "contentType": "text/html",
-      "headers": {}
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
     },
     "/404": {
       "status": 404,
@@ -35,7 +42,7 @@
       }
     },
     "/404.html": {
-      "status": 200,
+      "status": 404,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -74,8 +81,8 @@
       }
     },
     "/about": {
-      "status": 301,
-      "location": "/about.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -87,9 +94,9 @@
       }
     },
     "/about.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/about",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -114,8 +121,8 @@
     },
     "/about/": {
       "status": 301,
-      "location": "/about.html",
-      "contentType": "text/html",
+      "location": "/about",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -126,8 +133,8 @@
       }
     },
     "/ada-bath-to-shower": {
-      "status": 301,
-      "location": "/ada-bath-to-shower/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -139,9 +146,9 @@
       }
     },
     "/ada-bath-to-shower/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/ada-bath-to-shower",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -152,9 +159,9 @@
       }
     },
     "/ada-bath-to-shower/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/ada-bath-to-shower",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -165,8 +172,8 @@
       }
     },
     "/ada-compliance": {
-      "status": 301,
-      "location": "/ada-compliance/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -178,9 +185,9 @@
       }
     },
     "/ada-compliance/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/ada-compliance",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -191,9 +198,9 @@
       }
     },
     "/ada-compliance/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/ada-compliance",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -205,8 +212,8 @@
     },
     "/additions": {
       "status": 301,
-      "location": "/additions/",
-      "contentType": "text/html",
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -217,22 +224,9 @@
       }
     },
     "/additions/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
-      "headers": {
-        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
-        "x-content-type-options": "nosniff",
-        "x-frame-options": "SAMEORIGIN",
-        "referrer-policy": "strict-origin-when-cross-origin",
-        "permissions-policy": "geolocation=(), microphone=(), camera=()",
-        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
-      }
-    },
-    "/additions/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -243,8 +237,8 @@
       }
     },
     "/adu-builder": {
-      "status": 301,
-      "location": "/adu-builder/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -256,9 +250,9 @@
       }
     },
     "/adu-builder/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -269,9 +263,9 @@
       }
     },
     "/adu-builder/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -284,7 +278,7 @@
     "/areas": {
       "status": 301,
       "location": "/#service-areas",
-      "contentType": "text/html",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -297,7 +291,7 @@
     "/areas?utm_source=routing-check": {
       "status": 301,
       "location": "/#service-areas?utm_source=routing-check",
-      "contentType": "text/html",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -308,8 +302,8 @@
       }
     },
     "/basement-finishing": {
-      "status": 301,
-      "location": "/basement-finishing/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -321,9 +315,9 @@
       }
     },
     "/basement-finishing/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -334,9 +328,9 @@
       }
     },
     "/basement-finishing/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -348,8 +342,8 @@
     },
     "/basement_remodeling/": {
       "status": 301,
-      "location": "/basement-finishing/",
-      "contentType": "text/html",
+      "location": "/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -361,8 +355,8 @@
     },
     "/bath_remodeling/": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -373,8 +367,8 @@
       }
     },
     "/bathroom-remodeling": {
-      "status": 301,
-      "location": "/bathroom-remodeling/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -386,9 +380,9 @@
       }
     },
     "/bathroom-remodeling/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/bathroom-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -399,9 +393,9 @@
       }
     },
     "/bathroom-remodeling/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/bathroom-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -607,8 +601,8 @@
       }
     },
     "/calculator/ada-bath-shower": {
-      "status": 301,
-      "location": "/calculator/estimate.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -620,9 +614,9 @@
       }
     },
     "/calculator/ada-bath-shower.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/ada-bath-shower",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -647,8 +641,8 @@
     },
     "/calculator/ada-bath-shower/": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/ada-bath-shower",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -659,8 +653,8 @@
       }
     },
     "/calculator/additions": {
-      "status": 301,
-      "location": "/calculator/additions.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -672,9 +666,9 @@
       }
     },
     "/calculator/additions.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -699,8 +693,8 @@
     },
     "/calculator/additions/": {
       "status": 301,
-      "location": "/calculator/additions.html",
-      "contentType": "text/html",
+      "location": "/calculator/additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -712,8 +706,8 @@
     },
     "/calculator/adus": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/estimate",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -724,8 +718,8 @@
       }
     },
     "/calculator/basement-finishing": {
-      "status": 301,
-      "location": "/calculator/basement-finishing.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -737,9 +731,9 @@
       }
     },
     "/calculator/basement-finishing.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -764,8 +758,8 @@
     },
     "/calculator/basement-finishing/": {
       "status": 301,
-      "location": "/calculator/basement-finishing.html",
-      "contentType": "text/html",
+      "location": "/calculator/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -776,8 +770,8 @@
       }
     },
     "/calculator/bath-remodel": {
-      "status": 301,
-      "location": "/calculator/estimate.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -789,9 +783,9 @@
       }
     },
     "/calculator/bath-remodel.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -816,8 +810,8 @@
     },
     "/calculator/bath-remodel/": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -829,8 +823,8 @@
     },
     "/calculator/bathroom-remodeling": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -842,8 +836,8 @@
     },
     "/calculator/commercial-renovations": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/estimate",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -854,8 +848,8 @@
       }
     },
     "/calculator/covered-patios": {
-      "status": 301,
-      "location": "/calculator/estimate.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -867,9 +861,9 @@
       }
     },
     "/calculator/covered-patios.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/covered-patios",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -894,8 +888,8 @@
     },
     "/calculator/covered-patios/": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/covered-patios",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -906,8 +900,8 @@
       }
     },
     "/calculator/decks": {
-      "status": 301,
-      "location": "/calculator/decks.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -920,8 +914,8 @@
     },
     "/calculator/decks-screened-porches": {
       "status": 301,
-      "location": "/calculator/porch.html",
-      "contentType": "text/html",
+      "location": "/calculator/porch",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -932,9 +926,9 @@
       }
     },
     "/calculator/decks.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -959,8 +953,8 @@
     },
     "/calculator/decks/": {
       "status": 301,
-      "location": "/calculator/decks.html",
-      "contentType": "text/html",
+      "location": "/calculator/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -971,8 +965,8 @@
       }
     },
     "/calculator/estimate": {
-      "status": 301,
-      "location": "/calculator/estimate.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -984,9 +978,9 @@
       }
     },
     "/calculator/estimate.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/estimate",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1011,8 +1005,8 @@
     },
     "/calculator/estimate/": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/estimate",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1023,8 +1017,8 @@
       }
     },
     "/calculator/garages": {
-      "status": 301,
-      "location": "/calculator/garages.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -1036,9 +1030,9 @@
       }
     },
     "/calculator/garages.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/garages",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1063,8 +1057,8 @@
     },
     "/calculator/garages/": {
       "status": 301,
-      "location": "/calculator/garages.html",
-      "contentType": "text/html",
+      "location": "/calculator/garages",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1076,8 +1070,8 @@
     },
     "/calculator/handyman": {
       "status": 301,
-      "location": "/handyman/",
-      "contentType": "text/html",
+      "location": "/handyman",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1088,8 +1082,8 @@
       }
     },
     "/calculator/kitchen-remodel": {
-      "status": 301,
-      "location": "/calculator/estimate.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -1101,9 +1095,9 @@
       }
     },
     "/calculator/kitchen-remodel.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/kitchen-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1128,8 +1122,8 @@
     },
     "/calculator/kitchen-remodel/": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/kitchen-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1141,8 +1135,8 @@
     },
     "/calculator/kitchen-remodeling": {
       "status": 301,
-      "location": "/calculator/kitchen-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/kitchen-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1153,8 +1147,8 @@
       }
     },
     "/calculator/porch": {
-      "status": 301,
-      "location": "/calculator/porch.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -1166,9 +1160,9 @@
       }
     },
     "/calculator/porch.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/porch",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1193,8 +1187,8 @@
     },
     "/calculator/porch/": {
       "status": 301,
-      "location": "/calculator/porch.html",
-      "contentType": "text/html",
+      "location": "/calculator/porch",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1206,8 +1200,8 @@
     },
     "/calculator/remodeling": {
       "status": 301,
-      "location": "/calculator/whole-home-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/whole-home-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1219,8 +1213,8 @@
     },
     "/calculator/room-additions": {
       "status": 301,
-      "location": "/calculator/additions.html",
-      "contentType": "text/html",
+      "location": "/calculator/additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1232,8 +1226,8 @@
     },
     "/calculator/screened-porches": {
       "status": 301,
-      "location": "/calculator/porch.html",
-      "contentType": "text/html",
+      "location": "/calculator/porch",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1244,8 +1238,8 @@
       }
     },
     "/calculator/whole-home-remodel": {
-      "status": 301,
-      "location": "/calculator/estimate.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -1257,9 +1251,9 @@
       }
     },
     "/calculator/whole-home-remodel.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/calculator/whole-home-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1284,8 +1278,8 @@
     },
     "/calculator/whole-home-remodel/": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/whole-home-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1297,8 +1291,8 @@
     },
     "/calculators": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/estimate",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1310,8 +1304,8 @@
     },
     "/clients/": {
       "status": 301,
-      "location": "/contact.html",
-      "contentType": "text/html",
+      "location": "/contact",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1323,8 +1317,8 @@
     },
     "/clinton-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1336,8 +1330,8 @@
     },
     "/clinton-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1349,8 +1343,8 @@
     },
     "/clinton-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1362,8 +1356,8 @@
     },
     "/clinton-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1375,8 +1369,8 @@
     },
     "/clinton-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1388,8 +1382,8 @@
     },
     "/clinton-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1401,8 +1395,8 @@
     },
     "/clinton-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1414,8 +1408,8 @@
     },
     "/commercial-renovations": {
       "status": 301,
-      "location": "/commercial-upfits/",
-      "contentType": "text/html",
+      "location": "/commercial-upfits",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1426,8 +1420,8 @@
       }
     },
     "/commercial-roofing": {
-      "status": 301,
-      "location": "/commercial-roofing/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -1439,9 +1433,9 @@
       }
     },
     "/commercial-roofing/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/commercial-roofing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1452,9 +1446,9 @@
       }
     },
     "/commercial-roofing/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/commercial-roofing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1466,8 +1460,8 @@
     },
     "/commercial-roofing_company/": {
       "status": 301,
-      "location": "/commercial-roofing/",
-      "contentType": "text/html",
+      "location": "/commercial-roofing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1479,8 +1473,8 @@
     },
     "/commercial-services/": {
       "status": 301,
-      "location": "/commercial-upfits/",
-      "contentType": "text/html",
+      "location": "/commercial-upfits",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1491,8 +1485,8 @@
       }
     },
     "/commercial-upfits": {
-      "status": 301,
-      "location": "/commercial-upfits/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -1504,9 +1498,9 @@
       }
     },
     "/commercial-upfits/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/commercial-upfits",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1517,9 +1511,9 @@
       }
     },
     "/commercial-upfits/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/commercial-upfits",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1531,8 +1525,8 @@
     },
     "/commercial_remodeling_company/": {
       "status": 301,
-      "location": "/commercial-upfits/",
-      "contentType": "text/html",
+      "location": "/commercial-upfits",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1543,8 +1537,8 @@
       }
     },
     "/contact": {
-      "status": 301,
-      "location": "/contact.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -1556,9 +1550,9 @@
       }
     },
     "/contact.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/contact",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1583,8 +1577,8 @@
     },
     "/contact/": {
       "status": 301,
-      "location": "/contact.html",
-      "contentType": "text/html",
+      "location": "/contact",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1595,8 +1589,8 @@
       }
     },
     "/contact?utm_source=routing-check": {
-      "status": 301,
-      "location": "/contact.html?utm_source=routing-check",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -1609,8 +1603,8 @@
     },
     "/cost": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/estimate",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1622,8 +1616,8 @@
     },
     "/cost/basement-finishing-cost-greenville-sc": {
       "status": 301,
-      "location": "/calculator/basement-finishing.html",
-      "contentType": "text/html",
+      "location": "/calculator/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1635,8 +1629,8 @@
     },
     "/cost/bathroom-remodel-cost-greenville-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1648,8 +1642,8 @@
     },
     "/cost/bathroom-remodel-cost-simpsonville-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1661,8 +1655,8 @@
     },
     "/cost/cost-to-build-a-deck-simpsonville-sc": {
       "status": 301,
-      "location": "/calculator/decks.html",
-      "contentType": "text/html",
+      "location": "/calculator/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1674,8 +1668,8 @@
     },
     "/cost/deck-cost-simpsonville-sc": {
       "status": 301,
-      "location": "/calculator/estimate.html",
-      "contentType": "text/html",
+      "location": "/calculator/estimate",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1687,8 +1681,8 @@
     },
     "/cost/garage-construction-cost-laurens-sc": {
       "status": 301,
-      "location": "/calculator/garages.html",
-      "contentType": "text/html",
+      "location": "/calculator/garages",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1700,8 +1694,8 @@
     },
     "/cost/home-addition-cost-greenville-sc": {
       "status": 301,
-      "location": "/calculator/additions.html",
-      "contentType": "text/html",
+      "location": "/calculator/additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1713,8 +1707,8 @@
     },
     "/cost/kitchen-remodel-cost-greenville-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1726,8 +1720,8 @@
     },
     "/cost/kitchen-remodel-cost-simpsonville-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1739,8 +1733,8 @@
     },
     "/cost/room-addition-cost-greenville-sc": {
       "status": 301,
-      "location": "/calculator/additions.html",
-      "contentType": "text/html",
+      "location": "/calculator/additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1752,8 +1746,8 @@
     },
     "/cost/screened-porch-vs-sunroom-sc": {
       "status": 301,
-      "location": "/calculator/porch.html",
-      "contentType": "text/html",
+      "location": "/calculator/porch",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1765,8 +1759,8 @@
     },
     "/deck-builder": {
       "status": 301,
-      "location": "/outdoor-living/decks/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1778,8 +1772,8 @@
     },
     "/editorial-policy": {
       "status": 301,
-      "location": "/about.html",
-      "contentType": "text/html",
+      "location": "/about",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1791,8 +1785,8 @@
     },
     "/employment": {
       "status": 301,
-      "location": "/contact.html",
-      "contentType": "text/html",
+      "location": "/contact",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1804,8 +1798,8 @@
     },
     "/employment/direct-hire": {
       "status": 301,
-      "location": "/contact.html",
-      "contentType": "text/html",
+      "location": "/contact",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1816,7 +1810,7 @@
       }
     },
     "/faqs": {
-      "status": 404,
+      "status": 200,
       "location": null,
       "contentType": "text/html",
       "headers": {
@@ -1829,9 +1823,9 @@
       }
     },
     "/faqs.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/faqs",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1855,9 +1849,9 @@
       }
     },
     "/faqs/": {
-      "status": 404,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/faqs",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1895,8 +1889,8 @@
     },
     "/fountain-inn-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1908,8 +1902,8 @@
     },
     "/fountain-inn-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1921,8 +1915,8 @@
     },
     "/fountain-inn-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1934,8 +1928,8 @@
     },
     "/fountain-inn-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1947,8 +1941,8 @@
     },
     "/fountain-inn-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1960,8 +1954,8 @@
     },
     "/fountain-inn-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1973,8 +1967,8 @@
     },
     "/fountain-inn-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1985,9 +1979,35 @@
       }
     },
     "/garage-builder": {
-      "status": 301,
-      "location": "/garages/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/garage-builder/": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/garage-builder/index.html": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1999,8 +2019,8 @@
     },
     "/garages": {
       "status": 301,
-      "location": "/garages/",
-      "contentType": "text/html",
+      "location": "/garage-builder",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2011,22 +2031,9 @@
       }
     },
     "/garages/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
-      "headers": {
-        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
-        "x-content-type-options": "nosniff",
-        "x-frame-options": "SAMEORIGIN",
-        "referrer-policy": "strict-origin-when-cross-origin",
-        "permissions-policy": "geolocation=(), microphone=(), camera=()",
-        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
-      }
-    },
-    "/garages/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2038,8 +2045,8 @@
     },
     "/gray-court-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/gray-court.html",
-      "contentType": "text/html",
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2051,8 +2058,8 @@
     },
     "/gray-court-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/gray-court.html",
-      "contentType": "text/html",
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2064,8 +2071,8 @@
     },
     "/gray-court-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/gray-court.html",
-      "contentType": "text/html",
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2077,8 +2084,8 @@
     },
     "/gray-court-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/gray-court.html",
-      "contentType": "text/html",
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2090,8 +2097,8 @@
     },
     "/gray-court-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/gray-court.html",
-      "contentType": "text/html",
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2103,8 +2110,8 @@
     },
     "/gray-court-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/gray-court.html",
-      "contentType": "text/html",
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2116,8 +2123,8 @@
     },
     "/gray-court-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/gray-court.html",
-      "contentType": "text/html",
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2128,8 +2135,8 @@
       }
     },
     "/handyman": {
-      "status": 301,
-      "location": "/handyman/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -2142,8 +2149,8 @@
     },
     "/handyman-services-estimator/": {
       "status": 301,
-      "location": "/handyman/",
-      "contentType": "text/html",
+      "location": "/handyman",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2155,8 +2162,8 @@
     },
     "/handyman-services-near-you/": {
       "status": 301,
-      "location": "/handyman/",
-      "contentType": "text/html",
+      "location": "/handyman",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2167,9 +2174,9 @@
       }
     },
     "/handyman/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/handyman",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2180,9 +2187,9 @@
       }
     },
     "/handyman/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/handyman",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2194,8 +2201,8 @@
     },
     "/home-renovations": {
       "status": 301,
-      "location": "/remodeling/",
-      "contentType": "text/html",
+      "location": "/remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2206,9 +2213,9 @@
       }
     },
     "/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2219,8 +2226,8 @@
       }
     },
     "/insurance-restoration": {
-      "status": 301,
-      "location": "/insurance-restoration/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -2232,9 +2239,9 @@
       }
     },
     "/insurance-restoration/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/insurance-restoration",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2245,9 +2252,9 @@
       }
     },
     "/insurance-restoration/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/insurance-restoration",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2259,8 +2266,8 @@
     },
     "/joanna-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2272,8 +2279,8 @@
     },
     "/joanna-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2285,8 +2292,8 @@
     },
     "/joanna-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2298,8 +2305,8 @@
     },
     "/joanna-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2311,8 +2318,8 @@
     },
     "/joanna-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2324,8 +2331,8 @@
     },
     "/joanna-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2337,8 +2344,8 @@
     },
     "/joanna-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2349,8 +2356,8 @@
       }
     },
     "/kitchen-remodeling": {
-      "status": 301,
-      "location": "/kitchen-remodeling/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -2362,9 +2369,9 @@
       }
     },
     "/kitchen-remodeling/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2375,9 +2382,9 @@
       }
     },
     "/kitchen-remodeling/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2389,8 +2396,8 @@
     },
     "/kitchen_remodeling/": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2402,8 +2409,8 @@
     },
     "/laurens-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2415,8 +2422,8 @@
     },
     "/laurens-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2428,8 +2435,8 @@
     },
     "/laurens-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2441,8 +2448,8 @@
     },
     "/laurens-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2454,8 +2461,8 @@
     },
     "/laurens-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2467,8 +2474,8 @@
     },
     "/laurens-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2480,8 +2487,8 @@
     },
     "/laurens-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2507,7 +2514,124 @@
     "/locations": {
       "status": 301,
       "location": "/#service-areas",
-      "contentType": "text/html",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-five-forks-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-fountain-inn-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-gray-court-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-greenville-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-greer-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-laurens-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-mauldin-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-simpsonville-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/adu-builder-woodruff-sc": {
+      "status": 301,
+      "location": "/adu-builder",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2519,8 +2643,8 @@
     },
     "/locations/basement-finishing-five-forks-sc": {
       "status": 301,
-      "location": "/basement-finishing/",
-      "contentType": "text/html",
+      "location": "/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2532,8 +2656,21 @@
     },
     "/locations/basement-finishing-fountain-inn-sc": {
       "status": 301,
-      "location": "/basement-finishing/",
-      "contentType": "text/html",
+      "location": "/basement-finishing",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/basement-finishing-gray-court-sc": {
+      "status": 301,
+      "location": "/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2545,8 +2682,34 @@
     },
     "/locations/basement-finishing-greenville-sc": {
       "status": 301,
-      "location": "/basement-finishing/",
-      "contentType": "text/html",
+      "location": "/basement-finishing",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/basement-finishing-greer-sc": {
+      "status": 301,
+      "location": "/basement-finishing",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/basement-finishing-laurens-sc": {
+      "status": 301,
+      "location": "/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2558,8 +2721,8 @@
     },
     "/locations/basement-finishing-mauldin-sc": {
       "status": 301,
-      "location": "/basement-finishing/",
-      "contentType": "text/html",
+      "location": "/basement-finishing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2571,8 +2734,60 @@
     },
     "/locations/basement-finishing-simpsonville-sc": {
       "status": 301,
-      "location": "/basement-finishing/",
-      "contentType": "text/html",
+      "location": "/basement-finishing",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/basement-finishing-woodruff-sc": {
+      "status": 301,
+      "location": "/basement-finishing",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/bath-to-tile-shower-five-forks-sc": {
+      "status": 301,
+      "location": "/#service-areas",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/bath-to-tile-shower-fountain-inn-sc": {
+      "status": 301,
+      "location": "/#service-areas",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/bath-to-tile-shower-gray-court-sc": {
+      "status": 301,
+      "location": "/#service-areas",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2585,7 +2800,7 @@
     "/locations/bath-to-tile-shower-greenville-sc": {
       "status": 301,
       "location": "/#service-areas",
-      "contentType": "text/html",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2598,7 +2813,33 @@
     "/locations/bath-to-tile-shower-greer-sc": {
       "status": 301,
       "location": "/#service-areas",
-      "contentType": "text/html",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/bath-to-tile-shower-laurens-sc": {
+      "status": 301,
+      "location": "/#service-areas",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/bath-to-tile-shower-mauldin-sc": {
+      "status": 301,
+      "location": "/#service-areas",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2611,7 +2852,20 @@
     "/locations/bath-to-tile-shower-simpsonville-sc": {
       "status": 301,
       "location": "/#service-areas",
-      "contentType": "text/html",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/bath-to-tile-shower-woodruff-sc": {
+      "status": 301,
+      "location": "/#service-areas",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2623,8 +2877,8 @@
     },
     "/locations/bathroom-remodeling-five-forks-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2636,8 +2890,21 @@
     },
     "/locations/bathroom-remodeling-fountain-inn-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/bathroom-remodeling-gray-court-sc": {
+      "status": 301,
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2649,8 +2916,8 @@
     },
     "/locations/bathroom-remodeling-greenville-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2662,8 +2929,8 @@
     },
     "/locations/bathroom-remodeling-greer-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2675,8 +2942,8 @@
     },
     "/locations/bathroom-remodeling-laurens-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2688,8 +2955,8 @@
     },
     "/locations/bathroom-remodeling-mauldin-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2701,8 +2968,8 @@
     },
     "/locations/bathroom-remodeling-simpsonville-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2714,8 +2981,8 @@
     },
     "/locations/bathroom-remodeling-woodruff-sc": {
       "status": 301,
-      "location": "/calculator/bath-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/bath-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2727,8 +2994,34 @@
     },
     "/locations/deck-builder-five-forks-sc": {
       "status": 301,
-      "location": "/outdoor-living/decks/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/decks",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/deck-builder-fountain-inn-sc": {
+      "status": 301,
+      "location": "/outdoor-living/decks",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/deck-builder-gray-court-sc": {
+      "status": 301,
+      "location": "/outdoor-living/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2740,8 +3033,34 @@
     },
     "/locations/deck-builder-greenville-sc": {
       "status": 301,
-      "location": "/outdoor-living/decks/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/decks",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/deck-builder-greer-sc": {
+      "status": 301,
+      "location": "/outdoor-living/decks",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/deck-builder-laurens-sc": {
+      "status": 301,
+      "location": "/outdoor-living/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2753,8 +3072,8 @@
     },
     "/locations/deck-builder-mauldin-sc": {
       "status": 301,
-      "location": "/outdoor-living/decks/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2766,8 +3085,21 @@
     },
     "/locations/deck-builder-simpsonville-sc": {
       "status": 301,
-      "location": "/outdoor-living/decks/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/decks",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/deck-builder-woodruff-sc": {
+      "status": 301,
+      "location": "/outdoor-living/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2780,7 +3112,124 @@
     "/locations/decks-screened-porches-fountain-inn-sc": {
       "status": 301,
       "location": "/#service-areas",
-      "contentType": "text/html",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-five-forks-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-fountain-inn-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-gray-court-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-greenville-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-greer-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-laurens-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-mauldin-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-simpsonville-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/garage-builder-woodruff-sc": {
+      "status": 301,
+      "location": "/garage-builder",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2792,8 +3241,8 @@
     },
     "/locations/kitchen-remodeling-five-forks-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2805,8 +3254,21 @@
     },
     "/locations/kitchen-remodeling-fountain-inn-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/kitchen-remodeling-gray-court-sc": {
+      "status": 301,
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2818,8 +3280,8 @@
     },
     "/locations/kitchen-remodeling-greenville-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2831,8 +3293,8 @@
     },
     "/locations/kitchen-remodeling-greer-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2844,8 +3306,8 @@
     },
     "/locations/kitchen-remodeling-laurens-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2857,8 +3319,8 @@
     },
     "/locations/kitchen-remodeling-mauldin-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2870,8 +3332,8 @@
     },
     "/locations/kitchen-remodeling-simpsonville-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2883,8 +3345,8 @@
     },
     "/locations/kitchen-remodeling-woodruff-sc": {
       "status": 301,
-      "location": "/kitchen-remodeling/",
-      "contentType": "text/html",
+      "location": "/kitchen-remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2896,8 +3358,8 @@
     },
     "/locations/room-additions-five-forks-sc": {
       "status": 301,
-      "location": "/additions/",
-      "contentType": "text/html",
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2909,8 +3371,21 @@
     },
     "/locations/room-additions-fountain-inn-sc": {
       "status": 301,
-      "location": "/additions/",
-      "contentType": "text/html",
+      "location": "/room-additions",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/room-additions-gray-court-sc": {
+      "status": 301,
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2922,8 +3397,34 @@
     },
     "/locations/room-additions-greenville-sc": {
       "status": 301,
-      "location": "/additions/",
-      "contentType": "text/html",
+      "location": "/room-additions",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/room-additions-greer-sc": {
+      "status": 301,
+      "location": "/room-additions",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/room-additions-laurens-sc": {
+      "status": 301,
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2935,8 +3436,8 @@
     },
     "/locations/room-additions-mauldin-sc": {
       "status": 301,
-      "location": "/additions/",
-      "contentType": "text/html",
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2948,8 +3449,21 @@
     },
     "/locations/room-additions-simpsonville-sc": {
       "status": 301,
-      "location": "/additions/",
-      "contentType": "text/html",
+      "location": "/room-additions",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/room-additions-woodruff-sc": {
+      "status": 301,
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2961,8 +3475,34 @@
     },
     "/locations/screened-porch-builder-five-forks-sc": {
       "status": 301,
-      "location": "/outdoor-living/screened-porches/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/screened-porch-builder-fountain-inn-sc": {
+      "status": 301,
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/screened-porch-builder-gray-court-sc": {
+      "status": 301,
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2974,8 +3514,8 @@
     },
     "/locations/screened-porch-builder-greenville-sc": {
       "status": 301,
-      "location": "/outdoor-living/screened-porches/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -2987,8 +3527,21 @@
     },
     "/locations/screened-porch-builder-greer-sc": {
       "status": 301,
-      "location": "/outdoor-living/screened-porches/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/screened-porch-builder-laurens-sc": {
+      "status": 301,
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3000,8 +3553,8 @@
     },
     "/locations/screened-porch-builder-mauldin-sc": {
       "status": 301,
-      "location": "/outdoor-living/screened-porches/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3013,8 +3566,21 @@
     },
     "/locations/screened-porch-builder-simpsonville-sc": {
       "status": 301,
-      "location": "/outdoor-living/screened-porches/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/locations/screened-porch-builder-woodruff-sc": {
+      "status": 301,
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3026,8 +3592,8 @@
     },
     "/mauldin-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3039,8 +3605,8 @@
     },
     "/mauldin-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3052,8 +3618,8 @@
     },
     "/mauldin-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3065,8 +3631,8 @@
     },
     "/mauldin-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3078,8 +3644,8 @@
     },
     "/mauldin-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3091,8 +3657,8 @@
     },
     "/mauldin-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3104,8 +3670,8 @@
     },
     "/mauldin-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3117,8 +3683,8 @@
     },
     "/ora-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3130,8 +3696,8 @@
     },
     "/ora-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3143,8 +3709,8 @@
     },
     "/ora-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3156,8 +3722,8 @@
     },
     "/ora-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3169,8 +3735,8 @@
     },
     "/ora-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3182,8 +3748,8 @@
     },
     "/ora-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3195,8 +3761,8 @@
     },
     "/ora-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3208,8 +3774,8 @@
     },
     "/outdoor-living": {
       "status": 301,
-      "location": "/services.html",
-      "contentType": "text/html",
+      "location": "/services",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3220,8 +3786,8 @@
       }
     },
     "/outdoor-living/covered-patios": {
-      "status": 301,
-      "location": "/outdoor-living/covered-patios/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3233,9 +3799,9 @@
       }
     },
     "/outdoor-living/covered-patios/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/outdoor-living/covered-patios",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3246,9 +3812,9 @@
       }
     },
     "/outdoor-living/covered-patios/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/outdoor-living/covered-patios",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3259,8 +3825,8 @@
       }
     },
     "/outdoor-living/decks": {
-      "status": 301,
-      "location": "/outdoor-living/decks/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3272,9 +3838,9 @@
       }
     },
     "/outdoor-living/decks/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/outdoor-living/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3285,9 +3851,9 @@
       }
     },
     "/outdoor-living/decks/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/outdoor-living/decks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3298,8 +3864,8 @@
       }
     },
     "/outdoor-living/screened-porches": {
-      "status": 301,
-      "location": "/outdoor-living/screened-porches/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3311,9 +3877,9 @@
       }
     },
     "/outdoor-living/screened-porches/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3324,9 +3890,9 @@
       }
     },
     "/outdoor-living/screened-porches/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3338,8 +3904,8 @@
     },
     "/pricing": {
       "status": 301,
-      "location": "/services.html",
-      "contentType": "text/html",
+      "location": "/services",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3350,8 +3916,8 @@
       }
     },
     "/privacy-policy": {
-      "status": 301,
-      "location": "/privacy-policy.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3363,9 +3929,9 @@
       }
     },
     "/privacy-policy.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/privacy-policy",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3390,8 +3956,8 @@
     },
     "/privacy-policy/": {
       "status": 301,
-      "location": "/privacy-policy.html",
-      "contentType": "text/html",
+      "location": "/privacy-policy",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3402,8 +3968,8 @@
       }
     },
     "/projects": {
-      "status": 301,
-      "location": "/projects.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3415,9 +3981,9 @@
       }
     },
     "/projects.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3442,8 +4008,8 @@
     },
     "/projects/": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3455,8 +4021,8 @@
     },
     "/projects/basement-finishing-simpsonville": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3468,8 +4034,8 @@
     },
     "/projects/basement-living-suite-greenville": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3481,8 +4047,8 @@
     },
     "/projects/bathroom-renovation-greenville": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3494,8 +4060,8 @@
     },
     "/projects/deck-build-woodruff-sc": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3507,8 +4073,8 @@
     },
     "/projects/deck-entertaining-space-simpsonville": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3520,8 +4086,8 @@
     },
     "/projects/garage-builder-gray-court-sc": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3533,8 +4099,8 @@
     },
     "/projects/garage-construction-fountain-inn-sc": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3546,8 +4112,8 @@
     },
     "/projects/kitchen-workflow-upgrade-simpsonville": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3559,8 +4125,8 @@
     },
     "/projects/room-addition-expansion-greenville": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3572,8 +4138,8 @@
     },
     "/projects/room-addition-laurens-sc": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3585,8 +4151,8 @@
     },
     "/projects/screened-porch-family-space-five-forks": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3598,8 +4164,8 @@
     },
     "/projects/screened-porch-mauldin-sc": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3611,8 +4177,8 @@
     },
     "/projects/screened-porch-simpsonville": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3623,8 +4189,8 @@
       }
     },
     "/remodeling": {
-      "status": 301,
-      "location": "/remodeling/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3636,9 +4202,9 @@
       }
     },
     "/remodeling/": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3649,9 +4215,9 @@
       }
     },
     "/remodeling/index.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3663,8 +4229,8 @@
     },
     "/remodeling_cost_calculator/": {
       "status": 301,
-      "location": "/calculator/whole-home-remodel.html",
-      "contentType": "text/html",
+      "location": "/calculator/whole-home-remodel",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3676,8 +4242,8 @@
     },
     "/request_a_free_estimate/": {
       "status": 301,
-      "location": "/contact.html",
-      "contentType": "text/html",
+      "location": "/contact",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3702,8 +4268,8 @@
     },
     "/roofing/": {
       "status": 301,
-      "location": "/commercial-roofing/",
-      "contentType": "text/html",
+      "location": "/commercial-roofing",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3714,9 +4280,35 @@
       }
     },
     "/room-additions": {
-      "status": 301,
-      "location": "/additions/",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/room-additions/": {
+      "status": 301,
+      "location": "/room-additions",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/room-additions/index.html": {
+      "status": 301,
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3728,8 +4320,8 @@
     },
     "/room_additions/": {
       "status": 301,
-      "location": "/additions/",
-      "contentType": "text/html",
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3741,8 +4333,8 @@
     },
     "/screened-porches": {
       "status": 301,
-      "location": "/outdoor-living/screened-porches/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3754,8 +4346,8 @@
     },
     "/screened_patios/": {
       "status": 301,
-      "location": "/outdoor-living/screened-porches/",
-      "contentType": "text/html",
+      "location": "/outdoor-living/screened-porches",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3768,7 +4360,7 @@
     "/service-areas": {
       "status": 301,
       "location": "/#service-areas",
-      "contentType": "text/html",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3779,8 +4371,8 @@
       }
     },
     "/service-areas/five-forks": {
-      "status": 301,
-      "location": "/service-areas/five-forks.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3792,9 +4384,9 @@
       }
     },
     "/service-areas/five-forks.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/service-areas/five-forks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3819,8 +4411,8 @@
     },
     "/service-areas/five-forks/": {
       "status": 301,
-      "location": "/service-areas/five-forks.html",
-      "contentType": "text/html",
+      "location": "/service-areas/five-forks",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3831,8 +4423,8 @@
       }
     },
     "/service-areas/fountain-inn": {
-      "status": 301,
-      "location": "/service-areas/fountain-inn.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3845,8 +4437,8 @@
     },
     "/service-areas/fountain-inn-sc": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3857,9 +4449,9 @@
       }
     },
     "/service-areas/fountain-inn.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3884,8 +4476,8 @@
     },
     "/service-areas/fountain-inn/": {
       "status": 301,
-      "location": "/service-areas/fountain-inn.html",
-      "contentType": "text/html",
+      "location": "/service-areas/fountain-inn",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3896,8 +4488,8 @@
       }
     },
     "/service-areas/gray-court": {
-      "status": 301,
-      "location": "/service-areas/gray-court.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3909,9 +4501,9 @@
       }
     },
     "/service-areas/gray-court.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3936,8 +4528,8 @@
     },
     "/service-areas/gray-court/": {
       "status": 301,
-      "location": "/service-areas/gray-court.html",
-      "contentType": "text/html",
+      "location": "/service-areas/gray-court",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3948,8 +4540,8 @@
       }
     },
     "/service-areas/greenville": {
-      "status": 301,
-      "location": "/service-areas/greenville.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -3961,9 +4553,9 @@
       }
     },
     "/service-areas/greenville.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/service-areas/greenville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -3988,8 +4580,8 @@
     },
     "/service-areas/greenville/": {
       "status": 301,
-      "location": "/service-areas/greenville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/greenville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4001,8 +4593,8 @@
     },
     "/service-areas/greer": {
       "status": 301,
-      "location": "/service-areas/greenville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/greenville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4013,8 +4605,8 @@
       }
     },
     "/service-areas/laurens": {
-      "status": 301,
-      "location": "/service-areas/laurens.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -4026,9 +4618,9 @@
       }
     },
     "/service-areas/laurens.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4053,8 +4645,8 @@
     },
     "/service-areas/laurens/": {
       "status": 301,
-      "location": "/service-areas/laurens.html",
-      "contentType": "text/html",
+      "location": "/service-areas/laurens",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4065,8 +4657,8 @@
       }
     },
     "/service-areas/mauldin": {
-      "status": 301,
-      "location": "/service-areas/mauldin.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -4079,8 +4671,8 @@
     },
     "/service-areas/mauldin-sc": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4091,9 +4683,9 @@
       }
     },
     "/service-areas/mauldin.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4118,8 +4710,8 @@
     },
     "/service-areas/mauldin/": {
       "status": 301,
-      "location": "/service-areas/mauldin.html",
-      "contentType": "text/html",
+      "location": "/service-areas/mauldin",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4130,8 +4722,8 @@
       }
     },
     "/service-areas/simpsonville": {
-      "status": 301,
-      "location": "/service-areas/simpsonville.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -4144,8 +4736,8 @@
     },
     "/service-areas/simpsonville-sc": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4156,9 +4748,9 @@
       }
     },
     "/service-areas/simpsonville.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4183,8 +4775,8 @@
     },
     "/service-areas/simpsonville/": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4195,8 +4787,8 @@
       }
     },
     "/service-areas/woodruff": {
-      "status": 301,
-      "location": "/service-areas/woodruff.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -4209,8 +4801,8 @@
     },
     "/service-areas/woodruff-sc": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4221,9 +4813,9 @@
       }
     },
     "/service-areas/woodruff.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4248,8 +4840,8 @@
     },
     "/service-areas/woodruff/": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4260,8 +4852,8 @@
       }
     },
     "/services": {
-      "status": 301,
-      "location": "/services.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -4273,9 +4865,9 @@
       }
     },
     "/services.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/services",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4300,8 +4892,8 @@
     },
     "/services/": {
       "status": 301,
-      "location": "/services.html",
-      "contentType": "text/html",
+      "location": "/services",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4313,8 +4905,8 @@
     },
     "/services/additions": {
       "status": 301,
-      "location": "/additions/",
-      "contentType": "text/html",
+      "location": "/room-additions",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4326,8 +4918,8 @@
     },
     "/services/handyman": {
       "status": 301,
-      "location": "/services.html",
-      "contentType": "text/html",
+      "location": "/services",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4339,8 +4931,8 @@
     },
     "/services/remodeling": {
       "status": 301,
-      "location": "/remodeling/",
-      "contentType": "text/html",
+      "location": "/remodeling",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4352,8 +4944,8 @@
     },
     "/simpsonville-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4365,8 +4957,8 @@
     },
     "/simpsonville-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4378,8 +4970,8 @@
     },
     "/simpsonville-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4391,8 +4983,8 @@
     },
     "/simpsonville-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4404,8 +4996,8 @@
     },
     "/simpsonville-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4417,8 +5009,8 @@
     },
     "/simpsonville-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4430,8 +5022,8 @@
     },
     "/simpsonville-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/simpsonville.html",
-      "contentType": "text/html",
+      "location": "/service-areas/simpsonville",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4456,8 +5048,8 @@
     },
     "/subcontractors/join": {
       "status": 301,
-      "location": "/contact.html",
-      "contentType": "text/html",
+      "location": "/contact",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4468,8 +5060,8 @@
       }
     },
     "/terms-of-service": {
-      "status": 301,
-      "location": "/terms-of-service.html",
+      "status": 200,
+      "location": null,
       "contentType": "text/html",
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
@@ -4481,9 +5073,9 @@
       }
     },
     "/terms-of-service.html": {
-      "status": 200,
-      "location": null,
-      "contentType": "text/html",
+      "status": 301,
+      "location": "/terms-of-service",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4508,8 +5100,8 @@
     },
     "/terms-of-service/": {
       "status": 301,
-      "location": "/terms-of-service.html",
-      "contentType": "text/html",
+      "location": "/terms-of-service",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4534,8 +5126,8 @@
     },
     "/woodruff-sc/adu-builder": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4547,8 +5139,8 @@
     },
     "/woodruff-sc/bathroom-remodeling": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4560,8 +5152,8 @@
     },
     "/woodruff-sc/deck-builder": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4573,8 +5165,8 @@
     },
     "/woodruff-sc/garage-builder": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4586,8 +5178,8 @@
     },
     "/woodruff-sc/kitchen-remodeling": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4599,8 +5191,8 @@
     },
     "/woodruff-sc/room-additions": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4612,8 +5204,8 @@
     },
     "/woodruff-sc/screened-porches": {
       "status": 301,
-      "location": "/service-areas/woodruff.html",
-      "contentType": "text/html",
+      "location": "/service-areas/woodruff",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4625,8 +5217,8 @@
     },
     "/work": {
       "status": 301,
-      "location": "/projects.html",
-      "contentType": "text/html",
+      "location": "/projects",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -4636,5 +5228,6 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     }
-  }
+  },
+  "recordedNote": "Recorded from a local wrangler dev serving the same dist/ that deploys to production; the origin is normalized so CI can compare against either host."
 }

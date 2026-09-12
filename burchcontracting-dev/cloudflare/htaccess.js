@@ -23,7 +23,15 @@ export function parseRedirectRules(htaccess) {
     if (!line || line.startsWith('#')) continue
 
     if (/^RewriteCond\s/i.test(line)) {
-      conditional = true
+      // A condition that only guards against a real file on disk (e.g.
+      // "%{REQUEST_FILENAME}.html !-f" on the legacy calculator catch-all)
+      // doesn't change which URLs the rule is for — cloudflare/worker.js
+      // already tries to serve a real page before it consults these rules, so
+      // the same guard is implicit there. Skipping such rules instead dropped
+      // /calculator/adus -> /calculator/estimate on Cloudflare while Apache
+      // kept it. Host and HTTPS conditions still disqualify a rule: Cloudflare
+      // handles those at the edge.
+      if (!/%\{REQUEST_FILENAME\}/i.test(line)) conditional = true
       continue
     }
 

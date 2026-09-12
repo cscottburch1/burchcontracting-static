@@ -1,29 +1,53 @@
 /**
  * Cloudflare Worker for burchcontracting.com.
  *
- * Why this exists: Hostinger rate-limits crawlers at the server level (429s
- * to GPTBot and others, and it can't be disabled per site), so the pages are
- * served from Cloudflare instead. Hostinger keeps only what needs PHP.
+ * Why this exists: Hostinger rate-limits crawlers at the web server (429s to
+ * GPTBot, not disableable per site), so pages are served from Cloudflare.
+ * Hostinger keeps only what needs PHP.
  *
- * Cloudflare's asset server answers first for exact file paths in dist/
- * (wrangler.jsonc sets html_handling and not_found_handling to "none", so
- * nothing is rewritten or redirected automatically — every URL stays exactly
- * as it was on Hostinger). This script only runs for requests that don't
- * match a file, and reproduces what Apache/LiteSpeed did for them:
+ * wrangler.jsonc sets run_worker_first, so this script sees EVERY request
+ * before the asset server. That is deliberate and load-bearing: the asset
+ * server applies dist/_redirects to internal env.ASSETS.fetch() calls too, so
+ * with a "/about.html -> /about" rule in that file the Worker's own lookup of
+ * about.html came back as a redirect and /about 301'd to itself. All redirects
+ * therefore live here, driven by src/data/url-map.js, and no _redirects file is
+ * generated. It also means _headers does not apply, so this script sets the
+ * security headers and asset caching itself.
  *
- *   1. /api/* and /.well-known/* are forwarded to Hostinger (contact form,
- *      leads admin, origin SSL certificate validation).
- *   2. RewriteRule redirects from public/.htaccess, in file order.
- *   3. Folders: /garages/ serves garages/index.html; /garages 301s to
- *      /garages/ (Apache's DirectorySlash behavior).
- *   4. Anything else: 404.html with a 404 status.
+ * Request order, which matters:
+ *   1. /api/* and /.well-known/* -> Hostinger (contact form, leads admin,
+ *      origin certificate renewal).
+ *   2. The 2026-07 rebuild's URLs (/about.html, /garages/, /services/) -> 301
+ *      to the restored URL from src/data/url-map.js.
+ *   3. A real page for the requested clean URL, served from about.html or
+ *      garage-builder/index.html. This comes BEFORE the legacy rules below,
+ *      because the legacy catch-all "^calculator/([a-z-]+)/?$" would otherwise
+ *      hijack real pages like /calculator/garages.
+ *   4. Legacy redirects parsed from public/.htaccess (the retired Next.js
+ *      site's URLs), so Apache and Cloudflare stay in step from one file.
+ *   5. 404.html with a 404 status.
  */
 import htaccess from '../public/.htaccess'
+import { MOVED_URLS, PAGE_URLS, UNLISTED_FILES } from '../src/data/url-map.js'
 import { findRedirect, parseRedirectRules, parseSecurityHeaders } from './htaccess.js'
 
 const REDIRECT_RULES = parseRedirectRules(htaccess)
 const SECURITY_HEADERS = parseSecurityHeaders(htaccess)
 const ORIGIN_PATH_PREFIXES = ['/api/', '/.well-known/']
+
+/**
+ * Every URL that must 301 to a canonical one: the rebuild's .html and
+ * trailing-slash forms, plus the trailing-slash and /index.html variants of
+ * each restored URL, which the retired site also redirected.
+ */
+const CANONICAL_REDIRECTS = new Map()
+for (const [from, to] of Object.entries(MOVED_URLS)) CANONICAL_REDIRECTS.set(from, to)
+for (const [file, url] of Object.entries(PAGE_URLS)) {
+  CANONICAL_REDIRECTS.set(`/${file}`, url) // /about.html, /garage-builder/index.html
+  if (url !== '/') CANONICAL_REDIRECTS.set(`${url}/`, url) // /about/, /services/
+}
+CANONICAL_REDIRECTS.set('/index.html', '/')
+for (const [from, to] of [...CANONICAL_REDIRECTS]) if (from === to) CANONICAL_REDIRECTS.delete(from)
 
 export default {
   async fetch(request, env) {
@@ -34,20 +58,56 @@ export default {
       return forwardToOrigin(request, env, url)
     }
 
-    const redirect = findRedirect(REDIRECT_RULES, pathname, url.search)
-    if (redirect) {
-      const location = redirect.location.startsWith('/') ? url.origin + redirect.location : redirect.location
-      return redirectTo(location, redirect.status)
-    }
+    const canonical = CANONICAL_REDIRECTS.get(pathname)
+    if (canonical) return redirectTo(`${url.origin}${canonical}${url.search}`, 301)
 
-    const indexPath = pathname.endsWith('/') ? `${pathname}index.html` : `${pathname}/index.html`
-    const index = await env.ASSETS.fetch(new Request(new URL(indexPath, url.origin), request))
-    if (index.status !== 404) {
-      return pathname.endsWith('/') ? withSecurityHeaders(index) : redirectTo(`${url.origin}${pathname}/${url.search}`, 301)
+    const page = await servePage(request, env, url)
+    if (page) return page
+
+    const legacy = findRedirect(REDIRECT_RULES, pathname, url.search)
+    if (legacy) {
+      const location = legacy.location.startsWith('/') ? url.origin + legacy.location : legacy.location
+      return redirectTo(location, legacy.status)
     }
 
     return notFound(request, env, url)
   },
+}
+
+/**
+ * The asset backing a clean URL, or null.
+ *
+ * Two paths are deliberately never served here:
+ *   - anything ending in .html — those are the old URLs, and the redirect
+ *     table above owns them. Serving them would undo the 301.
+ *   - 404.html (UNLISTED_FILES) — it is the error page, delivered with a 404
+ *     status by notFound(). Serving it as a page made /404 return 200.
+ */
+async function servePage(request, env, url) {
+  const { pathname } = url
+  if (pathname.endsWith('.html')) return null
+
+  // Anything that already names a file — /favicon.ico, /robots.txt,
+  // /llms.txt, /sitemap.xml, the IndexNow key, /assets/* — is served as-is.
+  // run_worker_first means nothing else would serve them.
+  if (/\.[a-z0-9]+$/i.test(pathname)) {
+    const file = await env.ASSETS.fetch(new Request(new URL(pathname, url.origin), request))
+    return file.status === 404 ? null : withHeaders(file, pathname)
+  }
+
+  const candidates =
+    pathname === '/'
+      ? ['/index.html']
+      : pathname.endsWith('/')
+        ? [`${pathname}index.html`]
+        : [`${pathname}.html`, `${pathname}/index.html`]
+
+  for (const candidate of candidates) {
+    if (UNLISTED_FILES.includes(candidate.replace(/^\//, ''))) continue
+    const asset = await env.ASSETS.fetch(new Request(new URL(candidate, url.origin), request))
+    if (asset.status !== 404) return withHeaders(asset, pathname)
+  }
+  return null
 }
 
 function forwardToOrigin(request, env, url) {
@@ -57,16 +117,17 @@ function forwardToOrigin(request, env, url) {
     .filter(Boolean)
 
   if (!originHosts.includes(url.hostname)) {
-    return withSecurityHeaders(
+    return withHeaders(
       new Response('Not found: /api and /.well-known are served by the Hostinger origin, which is only reachable on the production domain.\n', {
         status: 404,
         headers: { 'content-type': 'text/plain; charset=utf-8' },
-      })
+      }),
+      url.pathname
     )
   }
 
-  // On a Workers route, a fetch() to the same zone bypasses this Worker and
-  // goes to the origin server in DNS (Hostinger).
+  // On a Workers route, a fetch() to the same zone skips this Worker and goes
+  // to the origin server in DNS — Hostinger.
   return fetch(request)
 }
 
@@ -78,11 +139,17 @@ async function notFound(request, env, url) {
   const page = await env.ASSETS.fetch(new URL('/404.html', url.origin))
   const response = new Response(request.method === 'HEAD' ? null : page.body, { status: 404, headers: page.headers })
   response.headers.delete('etag')
-  return withSecurityHeaders(response)
+  return withHeaders(response, url.pathname)
 }
 
-function withSecurityHeaders(response) {
+/**
+ * run_worker_first means the _headers file never applies, so every response
+ * gets its headers here. Vite content-hashes everything under /assets/, so
+ * those are safe to cache for a year.
+ */
+function withHeaders(response, pathname) {
   const copy = new Response(response.body, response)
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) copy.headers.set(name, value)
+  if (pathname.startsWith('/assets/')) copy.headers.set('Cache-Control', 'public, max-age=31536000, immutable')
   return copy
 }
