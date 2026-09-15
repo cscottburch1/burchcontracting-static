@@ -7,8 +7,9 @@ name: Deploy to Cloudflare
 #   other branches -> `wrangler versions upload`: a preview URL only, never
 #                     the live Worker
 #
-# deploy.yml (Hostinger FTP) keeps running on its own: Hostinger serves /api/*
-# (PHP contact form, leads admin) and stays a complete fallback copy.
+# deploy.yml (Hostinger FTP) keeps running on its own: Hostinger stays a
+# complete fallback copy. The contact form and leads admin run in the Worker
+# (cloudflare/api.js, D1).
 #
 # Until the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets exist, every
 # run skips with a notice instead of failing.
@@ -175,7 +176,7 @@ jobs:
           # 4. Every search and AI crawler gets HTTP 200 on every page.
           node scripts/check-crawler-access.mjs "$BASE_URL"
 
-          # 5. On the real domain: /api/* still reaches Hostinger's PHP, and
+          # 5. On the real domain: cloudflare/api.js answers /api/contact.php, and
           #    http:// and www redirect exactly as Hostinger's .htaccess did
           #    (Cloudflare's Always Use HTTPS and a www Redirect Rule do this
           #    now — CLOUDFLARE-CUTOVER.md, step 4).
@@ -183,7 +184,7 @@ jobs:
             contact_status=$(curl -s -o /dev/null -w '%{http_code}' "$BASE_URL/api/contact.php")
             echo "contact.php status: $contact_status"
             if [ "$contact_status" != "405" ]; then
-              echo "::error::api/contact.php returned $contact_status through the Worker, expected 405 from Hostinger"
+              echo "::error::api/contact.php returned $contact_status through the Worker, expected 405 from cloudflare/api.js"
               exit 1
             fi
 

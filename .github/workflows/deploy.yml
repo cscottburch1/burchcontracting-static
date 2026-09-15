@@ -60,14 +60,16 @@ jobs:
           BUILD_ENV: production
         run: npm run check-build
 
-      # api/version.txt is a second copy that only Hostinger serves
-      # (.assetsignore keeps api/ off Cloudflare), so it proves this FTP
-      # deploy landed even though the domain's pages come from Cloudflare.
+      # .well-known/burch-version.txt is a second copy that only Hostinger
+      # serves: /.well-known/* is the one path the Worker still forwards there
+      # (cloudflare/worker.js), so it proves this FTP deploy landed even though
+      # the domain's pages and /api come from Cloudflare.
       - name: Stamp build version
         run: |
           echo "commit=${GITHUB_SHA}" > dist/version.txt
           echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
-          cp dist/version.txt dist/api/version.txt
+          mkdir -p dist/.well-known
+          cp dist/version.txt dist/.well-known/burch-version.txt
 
       # Recovery procedure: if the live site is ever stale while runs are
       # green, the FTP action's incremental sync-state file
@@ -99,9 +101,9 @@ jobs:
       # Since the Cloudflare cutover, burchcontracting.com's pages are served by
       # the Cloudflare Worker, and cloudflare.yml checks every page, redirect
       # and crawler there (including contact.html's reCAPTCHA key, byte for
-      # byte). Hostinger still serves /api/* — reached through the Worker —
-      # and keeps a full fallback copy of the site, so this step checks the
-      # Hostinger side through /api.
+      # byte), plus the contact form in cloudflare/api.js. Hostinger keeps a
+      # full fallback copy of the site, so this step checks the Hostinger side
+      # through /.well-known.
       #
       # If the cutover is ever rolled back, revert the cutover commit: that
       # restores the page-by-page content check against Hostinger here.
@@ -110,28 +112,16 @@ jobs:
           SITE_URL: https://burchcontracting.com
         run: |
           sleep 10
-          live=$(curl -fsSL --retry 3 "$SITE_URL/api/version.txt?nocache=$GITHUB_RUN_ID" | grep '^commit=' | cut -d= -f2)
+          live=$(curl -fsSL --retry 3 "$SITE_URL/.well-known/burch-version.txt?nocache=$GITHUB_RUN_ID" | grep '^commit=' | cut -d= -f2)
           echo "Hostinger commit: $live"
           echo "Expected commit:  $GITHUB_SHA"
           if [ "$live" != "$GITHUB_SHA" ]; then
-            echo "::error::Hostinger's api/version.txt does not match this commit — the FTP sync likely skipped files. Delete .ftp-deploy-sync-state.json on the server and re-run."
+            echo "::error::Hostinger's .well-known/burch-version.txt does not match this commit — the FTP sync likely skipped files. Delete .ftp-deploy-sync-state.json on the server and re-run."
             exit 1
           fi
 
-          # /api/contact.php should reject GET (405) but exist; config.local.php
-          # must never be served (403), or the reCAPTCHA/SMTP secrets leak.
-          contact_status=$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/api/contact.php")
-          echo "contact.php status: $contact_status"
-          if [ "$contact_status" != "405" ]; then
-            echo "::error::api/contact.php returned $contact_status, expected 405"
-            exit 1
-          fi
-
-          config_status=$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/api/config.local.php")
-          echo "config.local.php status: $config_status"
-          if [ "$config_status" = "200" ]; then
-            echo "::error::api/config.local.php is publicly readable (200) — secrets are exposed"
-            exit 1
-          fi
+          # /api/* no longer reaches Hostinger through the domain, so its
+          # contact.php and config.local.php can't be checked from here;
+          # cloudflare.yml checks the Worker's /api/contact.php instead.
 
           echo "Deploy verified: Hostinger matches $GITHUB_SHA"

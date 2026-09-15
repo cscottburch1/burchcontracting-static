@@ -25,9 +25,12 @@ them, because the refusal happens on the web server behind both.
   plus 222 legacy Next.js URLs) recorded from the live Hostinger site on
   2026-09-11. Local test result: all 357 match. The only intentional
   difference is `/.htaccess`, which returns 404 instead of 403.
-- **Stays on Hostinger:** `/api/*` (contact form, leads admin, PHP, MySQL),
-  `/.well-known/*` (origin certificate renewal) and email (MX records). The
-  Worker forwards those paths to Hostinger through the existing DNS record.
+- **Stays on Hostinger:** `/.well-known/*` (origin certificate renewal) and
+  email (MX records). The Worker forwards `/.well-known/*` to Hostinger through
+  the existing DNS record.
+- **Moved to the Worker (2026-09):** `/api/*`, the contact form and leads
+  admin, now `cloudflare/api.js` with a D1 database and Resend for email. The
+  PHP/MySQL versions stay deployed on Hostinger, used only after a rollback.
 - **DNS doesn't change.** The Worker attaches to `burchcontracting.com` through
   a route. Deleting the route sends traffic straight back to Hostinger.
 - **Hostinger stays a full fallback.** `deploy.yml` keeps FTP-deploying the
@@ -94,8 +97,8 @@ the switch:
   `workers_dev` stays on because branch preview URLs require it.
 - `cloudflare.yml` verifies `https://burchcontracting.com` itself on `main`,
   including the `http://` → `https://` and `www` → root redirects.
-- `deploy.yml` verifies Hostinger through `/api/version.txt`, a copy of the
-  version marker that only Hostinger serves. The page-by-page content check is
+- `deploy.yml` verifies Hostinger through `/.well-known/burch-version.txt`, a
+  copy of the version marker that only Hostinger serves. The page-by-page content check is
   done by `cloudflare.yml`.
 
 When both workflows are green:
@@ -117,13 +120,17 @@ returns to Hostinger immediately through the unchanged DNS record, and
 Hostinger already has the current site. Then revert the cutover commit so the
 next deploy doesn't re-add the route.
 
+After a rollback the contact form posts to Hostinger's PHP again. Leads
+received while the Worker served `/api` stay in D1 and don't appear in the
+Hostinger admin.
+
 ## After cutover
 
-- Keep Hostinger web hosting at least 30 days, and after that for as long as
-  `/api/*` lives there.
-- Optional later: move the contact form and leads admin into the Worker
-  (Cloudflare D1 database plus an email-sending service) and cancel Hostinger
-  web hosting. Email hosting is separate and can stay.
+- Keep Hostinger web hosting at least 30 days as the rollback copy. The
+  contact form and leads admin have since moved into the Worker
+  (`cloudflare/api.js`, D1, Resend). Once they have run cleanly for a while,
+  Hostinger web hosting can be cancelled. Email hosting is separate and can
+  stay.
 - When URLs or redirects change on purpose (the legacy-URL restoration), re-record
   the baseline: `node scripts/check-routing.mjs --record https://burchcontracting.com`.
 

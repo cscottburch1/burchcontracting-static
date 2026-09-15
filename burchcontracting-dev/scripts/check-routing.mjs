@@ -55,9 +55,9 @@ const EXPECTED_DIFFERENCES = {
   '/.htaccess': 'Apache config is not uploaded to Cloudflare, so it 404s instead of 403.',
 }
 
-// Backend files that must never be uploaded as static files. Checked only on
-// non-production hostnames, where /api/* isn't forwarded to Hostinger — any
-// 200 there means Cloudflare is serving the raw file (see public/.assetsignore).
+// Backend files that must never be uploaded as static files. /api/* is
+// answered by cloudflare/api.js (405 or 404 for these), so any 200 means
+// Cloudflare is serving the raw file (see public/.assetsignore).
 const MUST_NOT_BE_STATIC = [
   '/.htaccess',
   '/api/contact.php',

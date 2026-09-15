@@ -3,7 +3,7 @@
  *
  * Why this exists: Hostinger rate-limits crawlers at the web server (429s to
  * GPTBot, not disableable per site), so pages are served from Cloudflare.
- * Hostinger keeps only what needs PHP.
+ * The contact form and leads admin run here too (cloudflare/api.js, D1).
  *
  * wrangler.jsonc sets run_worker_first, so this script sees EVERY request
  * before the asset server. That is deliberate and load-bearing: the asset
@@ -15,8 +15,8 @@
  * security headers and asset caching itself.
  *
  * Request order, which matters:
- *   1. /api/* and /.well-known/* -> Hostinger (contact form, leads admin,
- *      origin certificate renewal).
+ *   1. /api/* -> cloudflare/api.js (contact form, leads admin);
+ *      /.well-known/* -> Hostinger (origin certificate renewal).
  *   2. The 2026-07 rebuild's URLs (/about.html, /garages/, /services/) -> 301
  *      to the restored URL from src/data/url-map.js.
  *   3. A real page for the requested clean URL, served from about.html or
@@ -30,10 +30,10 @@
 import htaccess from '../public/.htaccess'
 import { MOVED_URLS, PAGE_URLS, UNLISTED_FILES } from '../src/data/url-map.js'
 import { findRedirect, parseRedirectRules, parseSecurityHeaders } from './htaccess.js'
+import { handleApiRequest } from './api.js'
 
 const REDIRECT_RULES = parseRedirectRules(htaccess)
 const SECURITY_HEADERS = parseSecurityHeaders(htaccess)
-const ORIGIN_PATH_PREFIXES = ['/api/', '/.well-known/']
 
 /**
  * Every URL that must 301 to a canonical one: the rebuild's .html and
@@ -54,7 +54,10 @@ export default {
     const url = new URL(request.url)
     const { pathname } = url
 
-    if (pathname === '/api' || ORIGIN_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+    if (pathname === '/api' || pathname.startsWith('/api/')) {
+      return withHeaders(await handleApiRequest(request, env), pathname)
+    }
+    if (pathname.startsWith('/.well-known/')) {
       return forwardToOrigin(request, env, url)
     }
 
@@ -118,7 +121,7 @@ function forwardToOrigin(request, env, url) {
 
   if (!originHosts.includes(url.hostname)) {
     return withHeaders(
-      new Response('Not found: /api and /.well-known are served by the Hostinger origin, which is only reachable on the production domain.\n', {
+      new Response('Not found: /.well-known is served by the Hostinger origin, which is only reachable on the production domain.\n', {
         status: 404,
         headers: { 'content-type': 'text/plain; charset=utf-8' },
       }),
