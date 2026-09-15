@@ -25,9 +25,24 @@
   "rules": [{ "type": "Text", "globs": ["**/.htaccess"], "fallthrough": true }],
 
   "vars": {
-    // Hostnames where /api/* and /.well-known/* are forwarded to Hostinger.
+    // Hostnames where /.well-known/* is forwarded to Hostinger.
     "ORIGIN_HOSTS": "burchcontracting.com"
   },
+
+  // Leads and their activity notes (cloudflare/schema.sql), used by cloudflare/api.js.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "burchcontracting-leads",
+      "database_id": "dd9a2289-436e-4b97-9c49-c4fac9e29c51"
+    }
+  ],
+
+  // Admin login attempts per IP (cloudflare/api.js). namespace_id is any
+  // integer, unique within the Cloudflare account.
+  "ratelimits": [
+    { "name": "LOGIN_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
 
   // Serves burchcontracting.com. The DNS record still points at Hostinger:
   // the route sends requests to this Worker first, and deleting the route
