@@ -25,12 +25,40 @@ name: Deploy to Cloudflare
 # Until the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets exist, every
 # run skips with a notice instead of failing.
 
+# DISABLED ON PUSH (2026-09-16). Deploy to Cloudflare by hand instead:
+#
+#   cd burchcontracting-dev
+#   BUILD_ENV=production npm run build   # without this, every page ships noindex
+#   npm run check-build
+#   npx wrangler deploy
+#
+# Why: deploys to Cloudflare are done by hand now, so a workflow that also
+# deploys on every push is a second automated path to the same Worker — and a
+# second automated path is exactly what caused the 2026-09-16 outages.
+#
+# That day a Cloudflare-side Git integration (Workers & Pages -> the Worker ->
+# Builds) was connected to this repo. It deployed on every push, building with
+# a plain `npm run build` (no BUILD_ENV=production) and carrying none of the
+# `wrangler secret put` secrets. Every push therefore shipped noindex on all 70
+# pages and wiped ADMIN_USERNAME, ADMIN_PASSWORD_HASH, SESSION_SECRET,
+# RESEND_API_KEY and RECAPTCHA_SECRET_KEY — taking down admin login and lead
+# notification emails and silently disabling the reCAPTCHA check while the
+# contact form kept accepting submissions. It has been disconnected; the full
+# account is in burchcontracting-dev/LAUNCH-CHECKLIST.md.
+#
+# This workflow's own runs failed that day too, at the "Verify deployment"
+# step. They were right to: they were detecting the damage the Git integration
+# had just done to production, not causing it. Its build logs were correct
+# throughout. An earlier revision of this comment blamed the scopes on the
+# CLOUDFLARE_API_TOKEN repository secret — that was a misdiagnosis, and there
+# is no evidence against that token.
+#
+# Re-enabling is therefore reasonable, but unproven: nothing has confirmed this
+# workflow deploys correctly now that it is no longer racing anything. Before
+# restoring the push trigger, run it once with workflow_dispatch and check that
+# `wrangler secret list` still returns all five secrets and that live pages say
+# "index, follow". workflow_dispatch is kept so it can still be run on purpose.
 on:
-  push:
-    paths:
-      - 'burchcontracting-dev/**'
-      - '.github/workflows/cloudflare.yml'
-      - '.github/scripts/**'
   workflow_dispatch:
 
 concurrency:
