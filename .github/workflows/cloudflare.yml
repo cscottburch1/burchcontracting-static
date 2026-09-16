@@ -3,9 +3,18 @@ name: Deploy to Cloudflare
 # Serves the site's pages from Cloudflare so crawlers never reach Hostinger's
 # server-level rate limit. See burchcontracting-dev/CLOUDFLARE-CUTOVER.md.
 #
-#   main           -> `wrangler deploy` (the live Worker)
-#   other branches -> `wrangler versions upload`: a preview URL only, never
-#                     the live Worker
+# Every branch, main included, uploads a version and verifies it at its
+# preview URL first. Only main promotes, and only after those checks pass:
+#
+#   1. `wrangler versions upload`  -> a preview URL, no production traffic
+#   2. verify-deployment.sh preview -> byte-for-byte against the built dist
+#   3. `wrangler versions deploy`  -> promote (main only, only if 2 passed)
+#   4. verify-deployment.sh production
+#
+# Step 2 is the gate. It exists because a deploy can report success, and serve
+# the right version.txt, while every HTML asset stays stale — which happened on
+# 2026-09-16 and put `noindex` on the live site. A version that fails step 2 is
+# simply never promoted, so production keeps serving the last good one.
 #
 # deploy.yml (Hostinger FTP) keeps running on its own: Hostinger stays a
 # complete fallback copy. The contact form and leads admin run in the Worker
@@ -84,9 +93,11 @@ jobs:
           echo "commit=${GITHUB_SHA}" > dist/version.txt
           echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
 
-      - name: Deploy (main) or upload preview (other branches)
+      # Nothing here can change what production serves. main included: a
+      # version is uploaded and verified first, and only promoted afterwards.
+      - name: Upload version (production untouched)
         if: steps.creds.outputs.ready == 'true'
-        id: deploy
+        id: upload
         run: |
           set -o pipefail
           # This repository is public: strip any account email Wrangler prints
@@ -98,9 +109,7 @@ jobs:
           has_routes=false
           if grep -qE '^[[:space:]]*"routes"[[:space:]]*:' wrangler.jsonc; then has_routes=true; fi
 
-          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            npx wrangler deploy 2>&1 | redact | tee wrangler.log
-          elif npx wrangler deployments list > deployments.log 2>&1; then
+          if npx wrangler deployments list > deployments.log 2>&1; then
             npx wrangler versions upload --message "${GITHUB_REF_NAME} ${GITHUB_SHA::7}" 2>&1 | redact | tee wrangler.log
           elif [ "$has_routes" = false ]; then
             # Preview versions need an existing Worker. Before cutover there
@@ -109,98 +118,58 @@ jobs:
             tail -5 deployments.log | redact
             echo "::notice::First deploy: creating the Worker on workers.dev (no routes, production unaffected)."
             npx wrangler deploy 2>&1 | redact | tee wrangler.log
+            echo "first_deploy=true" >> "$GITHUB_OUTPUT"
           else
             tail -20 deployments.log | redact
-            echo "::error::Can't list the Worker's deployments and wrangler.jsonc has routes — refusing to deploy a branch to production."
+            echo "::error::Can't list the Worker's deployments and wrangler.jsonc has routes — refusing to touch production."
             exit 1
           fi
-          if [ "$GITHUB_REF" = "refs/heads/main" ] && [ "$has_routes" = true ]; then
-            # The Worker serves the real domain, so verify production itself.
-            url="https://burchcontracting.com"
-          else
+
+          # `wrangler versions upload` prints, verbatim:
+          #   Worker Version ID: <uuid>
+          #   Version Preview URL: https://<prefix>-<worker>.<subdomain>.workers.dev
+          version_id=$(grep -oE 'Worker Version ID: [0-9a-f-]{36}' wrangler.log | tail -1 | awk '{print $NF}')
+          url=$(grep -oE 'Version Preview URL: https://[a-zA-Z0-9.-]+' wrangler.log | tail -1 | awk '{print $NF}')
+
+          # The first-deploy branch above used `wrangler deploy`, which prints
+          # neither line — it only reaches workers.dev, so verify that instead.
+          if [ -z "$url" ]; then
             url=$(grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' wrangler.log | tail -1 || true)
-            if [ -z "$url" ]; then
-              echo "::error::wrangler printed no workers.dev URL — check that workers_dev and preview_urls are true in wrangler.jsonc."
-              exit 1
-            fi
           fi
-          echo "url=$url" >> "$GITHUB_OUTPUT"
-          echo "::notice::Deployed to $url"
-
-      - name: Verify deployment
-        if: steps.creds.outputs.ready == 'true'
-        env:
-          BASE_URL: ${{ steps.deploy.outputs.url }}
-        run: |
-          # 1. The new version is the one answering.
-          for attempt in 1 2 3 4 5 6; do
-            live=$(curl -fsSL "$BASE_URL/version.txt?nocache=$GITHUB_RUN_ID-$attempt" | grep '^commit=' | cut -d= -f2 || true)
-            [ "$live" = "$GITHUB_SHA" ] && break
-            sleep 10
-          done
-          echo "Live commit:     $live"
-          echo "Expected commit: $GITHUB_SHA"
-          if [ "$live" != "$GITHUB_SHA" ]; then
-            echo "::error::$BASE_URL is not serving commit $GITHUB_SHA"
+          if [ -z "$url" ]; then
+            echo "::error::wrangler printed no preview URL — check that workers_dev and preview_urls are true in wrangler.jsonc."
             exit 1
           fi
 
-          # 2. Every built page is served byte-for-byte (after normalizing
-          #    Cloudflare's email obfuscation, as deploy.yml does).
-          #
-          #    Each page's URL comes from src/data/url-map.js, not from its
-          #    filename. Guessing from the filename asked for /about.html and
-          #    /garage-builder/, which now 301 to the clean URL, and asked for
-          #    /404.html, which correctly returns 404 — failing the whole job
-          #    on a curl error rather than a real mismatch.
-          mismatch=0
-          while IFS='|' read -r rel url_path; do
-            [ -n "$rel" ] || continue
-            local_hash=$(python3 ../.github/scripts/strip-cf-email-obfuscation.py "dist/$rel" | sha256sum | cut -d' ' -f1)
-            live_hash=$(curl -fsSL "$BASE_URL$url_path?nocache=$GITHUB_RUN_ID" | python3 ../.github/scripts/strip-cf-email-obfuscation.py | sha256sum | cut -d' ' -f1)
-            if [ "$local_hash" != "$live_hash" ]; then
-              echo "::error::Content mismatch on $url_path (built from $rel)"
-              mismatch=1
-            fi
-          done < <(node --input-type=module -e '
-            import { PAGE_URLS } from "./src/data/url-map.js";
-            for (const [file, url] of Object.entries(PAGE_URLS)) console.log(`${file}|${url}`);
-          ')
-          [ "$mismatch" = "0" ] || exit 1
-          echo "Content check passed: every built page matches $BASE_URL."
+          echo "version_id=$version_id" >> "$GITHUB_OUTPUT"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "::notice::Uploaded version $version_id, previewing at $url"
 
-          # 3. Same status codes, redirects and security headers as the
-          #    Hostinger site (migration/routing-baseline.json).
-          node scripts/check-routing.mjs "$BASE_URL"
+      # The gate. A version that fails here is never promoted, so a bad build
+      # or a partial asset upload cannot reach the live domain.
+      - name: Verify the uploaded version
+        if: steps.creds.outputs.ready == 'true'
+        run: bash ../.github/scripts/verify-deployment.sh "${{ steps.upload.outputs.url }}" preview
 
-          # 4. Every search and AI crawler gets HTTP 200 on every page.
-          node scripts/check-crawler-access.mjs "$BASE_URL"
+      # Only reached when the checks above passed. `versions deploy` shifts all
+      # production traffic to the version that was just verified.
+      - name: Promote to production (main only)
+        if: |
+          steps.creds.outputs.ready == 'true'
+          && github.ref == 'refs/heads/main'
+          && steps.upload.outputs.version_id != ''
+          && steps.upload.outputs.first_deploy != 'true'
+        id: promote
+        run: |
+          set -o pipefail
+          npx wrangler versions deploy "${{ steps.upload.outputs.version_id }}@100" --yes --message "${GITHUB_REF_NAME} ${GITHUB_SHA::7}"
+          echo "::notice::Promoted ${{ steps.upload.outputs.version_id }} to production"
 
-          # 5. On the real domain: cloudflare/api.js answers /api/contact.php, and
-          #    http:// and www redirect exactly as Hostinger's .htaccess did
-          #    (Cloudflare's Always Use HTTPS and a www Redirect Rule do this
-          #    now — CLOUDFLARE-CUTOVER.md, step 4).
-          if [ "$BASE_URL" = "https://burchcontracting.com" ]; then
-            contact_status=$(curl -s -o /dev/null -w '%{http_code}' "$BASE_URL/api/contact.php")
-            echo "contact.php status: $contact_status"
-            if [ "$contact_status" != "405" ]; then
-              echo "::error::api/contact.php returned $contact_status through the Worker, expected 405 from cloudflare/api.js"
-              exit 1
-            fi
-
-            for pair in \
-              "http://burchcontracting.com/garages/?utm_source=ci|https://burchcontracting.com/garages/?utm_source=ci" \
-              "https://www.burchcontracting.com/garages/?utm_source=ci|https://burchcontracting.com/garages/?utm_source=ci"; do
-              from="${pair%%|*}"
-              want="${pair#*|}"
-              got=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "$from")
-              echo "$from -> $got"
-              if [ "$got" != "301 $want" ]; then
-                echo "::error::$from should 301 to $want — check Always Use HTTPS and the www Redirect Rule (CLOUDFLARE-CUTOVER.md, step 4)"
-                exit 1
-              fi
-            done
-          fi
+      # Production serves the same bytes the preview URL did, plus the two
+      # checks that only exist on the real domain.
+      - name: Verify production (main only)
+        if: steps.promote.outcome == 'success'
+        run: bash ../.github/scripts/verify-deployment.sh "https://burchcontracting.com" production
 
       # Runs only after the checks above pass, and only for production. Bing,
       # Yandex, Seznam and Naver then re-crawl the submitted URLs within
@@ -208,6 +177,6 @@ jobs:
       # A search engine being slow or rejecting the call shouldn't mark a good
       # deploy as failed, so this step warns instead of failing.
       - name: Tell IndexNow to re-crawl
-        if: steps.creds.outputs.ready == 'true' && steps.deploy.outputs.url == 'https://burchcontracting.com'
+        if: steps.promote.outcome == 'success'
         continue-on-error: true
         run: node scripts/indexnow-submit.mjs
