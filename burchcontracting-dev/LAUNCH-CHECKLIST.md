@@ -213,12 +213,19 @@ Neither is read by the workflow anymore; leaving them in place is exactly
 the kind of hidden second copy that caused this bug, waiting to bite again
 the next time someone assumes it's still wired up.
 
-**Current key (2026-07-12):** nicheprohub.com, burchcontracting.com, and
-www.burchcontracting.com are all registered under one v3 key pair,
-`6LcROk8tAAAAAGm5cv1I9sB5iDnPuSkyeq2Po-oG` (site key, in `contact.html`),
-paired with its own secret in `config.local.php`. Verified working with a
-real end-to-end test submission to the live form. Any older site-key values
-referenced in earlier notes/commits are obsolete — this is the current one.
+**Current key (2026-09-16):** `6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li`
+(site key, in `contact.html`), paired with its secret in the Worker secret
+`RECAPTCHA_SECRET_KEY`. Any older site-key values referenced in earlier
+notes/commits are obsolete — this is the current one.
+
+**Superseded 2026-09-16:** the previous pair
+(`6LcROk8tAAAAAGm5cv1I9sB5iDnPuSkyeq2Po-oG`, covering nicheprohub.com plus
+both burchcontracting.com hostnames) is no longer in the owner's Google
+reCAPTCHA account and its secret could not be retrieved. Replaced with a new
+v3 pair created under the account we control. A site/secret mismatch is
+invisible from outside — Google returns the same `success: false` for a wrong
+secret as for a bad token — so always confirm with a real form submission,
+not a synthetic probe.
 
 **Update 2026-07-12 (resolved):** the disappearing-`config.local.php` mystery
 (item 2) was caused by Hostinger hPanel's own native Git integration, pointed
