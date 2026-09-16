@@ -568,6 +568,16 @@ function handleLogout() {
 
 const STATUSES = ['new', 'contacted', 'quoted', 'won', 'lost']
 
+// Columns the admin may edit by hand. created_at, id, status and
+// attachment_count are deliberately excluded: status has its own form, and the
+// other three are records of what actually happened, not free-text fields.
+const EDITABLE_FIELDS = [
+  'name', 'phone', 'email', 'address', 'zip_code',
+  'service_type', 'budget_range', 'timeframe', 'referral_source', 'description',
+]
+// NOT NULL in schema.sql — an edit that blanks any of these is rejected.
+const REQUIRED_FIELDS = ['name', 'phone', 'email', 'description']
+
 // GET /api/admin
 async function handleAdminIndex(req, env) {
   const url = new URL(req.url)
@@ -623,9 +633,12 @@ async function handleAdminIndex(req, env) {
 
   const hiddenStatus = statusFilter ? `<input type="hidden" name="status" value="${escHtml(statusFilter)}">` : ''
 
+  const indexNotice = SAVED_NOTICES[url.searchParams.get('saved')]
+
   return page('Leads', `${adminHeader()}
   <main>
     <h1>Leads <span class="meta">(${totalAll} total)</span></h1>
+    ${indexNotice ? `<p class="success">${escHtml(indexNotice)}</p>` : ''}
     <div class="filters">${filterLinks.join('')}</div>
     <form method="get" action="/api/admin" style="margin-bottom:16px;display:flex;gap:8px;max-width:400px;">
       ${hiddenStatus}
@@ -637,7 +650,15 @@ async function handleAdminIndex(req, env) {
   </main>`)
 }
 
-const SAVED_NOTICES = { status: 'Status updated.', note: 'Note added.' }
+const SAVED_NOTICES = {
+  status: 'Status updated.',
+  note: 'Note added.',
+  details: 'Lead details updated.',
+  deleted: 'Lead deleted.',
+}
+const ERROR_NOTICES = {
+  required: 'Name, phone, email and description are all required — nothing was changed.',
+}
 
 // GET/POST /api/admin/lead/:id
 async function handleLead(req, env, id) {
@@ -665,6 +686,36 @@ async function handleLead(req, env, id) {
         await env.DB.prepare('INSERT INTO lead_activity (lead_id, note) VALUES (?, ?)').bind(id, note).run()
         saved = 'note'
       }
+    } else if (action === 'update_lead') {
+      const next = {}
+      for (const f of EDITABLE_FIELDS) next[f] = String(fd.get(f) ?? '').trim()
+
+      if (REQUIRED_FIELDS.some(f => !next[f])) {
+        return redirect(`/api/admin/lead/${id}?err=required`)
+      }
+
+      // Only write when something actually differs, so a stray submit doesn't
+      // litter the activity log with empty "edited" entries.
+      const changed = EDITABLE_FIELDS.filter(f => next[f] !== (lead[f] ?? ''))
+      if (changed.length) {
+        const assignments = EDITABLE_FIELDS.map(f => `${f} = ?`).join(', ')
+        await env.DB.batch([
+          env.DB.prepare(`UPDATE leads SET ${assignments} WHERE id = ?`)
+            .bind(...EDITABLE_FIELDS.map(f => next[f]), id),
+          env.DB.prepare('INSERT INTO lead_activity (lead_id, note) VALUES (?, ?)')
+            .bind(id, `Details edited: ${changed.join(', ')}`),
+        ])
+        saved = 'details'
+      }
+    } else if (action === 'delete_lead') {
+      // Activity rows are removed explicitly rather than relying on the
+      // schema's ON DELETE CASCADE, which only fires when foreign key
+      // enforcement is on.
+      await env.DB.batch([
+        env.DB.prepare('DELETE FROM lead_activity WHERE lead_id = ?').bind(id),
+        env.DB.prepare('DELETE FROM leads WHERE id = ?').bind(id),
+      ])
+      return redirect('/api/admin?saved=deleted')
     }
 
     return redirect(`/api/admin/lead/${id}${saved ? '?saved=' + saved : ''}`)
@@ -677,8 +728,11 @@ async function handleLead(req, env, id) {
     return `<tr><th style="width:140px;">${escHtml(lbl)}</th><td>${escHtml(val || 'N/A')}</td></tr>`
   }
 
-  const notice = SAVED_NOTICES[new URL(req.url).searchParams.get('saved')]
-  const noticeHtml = notice ? `<p class="success">${escHtml(notice)}</p>` : ''
+  const params = new URL(req.url).searchParams
+  const notice = SAVED_NOTICES[params.get('saved')]
+  const errNotice = ERROR_NOTICES[params.get('err')]
+  const noticeHtml = (notice ? `<p class="success">${escHtml(notice)}</p>` : '')
+    + (errNotice ? `<p class="error">${escHtml(errNotice)}</p>` : '')
 
   const statusOptions = STATUSES.map(s =>
     `<option value="${escHtml(s)}"${s === lead.status ? ' selected' : ''}>${escHtml(s.charAt(0).toUpperCase() + s.slice(1))}</option>`
@@ -690,6 +744,28 @@ async function handleLead(req, env, id) {
         <div class="meta">${escHtml(formatDateTime(a.created_at))}</div>
         <div style="white-space:pre-wrap;">${escHtml(a.note)}</div>
       </div>`).join('')}</div>`
+
+  const editInput = (name, lbl, value, type = 'text') =>
+    `<div class="field"><label for="f-${name}">${escHtml(lbl)}</label>`
+    + `<input type="${type}" id="f-${name}" name="${name}" value="${escHtml(value ?? '')}"></div>`
+
+  // Two-step delete: the link re-renders this page with a confirmation card, so
+  // no amount of link prefetching or a stray click can destroy a lead outright.
+  const dangerHtml = params.get('confirm') === 'delete'
+    ? `<div class="card" style="border-color:#fecaca;">
+      <h2 style="color:#991b1b;">Delete this lead?</h2>
+      <p>This permanently removes <strong>${escHtml(lead.name)}</strong>${activity.length ? ` and ${activity.length} activity note(s)` : ''}. It cannot be undone.</p>
+      <form method="post" action="/api/admin/lead/${id}" style="display:flex;gap:8px;align-items:center;margin-top:12px;">
+        <input type="hidden" name="action" value="delete_lead">
+        <button type="submit" style="background:#dc2626;">Yes, delete permanently</button>
+        <a class="btn btn-secondary" href="/api/admin/lead/${id}">Cancel</a>
+      </form>
+    </div>`
+    : `<div class="card">
+      <h2>Delete</h2>
+      <p class="meta" style="margin-bottom:12px;">Removes this lead and its notes permanently. You'll be asked to confirm.</p>
+      <a class="btn btn-secondary" href="/api/admin/lead/${id}?confirm=delete">Delete this lead…</a>
+    </div>`
 
   return page(lead.name, `${adminHeader()}
   <main>
@@ -730,6 +806,28 @@ async function handleLead(req, env, id) {
       </form>
       ${activityHtml}
     </div>
+    <div class="card">
+      <h2>Edit Details</h2>
+      <p class="meta" style="margin-bottom:12px;">Corrects what the visitor typed — a misspelled name, a wrong digit in a phone number. Every change is recorded in the activity log above.</p>
+      <form method="post" action="/api/admin/lead/${id}">
+        <input type="hidden" name="action" value="update_lead">
+        ${editInput('name', 'Name', lead.name)}
+        ${editInput('phone', 'Phone', lead.phone)}
+        ${editInput('email', 'Email', lead.email, 'email')}
+        ${editInput('address', 'Address', lead.address)}
+        ${editInput('zip_code', 'Zip Code', lead.zip_code)}
+        ${editInput('service_type', 'Service Type', lead.service_type)}
+        ${editInput('budget_range', 'Budget', lead.budget_range)}
+        ${editInput('timeframe', 'Timeframe', lead.timeframe)}
+        ${editInput('referral_source', 'Referral Source', lead.referral_source)}
+        <div class="field">
+          <label for="f-description">Description</label>
+          <textarea id="f-description" name="description" rows="6">${escHtml(lead.description ?? '')}</textarea>
+        </div>
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+    ${dangerHtml}
   </main>`)
 }
 
