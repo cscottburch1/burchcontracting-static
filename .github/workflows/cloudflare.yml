@@ -7,6 +7,17 @@ name: Deploy to Cloudflare
 #   other branches -> `wrangler versions upload`: a preview URL only, never
 #                     the live Worker
 #
+# Do NOT change main to `wrangler versions upload` + `wrangler versions deploy`
+# in order to verify before promoting. That was tried on 2026-09-16 and the
+# promoted version came up with NO secrets: ADMIN_USERNAME, ADMIN_PASSWORD_HASH,
+# SESSION_SECRET, RESEND_API_KEY and RECAPTCHA_SECRET_KEY were all wiped,
+# taking down admin login and lead emails and silently disabling the spam
+# check. `wrangler deploy` preserves them; the uploaded version did not carry
+# them over, despite what `wrangler versions upload --help` implies. If the
+# pre-promotion gate is worth revisiting, the secrets have to be supplied to
+# the version explicitly (--secrets-file, sourced from GitHub Actions secrets)
+# and proven on a preview URL before anything is promoted.
+#
 # deploy.yml (Hostinger FTP) keeps running on its own: Hostinger stays a
 # complete fallback copy. The contact form and leads admin run in the Worker
 # (cloudflare/api.js, D1).
