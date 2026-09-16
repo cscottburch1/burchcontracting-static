@@ -213,7 +213,7 @@ Neither is read by the workflow anymore; leaving them in place is exactly
 the kind of hidden second copy that caused this bug, waiting to bite again
 the next time someone assumes it's still wired up.
 
-**Current key (2026-09-16):** `6Lc2ITgsAAAAAFUsZhRghHdgBEYDG0izDeTtd4Li`
+**Current key (2026-09-16):** `6Lf1br8tAAAAAJF-tBtv8Ry1B6i_hqp5kfwn0j48`
 (site key, in `contact.html`), paired with its secret in the Worker secret
 `RECAPTCHA_SECRET_KEY`. Any older site-key values referenced in earlier
 notes/commits are obsolete — this is the current one.
