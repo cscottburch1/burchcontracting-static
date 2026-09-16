@@ -236,7 +236,24 @@ permanently disconnected 2026-07-11.** Root cause found, not still open.
 
 **Hard rule going forward:** the ONLY deployment path is the GitHub Actions
 FTP workflow (`.github/workflows/deploy.yml`). Never reconnect hPanel's Git
-integration. Never hand-edit files in the deployed docroot except
+integration.
+
+**2026-09-16 — the same mistake, on Cloudflare.** A Cloudflare-side Git
+integration (Workers & Pages -> the Worker -> Builds) was connected to this
+repo. It deployed on every push, and because it runs a plain `npm run build`
+with no `BUILD_ENV=production` and carries none of the `wrangler secret put`
+secrets, each push shipped `noindex` on all 70 pages and wiped
+ADMIN_USERNAME, ADMIN_PASSWORD_HASH, SESSION_SECRET, RESEND_API_KEY and
+RECAPTCHA_SECRET_KEY — taking down admin login and lead emails and silently
+disabling the reCAPTCHA check while the contact form kept accepting
+submissions. It happened three times before the cause was found, because the
+deploys left no GitHub Actions run to look at. Disconnected the same day.
+
+The rule generalises: **one deployment path per host, and it must be one that
+sets BUILD_ENV=production and preserves secrets.** For Cloudflare that is
+`npx wrangler deploy` run by hand (see cloudflare.yml's header for the exact
+sequence). A vendor's own Git integration always looks like a convenience and
+always races whatever is already deploying. Never hand-edit files in the deployed docroot except
 `api/config.local.php` (the one file the workflow deliberately excludes).
 If the docroot is ever modified out-of-band (manual FTP edit, hPanel File
 Manager, a reconnected integration, etc.), delete
