@@ -47,7 +47,7 @@ npm run preview
 ## 📁 Project Structure
 
 ```
-burchcontracting-dev/
+.
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml       # GitHub Actions deployment workflow

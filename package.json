@@ -1,8 +1,11 @@
 {
-  "name": "burchcontracting-dev",
+  "name": "burchcontracting-static",
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite",
     "prebuild": "node scripts/generate-guides.mjs && node scripts/generate-geo-aeo.mjs && node scripts/generate-services.mjs && node scripts/generate-calculator-tables.mjs && node scripts/generate-trust-layer.mjs",

@@ -1,0 +1,18 @@
+# Matches .gitattributes: LF everywhere, UTF-8, two-space indent.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Trailing whitespace is meaningful in Markdown (hard line break).
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{png,jpg,jpeg,gif,webp,avif,ico,woff,woff2,ttf,eot,pdf,zip}]
+insert_final_newline = false
+trim_trailing_whitespace = false

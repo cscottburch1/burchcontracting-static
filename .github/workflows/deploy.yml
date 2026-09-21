@@ -17,10 +17,6 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: burchcontracting-dev
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,9 +24,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: .nvmrc
           cache: 'npm'
-          cache-dependency-path: burchcontracting-dev/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
@@ -86,7 +82,7 @@ jobs:
           port: 21
           # Hostinger supports explicit FTPS; if a future run fails at connection, revert this commit while investigating.
           protocol: ftps
-          local-dir: ./burchcontracting-dev/dist/
+          local-dir: ./dist/
           server-dir: ./
           dangerous-clean-slate: false
           log-level: verbose
