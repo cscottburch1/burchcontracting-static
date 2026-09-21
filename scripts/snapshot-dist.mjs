@@ -19,8 +19,14 @@
  *
  * What IS captured, because losing any of it is the failure this gate exists
  * to catch: visible body text with nav/footer stripped, the full set of JSON-LD
- * blocks, title/canonical/robots/description, and internal links as BOTH a set
- * and a per-page total.
+ * blocks, title/canonical/robots/description, internal links as BOTH a set and
+ * a per-page total, and the page chrome as a link set plus a normalized hash.
+ *
+ * The chrome fields exist because of a miss. visibleText() strips <header> and
+ * <footer>, so when Phase 3.1 rewrote the footer on 52 pages this gate reported
+ * "71/71 identical" — correct about the body, silent about the only thing that
+ * had changed. headerLinks/footerLinks/headerHash/footerHash close that, and
+ * check-build asserts separately that every page carries the SAME chrome.
  *
  * Both link measures are kept because either alone has a blind spot. The set
  * ignores order, so a deliberate nav reordering passes — but it cannot see a
@@ -37,6 +43,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
 import { PAGE_URLS, UNLISTED_FILES } from '../src/data/url-map.js'
+import { chromeHash, chromeSource } from './lib/chrome-hash.mjs'
 
 const root = path.resolve(import.meta.dirname, '..')
 const distDir = path.join(root, 'dist')
@@ -127,6 +134,11 @@ function internalLinks(html) {
     if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) continue
     if (href.startsWith('https://burchcontracting.com')) href = href.slice('https://burchcontracting.com'.length) || '/'
     if (/^[a-z]+:\/\//i.test(href)) continue
+    // Build artifacts, not content links: vite content-hashes everything under
+    // /assets/, so these change whenever the bundle does and say nothing about
+    // whether a page lost a link. The header comment already promised these
+    // were ignored; captured via href, they were not.
+    if (href.startsWith('/assets/')) continue
     total++
     unique.add(href.split('#')[0] || '/')
   }
@@ -180,6 +192,8 @@ function snapshot() {
     if (pages[key]) problems.push(`${key}: two dist files map to the same public URL`)
 
     const linkInfo = internalLinks(html)
+    const headBlock = chromeSource(html, 'header')
+    const footBlock = chromeSource(html, 'footer')
     pages[key] = {
       file: rel,
       title: attr(html, /<title[^>]*>([\s\S]*?)<\/title>/i),
@@ -189,6 +203,10 @@ function snapshot() {
       jsonLd: jsonLdBlocks(html, rel, problems),
       links: linkInfo.unique,
       linkCount: linkInfo.total,
+      headerLinks: headBlock ? internalLinks(headBlock).unique : [],
+      headerHash: chromeHash(html, 'header'),
+      footerLinks: footBlock ? internalLinks(footBlock).unique : [],
+      footerHash: chromeHash(html, 'footer'),
       text: visibleText(html),
     }
   }
@@ -236,6 +254,25 @@ function diff(beforeFile, afterFile) {
     const linksLost = b.links.filter((x) => !a.links.includes(x))
     const linksGained = a.links.filter((x) => !b.links.includes(x))
     if (linksLost.length) fieldDiffs.push(`links LOST (${linksLost.length}): ${linksLost.join(', ')}`)
+    // Chrome, compared separately: visibleText() strips header and footer, so
+    // without these a chrome change reads as "identical".
+    for (const part of ['header', 'footer']) {
+      // Same rule as linkCount: a baseline recorded before these fields existed
+      // has nothing to compare, and treating "absent" as "empty" would report
+      // every chrome link on every page as newly added. Re-record instead.
+      if (!b[`${part}Links`] || !a[`${part}Links`]) continue
+      const bl = b[`${part}Links`]
+      const al = a[`${part}Links`]
+      const lost = bl.filter((x) => !al.includes(x))
+      const gained = al.filter((x) => !bl.includes(x))
+      if (lost.length) fieldDiffs.push(`${part} links LOST (${lost.length}): ${lost.join(', ')}`)
+      if (gained.length) fieldDiffs.push(`${part} links added (${gained.length}): ${gained.join(', ')}`)
+      const bh = b[`${part}Hash`]
+      const ah = a[`${part}Hash`]
+      if (bh && ah && bh !== ah && !lost.length && !gained.length) {
+        fieldDiffs.push(`${part} changed (same links): ${bh} -> ${ah}`)
+      }
+    }
     if (linksGained.length) fieldDiffs.push(`links added (${linksGained.length}): ${linksGained.join(', ')}`)
     // The set above is order-insensitive by design; the total catches a link
     // lost in one place and re-added in another, which the set cannot see.

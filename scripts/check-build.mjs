@@ -9,6 +9,10 @@
  *      staging build, or a blanket "Disallow: /" in dist/robots.txt. Runs on
  *      every build — it used to run only when an env var was set, which meant
  *      it went quiet on exactly the builds that needed it.
+ *   3b. One chrome: every non-exempt page must carry the same <header> and
+ *      the same <footer>. Exemptions are the hand-authored and calculator
+ *      pages that still hold their own committed chrome; Phase 3.3 empties
+ *      that list down to 404.html.
  *   4. reCAPTCHA site key drift: dist/contact.html must have a well-formed
  *      data-recaptcha-site-key, and no dist/assets/*.js may contain a key
  *      literal — see LAUNCH-CHECKLIST.md #3 for why this must be the only
@@ -38,6 +42,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { CALCULATOR_PAGES } from '../src/js/calculator-config.js'
 import { servicePerSqftBand } from '../src/data/pricing-sync.js'
+import { chromeHash } from './lib/chrome-hash.mjs'
 
 const root = path.resolve(import.meta.dirname, '..')
 const EXCLUDE_DIRS = new Set(['node_modules', 'dist', '.git', 'public'])
@@ -183,6 +188,84 @@ if (orphans.length) {
   } else {
     failed = true
     failures.push({ check: 'robots-txt-missing', detail: ['dist/robots.txt was not produced by the build'] })
+  }
+}
+
+// --- Check 3b: one chrome, site-wide ---
+// Asserts that every page carries the SAME <header> and the SAME <footer>.
+//
+// This is the property "one chrome" actually means, and nothing checked it
+// before. snapshot-dist.mjs strips header and footer to isolate body content,
+// so when Phase 3.1 unified the footer across 52 pages the content gate
+// reported "71/71 identical" — true of the body, silent about the change. The
+// same blind spot let a commit message claim "every page" when 19 pages were
+// untouched.
+//
+// Hashing is normalized (scripts/lib/chrome-hash.mjs): anchors are reduced to
+// href plus text, because the current page's nav link is styled differently by
+// design — the desktop nav via aria-current, the mobile nav via classes alone.
+// Without that, a page could never match any other and this check could only be
+// satisfied by deleting an accessibility affordance.
+//
+// EXEMPTIONS BELOW ARE TEMPORARY. They are the pages that still carry their own
+// committed chrome because they are hand-authored rather than generated. Phase
+// 3.3 moves them to src/templates/ rendered through src/chrome/, and empties
+// this list down to 404.html. Shrinking it is the measure of that phase.
+const CHROME_EXEMPT = new Set([
+  // Hand-authored pages (Phase 3.3 removes all but 404.html).
+  '404.html',
+  'about.html',
+  'contact.html',
+  'index.html',
+  'privacy-policy.html',
+  'projects.html',
+  'services.html',
+  'terms-of-service.html',
+  // Calculator pages (Phase 3.3).
+  'calculator/ada-bath-shower.html',
+  'calculator/additions.html',
+  'calculator/basement-finishing.html',
+  'calculator/bath-remodel.html',
+  'calculator/covered-patios.html',
+  'calculator/decks.html',
+  'calculator/estimate.html',
+  'calculator/garages.html',
+  'calculator/kitchen-remodel.html',
+  'calculator/porch.html',
+  'calculator/whole-home-remodel.html',
+])
+
+{
+  const distDir = path.join(root, 'dist')
+  const governed = walkHtmlFiles(distDir)
+    .map((f) => ({
+      rel: path.relative(distDir, f).split(path.sep).join('/'),
+      html: fs.readFileSync(f, 'utf8'),
+    }))
+    .filter((p) => !p.rel.startsWith('api/') && !CHROME_EXEMPT.has(p.rel))
+
+  for (const part of ['header', 'footer']) {
+    const byHash = new Map()
+    for (const page of governed) {
+      const h = chromeHash(page.html, part)
+      if (!byHash.has(h)) byHash.set(h, [])
+      byHash.get(h).push(page.rel)
+    }
+    if (byHash.size > 1) {
+      // Largest group is the intended chrome; report the pages that diverge.
+      const groups = [...byHash.entries()].sort((a, b) => b[1].length - a[1].length)
+      const [, majority] = groups[0]
+      const odd = groups.slice(1).flatMap(([hash, rels]) => rels.map((r) => `${r} (${hash})`))
+      failed = true
+      failures.push({
+        check: `divergent-${part}`,
+        detail: [
+          `${byHash.size} distinct ${part}s across ${governed.length} non-exempt pages; ` +
+          `${majority.length} share the majority one. Diverging:`,
+          ...odd,
+        ],
+      })
+    }
   }
 }
 
