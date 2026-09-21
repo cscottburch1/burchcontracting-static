@@ -224,8 +224,24 @@ things at once: the hand-authored pages keep the active state they have today
 when they move to templates, the mobile nav gains the accessibility affordance
 it never had, and the 52 generated pages gain active state they currently lack.
 
-Expect that to show as a chrome-hash change on every page. It is intended, and
-it is the one change in 3.3 that is additive rather than structure-preserving.
+**The marker must go on the `<a>` element only.** This brief originally said the
+change would "show as a chrome-hash change on every page." That is wrong under
+the normalization in §2, and the error is a trap rather than a wording slip:
+`normalizeChrome()` reduces anchors to href plus text, so an `aria-current` and
+active class on the anchor are invisible to the hash and the assertion stays
+green. Put them on a wrapping `<li>` or `<span>` and every page hashes
+differently, failing `divergent-header` on all 71.
+
+Verified both ways against a built page:
+
+| Marker placement | Header hash | Result |
+|---|---|---|
+| on the `<a>` | unchanged | assertion holds |
+| on a wrapper | differs per page | assertion fails on all 71 |
+
+So `check-build` already enforces the constraint. And the consequence for
+reading the 3.3 gate: **a changed header hash on the generated pages is a
+defect, not the expected result.**
 
 **Definition of Phase 3.3 done:** `CHROME_EXEMPT` in `scripts/check-build.mjs`
 is exactly `['404.html']`. Not "smaller", not "mostly empty" — that list.

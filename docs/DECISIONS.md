@@ -397,9 +397,17 @@ hand-authored pages do.
   mobile navs. One change covers three gaps: the hand-authored pages keep the
   active state they have today when they move to templates, the mobile nav
   gains the affordance it never had, and the 52 generated pages gain active
-  state they currently lack. It will change the chrome hash on every page —
-  intended, and the one part of 3.3 that is additive rather than
-  structure-preserving.
+  state they currently lack.
+
+  **The marker goes on the `<a>`, never on a wrapper.** `normalizeChrome()`
+  reduces anchors to href plus text, so `aria-current` and an active class on
+  the anchor are invisible to the hash and every page keeps matching. Put them
+  on a wrapping `<li>` or `<span>` and each page hashes differently by design,
+  failing the divergent-header assertion on all 71. Verified both ways against
+  a built page. An earlier note here claimed this change "will change the chrome
+  hash on every page" — that is wrong, and believing it would have made a real
+  defect look like the expected outcome. **After 3.3, a changed header hash on
+  the generated pages is a defect.**
 - **Done means `CHROME_EXEMPT` is exactly `['404.html']`.** Not smaller, not
   mostly empty — that list.
 - Chrome-hash normalization stays as written. No class histogram.

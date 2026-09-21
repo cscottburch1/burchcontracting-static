@@ -31,6 +31,21 @@ export function chromeSource(html, tag) {
  * The trade-off, stated so nobody assumes otherwise: a change that alters only
  * anchor classes — restyling the nav without touching its links or text — will
  * not register. That is styling, not content. Everything else is verbatim.
+ *
+ * CONSTRAINT THIS IMPOSES ON THE CHROME MODULE — read before adding active nav
+ * state. Because only <a> tags are normalized, the current-page marker must
+ * live ON THE ANCHOR: aria-current="page" and the active class both go on the
+ * <a> itself, never on a wrapping <li>, <span> or <div>. Verified both ways
+ * against a real built page:
+ *
+ *   marker on the <a>       -> hash unchanged, every page still matches
+ *   marker on a wrapper     -> hash differs per page, the check-build
+ *                              divergent-header assertion fails on all 71
+ *
+ * So check-build already enforces this: putting the marker on a wrapper fails
+ * the build rather than silently weakening the gate. After Phase 3.3, a CHANGED
+ * header hash on the generated pages is a defect, not an expected side effect
+ * of adding active state.
  */
 export function normalizeChrome(block) {
   return block
