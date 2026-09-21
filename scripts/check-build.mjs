@@ -71,8 +71,27 @@ function toPublicUrl(rel) {
   return '/' + rel.replace(/\.html$/, '')
 }
 
-const files = walkHtmlFiles(root)
-const pages = files.map((f) => ({ file: f, rel: relPath(f), html: fs.readFileSync(f, 'utf8') }))
+// The page set is .build/pages/, not the repo tree. Phase 3.2d made
+// src/build/index.mjs the only thing that produces pages, and it writes there;
+// nothing generated is written into the source tree any more. Scanning the repo
+// would now find stale committed copies alongside the real ones — it briefly
+// reported 142 pages for a 71-page site — and after Phase 3.5 deletes those
+// copies it would find only the hand-authored few, silently losing coverage of
+// every generated page.
+const pagesRoot = path.join(root, '.build/pages')
+if (!fs.existsSync(pagesRoot)) {
+  console.error(
+    'check-build: .build/pages/ not found. Run `npm run build` first — its prebuild ' +
+    'step produces the pages this guard checks.'
+  )
+  process.exit(1)
+}
+const files = walkHtmlFiles(pagesRoot)
+const pages = files.map((f) => ({
+  file: f,
+  rel: path.relative(pagesRoot, f).split(path.sep).join('/'),
+  html: fs.readFileSync(f, 'utf8'),
+}))
 
 let failed = false
 const failures = []
@@ -88,7 +107,10 @@ if (doubleEncoded.length) {
 }
 
 // --- Check 2: orphan pages (sitemap URL with zero inbound internal links) ---
-const sitemapPath = path.join(root, 'public/sitemap.xml')
+// dist/, not public/: the sitemap is a build artifact now, written by
+// scripts/write-sitemap.mjs after the build. It was committed at
+// public/sitemap.xml until Phase 3.2d.
+const sitemapPath = path.join(root, 'dist/sitemap.xml')
 const sitemapXml = fs.readFileSync(sitemapPath, 'utf8')
 const sitemapUrls = [...sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g)]
   .map((m) => m[1])

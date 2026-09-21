@@ -90,6 +90,7 @@ function findKey() {
 }
 
 function sitemapUrls() {
-  const xml = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf8')
+  // dist/, not public/ — see scripts/write-sitemap.mjs.
+  const xml = fs.readFileSync(path.join(root, 'dist/sitemap.xml'), 'utf8')
   return [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((match) => match[1])
 }

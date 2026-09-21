@@ -49,3 +49,6 @@ Google Search Console Downloads/
 Claude Prompts/
 baseline-2026-09/
 SEO_GEO Reports/
+
+# Generated post-build into dist/ by scripts/write-sitemap.mjs (Phase 3.2d).
+public/sitemap.xml

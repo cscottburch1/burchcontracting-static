@@ -1,102 +1,79 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import { readdirSync, existsSync } from 'fs'
-import { resolve } from 'path'
-import { SERVICES } from './src/data/services.js'
+import { resolve, relative } from 'path'
 
-const root = import.meta.dirname
-const serviceAreaDir = resolve(root, 'service-areas')
-const outdoorLivingDir = resolve(root, 'outdoor-living')
-const calculatorDir = resolve(root, 'calculator')
-const guideDirs = ['cost', 'blog']
+const project = import.meta.dirname
 
-const serviceAreaInputs = existsSync(serviceAreaDir)
-  ? Object.fromEntries(
-      readdirSync(serviceAreaDir)
-        .filter((file) => file.endsWith('.html'))
-        .map((file) => [
-          `area_${file.replace('.html', '').replace(/-/g, '_')}`,
-          resolve(serviceAreaDir, file),
-        ])
-    )
-  : {}
+/**
+ * Every page vite builds comes from .build/pages/, produced by
+ * src/build/index.mjs. Nothing is hand-listed and nothing generated is
+ * committed.
+ *
+ * WHY THIS IS THE ROOT RATHER THAN AN INPUT DIRECTORY
+ *
+ * Vite emits each HTML input at its path relative to `root`. With the project
+ * directory as root, an input at .build/pages/cost/index.html lands in
+ * dist/.build/pages/cost/index.html — verified by experiment before this config
+ * was written, not assumed. That would change every URL on the site, which
+ * invariant 1 forbids outright.
+ *
+ * Making .build/pages/ the root fixes the output paths and costs two
+ * compensations, because absolute paths inside a page resolve from root:
+ *   - publicDir points back at the project's public/
+ *   - the /src alias points back at the project's src/
+ *
+ * WHY THE INPUTS ARE SCANNED AND NEVER LISTED
+ *
+ * calculator/covered-patios.html once shipped as a live 404: the generator
+ * wrote it, but nobody added it to the hand-maintained input list, so it never
+ * reached dist/. `npm run dev` needs no input list and worked; the deploy's
+ * integrity check can only compare files that made it into dist/, so it saw
+ * nothing either. Only a real visitor found it. Scanning closes that for good —
+ * a page that exists is a page that builds. See docs/DECISIONS.md, 2026-08-29.
+ */
+const pagesRoot = resolve(project, '.build/pages')
 
-const outdoorLivingInputs = existsSync(outdoorLivingDir)
-  ? Object.fromEntries(
-      readdirSync(outdoorLivingDir, { withFileTypes: true })
-        .filter((dirent) => dirent.isDirectory())
-        .map((dirent) => [
-          `outdoor_${dirent.name.replace(/-/g, '_')}`,
-          resolve(outdoorLivingDir, dirent.name, 'index.html'),
-        ])
-    )
-  : {}
+function htmlInputs(dir) {
+  if (!existsSync(dir)) return {}
+  const found = {}
+  const walk = (current) => {
+    for (const entry of readdirSync(current, { withFileTypes: true })) {
+      const full = resolve(current, entry.name)
+      if (entry.isDirectory()) walk(full)
+      else if (entry.name.endsWith('.html')) {
+        // Key from the whole relative path: there are 20+ index.html files and
+        // a bare-filename key would silently collapse them onto each other.
+        const key = relative(dir, full).split(/[\\/]/).join('_').replace(/\.html$/, '')
+        found[key] = full
+      }
+    }
+  }
+  walk(dir)
+  return found
+}
 
-// Auto-discovered rather than hand-listed like the block below: a new
-// calculator/*.html file used to need a matching entry added here by hand,
-// and calculator/covered-patios.html shipped without one — it worked in
-// `npm run dev` (which needs no input list) and passed the deploy's
-// content-integrity check (which can only compare files that made it into
-// dist/), so it 404'd in production with nothing catching it until someone
-// hit the live URL. Scanning the directory closes that gap for good.
-const calculatorInputs = existsSync(calculatorDir)
-  ? Object.fromEntries(
-      readdirSync(calculatorDir)
-        .filter((file) => file.endsWith('.html'))
-        .map((file) => [
-          `calculator_${file.replace('.html', '').replace(/-/g, '_')}`,
-          resolve(calculatorDir, file),
-        ])
-    )
-  : {}
+const input = htmlInputs(pagesRoot)
 
-// Service pages are generated from SERVICES (generate-services.mjs); derive
-// build inputs from the same data so a new service can never be generated
-// but silently left out of dist/ — the covered-patios failure mode (see
-// calculatorInputs comment below). Slugs containing '/' live under
-// outdoor-living/ and are covered by outdoorLivingInputs; skip them here.
-const serviceInputs = Object.fromEntries(
-  SERVICES.filter((s) => !s.slug.includes('/')).map((s) => [
-    `svc_${s.slug.replace(/-/g, '_')}`,
-    resolve(root, s.slug, 'index.html'),
-  ])
-)
-
-// Cost guides and articles (scripts/generate-guides.mjs). Directory-scanned
-// for the same reason as calculatorInputs above: 25 hand-listed entries is 25
-// chances to generate a page that never reaches dist/, which is exactly how
-// calculator/covered-patios.html shipped as a 404.
-const guideInputs = Object.fromEntries(
-  guideDirs.flatMap((dir) => {
-    const full = resolve(root, dir)
-    if (!existsSync(full)) return []
-    return readdirSync(full)
-      .filter((file) => file.endsWith('.html'))
-      .map((file) => [`${dir}_${file.replace('.html', '').replace(/-/g, '_')}`, resolve(full, file)])
-  })
-)
+if (!Object.keys(input).length) {
+  throw new Error(
+    'vite.config.js: no HTML found in .build/pages/. Run `node src/build/index.mjs` first — ' +
+    "package.json's prebuild does this automatically."
+  )
+}
 
 export default defineConfig({
+  root: pagesRoot,
+  publicDir: resolve(project, 'public'),
   plugins: [tailwindcss()],
+  resolve: {
+    // Pages reference /src/... absolutely; without this they resolve against
+    // .build/pages/ and fail.
+    alias: { '/src': resolve(project, 'src') },
+  },
   build: {
-    rollupOptions: {
-      input: {
-        main: resolve(root, 'index.html'),
-        notFound: resolve(root, '404.html'),
-        services: resolve(root, 'services.html'),
-        about: resolve(root, 'about.html'),
-        contact: resolve(root, 'contact.html'),
-        privacyPolicy: resolve(root, 'privacy-policy.html'),
-        termsOfService: resolve(root, 'terms-of-service.html'),
-        projects: resolve(root, 'projects.html'),
-        faqs: resolve(root, 'faqs.html'),
-        // Generated pages
-        ...serviceInputs,
-        ...serviceAreaInputs,
-        ...outdoorLivingInputs,
-        ...calculatorInputs,
-        ...guideInputs,
-      },
-    },
+    outDir: resolve(project, 'dist'),
+    emptyOutDir: true,
+    rollupOptions: { input },
   },
 })
