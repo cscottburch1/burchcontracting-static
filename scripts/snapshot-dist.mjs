@@ -117,8 +117,8 @@ function internalLinks(html) {
 // --- walk -------------------------------------------------------------------
 
 /**
- * dist/api/** is not part of the site. It is the Hostinger PHP tree (contact
- * handler, PHPMailer, the old admin panel, an email template) that vite copies
+ * dist/api/** is not part of the site. It is the legacy PHP tree (contact
+ * handler, mailer library, the old admin panel, an email template) that vite copies
  * out of public/ wholesale. It reaches Cloudflare in the asset bundle but is
  * unreachable there: worker.js intercepts every /api/* request before any asset
  * lookup and api.js 404s unknown routes. Phase 4 deletes public/api/ outright.

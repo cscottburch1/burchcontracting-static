@@ -2,14 +2,13 @@
  * Injects <meta name="robots" content="noindex, nofollow" /> across dist/ —
  * and ONLY when BUILD_ENV=staging.
  *
- * This is the inverse of the old scripts/flip-noindex-production.mjs, and the
- * inversion is the whole point. Under the old model every source page carried
- * noindex and the build rewrote dist/ to "index, follow" when
- * BUILD_ENV=production. That made the SAFE state conditional on remembering an
- * environment variable, so any build that omitted it shipped noindex on all 70
- * pages. On 2026-09-16 that happened three times in one day, when a Cloudflare
- * dashboard Git integration ran a plain `npm run build` on every push
- * (docs/DECISIONS.md).
+ * This is the inverse of the build step it replaced, and the inversion is the
+ * whole point. Under the old model every source page carried noindex and the
+ * build rewrote dist/ to "index, follow" only when an environment variable said
+ * to. That made the SAFE state conditional on remembering that variable, so any
+ * build which omitted it shipped noindex on all 70 pages. On 2026-09-16 that
+ * happened three times in one day, when a Cloudflare dashboard Git integration
+ * ran a plain `npm run build` on every push (docs/DECISIONS.md).
  *
  * Now the default is correct and the exception is explicit:
  *
@@ -55,7 +54,7 @@ const missed = []
 for (const file of walkHtmlFiles(distDir)) {
   const rel = path.relative(distDir, file).split(path.sep).join('/')
   if (EXEMPT.has(rel)) continue
-  // dist/api/** is the Hostinger PHP tree copied out of public/, not a site
+  // dist/api/** is the legacy PHP tree copied out of public/, not a site
   // page. Phase 4 deletes it; until then it is not ours to rewrite.
   if (rel.startsWith('api/')) continue
 
