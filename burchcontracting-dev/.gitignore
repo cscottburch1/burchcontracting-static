@@ -35,3 +35,6 @@ public/api/config.local.php
 # Wrangler (Cloudflare) local state and local secrets
 .wrangler
 .dev.vars*
+
+# Claude Code personal permissions (machine-local, not team settings)
+.claude/settings.local.json
