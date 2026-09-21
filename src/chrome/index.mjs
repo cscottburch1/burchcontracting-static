@@ -315,31 +315,23 @@ ${SERVICE_AREAS.map((a) => `
       </div>
     </footer>
     <script type="module" src="/src/js/analytics.js"></script>
-    <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-      const menuBtn = document.getElementById('menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const iconOpen = document.getElementById('icon-open');
-      const iconClose = document.getElementById('icon-close');
-      menuBtn?.addEventListener('click', () => {
-        const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
-        menuBtn.setAttribute('aria-expanded', !isExpanded);
-        mobileMenu?.classList.toggle('hidden');
-        iconOpen?.classList.toggle('hidden');
-        iconClose?.classList.toggle('hidden');
-      });
-      document.querySelectorAll('[data-mobile-accordion]').forEach((btn) => {
-        const key = btn.dataset.mobileAccordion;
-        const panel = document.querySelector('[data-mobile-accordion-panel="' + key + '"]');
-        const icon = btn.querySelector('[data-mobile-accordion-icon]');
-        if (!panel) return;
-        btn.addEventListener('click', () => {
-          const isOpen = !panel.classList.contains('hidden');
-          panel.classList.toggle('hidden');
-          if (icon) icon.textContent = isOpen ? '+' : '−';
-        });
-      });
-    </script>`
+    <!--
+      Nav behaviour, the footer year, the testimonials carousel and the contact
+      form all live in src/js/main.js, which is bundled by vite and guards every
+      binding on element presence. This used to be an inline copy of the menu,
+      accordion and year logic, because the service and guide generators never
+      loaded main.js.
+
+      Unifying the footer in Phase 3.1 then put that inline copy onto the nine
+      pages that DO load main.js — faqs and all eight service areas — so the
+      hamburger and the mobile accordions were bound twice, each tap toggled
+      the hidden class twice, and the menu did nothing. On the site's local
+      pages. Neither gate could see it: the snapshot strips scripts, and the
+      chrome hash was consistent because every page got the same bad copy.
+
+      One owner, no inline duplicate. See docs/DECISIONS.md.
+    -->
+    <script type="module" src="/src/js/main.js"></script>`
 
 /** Byline + review dates. Real dates only — see the caller for where they come from. */
 export function authorBox({ published, modified }) {

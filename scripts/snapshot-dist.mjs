@@ -46,6 +46,7 @@
  * Phase 1 flatten (which moves every file) does not invalidate the baseline.
  * 404.html is keyed as "unlisted:404.html" since it has no public URL by design.
  */
+import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
@@ -152,6 +153,40 @@ function internalLinks(html) {
   return { unique: [...unique].sort(), total }
 }
 
+/**
+ * Scripts a page loads, and the content of anything inline.
+ *
+ * Added after a defect neither existing field could see. Phase 3.1 unified the
+ * footer, which carried an inline copy of the nav logic; the nine pages that
+ * already loaded main.js ended up binding the hamburger twice, so each tap
+ * toggled it open and shut and the mobile menu was dead on every service-area
+ * page. visibleText() strips <script>, and the chrome hash was identical across
+ * those pages because they all received the same bad copy. Both gates passed.
+ *
+ * External srcs are recorded verbatim except for vite's content hashes, which
+ * are stripped so a rebuild is not a diff. Inline bodies are hashed rather than
+ * stored: the point is to notice that one changed, not to diff minified JS.
+ */
+function scriptInfo(html) {
+  const external = []
+  const inline = []
+  const re = /<script([^>]*)>([\s\S]*?)<\/script>/gi
+  let m
+  while ((m = re.exec(html))) {
+    const attrs = m[1]
+    const src = /src=["']([^"']+)["']/i.exec(attrs)?.[1]
+    if (src) {
+      external.push(src.replace(/-[A-Za-z0-9_]{8,}\.(js|css)$/, '.$1'))
+      continue
+    }
+    const body = m[2].trim()
+    if (!body) continue
+    if (/application\/ld\+json/i.test(attrs)) continue // captured by jsonLd
+    inline.push(crypto.createHash('sha1').update(body.replace(/\s+/g, ' ')).digest('hex').slice(0, 12))
+  }
+  return { external: external.sort(), inline: inline.sort() }
+}
+
 // --- walk -------------------------------------------------------------------
 
 /**
@@ -214,6 +249,7 @@ function snapshot() {
       headerHash: chromeHash(html, 'header'),
       footerLinks: footBlock ? internalLinks(footBlock).unique : [],
       footerHash: chromeHash(html, 'footer'),
+      scripts: scriptInfo(html),
       text: visibleText(html),
     }
   }
@@ -261,6 +297,14 @@ function diff(beforeFile, afterFile) {
     const linksLost = b.links.filter((x) => !a.links.includes(x))
     const linksGained = a.links.filter((x) => !b.links.includes(x))
     if (linksLost.length) fieldDiffs.push(`links LOST (${linksLost.length}): ${linksLost.join(', ')}`)
+    if (b.scripts && a.scripts) {
+      for (const kind of ['external', 'inline']) {
+        const lost = b.scripts[kind].filter((x) => !a.scripts[kind].includes(x))
+        const gained = a.scripts[kind].filter((x) => !b.scripts[kind].includes(x))
+        if (lost.length) fieldDiffs.push(`${kind} script(s) LOST (${lost.length}): ${lost.join(', ')}`)
+        if (gained.length) fieldDiffs.push(`${kind} script(s) added (${gained.length}): ${gained.join(', ')}`)
+      }
+    }
     // Chrome, compared separately: visibleText() strips header and footer, so
     // without these a chrome change reads as "identical".
     for (const part of ['header', 'footer']) {

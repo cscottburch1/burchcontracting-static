@@ -291,6 +291,45 @@ const CHROME_EXEMPT = new Set([
   }
 }
 
+// --- Check 3c: one owner for nav behaviour ---
+// src/js/main.js binds the hamburger, the mobile accordions, the footer year,
+// the testimonials carousel and the contact form, each guarded by element
+// presence. No page may carry its own inline copy of that logic.
+//
+// This exists because of a defect that shipped past both other gates. The
+// chrome footer used to hold an inline copy of the menu and accordion handlers,
+// because the service and guide generators never loaded main.js. Unifying the
+// footer in Phase 3.1 put that copy onto the nine pages that DO load main.js —
+// faqs and all eight service areas — so the hamburger was bound twice, each tap
+// toggled the menu open and shut, and it was dead on the site's local landing
+// pages. The snapshot strips scripts, and the chrome hash was consistent
+// because every page received the same bad copy. Both passed.
+//
+// Scans .build/pages/, where pages still reference /src/js/main.js by source
+// path; vite rewrites that to a hashed bundle later.
+{
+  const withInlineNav = pages.filter((p) => /getElementById\(['"]menu-btn/.test(p.html))
+  if (withInlineNav.length) {
+    failed = true
+    failures.push({
+      check: 'inline-nav-handler',
+      detail: withInlineNav.map((p) => `${p.rel} — binds #menu-btn inline; main.js already owns this`),
+    })
+  }
+
+  // The inverse: a page with a menu button and no main.js has a dead menu.
+  const unbound = pages.filter(
+    (p) => p.html.includes('id="menu-btn"') && !p.html.includes('/src/js/main.js')
+  )
+  if (unbound.length) {
+    failed = true
+    failures.push({
+      check: 'unbound-nav',
+      detail: unbound.map((p) => `${p.rel} — has #menu-btn but does not load main.js`),
+    })
+  }
+}
+
 // --- Check 4: reCAPTCHA site key must live only in dist/contact.html's
 // data-recaptcha-site-key attribute, never baked into JS. Requires a prior
 // build (dist/assets/*.js is what actually gets deployed) — see

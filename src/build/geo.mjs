@@ -437,8 +437,6 @@ ${areaLinks}
       </section>
     </main>
 ${footer}
-    <script type="module" src="/src/js/main.js"></script>
-    <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
   </body>
 </html>`
 }
@@ -606,8 +604,6 @@ ${areaLinks}
       </section>
     </main>
 ${footer}
-    <script type="module" src="/src/js/main.js"></script>
-    <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
   </body>
 </html>`
 }
