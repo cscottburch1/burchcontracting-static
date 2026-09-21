@@ -123,7 +123,22 @@ tree-cleanliness useless as a signal.
 **Resolved 2026-09-21 (Phase 1)** by `.gitattributes` with `* text=auto eol=lf`
 plus a full `git add --renormalize`.
 
-**Source:** `docs/archive/FINDINGS.md` #3.
+**Where the problem actually lived, established during review:** the stored
+blobs were *already* all-LF before the fix (at `b292d1f`: 172 text files `i/lf`,
+23 binary, 1 none). Nothing in the repository was mixed. The CRLF existed only
+in the Windows *working tree*, created at checkout by `core.autocrlf`, and the
+generators then wrote LF into those CRLF files.
+
+So `git add --renormalize` was a no-op on content — it had nothing to convert —
+and the real fix is `.gitattributes` forcing `eol=lf` on the **checkout** side,
+which stops the mixture being created in the first place. Worth stating plainly
+because the obvious reading of "we renormalized the repo" is that the stored
+files changed, and they did not. Anyone auditing the Phase 1 diff should expect
+content changes in exactly three renamed files (`README.md`'s path line,
+`package.json`'s name and engines, and the lockfile name) and nowhere else.
+
+**Source:** `docs/archive/FINDINGS.md` #3; blob-level check performed during the
+Phases 0–2 review.
 
 ---
 
@@ -302,3 +317,48 @@ to repeat. One entry per phase follows as each lands.
   was on 22.
 - Dated audits, reports and checklists moved to `docs/archive/` unedited. Their
   reasoning was harvested into this file first.
+
+### Phase 2 — Safe-by-default indexing
+
+The site is now indexable unless something explicitly says otherwise, instead
+of de-indexed unless something explicitly says otherwise. Three layers:
+
+1. Source pages and all three `seoHead()` emitters ship `index, follow`.
+   `404.html` keeps `noindex` permanently.
+2. `scripts/apply-staging-noindex.mjs` injects `noindex`, and only when
+   `BUILD_ENV=staging`. It exits 1 rather than half-marking a staging build.
+3. `cloudflare/worker.js` sends `X-Robots-Tag: noindex, nofollow` on any
+   hostname that is not `burchcontracting.com`, covering `workers.dev` preview
+   URLs that were previously protected only by canonical tags — a hint Google
+   may ignore, where a header is a directive.
+
+`check-build`'s indexing assertion now runs on every build rather than only
+when an environment variable is set. The old form was the thing most worth
+fixing: it went quiet on exactly the builds that needed it, so a forgotten
+variable both caused the failure and suppressed its detection.
+
+**`BUILD_ENV=production` no longer exists.** Nothing needs to be remembered for
+a build to be correct.
+
+**Known limit:** the `X-Robots-Tag` branch cannot be exercised through
+`wrangler dev` — with a `routes` config, wrangler rewrites `request.url` to the
+route host, so the Worker always sees `burchcontracting.com` locally whatever
+`Host` is sent. It was proven by temporarily pointing `INDEXABLE_HOST` at a
+non-matching value and watching the header appear. It still needs confirming on
+a real `workers.dev` URL; Phase 5's post-deploy verification is the place.
+
+### Review of Phases 0–2 — two gate strengthenings
+
+An independent review re-ran every gate, regenerated the Phase 0 baseline from
+`b292d1f`, and additionally diffed the raw `dist/` trees hash-insensitively.
+Zero files differed; no defects found. Two improvements were adopted before
+Phase 3 rather than after it, on the principle that the gate must be at full
+strength *before* the phase that rewrites every generator:
+
+- `snapshot-dist.mjs` now records a per-page internal-link **total** alongside
+  the set. The set is order-insensitive so Phase 6's nav reordering passes, but
+  it cannot see a link lost in one place and re-added in another. The count can.
+- `applyIndexingPolicy` now preserves an existing `X-Robots-Tag` only when its
+  value contains `noindex`, instead of whenever the header is merely present.
+  Behaviourally identical today, since the only such header is `api.js`'s own
+  `noindex` — but it no longer depends on that remaining true.

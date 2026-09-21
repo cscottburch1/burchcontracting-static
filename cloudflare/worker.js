@@ -74,12 +74,20 @@ export default {
 /**
  * Adds X-Robots-Tag: noindex, nofollow on any host that is not the live site.
  * Clones only when the header is actually needed, so the production path pays
- * nothing. An existing X-Robots-Tag (the admin pages in api.js set their own)
- * is left alone — it is already at least as restrictive.
+ * nothing.
+ *
+ * An existing X-Robots-Tag is preserved only if it already contains "noindex".
+ * Today the only one is api.js's own noindex on the admin pages, so an
+ * unconditional "leave it alone" would behave identically — but it would rely
+ * on that staying true. A permissive value added later, or one returned by the
+ * origin through forwardToOrigin() for /.well-known/*, would then be honoured
+ * on a preview host and defeat the point of this function. Checking the value
+ * rather than merely its presence closes that permanently, at no cost.
  */
 function applyIndexingPolicy(response, hostname) {
   if (hostname === INDEXABLE_HOST) return response
-  if (response.headers.has('X-Robots-Tag')) return response
+  const existing = response.headers.get('X-Robots-Tag')
+  if (existing && /noindex/i.test(existing)) return response
   const copy = new Response(response.body, response)
   copy.headers.set('X-Robots-Tag', 'noindex, nofollow')
   return copy

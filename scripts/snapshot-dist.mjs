@@ -14,12 +14,20 @@
  * it and capturing it would make the gate cry wolf on every run:
  *   - whitespace, indentation, line endings (normalized away)
  *   - attribute order, and key order inside JSON-LD (deep-sorted)
- *   - the order of internal links (compared as a set)
+ *   - the ORDER of internal links (compared as a set; Phase 6 reorders the nav)
  *   - <head> assets, hashed bundle filenames, <script>/<style> bodies
  *
  * What IS captured, because losing any of it is the failure this gate exists
  * to catch: visible body text with nav/footer stripped, the full set of JSON-LD
- * blocks, title/canonical/robots/description, and the set of internal links.
+ * blocks, title/canonical/robots/description, and internal links as BOTH a set
+ * and a per-page total.
+ *
+ * Both link measures are kept because either alone has a blind spot. The set
+ * ignores order, so a deliberate nav reordering passes — but it cannot see a
+ * link lost in one place and re-added in another, since the set is unchanged.
+ * The total catches that. Added after review, before Phase 3 rewrites every
+ * generator, on the principle that the gate must be at full strength before the
+ * risky phase rather than after it.
  *
  * Keyed by public URL from src/data/url-map.js rather than by file path, so the
  * Phase 1 flatten (which moves every file) does not invalidate the baseline.
@@ -99,9 +107,19 @@ function attr(html, re) {
   return m ? decodeEntities(m[1]).trim() : null
 }
 
-/** Internal hrefs only: site-relative or same-origin. Deduped and sorted. */
+/**
+ * Internal hrefs only: site-relative or same-origin.
+ *
+ * Returns both the deduped sorted SET and the raw TOTAL. The set is what keeps
+ * the gate insensitive to link order, which Phase 6 changes on purpose when it
+ * reorders the nav. But a set alone cannot see a link lost in one place and
+ * re-added in another, or a repeated link that disappears — the count catches
+ * exactly that. Kept as two fields so a deliberate reordering still passes
+ * while a net loss does not.
+ */
 function internalLinks(html) {
-  const out = new Set()
+  const unique = new Set()
+  let total = 0
   const re = /href=["']([^"']+)["']/gi
   let m
   while ((m = re.exec(html))) {
@@ -109,9 +127,10 @@ function internalLinks(html) {
     if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) continue
     if (href.startsWith('https://burchcontracting.com')) href = href.slice('https://burchcontracting.com'.length) || '/'
     if (/^[a-z]+:\/\//i.test(href)) continue
-    out.add(href.split('#')[0] || '/')
+    total++
+    unique.add(href.split('#')[0] || '/')
   }
-  return [...out].sort()
+  return { unique: [...unique].sort(), total }
 }
 
 // --- walk -------------------------------------------------------------------
@@ -160,6 +179,7 @@ function snapshot() {
     }
     if (pages[key]) problems.push(`${key}: two dist files map to the same public URL`)
 
+    const linkInfo = internalLinks(html)
     pages[key] = {
       file: rel,
       title: attr(html, /<title[^>]*>([\s\S]*?)<\/title>/i),
@@ -167,7 +187,8 @@ function snapshot() {
       robots: attr(html, /<meta[^>]*name=["']robots["'][^>]*content=["']([^"']*)["']/i),
       description: attr(html, /<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i),
       jsonLd: jsonLdBlocks(html, rel, problems),
-      links: internalLinks(html),
+      links: linkInfo.unique,
+      linkCount: linkInfo.total,
       text: visibleText(html),
     }
   }
@@ -216,6 +237,18 @@ function diff(beforeFile, afterFile) {
     const linksGained = a.links.filter((x) => !b.links.includes(x))
     if (linksLost.length) fieldDiffs.push(`links LOST (${linksLost.length}): ${linksLost.join(', ')}`)
     if (linksGained.length) fieldDiffs.push(`links added (${linksGained.length}): ${linksGained.join(', ')}`)
+    // The set above is order-insensitive by design; the total catches a link
+    // lost in one place and re-added in another, which the set cannot see.
+    //
+    // Compared only when BOTH sides have it. A baseline recorded before
+    // linkCount existed has no total to compare, and falling back to
+    // links.length would compare a UNIQUE count against a TOTAL and report a
+    // difference on every page that repeats any link — a false alarm on the
+    // one gate that must not cry wolf. Re-record the baseline instead.
+    if (typeof b.linkCount === 'number' && typeof a.linkCount === 'number' && b.linkCount !== a.linkCount) {
+      const delta = a.linkCount - b.linkCount
+      fieldDiffs.push(`link COUNT: ${b.linkCount} -> ${a.linkCount} (${delta > 0 ? '+' : ''}${delta})`)
+    }
 
     if (fieldDiffs.length) changes.push(`~ ${key}\n    ${fieldDiffs.join('\n    ')}`)
     else identical++
@@ -249,7 +282,8 @@ if (args[0] === '--diff') {
   console.log(
     `snapshot-dist: ${counts.length} page(s) -> ${outFile}\n` +
     `  ${counts.reduce((n, p) => n + p.jsonLd.length, 0)} JSON-LD blocks, ` +
-    `${counts.reduce((n, p) => n + p.links.length, 0)} internal links, ` +
+    `${counts.reduce((n, p) => n + p.links.length, 0)} unique internal links ` +
+    `(${counts.reduce((n, p) => n + (p.linkCount ?? 0), 0)} total), ` +
     `${counts.reduce((n, p) => n + p.text.length, 0).toLocaleString()} chars of visible text`
   )
   if (problems.length) {
