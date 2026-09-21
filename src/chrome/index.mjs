@@ -15,7 +15,8 @@
  * from each other in any case: both write files at module top level, so
  * importing one runs it.
  */
-import { SITE } from '../src/data/services.js'
+import { SITE, SERVICES } from '../data/services.js'
+import { SERVICE_AREAS } from '../data/geo-aeo.js'
 
 export function esc(value) {
   return String(value)
@@ -269,10 +270,8 @@ export const footer = `    <footer class="bg-slate-950 text-slate-400">
             </ul>
             <p class="font-semibold text-white mb-4 mt-8">Service Areas</p>
             <ul class="space-y-2 text-sm">
-              <li><a href="/service-areas/simpsonville" class="hover:text-white transition-colors">Simpsonville, SC</a></li>
-              <li><a href="/service-areas/mauldin" class="hover:text-white transition-colors">Mauldin, SC</a></li>
-              <li><a href="/service-areas/fountain-inn" class="hover:text-white transition-colors">Fountain Inn, SC</a></li>
-              <li><a href="/service-areas/woodruff" class="hover:text-white transition-colors">Woodruff, SC</a></li>
+${SERVICE_AREAS.map((a) => `
+              <li><a href="/service-areas/${a.slug}" class="hover:text-white transition-colors">${esc(a.name)}, ${esc(a.state)}</a></li>`).join('')}
               <li><a href="/#service-areas" class="hover:text-white transition-colors">All Service Areas</a></li>
             </ul>
           </div>
@@ -295,6 +294,14 @@ export const footer = `    <footer class="bg-slate-950 text-slate-400">
                   ${SITE.email}
                 </a>
               </li>
+            </ul>
+            <p class="font-semibold text-white mb-4 mt-8">Company</p>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+              <li><a href="/about" class="hover:text-white transition-colors">About</a></li>
+              <li><a href="/projects" class="hover:text-white transition-colors">Projects</a></li>
+              <li><a href="/faqs" class="hover:text-white transition-colors">FAQs</a></li>
+              <li><a href="/contact" class="hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
         </div>

@@ -43,7 +43,7 @@ import { SITE_ORIGIN, pageUrl } from '../src/data/url-map.js'
 import { COST_GUIDES } from '../src/data/guides-cost.js'
 import { ARTICLES } from '../src/data/guides-articles.js'
 import { projectCostString, servicePerSqftBand, tierPerSqftBand } from '../src/data/pricing-sync.js'
-import { authorBox, documentHead, esc, footer } from './page-chrome.mjs'
+import { authorBox, documentHead, esc, footer } from '../src/chrome/index.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
