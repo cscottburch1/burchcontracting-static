@@ -593,7 +593,7 @@ ${seoHead({ title, description, canonical, ...(service.heroImage ? { ogImage: se
   </head>
   <body class="font-sans text-slate-800 bg-white antialiased">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-700 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
-${header}
+${header(new URL(canonical).pathname)}
     <main id="main-content">
 ${heroSectionHtml}
 ${promotedAnswersSectionHtml}

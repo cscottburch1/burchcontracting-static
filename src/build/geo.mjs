@@ -305,7 +305,7 @@ ${seoHead({ title, description, canonical })}
   </head>
   <body class="font-sans text-slate-800 bg-white antialiased">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-700 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
-${header}
+${header(new URL(canonical).pathname)}
     <main id="main-content">
       <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -529,7 +529,7 @@ ${seoHead({ title, description, canonical })}
   </head>
   <body class="font-sans text-slate-800 bg-white antialiased">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-700 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
-${header}
+${header(new URL(canonical).pathname)}
     <main id="main-content">
       <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

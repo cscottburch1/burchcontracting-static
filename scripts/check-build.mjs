@@ -42,7 +42,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { CALCULATOR_PAGES } from '../src/js/calculator-config.js'
 import { servicePerSqftBand } from '../src/data/pricing-sync.js'
-import { chromeHash } from './lib/chrome-hash.mjs'
+import { chromeHash, chromeSource } from './lib/chrome-hash.mjs'
+import { NAV_CLASS, activeNavItem } from '../src/data/nav.js'
 
 const root = path.resolve(import.meta.dirname, '..')
 const EXCLUDE_DIRS = new Set(['node_modules', 'dist', '.git', 'public'])
@@ -327,6 +328,66 @@ const CHROME_EXEMPT = new Set([
       check: 'unbound-nav',
       detail: unbound.map((p) => `${p.rel} — has #menu-btn but does not load main.js`),
     })
+  }
+}
+
+// --- Check 3d: the current page is marked in the nav, exactly once ---
+// Neither the chrome hash nor the snapshot can see this. Anchors are
+// normalized to href plus text before hashing precisely so that active styling
+// does not register, which means a marking that silently stopped happening
+// would leave every gate green. Since the class strings live in NAV_CLASS,
+// this can compare against them directly.
+{
+  const toUrl = (rel) =>
+    rel === 'index.html' ? '/' :
+    rel.endsWith('/index.html') ? '/' + rel.slice(0, -'/index.html'.length) :
+    '/' + rel.replace(/\.html$/, '')
+
+  const KNOWN = new Set(Object.values(NAV_CLASS))
+  const problems = []
+
+  for (const page of pages) {
+    const head = chromeSource(page.html, 'header')
+    if (!head) continue
+    const url = toUrl(page.rel)
+    const mobileStart = head.indexOf('id="mobile-menu"')
+    const regions = mobileStart === -1
+      ? [['nav', head]]
+      : [['desktop', head.slice(0, mobileStart)], ['mobile', head.slice(mobileStart)]]
+
+    for (const [name, region] of regions) {
+      const marked = [...region.matchAll(/<a\b[^>]*aria-current=["'](page|true)["'][^>]*>/gi)]
+      if (marked.length > 1) {
+        problems.push(`${page.rel}: ${marked.length} marked anchors in the ${name} nav; expected at most 1`)
+        continue
+      }
+      if (marked.length === 1) {
+        const tag = marked[0][0]
+        const href = /href=["']([^"']+)["']/i.exec(tag)?.[1]
+        const kind = marked[0][1]
+        const active = activeNavItem(url)
+        const covers = href === url || (active && (active.href === href))
+        if (!covers) {
+          problems.push(`${page.rel}: ${name} nav marks ${href}, which is neither this page nor its section parent`)
+        }
+        if (kind === 'page' && href !== url) {
+          problems.push(`${page.rel}: ${name} nav marks ${href} as aria-current="page" but that is not this page's URL`)
+        }
+      }
+      // Every nav anchor must carry a class this file knows about, so a design
+      // change cannot quietly desynchronise the markup from NAV_CLASS.
+      for (const m of region.matchAll(/<a\b[^>]*class=["']([^"']+)["'][^>]*>/gi)) {
+        const cls = m[1]
+        if (!KNOWN.has(cls) && !cls.includes('flex items-center shrink-0')) {
+          problems.push(`${page.rel}: ${name} nav anchor has a class not in NAV_CLASS — ${cls.slice(0, 60)}`)
+        }
+      }
+    }
+  }
+
+  if (problems.length) {
+    failed = true
+    failures.push({ check: 'nav-active-marking', detail: [...new Set(problems)].slice(0, 20) })
   }
 }
 
