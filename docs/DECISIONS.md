@@ -411,3 +411,35 @@ hand-authored pages do.
 - **Done means `CHROME_EXEMPT` is exactly `['404.html']`.** Not smaller, not
   mostly empty — that list.
 - Chrome-hash normalization stays as written. No class histogram.
+
+### Note for Phase 7 — which gate reads which tree
+
+`ARCHITECTURE.md` must state this explicitly, because a reviewer tampered with
+the wrong tree and drew the wrong conclusion from it:
+
+- `check-build` scans **`.build/pages/`** — pre-bundle source form, where pages
+  still reference `/src/js/main.js` by path. Right layer for source-level
+  assertions: inline nav handlers, `main.js` references, noindex meta.
+- `snapshot-dist.mjs` reads **`dist/`** — post-bundle, where vite has hoisted
+  module scripts into `<head>` and content-hashed the assets. Right layer for
+  what actually ships.
+
+Neither is sufficient alone. The double-bound menu existed pre-bundle as a
+duplicate handler and post-bundle as two live listeners; a gate reading only one
+tree sees half the picture. Anyone tampering to test a gate must tamper the tree
+that gate reads.
+
+### Phase 3.3 survey — two structural facts that shape the work
+
+Established before writing any of it:
+
+1. **`TRUST-LAYER-SCHEMA` sits outside `<main>`.** The other three marker pairs
+   (BYLINE, ANSWERS, TABLE) are inside it. So extracting `<main>` alone silently
+   drops each page's JSON-LD. The schema has to be carried separately, which
+   `documentHead({ schema })` already supports.
+
+2. **`header` is a const string, consumed in four places** — `documentHead()`
+   (which is how the 27 guide pages get it), `geo.mjs` twice, and
+   `services.mjs` once. Adding active nav state means it becomes a function
+   taking the current URL, and all four call sites change. `documentHead()`
+   already receives `canonical`, so the path is derivable there.
