@@ -28,9 +28,22 @@ name: Deploy to Cloudflare
 # DISABLED ON PUSH (2026-09-16). Deploy to Cloudflare by hand instead:
 #
 #   cd burchcontracting-dev
-#   BUILD_ENV=production npm run build   # without this, every page ships noindex
-#   npm run check-build
+#   BUILD_ENV=production npm run build         # without this, every page ships noindex
+#   BUILD_ENV=production npm run check-build   # without this, the noindex check is SKIPPED
 #   npx wrangler deploy
+#
+# Both commands need BUILD_ENV, and for different reasons. On the build it
+# activates flip-noindex-production.mjs. On check-build it activates the guard
+# that catches a build where that flip did NOT happen: check-build.mjs reads
+# process.env.BUILD_ENV at its own runtime (scripts/check-build.mjs:122), so it
+# cannot tell what the previous command was run with. Bare `npm run check-build`
+# prints "noindex check skipped — not BUILD_ENV=production" and still exits 0 —
+# it reports "check-build passed" while having skipped the one check that stands
+# between a bad build and a site-wide noindex deploy. Read the line; a real run
+# says "noindex checked (production mode)". Corrected 2026-09-21 after the bare
+# form was followed as written and silently skipped the check. The two CI jobs
+# here and in deploy.yml always set BUILD_ENV on both steps and were never
+# affected; this hand sequence was the only wrong copy, and it is the one in use.
 #
 # Why: deploys to Cloudflare are done by hand now, so a workflow that also
 # deploys on every push is a second automated path to the same Worker — and a

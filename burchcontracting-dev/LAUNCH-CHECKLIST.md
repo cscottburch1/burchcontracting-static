@@ -252,7 +252,24 @@ deploys left no GitHub Actions run to look at. Disconnected the same day.
 The rule generalises: **one deployment path per host, and it must be one that
 sets BUILD_ENV=production and preserves secrets.** For Cloudflare that is
 `npx wrangler deploy` run by hand (see cloudflare.yml's header for the exact
-sequence). A vendor's own Git integration always looks like a convenience and
+sequence).
+
+**BUILD_ENV=production goes on the check too, not just the build:**
+
+    BUILD_ENV=production npm run build
+    BUILD_ENV=production npm run check-build
+
+`check-build.mjs` reads `process.env.BUILD_ENV` at its own runtime
+(`scripts/check-build.mjs:122`) and cannot see what the build before it was run
+with. Bare `npm run check-build` skips the noindex guard — the one that catches
+exactly the failure described above — and still prints "check-build passed" and
+exits 0. Read its output line: a real run says `noindex checked (production
+mode)`; a skipped one says `noindex check skipped — not BUILD_ENV=production`.
+Corrected 2026-09-21, after the bare form was followed as written and silently
+skipped the check. Both CI workflows always set it on both steps and were never
+affected — this hand sequence was the only wrong copy, and it is the one in use.
+
+A vendor's own Git integration always looks like a convenience and
 always races whatever is already deploying. Never hand-edit files in the deployed docroot except
 `api/config.local.php` (the one file the workflow deliberately excludes).
 If the docroot is ever modified out-of-band (manual FTP edit, hPanel File
