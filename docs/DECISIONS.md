@@ -362,3 +362,44 @@ strength *before* the phase that rewrites every generator:
   value contains `noindex`, instead of whenever the header is merely present.
   Behaviourally identical today, since the only such header is `api.js`'s own
   `noindex` — but it no longer depends on that remaining true.
+
+### Phase 3.1 + gate work — chrome unified, and the gate taught to see it
+
+The three generators each carried their own chrome. Headers were byte-identical;
+footers were not, and no one of the three was a superset — the service-area
+pages, which are the local-SEO landing pages, carried the weakest footer on the
+site at 8 internal links against a 26-link union. Unified to the union, so every
+page gained links and none lost any.
+
+Then the gate was extended to cover what it had just been blind to.
+`snapshot-dist.mjs` strips header and footer to isolate body text, so when 3.1
+rewrote the footer on 52 pages it reported "71/71 identical" — true of the body,
+silent about the change. It now records per-page `headerLinks`, `footerLinks`
+and normalized chrome hashes, and `check-build` asserts every non-exempt page
+carries the same header and the same footer.
+
+**Chrome hashes are normalized, and that is load-bearing.** The current page's
+nav link is styled differently by design. A strict hash could therefore never
+match across pages, and the obvious way to make it green would be deleting
+`aria-current="page"` — trading an accessibility affordance for a passing check.
+Anchors are reduced to href plus text instead: structure, targets and wording
+are compared, link styling is not.
+
+**Established while verifying a reviewer's correction:** the 52 generated pages
+contain no `aria-current` inside `<header>` at all — all 52 occurrences are in
+the breadcrumb. They do not mark the current page in the nav. Only four
+hand-authored pages do.
+
+### Decisions for Phase 3.3
+
+- The chrome module emits `aria-current="page"` plus the active class on the
+  matching top-level nav item for **every** page, in both the desktop and
+  mobile navs. One change covers three gaps: the hand-authored pages keep the
+  active state they have today when they move to templates, the mobile nav
+  gains the affordance it never had, and the 52 generated pages gain active
+  state they currently lack. It will change the chrome hash on every page —
+  intended, and the one part of 3.3 that is additive rather than
+  structure-preserving.
+- **Done means `CHROME_EXEMPT` is exactly `['404.html']`.** Not smaller, not
+  mostly empty — that list.
+- Chrome-hash normalization stays as written. No class histogram.

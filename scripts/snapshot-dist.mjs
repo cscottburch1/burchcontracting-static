@@ -35,6 +35,13 @@
  * generator, on the principle that the gate must be at full strength before the
  * risky phase rather than after it.
  *
+ * RULE FOR ADDING FIELDS: a field is compared only when BOTH snapshots carry
+ * it. A baseline recorded before a field existed has nothing to compare, and
+ * treating "absent" as a default — empty array, zero, null — reports every page
+ * as changed on a diff where nothing did. That has now happened twice, with
+ * linkCount and again with the chrome fields, so it is written here as a rule
+ * rather than re-learned per field. Re-record the baseline instead.
+ *
  * Keyed by public URL from src/data/url-map.js rather than by file path, so the
  * Phase 1 flatten (which moves every file) does not invalidate the baseline.
  * 404.html is keyed as "unlisted:404.html" since it has no public URL by design.

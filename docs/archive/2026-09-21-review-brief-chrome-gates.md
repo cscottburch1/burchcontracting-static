@@ -40,10 +40,31 @@ the nav shows where you are. There are **two** mechanisms:
 - the desktop nav marks it with `aria-current="page"` plus active classes
 - the **mobile nav marks it with active classes alone — no `aria-current`**
 
-Hashing the raw chrome produced **seven** distinct headers across 71 pages,
-where six of the differences were only the active marker moving. My first fix
-normalized `aria-current` away; still seven, because the mobile nav does not use
-it.
+Hashing the raw chrome produced **seven** distinct headers across 71 pages. My
+first fix normalized `aria-current` away; still seven, because the mobile nav
+does not use it.
+
+**Corrected after review.** An earlier version of this section said "six of the
+differences were only the active marker moving." That was wrong, and the real
+breakdown matters:
+
+| Raw header group | Pages | Cause |
+|---|---|---|
+| 1 | 52 generated | already byte-identical — no variance at all |
+| 1 | 11 calculators | a genuinely different header, not active state |
+| 4 | `/about`, `/contact`, `/`, `/projects` | one each — active marker |
+| 1 | `/privacy-policy`, `/services`, `/terms-of-service`, `404` | grouped: no active marker at all |
+
+So the active-state variance is confined to four hand-authored pages, and the
+eight hand-authored pages split five ways. Verified while checking the reviewer's
+correction: the 52 generated pages contain **zero** `aria-current` inside
+`<header>` — all 52 occurrences are in the breadcrumb, outside it. The
+calculators have none anywhere.
+
+That last fact is a finding in its own right: **the generated pages do not mark
+the current page in the nav at all.** Normalization is still required, for the
+four hand-authored pages that do — but it was buying less than this section
+originally claimed.
 
 So `normalizeChrome()` reduces every anchor in the chrome to its `href` and its
 text before hashing. The hash covers chrome structure, link targets and wording;
@@ -160,11 +181,9 @@ every one carrying a vite content hash. The sitewide unique-link count drops
 because 76 distinct URLs vanished. Confirm no content link legitimately lives
 under that prefix.
 
-**7.4 — Out of scope, but real:** the mobile nav marks the current page with
-styling only and no `aria-current`. Screen readers get no "current page"
-announcement there. Not touched — it is a content/accessibility change, not gate
-work — but someone should own it. Phase 3.3 rewrites this markup and would be
-the natural place.
+**7.4 — RESOLVED by the Phase 3.3 decision below.** The mobile nav marks the
+current page with styling only and no `aria-current`, and the 52 generated pages
+mark it nowhere at all. Both are fixed together in 3.3; see §10.
 
 ---
 
@@ -188,3 +207,33 @@ checkpoints: `generate-guides`, `generate-services`, `generate-geo-aeo`.
 The chrome assertion now covers the risk that made that sequencing necessary —
 a generator rewrite that quietly drops or diverges the chrome will fail the
 build rather than pass a body-only gate.
+
+---
+
+## 10. Decisions taken from this review
+
+Recorded here and in `docs/DECISIONS.md`.
+
+**Normalization stays as written.** No class histogram. The reviewer accepted
+the trade-off in §2 and §7.1.
+
+**Phase 3.3 must emit active nav state from the chrome module.** The chrome
+emits `aria-current="page"` plus the active class on the matching top-level nav
+item for every page, in **both** the desktop and mobile navs. This does three
+things at once: the hand-authored pages keep the active state they have today
+when they move to templates, the mobile nav gains the accessibility affordance
+it never had, and the 52 generated pages gain active state they currently lack.
+
+Expect that to show as a chrome-hash change on every page. It is intended, and
+it is the one change in 3.3 that is additive rather than structure-preserving.
+
+**Definition of Phase 3.3 done:** `CHROME_EXEMPT` in `scripts/check-build.mjs`
+is exactly `['404.html']`. Not "smaller", not "mostly empty" — that list.
+
+**Every negative test asserts its edit landed** before drawing a conclusion
+from the result. A tamper that silently no-ops reports a pass, which is
+indistinguishable from a working gate; this already happened once (§6).
+
+**The snapshot header states the general rule**, not one instance of it: a field
+added to the snapshot is compared only when both sides carry it. Applies to
+`linkCount`, the chrome fields, and anything added later.
