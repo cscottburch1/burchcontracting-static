@@ -29,7 +29,7 @@ function esc(value) {
 
 function seoHead({ title, description, canonical, ogImage = '/images/custom-deck-greenville-sc.webp' }) {
   const image = `${SITE.url}${ogImage}`
-  return `    <meta name="robots" content="noindex, nofollow" />
+  return `    <meta name="robots" content="index, follow" />
     <meta name="description" content="${esc(description)}" />
     <title>${esc(title)}</title>
     <link rel="canonical" href="${canonical}" />

@@ -49,8 +49,44 @@ for (const [file, url] of Object.entries(PAGE_URLS)) {
 CANONICAL_REDIRECTS.set('/index.html', '/')
 for (const [from, to] of [...CANONICAL_REDIRECTS]) if (from === to) CANONICAL_REDIRECTS.delete(from)
 
+/**
+ * Only this hostname may be indexed. Every other host the Worker answers on —
+ * every *.workers.dev preview URL, and any future staging hostname — is a
+ * byte-identical copy of the live site, and until now was protected from
+ * indexing only by each page's canonical tag. A canonical is a hint; Google
+ * may ignore it and index the duplicate anyway. An X-Robots-Tag is a directive.
+ *
+ * This is the third and outermost layer of the safe-by-default indexing model
+ * introduced on 2026-09-21 (docs/DECISIONS.md): source pages emit
+ * index,follow; scripts/apply-staging-noindex.mjs injects noindex only for
+ * BUILD_ENV=staging; and this header covers any host serving a build that was
+ * made without that variable — which is exactly what every preview URL does.
+ */
+const INDEXABLE_HOST = 'burchcontracting.com'
+
 export default {
   async fetch(request, env) {
+    const response = await route(request, env)
+    return applyIndexingPolicy(response, new URL(request.url).hostname)
+  },
+}
+
+/**
+ * Adds X-Robots-Tag: noindex, nofollow on any host that is not the live site.
+ * Clones only when the header is actually needed, so the production path pays
+ * nothing. An existing X-Robots-Tag (the admin pages in api.js set their own)
+ * is left alone — it is already at least as restrictive.
+ */
+function applyIndexingPolicy(response, hostname) {
+  if (hostname === INDEXABLE_HOST) return response
+  if (response.headers.has('X-Robots-Tag')) return response
+  const copy = new Response(response.body, response)
+  copy.headers.set('X-Robots-Tag', 'noindex, nofollow')
+  return copy
+}
+
+async function route(request, env) {
+  {
     const url = new URL(request.url)
     const { pathname } = url
 
@@ -74,7 +110,7 @@ export default {
     }
 
     return notFound(request, env, url)
-  },
+  }
 }
 
 /**

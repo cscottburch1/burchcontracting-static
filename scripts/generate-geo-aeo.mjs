@@ -43,7 +43,7 @@ function esc(value) {
 
 function seoHead({ title, description, canonical, ogImage = SITE.ogImage }) {
   const image = `${SITE.domain}${ogImage}`
-  return `    <meta name="robots" content="noindex, nofollow" />
+  return `    <meta name="robots" content="index, follow" />
     <meta name="description" content="${esc(description)}" />
     <title>${esc(title)}</title>
     <link rel="canonical" href="${canonical}" />

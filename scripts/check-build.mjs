@@ -4,7 +4,11 @@
  *   1. Double-encoded ampersands ("&amp;amp;") anywhere in built HTML.
  *   2. Orphan pages: any URL listed in sitemap.xml with zero inbound
  *      internal links from anywhere else on the site.
- *   3. Site-wide noindex still present when BUILD_ENV=production.
+ *   3. Indexing mistakes, in either direction: a stray noindex on any page of
+ *      a normal build (404.html exempt), a missing noindex on any page of a
+ *      staging build, or a blanket "Disallow: /" in dist/robots.txt. Runs on
+ *      every build — it used to run only when an env var was set, which meant
+ *      it went quiet on exactly the builds that needed it.
  *   4. reCAPTCHA site key drift: dist/contact.html must have a well-formed
  *      data-recaptcha-site-key, and no dist/assets/*.js may contain a key
  *      literal — see LAUNCH-CHECKLIST.md #3 for why this must be the only
@@ -112,29 +116,73 @@ if (orphans.length) {
   })
 }
 
-// --- Check 3: noindex present in production ---
-// Scans dist/, not the source tree scanned above: flip-noindex-production.mjs
-// (run as part of `npm run build` when BUILD_ENV=production) only rewrites
-// dist/*.html, not the source .html files, so checking source here would
-// always find "noindex" and fail even on a correctly-flipped production
-// build. By the time this check runs in CI, "Build project" has already
-// produced dist/, so it's always present when BUILD_ENV=production.
-if (process.env.BUILD_ENV === 'production') {
+// --- Check 3: nothing in dist/ is accidentally de-indexed ---
+// Runs on EVERY build, not only when an environment variable says to. That
+// inversion is the point: the old form was `if (BUILD_ENV === 'production')`,
+// so a build that forgot the variable shipped noindex sitewide AND skipped the
+// check that would have caught it — the gate reported success precisely when
+// it was most needed. See docs/DECISIONS.md, 2026-09-16 and 2026-09-21.
+//
+// The only build allowed to carry noindex is an explicit staging build, which
+// scripts/apply-staging-noindex.mjs produces. Everything else must be
+// indexable, with 404.html permanently exempt.
+//
+// Scans dist/ rather than source because the staging injection rewrites dist/
+// only. dist/api/** is the Hostinger PHP tree copied out of public/, not a
+// site page; Phase 4 deletes it.
+{
   const distDir = path.join(root, 'dist')
-  const distPages = walkHtmlFiles(distDir).map((f) => ({
-    file: f,
-    rel: path.relative(distDir, f).split(path.sep).join('/'),
-    html: fs.readFileSync(f, 'utf8'),
-  }))
-  const noindexPages = distPages.filter(
-    (p) => /<meta[^>]*name=["']robots["'][^>]*noindex/i.test(p.html) && !NOINDEX_EXEMPT.has(p.rel)
-  )
-  if (noindexPages.length) {
+  const staging = process.env.BUILD_ENV === 'staging'
+  const distPages = walkHtmlFiles(distDir)
+    .map((f) => ({
+      file: f,
+      rel: path.relative(distDir, f).split(path.sep).join('/'),
+      html: fs.readFileSync(f, 'utf8'),
+    }))
+    .filter((p) => !p.rel.startsWith('api/'))
+
+  const hasNoindex = (p) => /<meta[^>]*name=["']robots["'][^>]*noindex/i.test(p.html)
+
+  if (!staging) {
+    const noindexPages = distPages.filter((p) => hasNoindex(p) && !NOINDEX_EXEMPT.has(p.rel))
+    if (noindexPages.length) {
+      failed = true
+      failures.push({
+        check: 'noindex-in-production',
+        detail: noindexPages.map((p) => p.rel),
+      })
+    }
+  } else {
+    // Inverse assertion: a staging build that failed to mark a page would put
+    // an indexable duplicate of the live site on a preview host.
+    const indexablePages = distPages.filter((p) => !hasNoindex(p))
+    if (indexablePages.length) {
+      failed = true
+      failures.push({
+        check: 'staging-build-missing-noindex',
+        detail: indexablePages.map((p) => p.rel),
+      })
+    }
+  }
+
+  // A robots.txt that disallows everything de-indexes the site just as
+  // thoroughly as a meta tag, and nothing else checks for it.
+  const robotsFile = path.join(distDir, 'robots.txt')
+  if (fs.existsSync(robotsFile)) {
+    const robots = fs.readFileSync(robotsFile, 'utf8')
+    const blanketDisallow = robots
+      .split(/\r?\n/)
+      .some((line) => /^\s*Disallow:\s*\/\s*$/i.test(line))
+    if (blanketDisallow && !staging) {
+      failed = true
+      failures.push({
+        check: 'robots-txt-disallows-everything',
+        detail: ['dist/robots.txt contains a blanket "Disallow: /"'],
+      })
+    }
+  } else {
     failed = true
-    failures.push({
-      check: 'noindex-in-production',
-      detail: noindexPages.map((p) => p.rel),
-    })
+    failures.push({ check: 'robots-txt-missing', detail: ['dist/robots.txt was not produced by the build'] })
   }
 }
 
@@ -276,5 +324,5 @@ if (failed) {
   }
   process.exit(1)
 } else {
-  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans${process.env.BUILD_ENV === 'production' ? ', noindex checked (production mode)' : ' (noindex check skipped — not BUILD_ENV=production)'}, reCAPTCHA site key verified single-source in dist/, FAQPage schema matched against visible text, calculator price copy checked against computed output.`)
+  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans, ${process.env.BUILD_ENV === 'staging' ? 'staging build: every page confirmed noindex' : 'indexing confirmed (no stray noindex, robots.txt has no blanket Disallow)'}, reCAPTCHA site key verified single-source in dist/, FAQPage schema matched against visible text, calculator price copy checked against computed output.`)
 }

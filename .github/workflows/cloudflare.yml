@@ -27,22 +27,17 @@ name: Deploy to Cloudflare
 
 # DISABLED ON PUSH (2026-09-16). Deploy to Cloudflare by hand instead:
 #
-#   BUILD_ENV=production npm run build         # without this, every page ships noindex
-#   BUILD_ENV=production npm run check-build   # without this, the noindex check is SKIPPED
+#   npm run build
+#   npm run check-build
 #   npx wrangler deploy
 #
-# Both commands need BUILD_ENV, and for different reasons. On the build it
-# activates flip-noindex-production.mjs. On check-build it activates the guard
-# that catches a build where that flip did NOT happen: check-build.mjs reads
-# process.env.BUILD_ENV at its own runtime (scripts/check-build.mjs:122), so it
-# cannot tell what the previous command was run with. Bare `npm run check-build`
-# prints "noindex check skipped — not BUILD_ENV=production" and still exits 0 —
-# it reports "check-build passed" while having skipped the one check that stands
-# between a bad build and a site-wide noindex deploy. Read the line; a real run
-# says "noindex checked (production mode)". Corrected 2026-09-21 after the bare
-# form was followed as written and silently skipped the check. The two CI jobs
-# here and in deploy.yml always set BUILD_ENV on both steps and were never
-# affected; this hand sequence was the only wrong copy, and it is the one in use.
+# No environment variable is needed, and that is deliberate. Until 2026-09-21
+# both commands required one to be correct: the build had to be told to make
+# pages indexable, and check-build had to be told to verify it. A build that
+# omitted it shipped noindex sitewide *and* skipped the check that would have
+# caught it. The model is now inverted — pages are indexable by default and
+# only an explicit staging build marks them otherwise — so there is nothing
+# left to forget. See docs/DECISIONS.md.
 #
 # Why: deploys to Cloudflare are done by hand now, so a workflow that also
 # deploys on every push is a second automated path to the same Worker — and a
@@ -50,7 +45,7 @@ name: Deploy to Cloudflare
 #
 # That day a Cloudflare-side Git integration (Workers & Pages -> the Worker ->
 # Builds) was connected to this repo. It deployed on every push, building with
-# a plain `npm run build` (no BUILD_ENV=production) and carrying none of the
+# a plain `npm run build` under the old opt-in indexing model, and carrying none of the
 # `wrangler secret put` secrets. Every push therefore shipped noindex on all 70
 # pages and wiped ADMIN_USERNAME, ADMIN_PASSWORD_HASH, SESSION_SECRET,
 # RESEND_API_KEY and RECAPTCHA_SECRET_KEY — taking down admin login and lead
@@ -118,14 +113,10 @@ jobs:
 
       - name: Build project
         if: steps.creds.outputs.ready == 'true'
-        env:
-          BUILD_ENV: production
         run: npm run build
 
       - name: Build guard (check-build)
         if: steps.creds.outputs.ready == 'true'
-        env:
-          BUILD_ENV: production
         run: npm run check-build
 
       - name: Stamp build version

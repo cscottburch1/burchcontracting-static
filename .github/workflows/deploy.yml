@@ -31,11 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      # BUILD_ENV=production activates flip-noindex-production.mjs (see
-      # package.json's "build" script).
       - name: Build project
-        env:
-          BUILD_ENV: production
         run: npm run build
 
       # Fails the workflow (not just a warning) on: &amp;amp; double-encoding,
@@ -52,8 +48,6 @@ jobs:
       # a variable-only toggle to noindex the live site AND disable the
       # guard that catches it was a real footgun.
       - name: Build guard (check-build)
-        env:
-          BUILD_ENV: production
         run: npm run check-build
 
       # .well-known/burch-version.txt is a second copy that only Hostinger

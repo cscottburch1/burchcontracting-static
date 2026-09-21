@@ -26,15 +26,21 @@ export function esc(value) {
 }
 
 /**
- * The robots tag ships as "noindex, nofollow" on purpose: it is the
- * pre-launch default, and scripts/flip-noindex-production.mjs rewrites it to
- * "index, follow" across dist/ when BUILD_ENV=production (404.html exempt).
- * That script matches this exact string — keep it byte-identical or generated
- * pages will silently deploy noindexed.
+ * The robots tag ships as "index, follow" — the safe state is the default
+ * state. It used to ship as "noindex, nofollow" with
+ * a build step rewriting dist/ only when an environment variable said to,
+ * which meant any build that forgot it shipped noindex on every page.
+ * That happened three times in one day on 2026-09-16 (docs/DECISIONS.md).
+ *
+ * The inverse now applies: scripts/apply-staging-noindex.mjs INJECTS noindex,
+ * and only when BUILD_ENV=staging. A forgotten variable can no longer
+ * de-index the site; at worst it fails to noindex a staging copy, which
+ * check-build catches and the Worker's X-Robots-Tag covers anyway.
+ * That script matches this exact string — keep it byte-identical.
  */
 export function seoHead({ title, description, canonical, ogImage = '/images/custom-deck-greenville-sc.webp' }) {
   const image = `${SITE.url}${ogImage}`
-  return `    <meta name="robots" content="noindex, nofollow" />
+  return `    <meta name="robots" content="index, follow" />
     <meta name="description" content="${esc(description)}" />
     <title>${esc(title)}</title>
     <link rel="canonical" href="${canonical}" />
