@@ -2,13 +2,21 @@
 
 Static website for Burch Contracting built with Vite and Tailwind CSS.
 
-## 🚀 Auto-Deployment
+## Deployment
 
-This repository is configured for automatic deployment to Hostinger.
+**Deploys are run by hand. Pushing to `main` does not deploy.**
 
-- **Live URL**: https://dev.burchcontracting.com
-- **Deployment**: Automatic on push to `main` branch
-- **CI/CD**: GitHub Actions
+- **Live URL**: https://burchcontracting.com
+- **Served by**: a Cloudflare Worker (`cloudflare/worker.js`) from `dist/`
+- **Deploy workflow**: `.github/workflows/cloudflare.yml`, triggered deliberately
+
+Automated deploy-on-push has taken this site down before, which is why the
+trigger is manual. Hostinger no longer receives a copy: the FTP workflow was
+deleted in Phase 4, so rolling back means `wrangler rollback` to a previous
+Worker version, not removing the Worker route.
+
+Read `docs/RUNBOOK.md` before deploying. Its first item — this repository is
+never squash- or rebase-merged — matters before you merge anything.
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for complete setup instructions.
 
@@ -71,20 +79,22 @@ npm run preview
 
 - **Build Tool**: Vite 8
 - **CSS Framework**: Tailwind CSS 4
-- **Deployment**: GitHub Actions → Hostinger FTP
+- **Hosting**: Cloudflare Workers + D1 (contact form and leads admin)
+- **Deployment**: `.github/workflows/cloudflare.yml`, run deliberately
 
 ## 📝 Making Changes
 
 1. Make your changes locally
 2. Test with `npm run dev`
-3. Commit and push to `main` branch:
+3. Build and check before committing:
    ```bash
-   git add .
-   git commit -m "Your commit message"
-   git push origin main
+   BUILD_ENV=production npm run build
+   npm run check-build
+   node scripts/dates-set-by-head.mjs
    ```
-4. GitHub Actions will automatically build and deploy to Hostinger
-5. Check deployment status in the **Actions** tab on GitHub
+4. Open a PR. **Merge it with a merge commit — never squash or rebase**
+   (`docs/RUNBOOK.md` explains what squashing does to every page's content date)
+5. Deploy deliberately from the **Actions** tab; it does not happen on push
 
 ## 🔧 Configuration
 

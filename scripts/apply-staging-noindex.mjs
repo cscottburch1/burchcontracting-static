@@ -54,7 +54,7 @@ const missed = []
 for (const file of walkHtmlFiles(distDir)) {
   const rel = path.relative(distDir, file).split(path.sep).join('/')
   if (EXEMPT.has(rel)) continue
-  // dist/api/** is the legacy PHP tree copied out of public/, not a site
+  // dist/api/** is gone as of Phase 4; the filter stays as a guard. Not a site
   // page. Phase 4 deletes it; until then it is not ours to rewrite.
   if (rel.startsWith('api/')) continue
 

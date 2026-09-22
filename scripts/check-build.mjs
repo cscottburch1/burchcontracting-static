@@ -182,8 +182,8 @@ if (orphans.length) {
 // indexable, with 404.html permanently exempt.
 //
 // Scans dist/ rather than source because the staging injection rewrites dist/
-// only. dist/api/** is the Hostinger PHP tree copied out of public/, not a
-// site page; Phase 4 deletes it.
+// only. dist/api/** no longer exists: Phase 4 deleted public/api/, the retired
+// PHP backend. The filter stays as a guard against it coming back.
 {
   const distDir = path.join(root, 'dist')
   const staging = process.env.BUILD_ENV === 'staging'

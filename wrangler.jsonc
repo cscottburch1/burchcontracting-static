@@ -20,10 +20,6 @@
     "run_worker_first": true
   },
 
-  // Lets the Worker import public/.htaccess, the single source of redirect
-  // rules and security headers for both hosts.
-  "rules": [{ "type": "Text", "globs": ["**/.htaccess"], "fallthrough": true }],
-
   "vars": {
     // Hostnames where /.well-known/* is forwarded to Hostinger.
     "ORIGIN_HOSTS": "burchcontracting.com"
@@ -44,12 +40,17 @@
     { "name": "LOGIN_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
   ],
 
-  // Serves burchcontracting.com. The DNS record still points at Hostinger:
-  // the route sends requests to this Worker first, and deleting the route
-  // (Cloudflare dashboard → Workers & Pages → burchcontracting → Settings →
-  // Domains & Routes) sends traffic straight back to Hostinger. Needs "Always
-  // Use HTTPS" and a www → root Redirect Rule in the zone, because Hostinger
-  // used to perform both redirects (CLOUDFLARE-CUTOVER.md, step 4).
+  // Serves burchcontracting.com. The DNS record still points at Hostinger, so
+  // the route is what sends requests to this Worker first.
+  //
+  // DELETING THE ROUTE IS NOT A ROLLBACK, not since Phase 4. It does send
+  // traffic straight back to Hostinger — but Hostinger stopped receiving a copy
+  // of the site when the FTP deploy was deleted, so it would serve a frozen
+  // 2026-09-22 snapshot. Roll back with `wrangler rollback`. See docs/RUNBOOK.md.
+  //
+  // Needs "Always Use HTTPS" and a www → root Redirect Rule in the zone,
+  // because Hostinger used to perform both redirects (CLOUDFLARE-CUTOVER.md,
+  // step 4).
   "routes": [{ "pattern": "burchcontracting.com/*", "zone_name": "burchcontracting.com" }],
 
   // workers.dev stays on because branch preview URLs require it. Every page's

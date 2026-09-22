@@ -23,17 +23,14 @@
  *      garage-builder/index.html. This comes BEFORE the legacy rules below,
  *      because the legacy catch-all "^calculator/([a-z-]+)/?$" would otherwise
  *      hijack real pages like /calculator/garages.
- *   4. Legacy redirects parsed from public/.htaccess (the retired Next.js
- *      site's URLs), so Apache and Cloudflare stay in step from one file.
+ *   4. Legacy redirects from cloudflare/redirects.js (the retired Next.js
+ *      site's URLs).
  *   5. 404.html with a 404 status.
  */
-import htaccess from '../public/.htaccess'
 import { MOVED_URLS, PAGE_URLS, UNLISTED_FILES } from '../src/data/url-map.js'
-import { findRedirect, parseRedirectRules, parseSecurityHeaders } from './htaccess.js'
+import { SECURITY_HEADERS } from './headers.js'
+import { findLegacyRedirect } from './redirects.js'
 import { handleApiRequest } from './api.js'
-
-const REDIRECT_RULES = parseRedirectRules(htaccess)
-const SECURITY_HEADERS = parseSecurityHeaders(htaccess)
 
 /**
  * Every URL that must 301 to a canonical one: the rebuild's .html and
@@ -111,7 +108,7 @@ async function route(request, env) {
     const page = await servePage(request, env, url)
     if (page) return page
 
-    const legacy = findRedirect(REDIRECT_RULES, pathname, url.search)
+    const legacy = findLegacyRedirect(pathname, url.search)
     if (legacy) {
       const location = legacy.location.startsWith('/') ? url.origin + legacy.location : legacy.location
       return redirectTo(location, legacy.status)

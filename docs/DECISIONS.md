@@ -638,3 +638,52 @@ is not in the data. A squash is the same bug at seventy pages.
 `scripts/dates-set-by-head.mjs` reports which URLs take their `dateModified`
 from HEAD, so the author sees the list before pushing. It is an aid, not a gate,
 for the reason above.
+
+---
+
+## 2026-09-22 — Hostinger is retired as a web host; redirects are data, not an Apache file
+
+Phase 4. Until now `public/.htaccess` was the single source of redirect rules
+and security headers for a site with no Apache. The Worker imported it as text
+and parsed it at startup, which cost a `wrangler.jsonc` `rules` entry to make
+the import work, a parser carrying its own interpretation of `RewriteCond`
+semantics, and a question nobody could answer quickly — does this rule apply on
+Cloudflare or not? It also meant Hostinger's config could not be deleted without
+breaking the live Worker.
+
+The 161 legacy redirects are now `cloudflare/redirects.js` and the six security
+headers `cloudflare/headers.js`, both plain data. They were produced by running
+the parser and serialising its output, so they are by construction what shipped;
+nothing was retyped. Equivalence was checked before anything was deleted: same
+count, same order, same targets, and identical results across 2,445
+(path, query) pairs covering every page URL, every moved URL, every legacy URL,
+the routing baseline, and generated inputs for each capture-group pattern.
+
+`cloudflare/htaccess.js` and the `rules` entry are gone with it.
+
+**Deleted:** `public/.htaccess`, `public/api/` (the retired PHP contact handler,
+PHPMailer, the old admin panel, an email template), `public/.assetsignore`
+(which existed only to keep those two out of the Cloudflare upload), and
+`.github/workflows/deploy.yml`, the FTP deploy.
+
+**What Hostinger still is.** Not a web host. It remains the domain registrar and
+the DNS origin, and holds an old mail store, until December 2026; email itself
+moved to Google Workspace. `cloudflare/worker.js` still forwards
+`/.well-known/*` to that origin for certificate renewal, deliberately, and that
+is the only request path that reaches Hostinger.
+
+**The consequence to understand before deploying.** Hostinger no longer receives
+a copy of the site, so it is no longer a fallback. `wrangler.jsonc` says that
+deleting the Worker route sends traffic straight back to Hostinger — that is
+still true, and it is now the wrong thing to do: it would serve a copy frozen at
+2026-09-22. **Rollback is `wrangler rollback` to a previous Worker version.**
+Recorded here, in `.github/workflows/cloudflare.yml`, and in `README.md`, because
+the old instruction is written in several places people will still find.
+
+**Proof.** 481 paths checked against `migration/routing-baseline.json` (recorded
+from live production 2026-09-12) via `wrangler dev`, before and after the
+deletions: zero differences both times. Spot-checked the rules most likely to
+break — the `REQUEST_FILENAME`-guarded `/calculator/*` catch-all, the exact-match
+`greer` rule ordered before the generic service-area pattern, and `$1` capture
+substitution — plus all six security headers on both a 200 and a 301, and that
+no PHP source or schema is served at any of the seven paths that used to exist.

@@ -62,17 +62,35 @@ will happily validate a previous build's output.
 
 ### 4. Deploy
 
-A human runs the deploy, by hand. Automated deploy paths have taken this site
-down. The full procedure, rollback, and secret rotation are Phase 7 additions.
+A human runs the deploy, by hand, from the Actions tab
+(`.github/workflows/cloudflare.yml`). Automated deploy-on-push has taken this
+site down. The full procedure and secret rotation are Phase 7 additions.
+
+### 5. Rollback is `wrangler rollback` — not deleting the Worker route
+
+Phase 4 deleted the Hostinger FTP deploy, so Hostinger no longer receives a copy
+of the site and is **not** a fallback. `wrangler.jsonc` still notes that removing
+the Worker route sends traffic back to Hostinger; that is true and it is now the
+wrong move — it would serve a copy frozen at 2026-09-22.
+
+Roll back to a previous Worker version instead:
+
+```
+npx wrangler rollback
+```
+
+Hostinger remains the domain registrar and DNS origin, and holds an old mail
+store, until December 2026. `/.well-known/*` is forwarded to it for certificate
+renewal and is the only request path that still reaches it.
 
 ---
 
 ## Everything else
 
-To be written in Phase 7: verify; rollback (`wrangler rollback`); rotate each
-secret including the reCAPTCHA two-halves rule; add a service; add a city; add a
-cost guide or article; change a URL (the answer is "don't"); what to do when
-`crawler-access` fails; what to do when `deploy` auto-rolls back; how to add a
+To be written in Phase 7: verify a deploy; rotate each secret including the
+reCAPTCHA two-halves rule; add a service; add a city; add a cost guide or
+article; change a URL (the answer is "don't"); what to do when
+`crawler-access` fails; what to do when the Cloudflare deploy fails partway; how to add a
 gate (including: a tamper must be proven to create the failure condition, not
 just to have edited the file); which gate reads which tree; and the ranked
 content queue.

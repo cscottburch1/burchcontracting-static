@@ -1,6 +1,0 @@
-# Files Wrangler must not upload to Cloudflare (.gitignore syntax).
-# The retired PHP backend and Apache config only go to Hostinger (the fallback
-# copy); on Cloudflare, cloudflare/api.js answers /api/*. Uploaded as static
-# files, Cloudflare would serve the PHP source and database schema as plain text.
-.htaccess
-api/

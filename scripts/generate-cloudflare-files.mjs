@@ -1,7 +1,6 @@
 /**
- * Writes dist/_headers from the `Header always set` lines in public/.htaccess,
- * so the security headers are defined once for both hosts. Runs after
- * `vite build` (package.json "build").
+ * Writes dist/_headers from cloudflare/headers.js. Runs after `vite build`
+ * (package.json "build").
  *
  * No _redirects file is generated, deliberately. Cloudflare applies
  * _redirects to internal env.ASSETS.fetch() calls as well as inbound
@@ -16,7 +15,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { parseSecurityHeaders } from '../cloudflare/htaccess.js'
+import { SECURITY_HEADERS } from '../cloudflare/headers.js'
 
 const root = path.resolve(import.meta.dirname, '..')
 const distDir = path.join(root, 'dist')
@@ -26,9 +25,9 @@ if (!fs.existsSync(distDir)) {
   process.exit(1)
 }
 
-const headers = parseSecurityHeaders(fs.readFileSync(path.join(root, 'public/.htaccess'), 'utf8'))
+const headers = SECURITY_HEADERS
 if (!Object.keys(headers).length) {
-  console.error('generate-cloudflare-files: no `Header always set` lines found in public/.htaccess')
+  console.error('generate-cloudflare-files: cloudflare/headers.js exports no headers')
   process.exit(1)
 }
 

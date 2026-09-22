@@ -217,12 +217,13 @@ function socialMeta(html) {
 // --- walk -------------------------------------------------------------------
 
 /**
- * dist/api/** is not part of the site. It is the legacy PHP tree (contact
- * handler, mailer library, the old admin panel, an email template) that vite copies
- * out of public/ wholesale. It reaches Cloudflare in the asset bundle but is
- * unreachable there: worker.js intercepts every /api/* request before any asset
- * lookup and api.js 404s unknown routes. Phase 4 deletes public/api/ outright.
- * Excluded here so the content gate tracks pages, not an email template.
+ * dist/api/** is not part of the site, and as of Phase 4 does not exist: that
+ * was the retired PHP tree (contact handler, mailer library, old admin panel,
+ * an email template) which vite copied out of public/ wholesale. It was already
+ * unreachable on Cloudflare — worker.js intercepts every /api/* request before
+ * any asset lookup, and api.js 404s unknown routes — and public/api/ is deleted
+ * now. The exclusion stays as a guard against a backend tree reappearing in the
+ * asset bundle and being counted as page content.
  */
 const EXCLUDED_PREFIXES = ['api/']
 

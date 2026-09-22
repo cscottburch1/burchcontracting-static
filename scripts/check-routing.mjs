@@ -19,7 +19,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { findRedirect, parseRedirectRules } from '../cloudflare/htaccess.js'
+import { findLegacyRedirect } from '../cloudflare/redirects.js'
 import { MOVED_URLS, PAGE_URLS } from '../src/data/url-map.js'
 
 const root = path.resolve(import.meta.dirname, '..')
@@ -50,14 +50,20 @@ const FIXED_PATHS = [
   '/.htaccess',
 ]
 
-// Intentional differences on Cloudflare, with the reason.
+// Intentional differences from the Hostinger baseline, with the reason.
 const EXPECTED_DIFFERENCES = {
-  '/.htaccess': 'Apache config is not uploaded to Cloudflare, so it 404s instead of 403.',
+  '/.htaccess': 'Apache returned 403 for its own config. There is no Apache and no .htaccess now (Phase 4), so this 404s.',
 }
 
-// Backend files that must never be uploaded as static files. /api/* is
-// answered by cloudflare/api.js (405 or 404 for these), so any 200 means
-// Cloudflare is serving the raw file (see public/.assetsignore).
+// Paths that must never be served as static files.
+//
+// These were a real PHP backend on Hostinger, kept out of the Cloudflare
+// upload by public/.assetsignore; serving them as static files would have
+// published the contact handler's source and the database schema as plain
+// text. Phase 4 deleted public/api/ and the .assetsignore with it, so there is
+// nothing left to leak — and these probes stay exactly because of that. They
+// are now a guard against a backend tree being added to public/ again and
+// silently shipped, which is how this would recur.
 const MUST_NOT_BE_STATIC = [
   '/.htaccess',
   '/api/contact.php',
@@ -85,22 +91,20 @@ const problems = []
 const notes = []
 const distFiles = walk(distDir).map((file) => path.relative(distDir, file).split(path.sep).join('/'))
 
-// Both hosts now redirect the .html form of a page to its clean URL, and both
-// are meant to: Apache through the rules in public/.htaccess, Cloudflare
-// through cloudflare/worker.js, which runs before the asset server
-// (run_worker_first). So a rule pointing at a file's clean URL is correct.
+// The .html form of a page redirects to its clean URL, by design:
+// cloudflare/worker.js runs before the asset server (run_worker_first) and
+// issues the 301. So a rule pointing at a file's own clean URL is correct.
 //
-// What would be a real fault is a rule that sends a file somewhere OTHER than
-// its own public URL — that would shadow a real page, the way the legacy
+// What would be a real fault is a rule sending a file somewhere OTHER than its
+// own public URL — that shadows a real page, the way the legacy
 // "^calculator/([a-z-]+)/?$" catch-all briefly hijacked /calculator/garages.
-const rules = parseRedirectRules(fs.readFileSync(path.join(root, 'public/.htaccess'), 'utf8'))
 for (const rel of distFiles) {
   if (rel.startsWith('api/') || !rel.endsWith('.html')) continue
-  const hit = findRedirect(rules, `/${rel}`)
+  const hit = findLegacyRedirect(`/${rel}`)
   if (!hit) continue
   const ownUrl = PAGE_URLS[rel]
   if (ownUrl && hit.location === ownUrl) continue
-  problems.push(`/${rel}: .htaccess redirects this existing page to ${hit.location}, not to its own URL (${ownUrl ?? 'unmapped'}) — a rule is shadowing a real page`)
+  problems.push(`/${rel}: cloudflare/redirects.js sends this existing page to ${hit.location}, not to its own URL (${ownUrl ?? 'unmapped'}) — a rule is shadowing a real page`)
 }
 
 // The 2026-07 rebuild's URLs are probed from the map, not from dist/. They are

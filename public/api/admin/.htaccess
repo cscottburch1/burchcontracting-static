@@ -1,5 +1,0 @@
-# schema.sql is a one-time setup script meant to be copy-pasted into
-# phpMyAdmin, not fetched over HTTP.
-<Files "schema.sql">
-  Require all denied
-</Files>

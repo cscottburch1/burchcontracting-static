@@ -18,9 +18,12 @@ name: Deploy to Cloudflare
 # the version explicitly (--secrets-file, sourced from GitHub Actions secrets)
 # and proven on a preview URL before anything is promoted.
 #
-# deploy.yml (Hostinger FTP) keeps running on its own: Hostinger stays a
-# complete fallback copy. The contact form and leads admin run in the Worker
-# (cloudflare/api.js, D1).
+# This is the only deploy. Phase 4 deleted deploy.yml, the Hostinger FTP
+# workflow, so Hostinger no longer receives a copy of the site and is no longer
+# a fallback. Rolling back means `wrangler rollback` to a previous Worker
+# version, NOT deleting the Worker route — that would send traffic to a
+# Hostinger copy frozen at 2026-09-22. See docs/DECISIONS.md, 2026-09-22.
+# The contact form and leads admin run in the Worker (cloudflare/api.js, D1).
 #
 # Until the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets exist, every
 # run skips with a notice instead of failing.
