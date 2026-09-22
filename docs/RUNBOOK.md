@@ -244,8 +244,18 @@ If you genuinely must:
    The second is the one that gets skipped. A duplicate-title tamper once used a
    title two words off from the real one, produced no duplicate, and reported a
    working gate — while that gate was in fact broken.
-4. **Restore, and confirm the gate passes again.**
-5. Add it to `npm test` via `scripts/test.mjs`, and to the header comment in
+4. **Restore, and confirm the gate passes again.** Both directions, always. A
+   gate that has only ever been run against a failing input is half-tested: the
+   first real run of `deploy.yml` failed on a *correct* page, because
+   `printf | grep -q` under `set -o pipefail` reports a match as a miss.
+   `grep -q` closes the pipe on its first hit, the writer takes `EPIPE`, and
+   `pipefail` turns that into a non-zero pipeline.
+5. **Never `| grep -q` in a shell gate.** Use `[[ "$var" == *"needle"* ]]`.
+   Every `run:` block on GitHub is `bash -eo pipefail`, and any consumer that
+   can exit early — `grep -q`, `grep -m`, `head` — will orphan its writer and
+   invert the result. Consumers that read to EOF (`sed`, `cut`, `sha256sum`, a
+   `while read` loop) are fine.
+6. Add it to `npm test` via `scripts/test.mjs`, and to the header comment in
    `check-build.mjs` if it lives there.
 
 ---

@@ -148,16 +148,25 @@ jobs:
             path="${pair%%|*}"
             want_canonical="${pair#*|}"
             body=$(curl -fsSL -w '\nHTTP_STATUS:%{http_code}' "$BASE_URL$path?nocache=$GITHUB_RUN_ID")
-            status=$(printf '%s' "$body" | tail -1 | cut -d: -f2)
+            status=${body##*HTTP_STATUS:}
             if [ "$status" != "200" ]; then
               echo "::error::$path returned $status"
               exit 1
             fi
-            if ! printf '%s' "$body" | grep -q 'name="robots" content="index, follow"'; then
+            # Bash substring tests, NOT `printf | grep -q`. Under
+            # `set -o pipefail`, grep -q exits the instant it matches and closes
+            # the pipe; printf is still writing a 90 KB page, takes EPIPE, and
+            # the pipeline goes non-zero. The script then reads non-zero as "not
+            # found" — so the check failed BECAUSE the string was present, and
+            # would have passed on a page that lacked it entirely. Exactly
+            # backwards, and it is what happened on this workflow's first real
+            # run (2026-09-22, run 35741546873). No pipe here, so there is
+            # nothing for pipefail to misread.
+            if [[ "$body" != *'name="robots" content="index, follow"'* ]]; then
               echo "::error::$path is not index,follow"
               exit 1
             fi
-            if ! printf '%s' "$body" | grep -q "rel=\"canonical\" href=\"$want_canonical\""; then
+            if [[ "$body" != *"rel=\"canonical\" href=\"$want_canonical\""* ]]; then
               echo "::error::$path does not carry canonical $want_canonical"
               exit 1
             fi
