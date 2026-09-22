@@ -26,7 +26,7 @@ export const SC_BUILDING_CODES_COUNCIL_URL = 'https://llr.sc.gov/bcc/'
 // page for their city — reused, not duplicated content: the same facts
 // power both projects.html's case-study card and this page's "Featured
 // Project" section. Keep in sync with projects.html's project cards and
-// generate-trust-layer.mjs's CASE_STUDY_MATERIALS if either changes.
+// src/build/trust-layer.mjs's CASE_STUDY_MATERIALS if either changes.
 // Cities with no entry here get a FACT-NEEDED prompt instead (see
 // generate-geo-aeo.mjs's cityProjectsSectionHtml()).
 export const CITY_PROJECTS = {

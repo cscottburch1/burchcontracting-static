@@ -18,18 +18,20 @@
  *
  * THE VERBATIM COPIES ARE TEMPORARY
  *
- * Nineteen pages are not generated yet — eight hand-authored and eleven
- * calculators. Since vite now scans exactly one directory, they have to be in
- * it, so they are copied across byte-for-byte. That keeps this step content-
- * neutral: the snapshot must show zero difference.
+ * Twelve pages are not generated yet — eleven calculators and 404.html. Since
+ * vite now scans exactly one directory, they have to be in it, so they are
+ * copied across byte-for-byte. That keeps this step content-neutral: the
+ * snapshot must show zero difference.
  *
- * Phase 3.3 replaces the copy with real rendering through src/chrome/, at which
- * point COPIED_PAGES empties and this file renders all 71. The copy is
- * scaffolding with a known removal date, not a permanent special case.
+ * Phase 3.3b replaces the calculator copies with real rendering, at which point
+ * COPIED_PAGES holds 404.html alone — permanently, since that page must keep
+ * noindex and is the one page whose chrome is allowed to differ.
  *
- * ORDER MATTERS. generate-calculator-tables.mjs and generate-trust-layer.mjs
- * patch those nineteen source pages in place, so they must run before this
- * file copies them. package.json's prebuild enforces that.
+ * ORDER MATTERS, for one remaining step. generate-calculator-tables.mjs still
+ * patches the eleven calculator source pages in place, so it must run before
+ * this file copies them. package.json's prebuild enforces that. Phase 3.3b
+ * converts it the way 3.3c converted the trust layer, and the ordering
+ * constraint goes away with it.
  */
 import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'

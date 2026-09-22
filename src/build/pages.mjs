@@ -37,20 +37,53 @@
  * nothing else from <head>. It now captures every og:* and twitter:*. The
  * lesson is narrower than "add a field": a default is a content decision when
  * the thing being defaulted already had a value.
+ *
+ * THE TRUST LAYER (Phase 3.3c)
+ *
+ * Five of these seven also carry a byline, an answers section, a comparison
+ * table and an Article/Person graph, which a separate script used to inject
+ * into the committed HTML between marker comments. Those are computed here now,
+ * from src/data/, and land on named {{trust.*}} placeholders in the template.
+ *
+ * That is why the Article graph is appended to page.schema rather than stored
+ * in it: its headline comes from the template's own <h1> and its dates from
+ * content-dates.js, so storing it would be storing a derived value — the exact
+ * duplication this phase removes. Every block and every graph this produces was
+ * verified byte-identical to what the marker spans held before the conversion.
  */
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-import { documentHead, pageFooter } from '../chrome/index.mjs'
+import { documentHead, imageUrl, pageFooter } from '../chrome/index.mjs'
 import { HAND_AUTHORED_PAGES } from '../data/pages.js'
 import { pageUrl } from '../data/url-map.js'
+import { applyTrustBlocks, trustRender } from './trust-layer.mjs'
 
 const templatesDir = resolve(import.meta.dirname, '../templates')
 
 export function render() {
   return HAND_AUTHORED_PAGES.map((page) => {
     const name = page.file.replace(/\.html$/, '')
-    const main = readFileSync(resolve(templatesDir, `${name}.html`), 'utf-8').trimEnd()
+    const template = readFileSync(resolve(templatesDir, `${name}.html`), 'utf-8').trimEnd()
+
+    // Five of the seven carry a trust layer. The other two — the legal pages —
+    // have no placeholders and no Article schema, so trustRender is not called
+    // for them at all rather than called and discarded.
+    const hasTrustLayer = template.includes('{{trust.')
+    let main = template
+    let schema = page.schema
+
+    if (hasTrustLayer) {
+      const trust = trustRender({
+        relFile: page.file,
+        main: template,
+        description: page.description,
+        canonical: page.canonical,
+        image: imageUrl(page.ogImage),
+      })
+      main = applyTrustBlocks(trust.main, trust.blocks, page.file)
+      schema = [...page.schema, trust.schema]
+    }
 
     return {
       url: pageUrl(page.file),
@@ -63,7 +96,7 @@ export function render() {
           ogImage: page.ogImage,
           ogType: page.ogType,
           ogDescription: page.ogDescription,
-          schema: page.schema,
+          schema,
         }),
         main,
         pageFooter(page.scripts),

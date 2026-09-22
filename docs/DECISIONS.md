@@ -144,8 +144,9 @@ Phases 0–2 review.
 
 ## 2026-08-29 — Known data gaps that render blank rather than failing
 
-`generate-trust-layer.mjs` builds the "Compare All Services" table from a
-hand-maintained `CHOOSE_IF` map keyed by service slug. `bathroom-remodeling`
+`src/build/trust-layer.mjs` (named `scripts/generate-trust-layer.mjs` at the
+time) builds the "Compare All Services" table from a hand-maintained
+`CHOOSE_IF` map keyed by service slug. `bathroom-remodeling`
 was never added, so its row rendered "Choose this if" followed by nothing.
 `kitchen-remodeling` inherited the same gap. `PERMIT_REQUIRED` defaults to
 "Case-by-case", so it fails invisibly rather than visibly.

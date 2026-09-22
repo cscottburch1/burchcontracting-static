@@ -30,6 +30,7 @@ export const PROMOTED_FAQS = {
     },
     {
       "question": "How much does a deck cost in Upstate SC?",
+      "_todo": "TODO(phase-6): derive from calculator-config via pricing-sync — the $39-$92/sq ft below is a literal, and Phase 6 requires every price in copy to come from calculator-config.js. Same class as the garage hero range that contradicts its own table.",
       "answer": "Custom decks typically run $39 to $92 per square foot installed. <a href=\"/calculator/decks\" class=\"text-blue-700 font-semibold hover:text-blue-800\">Use the deck calculator</a> for a planning estimate."
     }
   ],

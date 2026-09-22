@@ -35,6 +35,22 @@ export function esc(value) {
     .replaceAll('"', '&quot;')
 }
 
+const DEFAULT_OG_IMAGE = '/images/custom-deck-greenville-sc.webp'
+
+/**
+ * The absolute URL for a site-relative image path.
+ *
+ * Exported because the Article schema needs the same value the og:image tag
+ * carries. The trust layer used to get it by scraping the rendered <head>,
+ * which worked only because the page it scraped was also the page it wrote to.
+ * With the two built separately, a second copy of this concatenation would be
+ * free to drift — and the drift would be invisible, since nothing compares an
+ * og:image tag against a schema image field.
+ */
+export function imageUrl(ogImage = DEFAULT_OG_IMAGE) {
+  return `${SITE.url}${ogImage}`
+}
+
 /**
  * The robots tag ships as "index, follow" — the safe state is the default
  * state. It used to ship as "noindex, nofollow" with
@@ -65,11 +81,11 @@ export function seoHead({
   title,
   description,
   canonical,
-  ogImage = '/images/custom-deck-greenville-sc.webp',
+  ogImage = DEFAULT_OG_IMAGE,
   ogType = 'article',
   ogDescription = description,
 }) {
-  const image = `${SITE.url}${ogImage}`
+  const image = imageUrl(ogImage)
   return `    <meta name="robots" content="index, follow" />
     <meta name="description" content="${esc(description)}" />
     <title>${esc(title)}</title>
@@ -108,7 +124,7 @@ function pathFromCanonical(canonical) {
  * One <script type="application/ld+json"> per schema object.
  *
  * Accepts an array because the hand-authored pages carry two blocks each — the
- * page's own graph plus the one generate-trust-layer.mjs injects — and the
+ * page's own graph plus the one trustRender() returns — and the
  * snapshot counts blocks. Collapsing them into one would change the count from
  * 75 and would merge two graphs that were deliberately separate.
  */

@@ -11,6 +11,12 @@
  * caught by check-build's double-encoded-ampersand assertion on the first
  * build after extraction. Entities are decoded at extraction for that reason;
  * escaping is the renderer's job, not the data's.
+ *
+ * `schema` holds only each page's OWN graph. Five of these pages ship a second
+ * Article/Person block, which Phase 3.3c stopped storing here: trustRender()
+ * builds it from the template's <h1> and content-dates.js, so a copy in this
+ * file would be a derived value free to go stale. src/build/pages.mjs appends
+ * it. The rendered block count is unchanged at 75.
  */
 export const HAND_AUTHORED_PAGES = [
   {
@@ -322,57 +328,6 @@ export const HAND_AUTHORED_PAGES = [
             ]
           }
         ]
-      },
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Person",
-            "@id": "https://burchcontracting.com/#scott-burch",
-            "name": "C. Scott Burch",
-            "jobTitle": "Owner & Lead Contractor",
-            "url": "https://burchcontracting.com/about",
-            "worksFor": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "hasCredential": [
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "South Carolina LLR"
-                },
-                "identifier": "CLG118679"
-              },
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "North Carolina Licensing Board for General Contractors"
-                },
-                "identifier": "107292"
-              }
-            ]
-          },
-          {
-            "@type": "Article",
-            "@id": "https://burchcontracting.com/#article",
-            "headline": "Local Upstate SC Construction & Home Remodeling Experts",
-            "description": "$40-$340/sq ft: decks, additions, garages & screened porches in Upstate SC since 1995. SC Licensed #CLG118679, BBB A+ rated.",
-            "url": "https://burchcontracting.com/",
-            "datePublished": "2026-06-01",
-            "dateModified": "2026-09-11",
-            "author": {
-              "@id": "https://burchcontracting.com/#scott-burch"
-            },
-            "publisher": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "image": "https://burchcontracting.com/images/custom-deck-greenville-sc.webp"
-          }
-        ]
       }
     ],
     "scripts": [],
@@ -496,57 +451,6 @@ export const HAND_AUTHORED_PAGES = [
             ]
           }
         ]
-      },
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Person",
-            "@id": "https://burchcontracting.com/#scott-burch",
-            "name": "C. Scott Burch",
-            "jobTitle": "Owner & Lead Contractor",
-            "url": "https://burchcontracting.com/about",
-            "worksFor": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "hasCredential": [
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "South Carolina LLR"
-                },
-                "identifier": "CLG118679"
-              },
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "North Carolina Licensing Board for General Contractors"
-                },
-                "identifier": "107292"
-              }
-            ]
-          },
-          {
-            "@type": "Article",
-            "@id": "https://burchcontracting.com/about#article",
-            "headline": "About Scott Burch",
-            "description": "30+ years building in Upstate SC — meet Scott Burch, SC Licensed #CLG118679, BBB A+ since 2014, 5.0 Google rating general contractor.",
-            "url": "https://burchcontracting.com/about",
-            "datePublished": "2026-06-01",
-            "dateModified": "2026-09-11",
-            "author": {
-              "@id": "https://burchcontracting.com/#scott-burch"
-            },
-            "publisher": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "image": "https://burchcontracting.com/images/scott-burch-profile.webp"
-          }
-        ]
       }
     ],
     "scripts": [],
@@ -667,57 +571,6 @@ export const HAND_AUTHORED_PAGES = [
                 "item": "https://burchcontracting.com/contact"
               }
             ]
-          }
-        ]
-      },
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Person",
-            "@id": "https://burchcontracting.com/#scott-burch",
-            "name": "C. Scott Burch",
-            "jobTitle": "Owner & Lead Contractor",
-            "url": "https://burchcontracting.com/about",
-            "worksFor": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "hasCredential": [
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "South Carolina LLR"
-                },
-                "identifier": "CLG118679"
-              },
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "North Carolina Licensing Board for General Contractors"
-                },
-                "identifier": "107292"
-              }
-            ]
-          },
-          {
-            "@type": "Article",
-            "@id": "https://burchcontracting.com/contact#article",
-            "headline": "Get Your Free Consultation",
-            "description": "30+ years in Upstate SC — free consultation from Burch Contracting. Decks, additions, garages, remodeling.",
-            "url": "https://burchcontracting.com/contact",
-            "datePublished": "2026-06-01",
-            "dateModified": "2026-09-11",
-            "author": {
-              "@id": "https://burchcontracting.com/#scott-burch"
-            },
-            "publisher": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "image": "https://burchcontracting.com/images/burch-contracting-logo.webp"
           }
         ]
       }
@@ -905,57 +758,6 @@ export const HAND_AUTHORED_PAGES = [
             ]
           }
         ]
-      },
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Person",
-            "@id": "https://burchcontracting.com/#scott-burch",
-            "name": "C. Scott Burch",
-            "jobTitle": "Owner & Lead Contractor",
-            "url": "https://burchcontracting.com/about",
-            "worksFor": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "hasCredential": [
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "South Carolina LLR"
-                },
-                "identifier": "CLG118679"
-              },
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "North Carolina Licensing Board for General Contractors"
-                },
-                "identifier": "107292"
-              }
-            ]
-          },
-          {
-            "@type": "Article",
-            "@id": "https://burchcontracting.com/services#article",
-            "headline": "Services & Pricing",
-            "description": "Every Burch Contracting service compared: cost range, timeline & permit status. SC Licensed #CLG118679, BBB A+, free consultations.",
-            "url": "https://burchcontracting.com/services",
-            "datePublished": "2026-06-01",
-            "dateModified": "2026-09-11",
-            "author": {
-              "@id": "https://burchcontracting.com/#scott-burch"
-            },
-            "publisher": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "image": "https://burchcontracting.com/images/custom-deck-greenville-sc.webp"
-          }
-        ]
       }
     ],
     "scripts": [],
@@ -1076,57 +878,6 @@ export const HAND_AUTHORED_PAGES = [
                 "item": "https://burchcontracting.com/projects"
               }
             ]
-          }
-        ]
-      },
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Person",
-            "@id": "https://burchcontracting.com/#scott-burch",
-            "name": "C. Scott Burch",
-            "jobTitle": "Owner & Lead Contractor",
-            "url": "https://burchcontracting.com/about",
-            "worksFor": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "hasCredential": [
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "South Carolina LLR"
-                },
-                "identifier": "CLG118679"
-              },
-              {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "license",
-                "recognizedBy": {
-                  "@type": "Organization",
-                  "name": "North Carolina Licensing Board for General Contractors"
-                },
-                "identifier": "107292"
-              }
-            ]
-          },
-          {
-            "@type": "Article",
-            "@id": "https://burchcontracting.com/projects#article",
-            "headline": "Recent Projects",
-            "description": "14 real completed projects: decks, garages, additions & remodels across Upstate SC. SC Licensed #CLG118679, BBB A+.",
-            "url": "https://burchcontracting.com/projects",
-            "datePublished": "2026-06-17",
-            "dateModified": "2026-09-11",
-            "author": {
-              "@id": "https://burchcontracting.com/#scott-burch"
-            },
-            "publisher": {
-              "@id": "https://burchcontracting.com/#organization"
-            },
-            "image": "https://burchcontracting.com/images/room-addition-fountain-inn-sc.webp"
           }
         ]
       }

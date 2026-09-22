@@ -194,7 +194,7 @@ function writeSection(fileName, sectionHtml) {
     // Replacer FUNCTION, not a plain string: `block` is a pricing table full
     // of dollar amounts, and String.replace() treats "$$"/"$&"/"$`"/"$'" in
     // a replacement *string* as special patterns — a function's return
-    // value is always inserted literally. See generate-trust-layer.mjs's
+    // value is always inserted literally. See src/build/trust-layer.mjs's
     // replaceOrInsertAfter() for the confirmed real-world case this guards
     // against (LOCAL_BUSINESS_SCHEMA's priceRange: '$$' silently became
     // '$' before that fix).
