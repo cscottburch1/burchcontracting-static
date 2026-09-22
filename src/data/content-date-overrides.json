@@ -1,0 +1,89 @@
+{
+  "_readme": [
+    "The only place a content date may be overridden. src/build/content-dates.mjs",
+    "computes datePublished and dateModified from git on every build; this file",
+    "supplies the three things git cannot know. Read that module's header first.",
+    "",
+    "history: earlier git paths for a page, for lineage git cannot detect. Phase 1",
+    "  flattened the repo and Phases 3.3a-ii/3.3b extracted each page's <main> into",
+    "  src/templates/, and a 24-line extract of a 300-line page does not look like a",
+    "  rename to git. Without these, every calculator would claim to have been",
+    "  published on the day it was extracted. Each path is queried with --follow and",
+    "  the results unioned, so listing the immediate predecessor is enough.",
+    "",
+    "mechanicalCommits: commits that touched page files without changing what a",
+    "  reader sees. They are skipped when picking dateModified. Going forward the",
+    "  mechanism is a 'Content-Change: none' trailer in the commit message and",
+    "  nothing needs adding here; this list seeds the commits made before that",
+    "  trailer existed. Getting one wrong only makes a dateModified newer than it",
+    "  should be.",
+    "",
+    "dates: a literal override, which wins outright. For the case where git is",
+    "  right about the file and wrong about the content. Every entry states why.",
+    "",
+    "This file has been lost three times as a hand-edit to a generated file (see",
+    "docs/DECISIONS.md, 2026-08-16/08-29/09-21). It is real committed input now, so",
+    "regenerating dates can no longer discard it."
+  ],
+
+  "history": {
+    "index.html": ["index.html"],
+    "about.html": ["about.html"],
+    "contact.html": ["contact.html"],
+    "projects.html": ["projects.html"],
+    "services.html": ["services.html"],
+    "privacy-policy.html": ["privacy-policy.html"],
+    "terms-of-service.html": ["terms-of-service.html"],
+    "calculator/ada-bath-shower.html": ["calculator/ada-bath-shower.html"],
+    "calculator/additions.html": ["calculator/additions.html"],
+    "calculator/basement-finishing.html": ["calculator/basement-finishing.html"],
+    "calculator/bath-remodel.html": ["calculator/bath-remodel.html"],
+    "calculator/covered-patios.html": ["calculator/covered-patios.html"],
+    "calculator/decks.html": ["calculator/decks.html"],
+    "calculator/estimate.html": ["calculator/estimate.html"],
+    "calculator/garages.html": ["calculator/garages.html"],
+    "calculator/kitchen-remodel.html": ["calculator/kitchen-remodel.html"],
+    "calculator/porch.html": ["calculator/porch.html"],
+    "calculator/whole-home-remodel.html": ["calculator/whole-home-remodel.html"]
+  },
+
+  "mechanicalCommits": {
+    "db21e9c": "refactor(dates): the commit that introduced this mechanism. Its only touch on a tracked path is three comment lines in src/data/geo-aeo.js, renaming generate-geo-aeo.mjs to src/build/geo.mjs. It carries no Content-Change trailer and could not list its own hash here, so on the first build after it landed /faqs and all eight service-area pages claimed dateModified 2026-09-22. Check 9 did not fire: nine of seventy is under its threshold, correctly, because nine genuinely changed pages is plausible. See docs/DECISIONS.md, 2026-09-22.",
+    "6d8e92e": "contact form repairs — the diff to contact.html is one reCAPTCHA site-key attribute",
+    "43ec78e": "fix(recaptcha): rotated v3 key pair — again one attribute value, invisible to a reader",
+    "7cfd664": "fix(seo): sitemap lastmod + content dates — metadata only",
+    "fcc1831": "chore: flatten repo, normalize line endings — moved every file, changed no prose",
+    "4e3a776": "fix(seo): index,follow default — a robots meta tag, invisible to a reader",
+    "43cab1e": "fix(gates): strengthen the content gate — gates only",
+    "f477faf": "refactor(chrome): one header and footer — chrome unification",
+    "6187ef5": "feat(gates): capture and assert the page chrome — gates only",
+    "536df9e": "refactor(build): generate-guides becomes a pure render()",
+    "dc2e564": "refactor(build): generate-services becomes a pure render()",
+    "2bfc06c": "refactor(build): generate-geo-aeo becomes pure render()",
+    "606e429": "build: one entry point, one scanned page root",
+    "92f5094": "fix(nav): main.js is the only owner of nav behaviour — removed a duplicate script",
+    "345484c": "refactor(nav): nav items become data — byte-identical header output",
+    "a24c5f0": "refactor(pages): the 7 hand-authored pages through the shared chrome",
+    "ba64e18": "refactor(trust-layer): promoted FAQs come from data — same text, different source",
+    "1ca10f2": "refactor(trust-layer): render from data; the seven root pages go",
+    "dd4a1dd": "refactor(build): the calculators render from templates"
+  },
+
+  "dates": {
+    "privacy-policy.html": {
+      "datePublished": "2026-07-10",
+      "dateModified": "2026-07-23",
+      "why": "THE FOURTH TIME THIS HAS BEEN LOST. See docs/DECISIONS.md, 2026-08-16/08-29/09-21: three times a sitewide mechanical commit became the most recent touch on this file and pushed dateModified to a date its content did not change, three times it was hand-reverted to 2026-07-23, three times the next script run discarded it. Moving the computation to build time lost it again, on the first run, which is exactly what this file exists to stop. The terms of this page last changed 2026-07-23. Do not let a nav edit say otherwise."
+    },
+    "terms-of-service.html": {
+      "datePublished": "2026-07-10",
+      "dateModified": "2026-07-23",
+      "why": "Same as privacy-policy.html above, and lost on the same three occasions."
+    },
+    "__datafile__src/data/services.js": {
+      "datePublished": "2026-06-01",
+      "dateModified": "2026-09-11",
+      "why": "Git tracks files, not the services inside one. Every service shares services.js's history, so each claims the file's creation date. 2026-06-01 is when the earliest of them actually shipped; the file itself was created 2026-07-02, which made every service look newer than it is. See docs/archive/FINDINGS.md #7 — kitchen-remodeling is the clearest case, added 2026-08-29 and claiming 2026-07-02. Per-service dates need per-object history, which git does not have; this at least stops the oldest services from being backdated forward. TODO(phase-6): kitchen and bathroom become lead offers and deserve real per-entry dates."
+    }
+  }
+}

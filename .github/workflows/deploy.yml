@@ -1,127 +1,237 @@
-name: Deploy to Hostinger
+name: Deploy
+
+# The only thing that deploys this site. Everything else — CI, local builds —
+# stops at "green". See docs/RUNBOOK.md.
+#
+# THE PUSH TRIGGER IS COMMENTED OUT ON PURPOSE. Read this before enabling it.
+#
+# Deploy-on-push was disabled on 2026-09-16 after a Cloudflare-side Git
+# integration deployed on every push, built without the indexing flag the model
+# then required, and carried none of the `wrangler secret put` secrets. Every
+# push shipped noindex on all 70 pages and wiped ADMIN_USERNAME,
+# ADMIN_PASSWORD_HASH, SESSION_SECRET, RESEND_API_KEY and RECAPTCHA_SECRET_KEY,
+# taking down admin login and lead emails and silently disabling the reCAPTCHA
+# check while the form kept accepting submissions.
+#
+# The post-deploy verification and automatic rollback below are the answer to
+# that incident, and they are what would make a push trigger safe. But they
+# have never run. Enabling push here would mean the first exercise of an
+# unproven deploy path is a real deploy of whatever just merged.
+#
+# TO ENABLE, in this order:
+#   1. Run this workflow once with workflow_dispatch and let it finish green.
+#   2. Confirm `wrangler secret list` still returns all five names and that
+#      live pages say "index, follow".
+#   3. Uncomment the two `push:` lines below.
+#
+# Do NOT connect the Cloudflare dashboard Git integration instead
+# (Workers & Pages -> the Worker -> Builds). That is the thing that caused the
+# outage. scripts/check-wrangler-config.mjs fails the build if a `build` block
+# appears in wrangler.jsonc, which is how that integration configures itself,
+# but the dashboard setting itself is invisible from here.
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+  # push:
+  #   branches: [main]
 
-# Only one deploy runs at a time. cancel-in-progress is deliberately false:
-# cancelling an FTP upload mid-flight is how the server ended up in a mixed
-# version state before (stale sync-state file, partially-uploaded files).
-# A newly pushed commit queues behind the active run instead of killing it.
+# cancel-in-progress is false, deliberately. Cancelling a deploy mid-flight is
+# how you get a half-updated Worker with no way to tell which half.
 concurrency:
-  group: deploy-hostinger
+  group: deploy-production
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: burchcontracting-dev
-
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      BASE_URL: https://burchcontracting.com
     steps:
+      - name: Check Cloudflare credentials
+        id: creds
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID must both be set."
+            exit 1
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # Full history: content dates are derived from git at build time.
+          # A shallow checkout would stamp today on all 70 sitemap URLs.
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: burchcontracting-dev/package-lock.json
+          # One source for the Node version: .nvmrc, which crawler-access.yml
+          # already reads. A hardcoded 22 here would be a second place to update.
+          node-version-file: .nvmrc
+          cache: npm
 
       - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+        run: npm ci
 
-      # BUILD_ENV=production activates flip-noindex-production.mjs (see
-      # package.json's "build" script).
-      - name: Build project
-        env:
-          BUILD_ENV: production
+      - name: Build
         run: npm run build
 
-      # Fails the workflow (not just a warning) on: &amp;amp; double-encoding,
-      # any sitemap URL with zero inbound internal links, or noindex still
-      # present anywhere except 404.html. Runs on the regenerated source
-      # files from the build step above, not dist/, and before the FTP
-      # deploy step so a failure blocks the deploy.
-      #
-      # Pre-cutover, this used to key off vars.STAGING_URL so the noindex
-      # check wouldn't fail every push while deploying to a staging domain
-      # (nicheprohub.com) that intentionally carried noindex. Cutover to
-      # burchcontracting.com happened (LAUNCH-CHECKLIST.md #7); hardcoded
-      # now that the conditional's staging branch is permanently dead —
-      # a variable-only toggle to noindex the live site AND disable the
-      # guard that catches it was a real footgun.
-      - name: Build guard (check-build)
-        env:
-          BUILD_ENV: production
-        run: npm run check-build
+      - name: Run every gate
+        run: npm test
 
-      # .well-known/burch-version.txt is a second copy that only Hostinger
-      # serves: /.well-known/* is the one path the Worker still forwards there
-      # (cloudflare/worker.js), so it proves this FTP deploy landed even though
-      # the domain's pages and /api come from Cloudflare.
       - name: Stamp build version
         run: |
           echo "commit=${GITHUB_SHA}" > dist/version.txt
           echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
-          mkdir -p dist/.well-known
-          cp dist/version.txt dist/.well-known/burch-version.txt
 
-      # Recovery procedure: if the live site is ever stale while runs are
-      # green, the FTP action's incremental sync-state file
-      # (.ftp-deploy-sync-state.json, in the server-dir root) has likely
-      # gotten ahead of what's actually on the server. Delete that file via
-      # Hostinger File Manager, then re-run this workflow — with no state
-      # file present, the action does a full re-upload of every file.
-      - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          # Hostinger supports explicit FTPS; if a future run fails at connection, revert this commit while investigating.
-          protocol: ftps
-          local-dir: ./burchcontracting-dev/dist/
-          server-dir: ./
-          dangerous-clean-slate: false
-          log-level: verbose
-          timeout: 600000
-          # _headers and .assetsignore are Cloudflare-only build files (see
-          # cloudflare.yml); Apache would serve them as plain files.
-          exclude: |
-            **/api/config.local.php
-            **/_headers
-            **/.assetsignore
-
-      # Since the Cloudflare cutover, burchcontracting.com's pages are served by
-      # the Cloudflare Worker, and cloudflare.yml checks every page, redirect
-      # and crawler there (including contact.html's reCAPTCHA key, byte for
-      # byte), plus the contact form in cloudflare/api.js. Hostinger keeps a
-      # full fallback copy of the site, so this step checks the Hostinger side
-      # through /.well-known.
-      #
-      # If the cutover is ever rolled back, revert the cutover commit: that
-      # restores the page-by-page content check against Hostinger here.
-      - name: Verify deployment
-        env:
-          SITE_URL: https://burchcontracting.com
+      # `wrangler deploy`, never `versions upload` + `versions deploy`. That was
+      # tried on 2026-09-16 and the promoted version came up with NO secrets —
+      # all five wiped — despite what `versions upload --help` implies. Plain
+      # deploy preserves them.
+      - name: Deploy
+        id: deploy
         run: |
-          sleep 10
-          live=$(curl -fsSL --retry 3 "$SITE_URL/.well-known/burch-version.txt?nocache=$GITHUB_RUN_ID" | grep '^commit=' | cut -d= -f2)
-          echo "Hostinger commit: $live"
-          echo "Expected commit:  $GITHUB_SHA"
-          if [ "$live" != "$GITHUB_SHA" ]; then
-            echo "::error::Hostinger's .well-known/burch-version.txt does not match this commit — the FTP sync likely skipped files. Delete .ftp-deploy-sync-state.json on the server and re-run."
+          set -o pipefail
+          # This repository is public: strip any account email Wrangler prints.
+          redact() { sed -E 's/[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}/[redacted email]/g'; }
+          npx wrangler deploy 2>&1 | redact
+
+      # Everything below is the reason a push trigger could ever be safe here.
+      # Any failure falls through to the rollback step.
+      - name: Verify deployment
+        id: verify
+        run: |
+          set -euo pipefail
+
+          # 1. Exactly the five expected secrets, no more and no fewer. The
+          #    2026-09-16 outage was invisible for hours because nothing
+          #    checked this: the Worker ran fine, it just could not send mail,
+          #    authenticate an admin, or validate a captcha.
+          echo "— secrets"
+          actual=$(npx wrangler secret list --format json | node -e '
+            let s = ""; process.stdin.on("data", (d) => (s += d)).on("end", () => {
+              const names = JSON.parse(s).map((x) => x.name).sort();
+              console.log(names.join(","));
+            });')
+          expected="ADMIN_PASSWORD_HASH,ADMIN_USERNAME,RECAPTCHA_SECRET_KEY,RESEND_API_KEY,SESSION_SECRET"
+          echo "  found:    $actual"
+          echo "  expected: $expected"
+          if [ "$actual" != "$expected" ]; then
+            echo "::error::Worker secrets are $actual, expected exactly $expected"
             exit 1
           fi
 
-          # /api/* no longer reaches Hostinger through the domain, so its
-          # contact.php and config.local.php can't be checked from here;
-          # cloudflare.yml checks the Worker's /api/contact.php instead.
+          # 2. The new build is the one answering.
+          echo "— version marker"
+          for attempt in 1 2 3 4 5 6; do
+            live=$(curl -fsSL "$BASE_URL/version.txt?nocache=$GITHUB_RUN_ID-$attempt" | grep '^commit=' | cut -d= -f2 || true)
+            [ "$live" = "$GITHUB_SHA" ] && break
+            sleep 10
+          done
+          if [ "$live" != "$GITHUB_SHA" ]; then
+            echo "::error::$BASE_URL serves commit $live, expected $GITHUB_SHA"
+            exit 1
+          fi
+          echo "  serving $live"
 
-          echo "Deploy verified: Hostinger matches $GITHUB_SHA"
+          # 3. Five representative pages: one of each kind this site builds.
+          #    200, indexable, and pointing at themselves.
+          echo "— representative pages"
+          for pair in \
+            "/|https://burchcontracting.com/" \
+            "/services|https://burchcontracting.com/services" \
+            "/outdoor-living/decks|https://burchcontracting.com/outdoor-living/decks" \
+            "/service-areas/simpsonville|https://burchcontracting.com/service-areas/simpsonville" \
+            "/calculator/decks|https://burchcontracting.com/calculator/decks"; do
+            path="${pair%%|*}"
+            want_canonical="${pair#*|}"
+            body=$(curl -fsSL -w '\nHTTP_STATUS:%{http_code}' "$BASE_URL$path?nocache=$GITHUB_RUN_ID")
+            status=$(printf '%s' "$body" | tail -1 | cut -d: -f2)
+            if [ "$status" != "200" ]; then
+              echo "::error::$path returned $status"
+              exit 1
+            fi
+            if ! printf '%s' "$body" | grep -q 'name="robots" content="index, follow"'; then
+              echo "::error::$path is not index,follow"
+              exit 1
+            fi
+            if ! printf '%s' "$body" | grep -q "rel=\"canonical\" href=\"$want_canonical\""; then
+              echo "::error::$path does not carry canonical $want_canonical"
+              exit 1
+            fi
+            echo "  $path 200, index,follow, canonical ok"
+          done
+
+          # 3b. Every built page, byte for byte, after normalizing Cloudflare's
+          #     email obfuscation. The five probes above check the things a
+          #     human would eyeball; this checks that what shipped is what was
+          #     built, on all 70 pages. Carried over from the workflow this
+          #     replaces — the plan asked only for the representative pages,
+          #     but dropping a working whole-site integrity check to satisfy a
+          #     spec that did not mention it would be a real loss of coverage.
+          #
+          #     Each page's URL comes from src/data/url-map.js, not its
+          #     filename: guessing from the filename asks for /about.html and
+          #     /garage-builder/, which now 301, and for /404.html, which
+          #     correctly 404s — failing the job on a curl error, not a
+          #     mismatch.
+          echo "— whole-site content"
+          mismatch=0
+          while IFS='|' read -r rel url_path; do
+            [ -n "$rel" ] || continue
+            local_hash=$(python3 .github/scripts/strip-cf-email-obfuscation.py "dist/$rel" | sha256sum | cut -d' ' -f1)
+            live_hash=$(curl -fsSL "$BASE_URL$url_path?nocache=$GITHUB_RUN_ID" | python3 .github/scripts/strip-cf-email-obfuscation.py | sha256sum | cut -d' ' -f1)
+            if [ "$local_hash" != "$live_hash" ]; then
+              echo "::error::Content mismatch on $url_path (built from $rel)"
+              mismatch=1
+            fi
+          done < <(node --input-type=module -e '
+            import { PAGE_URLS } from "./src/data/url-map.js";
+            for (const [file, url] of Object.entries(PAGE_URLS)) console.log(`${file}|${url}`);
+          ')
+          [ "$mismatch" = "0" ] || exit 1
+          echo "  every built page matches what is live"
+
+          # 4. Same status codes, redirect targets and security headers the
+          #    Hostinger site served (migration/routing-baseline.json).
+          echo "— routing"
+          node scripts/check-routing.mjs "$BASE_URL"
+
+          # 5. Every search and AI crawler gets 200. This is why the site is on
+          #    Cloudflare at all.
+          echo "— crawler access"
+          node scripts/check-crawler-access.mjs "$BASE_URL"
+
+          # 6. The API is answered by the Worker, not by a 404 or a 500.
+          #    cloudflare/api.js replies 405 to a HEAD on the contact endpoint;
+          #    a 404 would mean the route is not reaching api.js at all.
+          echo "— api"
+          for endpoint in /api/contact /api/contact.php; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -I "$BASE_URL$endpoint")
+            echo "  HEAD $endpoint -> $code"
+            if [ "$code" != "405" ]; then
+              echo "::error::HEAD $endpoint returned $code, expected 405 from cloudflare/api.js"
+              exit 1
+            fi
+          done
+
+      # Runs only when verification failed. Rolls the Worker back to the
+      # previous version, then fails the job loudly — a rolled-back deploy is
+      # still a failed deploy and must not show green.
+      - name: Roll back
+        if: failure() && steps.deploy.outcome == 'success'
+        run: |
+          echo "::error::Post-deploy verification failed. Rolling back."
+          npx wrangler rollback --yes --message "Automatic rollback: verification failed for ${GITHUB_SHA} (run ${GITHUB_RUN_ID})"
+          echo "Rolled back. Investigate before redeploying — see docs/RUNBOOK.md."
+          exit 1
+
+      # Only after everything above passed. Bing, Yandex, Seznam and Naver
+      # re-crawl within minutes; Bing's index is what Copilot and ChatGPT
+      # search read from. A slow or grumpy search engine should not turn a good
+      # deploy red, so this warns instead of failing.
+      - name: Tell IndexNow to re-crawl
+        continue-on-error: true
+        run: node scripts/indexnow-submit.mjs

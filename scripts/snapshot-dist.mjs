@@ -1,0 +1,426 @@
+/**
+ * Content-loss gate for the cleanup refactor.
+ *
+ * Captures what every built page *says* — not how it is spelled — so a
+ * generator refactor can be proven not to have dropped anything. Run it once
+ * before the work starts and again after each phase, then diff:
+ *
+ *   node scripts/snapshot-dist.mjs <out.json>     # default: <tmp>/snapshot-dist.json
+ *   node scripts/snapshot-dist.mjs --diff <before.json> <after.json>
+ *
+ * Requires `npm run build` first; it reads dist/, never source.
+ *
+ * What is deliberately NOT captured, because the refactor is allowed to change
+ * it and capturing it would make the gate cry wolf on every run:
+ *   - whitespace, indentation, line endings (normalized away)
+ *   - attribute order, and key order inside JSON-LD (deep-sorted)
+ *   - the ORDER of internal links (compared as a set; Phase 6 reorders the nav)
+ *   - <head> assets, hashed bundle filenames, <script>/<style> bodies
+ *
+ * What IS captured, because losing any of it is the failure this gate exists
+ * to catch: visible body text with nav/footer stripped, the full set of JSON-LD
+ * blocks, title/canonical/robots/description, internal links as BOTH a set and
+ * a per-page total, and the page chrome as a link set plus a normalized hash.
+ *
+ * The chrome fields exist because of a miss. visibleText() strips <header> and
+ * <footer>, so when Phase 3.1 rewrote the footer on 52 pages this gate reported
+ * "71/71 identical" — correct about the body, silent about the only thing that
+ * had changed. headerLinks/footerLinks/headerHash/footerHash close that, and
+ * check-build asserts separately that every page carries the SAME chrome.
+ *
+ * Both link measures are kept because either alone has a blind spot. The set
+ * ignores order, so a deliberate nav reordering passes — but it cannot see a
+ * link lost in one place and re-added in another, since the set is unchanged.
+ * The total catches that. Added after review, before Phase 3 rewrites every
+ * generator, on the principle that the gate must be at full strength before the
+ * risky phase rather than after it.
+ *
+ * RULE FOR ADDING FIELDS: a field is compared only when BOTH snapshots carry
+ * it. A baseline recorded before a field existed has nothing to compare, and
+ * treating "absent" as a default — empty array, zero, null — reports every page
+ * as changed on a diff where nothing did. That has now happened twice, with
+ * linkCount and again with the chrome fields, so it is written here as a rule
+ * rather than re-learned per field. Re-record the baseline instead.
+ *
+ * Keyed by public URL from src/data/url-map.js rather than by file path, so the
+ * Phase 1 flatten (which moves every file) does not invalidate the baseline.
+ * 404.html is keyed as "unlisted:404.html" since it has no public URL by design.
+ */
+import crypto from 'node:crypto'
+import fs from 'node:fs'
+import path from 'node:path'
+import os from 'node:os'
+import { PAGE_URLS, UNLISTED_FILES } from '../src/data/url-map.js'
+import { chromeHash, chromeSource } from './lib/chrome-hash.mjs'
+
+const root = path.resolve(import.meta.dirname, '..')
+const distDir = path.join(root, 'dist')
+
+// --- extraction helpers -----------------------------------------------------
+
+/** Strip a paired tag and everything inside it, repeatedly. */
+function stripBlock(html, tag) {
+  return html.replace(new RegExp(`<${tag}\\b[^>]*>[\\s\\S]*?</${tag}>`, 'gi'), ' ')
+}
+
+const ENTITIES = {
+  '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'",
+  '&apos;': "'", '&nbsp;': ' ', '&middot;': '·', '&mdash;': '—', '&ndash;': '–',
+}
+
+function decodeEntities(text) {
+  return text
+    .replace(/&[a-z]+;|&#\d+;/gi, (m) => {
+      if (ENTITIES[m]) return ENTITIES[m]
+      const num = /^&#(\d+);$/.exec(m)
+      return num ? String.fromCodePoint(Number(num[1])) : m
+    })
+}
+
+/**
+ * Visible body text with the page chrome removed. Every generated page has
+ * exactly one <header> and one <footer> (verified across all 71 dist pages), so
+ * removing those plus <head> leaves the page's own content — including anything
+ * that sits outside <main>, which taking <main> alone would silently drop.
+ */
+function visibleText(html) {
+  let s = html
+  for (const tag of ['head', 'header', 'footer', 'script', 'style', 'noscript', 'svg']) {
+    s = stripBlock(s, tag)
+  }
+  s = s.replace(/<!--[\s\S]*?-->/g, ' ')
+  s = s.replace(/<[^>]+>/g, ' ')
+  return decodeEntities(s).replace(/\s+/g, ' ').trim()
+}
+
+/** Recursively sort object keys so attribute order never shows up as a diff. */
+function deepSort(value) {
+  if (Array.isArray(value)) return value.map(deepSort)
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.keys(value).sort().map((k) => [k, deepSort(value[k])]))
+  }
+  return value
+}
+
+function jsonLdBlocks(html, rel, problems) {
+  const blocks = []
+  const re = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+  let m
+  while ((m = re.exec(html))) {
+    try {
+      blocks.push(deepSort(JSON.parse(decodeEntities(m[1]).trim())))
+    } catch (err) {
+      problems.push(`${rel}: JSON-LD block failed to parse — ${err.message}`)
+    }
+  }
+  // Sorted by serialized form so block order in the document is not a diff.
+  return blocks.map((b) => JSON.stringify(b)).sort()
+}
+
+function attr(html, re) {
+  const m = re.exec(html)
+  return m ? decodeEntities(m[1]).trim() : null
+}
+
+/**
+ * Internal hrefs only: site-relative or same-origin.
+ *
+ * Returns both the deduped sorted SET and the raw TOTAL. The set is what keeps
+ * the gate insensitive to link order, which Phase 6 changes on purpose when it
+ * reorders the nav. But a set alone cannot see a link lost in one place and
+ * re-added in another, or a repeated link that disappears — the count catches
+ * exactly that. Kept as two fields so a deliberate reordering still passes
+ * while a net loss does not.
+ */
+function internalLinks(html) {
+  const unique = new Set()
+  let total = 0
+  const re = /href=["']([^"']+)["']/gi
+  let m
+  while ((m = re.exec(html))) {
+    let href = decodeEntities(m[1]).trim()
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) continue
+    if (href.startsWith('https://burchcontracting.com')) href = href.slice('https://burchcontracting.com'.length) || '/'
+    if (/^[a-z]+:\/\//i.test(href)) continue
+    // Build artifacts, not content links: vite content-hashes everything under
+    // /assets/, so these change whenever the bundle does and say nothing about
+    // whether a page lost a link. The header comment already promised these
+    // were ignored; captured via href, they were not.
+    if (href.startsWith('/assets/')) continue
+    total++
+    unique.add(href.split('#')[0] || '/')
+  }
+  return { unique: [...unique].sort(), total }
+}
+
+/**
+ * Scripts a page loads, and the content of anything inline.
+ *
+ * Added after a defect neither existing field could see. Phase 3.1 unified the
+ * footer, which carried an inline copy of the nav logic; the nine pages that
+ * already loaded main.js ended up binding the hamburger twice, so each tap
+ * toggled it open and shut and the mobile menu was dead on every service-area
+ * page. visibleText() strips <script>, and the chrome hash was identical across
+ * those pages because they all received the same bad copy. Both gates passed.
+ *
+ * External srcs are recorded verbatim except for vite's content hashes, which
+ * are stripped so a rebuild is not a diff. Inline bodies are hashed rather than
+ * stored: the point is to notice that one changed, not to diff minified JS.
+ */
+function scriptInfo(html) {
+  const external = []
+  const inline = []
+  const re = /<script([^>]*)>([\s\S]*?)<\/script>/gi
+  let m
+  while ((m = re.exec(html))) {
+    const attrs = m[1]
+    const src = /src=["']([^"']+)["']/i.exec(attrs)?.[1]
+    if (src) {
+      // Vite's content hash is exactly 8 characters of base64url, which
+      // INCLUDES '-'. An earlier version excluded '-' from the class, so
+      // calculator_ada-bath-shower-DHAC-MWo.js never matched and its hash
+      // leaked into the snapshot, making every rebuild look like a script
+      // change on that one page. Anchored at exactly 8 so the hyphens inside
+      // a name like 'ada-bath-shower' are not eaten as well.
+      external.push(src.replace(/-[A-Za-z0-9_-]{8}\.(js|css)$/, '.$1'))
+      continue
+    }
+    const body = m[2].trim()
+    if (!body) continue
+    if (/application\/ld\+json/i.test(attrs)) continue // captured by jsonLd
+    inline.push(crypto.createHash('sha1').update(body.replace(/\s+/g, ' ')).digest('hex').slice(0, 12))
+  }
+  return { external: external.sort(), inline: inline.sort() }
+}
+
+/**
+ * Every og:* and twitter:* meta, as a sorted property=value list.
+ *
+ * Added after a regression the gate could not see. Phase 3.3a-ii moved seven
+ * pages onto documentHead(), whose defaults turned og:type from 'website' into
+ * 'article' on all of them and replaced the home page's distinct hand-written
+ * social blurb with its meta description. The snapshot captured `description`
+ * and nothing else from <head>, so it reported those pages as changed only in
+ * their link counts, and the commit claimed the extraction was mechanical.
+ *
+ * Social metadata is the text that appears when someone shares a page. It is
+ * content, and it is now compared as such.
+ */
+function socialMeta(html) {
+  const out = []
+  const re = /<meta\s+(?:property|name)=["']((?:og|twitter):[^"']+)["']\s+content=["']([^"']*)["']/gi
+  let m
+  while ((m = re.exec(html))) out.push(`${m[1]}=${decodeEntities(m[2])}`)
+  return out.sort()
+}
+
+// --- walk -------------------------------------------------------------------
+
+/**
+ * dist/api/** is not part of the site, and as of Phase 4 does not exist: that
+ * was the retired PHP tree (contact handler, mailer library, old admin panel,
+ * an email template) which vite copied out of public/ wholesale. It was already
+ * unreachable on Cloudflare — worker.js intercepts every /api/* request before
+ * any asset lookup, and api.js 404s unknown routes — and public/api/ is deleted
+ * now. The exclusion stays as a guard against a backend tree reappearing in the
+ * asset bundle and being counted as page content.
+ */
+const EXCLUDED_PREFIXES = ['api/']
+
+function walk(dir) {
+  const found = []
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name)
+    if (entry.isDirectory()) found.push(...walk(full))
+    else if (entry.name.endsWith('.html')) found.push(full)
+  }
+  return found
+}
+
+function snapshot() {
+  if (!fs.existsSync(distDir)) {
+    console.error('snapshot-dist: dist/ not found — run `npm run build` first.')
+    process.exit(1)
+  }
+  const problems = []
+  const pages = {}
+  const unlisted = new Set(UNLISTED_FILES)
+
+  for (const file of walk(distDir).sort()) {
+    const rel = path.relative(distDir, file).split(path.sep).join('/')
+    if (EXCLUDED_PREFIXES.some((p) => rel.startsWith(p))) continue
+    const html = fs.readFileSync(file, 'utf8')
+
+    let key = PAGE_URLS[rel]
+    if (!key) {
+      if (unlisted.has(rel)) key = `unlisted:${rel}`
+      else {
+        problems.push(`${rel}: no entry in PAGE_URLS and not in UNLISTED_FILES — cannot key this page`)
+        continue
+      }
+    }
+    if (pages[key]) problems.push(`${key}: two dist files map to the same public URL`)
+
+    const linkInfo = internalLinks(html)
+    const headBlock = chromeSource(html, 'header')
+    const footBlock = chromeSource(html, 'footer')
+    pages[key] = {
+      file: rel,
+      title: attr(html, /<title[^>]*>([\s\S]*?)<\/title>/i),
+      canonical: attr(html, /<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i),
+      robots: attr(html, /<meta[^>]*name=["']robots["'][^>]*content=["']([^"']*)["']/i),
+      description: attr(html, /<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i),
+      jsonLd: jsonLdBlocks(html, rel, problems),
+      links: linkInfo.unique,
+      linkCount: linkInfo.total,
+      headerLinks: headBlock ? internalLinks(headBlock).unique : [],
+      headerHash: chromeHash(html, 'header'),
+      footerLinks: footBlock ? internalLinks(footBlock).unique : [],
+      footerHash: chromeHash(html, 'footer'),
+      scripts: scriptInfo(html),
+      social: socialMeta(html),
+      text: visibleText(html),
+    }
+  }
+  return { pages, problems }
+}
+
+// --- diff -------------------------------------------------------------------
+
+const FIELDS = ['title', 'canonical', 'robots', 'description', 'text']
+
+function diff(beforeFile, afterFile) {
+  const before = JSON.parse(fs.readFileSync(beforeFile, 'utf8')).pages
+  const after = JSON.parse(fs.readFileSync(afterFile, 'utf8')).pages
+  const keys = [...new Set([...Object.keys(before), ...Object.keys(after)])].sort()
+
+  const changes = []
+  let identical = 0
+
+  for (const key of keys) {
+    const b = before[key]
+    const a = after[key]
+    if (!b) { changes.push(`+ ${key}: page ADDED`); continue }
+    if (!a) { changes.push(`- ${key}: page REMOVED`); continue }
+
+    const fieldDiffs = []
+    for (const f of FIELDS) {
+      if (b[f] === a[f]) continue
+      if (f === 'text') {
+        // Report size and a first divergence point rather than dumping the page.
+        const at = [...b.text].findIndex((c, i) => c !== a.text[i])
+        fieldDiffs.push(
+          `text: ${b.text.length} -> ${a.text.length} chars; first difference at ~${at < 0 ? 'end' : at}\n` +
+          `      before: ...${b.text.slice(Math.max(0, at - 60), at + 60)}...\n` +
+          `      after:  ...${a.text.slice(Math.max(0, at - 60), at + 60)}...`
+        )
+      } else {
+        fieldDiffs.push(`${f}:\n      before: ${b[f]}\n      after:  ${a[f]}`)
+      }
+    }
+    const lost = b.jsonLd.filter((x) => !a.jsonLd.includes(x))
+    const gained = a.jsonLd.filter((x) => !b.jsonLd.includes(x))
+    if (lost.length) fieldDiffs.push(`jsonLd: ${lost.length} block(s) LOST — ${lost.map((s) => s.slice(0, 90)).join(' | ')}`)
+    if (gained.length) fieldDiffs.push(`jsonLd: ${gained.length} block(s) added — ${gained.map((s) => s.slice(0, 90)).join(' | ')}`)
+
+    const linksLost = b.links.filter((x) => !a.links.includes(x))
+    const linksGained = a.links.filter((x) => !b.links.includes(x))
+    if (linksLost.length) fieldDiffs.push(`links LOST (${linksLost.length}): ${linksLost.join(', ')}`)
+    if (b.social && a.social) {
+      const lost = b.social.filter((x) => !a.social.includes(x))
+      const gained = a.social.filter((x) => !b.social.includes(x))
+      for (const x of lost) {
+        const [k] = x.split('=')
+        const repl = gained.find((g) => g.startsWith(k + '='))
+        if (repl) fieldDiffs.push(`social ${k} CHANGED:
+      before: ${x.slice(k.length + 1).slice(0, 110)}
+      after:  ${repl.slice(k.length + 1).slice(0, 110)}`)
+        else fieldDiffs.push(`social ${k} REMOVED: ${x.slice(k.length + 1).slice(0, 110)}`)
+      }
+      for (const x of gained) {
+        const [k] = x.split('=')
+        if (!lost.some((l) => l.startsWith(k + '='))) fieldDiffs.push(`social ${k} ADDED: ${x.slice(k.length + 1).slice(0, 110)}`)
+      }
+    }
+    if (b.scripts && a.scripts) {
+      for (const kind of ['external', 'inline']) {
+        const lost = b.scripts[kind].filter((x) => !a.scripts[kind].includes(x))
+        const gained = a.scripts[kind].filter((x) => !b.scripts[kind].includes(x))
+        if (lost.length) fieldDiffs.push(`${kind} script(s) LOST (${lost.length}): ${lost.join(', ')}`)
+        if (gained.length) fieldDiffs.push(`${kind} script(s) added (${gained.length}): ${gained.join(', ')}`)
+      }
+    }
+    // Chrome, compared separately: visibleText() strips header and footer, so
+    // without these a chrome change reads as "identical".
+    for (const part of ['header', 'footer']) {
+      // Same rule as linkCount: a baseline recorded before these fields existed
+      // has nothing to compare, and treating "absent" as "empty" would report
+      // every chrome link on every page as newly added. Re-record instead.
+      if (!b[`${part}Links`] || !a[`${part}Links`]) continue
+      const bl = b[`${part}Links`]
+      const al = a[`${part}Links`]
+      const lost = bl.filter((x) => !al.includes(x))
+      const gained = al.filter((x) => !bl.includes(x))
+      if (lost.length) fieldDiffs.push(`${part} links LOST (${lost.length}): ${lost.join(', ')}`)
+      if (gained.length) fieldDiffs.push(`${part} links added (${gained.length}): ${gained.join(', ')}`)
+      const bh = b[`${part}Hash`]
+      const ah = a[`${part}Hash`]
+      if (bh && ah && bh !== ah && !lost.length && !gained.length) {
+        fieldDiffs.push(`${part} changed (same links): ${bh} -> ${ah}`)
+      }
+    }
+    if (linksGained.length) fieldDiffs.push(`links added (${linksGained.length}): ${linksGained.join(', ')}`)
+    // The set above is order-insensitive by design; the total catches a link
+    // lost in one place and re-added in another, which the set cannot see.
+    //
+    // Compared only when BOTH sides have it. A baseline recorded before
+    // linkCount existed has no total to compare, and falling back to
+    // links.length would compare a UNIQUE count against a TOTAL and report a
+    // difference on every page that repeats any link — a false alarm on the
+    // one gate that must not cry wolf. Re-record the baseline instead.
+    if (typeof b.linkCount === 'number' && typeof a.linkCount === 'number' && b.linkCount !== a.linkCount) {
+      const delta = a.linkCount - b.linkCount
+      fieldDiffs.push(`link COUNT: ${b.linkCount} -> ${a.linkCount} (${delta > 0 ? '+' : ''}${delta})`)
+    }
+
+    if (fieldDiffs.length) changes.push(`~ ${key}\n    ${fieldDiffs.join('\n    ')}`)
+    else identical++
+  }
+
+  console.log(`snapshot-diff: ${keys.length} page(s); ${identical} identical, ${changes.length} changed.`)
+  if (changes.length) {
+    console.log(`\n${changes.join('\n')}`)
+    process.exit(1)
+  }
+  console.log('No differences in text, JSON-LD, title, canonical, robots, description, or internal links.')
+}
+
+// --- main -------------------------------------------------------------------
+
+const args = process.argv.slice(2)
+
+if (args[0] === '--diff') {
+  if (args.length < 3) {
+    console.error('usage: node scripts/snapshot-dist.mjs --diff <before.json> <after.json>')
+    process.exit(1)
+  }
+  diff(args[1], args[2])
+} else {
+  const outFile = args[0] ?? path.join(os.tmpdir(), 'snapshot-dist.json')
+  const { pages, problems } = snapshot()
+  fs.mkdirSync(path.dirname(outFile), { recursive: true })
+  fs.writeFileSync(outFile, JSON.stringify({ takenAt: new Date().toISOString(), pages }, null, 2))
+
+  const counts = Object.values(pages)
+  console.log(
+    `snapshot-dist: ${counts.length} page(s) -> ${outFile}\n` +
+    `  ${counts.reduce((n, p) => n + p.jsonLd.length, 0)} JSON-LD blocks, ` +
+    `${counts.reduce((n, p) => n + p.links.length, 0)} unique internal links ` +
+    `(${counts.reduce((n, p) => n + (p.linkCount ?? 0), 0)} total), ` +
+    `${counts.reduce((n, p) => n + p.text.length, 0).toLocaleString()} chars of visible text`
+  )
+  if (problems.length) {
+    console.error(`\nsnapshot-dist: ${problems.length} problem(s):\n  ${problems.join('\n  ')}`)
+    process.exit(1)
+  }
+}

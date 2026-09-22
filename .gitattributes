@@ -1,0 +1,30 @@
+# One line ending everywhere, stored and checked out as LF.
+#
+# Why this file exists: this repo is developed on Windows with core.autocrlf=true,
+# so tracked files arrive in the working tree as CRLF — but the generators
+# (scripts/generate-*.mjs, and the trust-layer patch step in particular) write
+# their output with bare \n. The result was mixed-EOL files, so `git status`
+# reported ~40 hand-authored pages as modified after every single build even
+# though not one byte of content had changed. That is FINDINGS.md #3, and it
+# made "is the tree clean?" useless as a signal — you could not tell a real
+# edit from build noise without hashing CR-stripped content by hand.
+#
+# Normalizing to LF in the repository ends that permanently: the generators'
+# output and the checked-out file now agree.
+* text=auto eol=lf
+
+# Binary assets: never normalized, never diffed as text.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.avif binary
+*.ico  binary
+*.svg  text eol=lf
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.pdf   binary
+*.zip   binary

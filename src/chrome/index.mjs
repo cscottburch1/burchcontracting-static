@@ -1,0 +1,364 @@
+/**
+ * Shared page chrome — the <head> block, site header/nav, footer, author box
+ * and FAQ accordion markup. Every page in dist/ but 404.html is built from it.
+ *
+ * It exists because the markup used to be copied. src/build/services.mjs and
+ * src/build/geo.mjs each held their own verbatim <head>/nav/footer, so the nav
+ * had to be edited in two places and had already drifted (geo's seoHead
+ * defaulted ogImage to SITE.ogImage, a field SITE does not have). They could
+ * not even import from one another: both wrote files at module top level, so
+ * importing one ran it.
+ *
+ * Phase 3.1 moved all of them onto this module, 3.2 made the generators pure
+ * so importing one does nothing, and 3.3 brought the eighteen hand-authored
+ * pages and calculators across. check-build asserts one header hash and one
+ * footer hash across all 70 governed pages, so a second copy cannot reappear
+ * quietly.
+ */
+import { SITE, SERVICES } from '../data/services.js'
+import { NAV, activeNavItem } from '../data/nav.js'
+import {
+  desktopAreasItems, desktopCta, desktopDropdownButton, desktopServicesColumns,
+  desktopTopLink, desktopTopLinks, mobileAccordionButton, mobileAreasItems,
+  mobileCta, mobileServicesItems, mobileTopLink, mobileTopLinks,
+} from './nav-render.mjs'
+
+/** The four plain links between the dropdowns and the CTA. */
+const TAIL_ITEMS = [NAV[3], NAV[4], NAV[5], NAV[6]]
+import { SERVICE_AREAS } from '../data/geo-aeo.js'
+
+export function esc(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+}
+
+const DEFAULT_OG_IMAGE = '/images/custom-deck-greenville-sc.webp'
+
+/**
+ * The absolute URL for a site-relative image path.
+ *
+ * Exported because the Article schema needs the same value the og:image tag
+ * carries. The trust layer used to get it by scraping the rendered <head>,
+ * which worked only because the page it scraped was also the page it wrote to.
+ * With the two built separately, a second copy of this concatenation would be
+ * free to drift — and the drift would be invisible, since nothing compares an
+ * og:image tag against a schema image field.
+ */
+export function imageUrl(ogImage = DEFAULT_OG_IMAGE) {
+  return `${SITE.url}${ogImage}`
+}
+
+/**
+ * The robots tag ships as "index, follow" — the safe state is the default
+ * state. It used to ship as "noindex, nofollow" with
+ * a build step rewriting dist/ only when an environment variable said to,
+ * which meant any build that forgot it shipped noindex on every page.
+ * That happened three times in one day on 2026-09-16 (docs/DECISIONS.md).
+ *
+ * The inverse now applies: scripts/apply-staging-noindex.mjs INJECTS noindex,
+ * and only when BUILD_ENV=staging. A forgotten variable can no longer
+ * de-index the site; at worst it fails to noindex a staging copy, which
+ * check-build catches and the Worker's X-Robots-Tag covers anyway.
+ * That script matches this exact string — keep it byte-identical.
+ */
+/**
+ * ogType and ogDescription are separate parameters because collapsing them into
+ * the page description silently changed seven pages.
+ *
+ * og:type was hardcoded 'article', which is right for a guide and wrong for the
+ * home page, the legal pages and the rest — they shipped 'website' and Phase
+ * 3.3a-ii turned them all into articles. og:description and twitter:description
+ * reused `description`, which cost the home page a distinct, hand-written
+ * social blurb on the most-shared URL on the site.
+ *
+ * Neither was visible to any gate: the snapshot captured the meta description
+ * and nothing else from <head>. It now captures every og:* and twitter:*.
+ */
+export function seoHead({
+  title,
+  description,
+  canonical,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = 'article',
+  ogDescription = description,
+}) {
+  const image = imageUrl(ogImage)
+  return `    <meta name="robots" content="index, follow" />
+    <meta name="description" content="${esc(description)}" />
+    <title>${esc(title)}</title>
+    <link rel="canonical" href="${canonical}" />
+    <meta name="theme-color" content="#1d4ed8" />
+    <meta name="google-site-verification" content="ntiguLhlJqrZC6Iwzu-HD4CGZrBaofiBXgsdc-F8B0w" />
+    <meta property="og:type" content="${ogType}" />
+    <meta property="og:site_name" content="${SITE.name}" />
+    <meta property="og:title" content="${esc(title)}" />
+    <meta property="og:description" content="${esc(ogDescription)}" />
+    <meta property="og:url" content="${canonical}" />
+    <meta property="og:image" content="${image}" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${esc(title)}" />
+    <meta name="twitter:description" content="${esc(ogDescription)}" />
+    <meta name="twitter:image" content="${image}" />`
+}
+
+/** Everything between </head> and the page's own <main>. */
+/**
+ * The site path a canonical URL points at, for nav marking. documentHead()
+ * already receives the canonical, so no caller has to pass the path twice and
+ * no caller can pass one that disagrees with the canonical tag.
+ */
+function pathFromCanonical(canonical) {
+  if (!canonical) return null
+  try {
+    return new URL(canonical).pathname
+  } catch {
+    return null
+  }
+}
+
+/**
+ * One <script type="application/ld+json"> per schema object.
+ *
+ * Accepts an array because the hand-authored pages carry two blocks each — the
+ * page's own graph plus the one trustRender() returns — and the
+ * snapshot counts blocks. Collapsing them into one would change the count from
+ * 75 and would merge two graphs that were deliberately separate.
+ */
+function schemaScripts(schema) {
+  if (!schema) return ''
+  const blocks = Array.isArray(schema) ? schema : [schema]
+  return blocks
+    .map((b) => `    <script type="application/ld+json">${typeof b === 'string' ? b : JSON.stringify(b)}</script>`)
+    .join('\n')
+}
+
+export function documentHead({ title, description, canonical, ogImage, schema, ogType, ogDescription }) {
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+${seoHead({ title, description, canonical, ...(ogImage ? { ogImage } : {}), ...(ogType ? { ogType } : {}), ...(ogDescription ? { ogDescription } : {}) })}
+${schemaScripts(schema)}
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
+    <link rel="stylesheet" href="/src/css/main.css" />
+  </head>
+  <body class="font-sans text-slate-800 bg-white antialiased">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-700 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
+${header(pathFromCanonical(canonical))}`
+}
+
+export function header(currentPath) {
+  const active = activeNavItem(currentPath)
+  return `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+          <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+            <div class="flex items-center justify-between h-24">
+
+              <!-- Logo -->
+              <a href="/" class="flex items-center shrink-0">
+                <img src="/images/burch-contracting-logo.webp" alt="Burch Contracting — Construction &amp; Remodeling" width="149" height="84" class="h-[84px] w-auto" />
+              </a>
+
+              <!-- Desktop nav links -->
+              <div class="hidden lg:flex items-center gap-6">
+${desktopTopLink(NAV[0], active === NAV[0], currentPath)}
+
+              <div class="relative group">
+${desktopDropdownButton('Services')}
+                <div class="invisible absolute left-0 top-full w-[520px] pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+                  <div class="grid grid-cols-2 gap-x-2 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
+${desktopServicesColumns(currentPath)}
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative group">
+${desktopDropdownButton('Service Areas')}
+                <div class="invisible absolute left-0 top-full w-64 pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+                  <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-lg">
+${desktopAreasItems(currentPath)}
+                  </div>
+                </div>
+              </div>
+${desktopTopLinks(TAIL_ITEMS, active, currentPath)}
+${desktopCta(NAV[7])}
+              </div>
+
+              <!-- Mobile hamburger -->
+              <button
+                id="menu-btn"
+                type="button"
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+                class="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              >
+                <span class="sr-only">Open menu</span>
+                <svg id="icon-open" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                </svg>
+                <svg id="icon-close" class="w-6 h-6 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="hidden lg:hidden pb-4 border-t border-slate-100 mt-0.5">
+              <div class="flex flex-col gap-1 pt-4">
+${mobileTopLink(NAV[0], active === NAV[0], currentPath)}
+
+${mobileAccordionButton('services', 'Services')}
+                <div data-mobile-accordion-panel="services" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
+${mobileServicesItems(currentPath)}
+                </div>
+
+${mobileAccordionButton('areas', 'Service Areas')}
+                <div data-mobile-accordion-panel="areas" class="hidden pl-4 grid gap-1 border-l border-slate-200 mb-2">
+${mobileAreasItems(currentPath)}
+                </div>
+${mobileTopLinks(TAIL_ITEMS, active, currentPath)}
+${mobileCta(NAV[7])}
+              </div>
+            </div>
+          </nav>
+        </header>`
+}
+
+export const footer = `    <footer class="bg-slate-950 text-slate-400">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div>
+            <p class="font-bold text-xl text-white mb-2">Burch <span class="text-blue-500">Contracting</span></p>
+            <p class="text-slate-400 text-sm leading-relaxed">Custom home additions, garage construction, outdoor living spaces, and remodeling across Simpsonville, Mauldin, Fountain Inn &amp; Woodruff SC.</p>
+            <p class="mt-4 text-sm">SC License #${SITE.license} | NC License (Limited) #${SITE.licenseNC}</p>
+            <p class="mt-1 text-sm"><a href="https://www.bbb.org/us/sc/gray-court/profile/home-additions/burch-contracting-llc-0673-90007875" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">BBB ${SITE.bbb} Rated</a></p>
+            <div class="flex items-center gap-4 mt-5">
+              <a href="https://www.facebook.com/BurchContracting" target="_blank" rel="noopener noreferrer" aria-label="Burch Contracting on Facebook" class="text-slate-400 hover:text-white transition-colors"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12"/></svg></a>
+              <a href="https://www.instagram.com/burchcontracting" target="_blank" rel="noopener noreferrer" aria-label="Burch Contracting on Instagram" class="text-slate-400 hover:text-white transition-colors"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465a4.9 4.9 0 0 1 1.772 1.153 4.9 4.9 0 0 1 1.153 1.772c.248.637.415 1.363.465 2.428.05 1.066.06 1.405.06 4.122s-.01 3.056-.06 4.122c-.05 1.065-.217 1.79-.465 2.428a4.9 4.9 0 0 1-1.153 1.772 4.9 4.9 0 0 1-1.772 1.153c-.637.248-1.363.415-2.428.465-1.066.05-1.405.06-4.122.06s-3.056-.01-4.122-.06c-1.065-.05-1.79-.217-2.428-.465a4.9 4.9 0 0 1-1.772-1.153 4.9 4.9 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.01 15.056 2 14.717 2 12s.01-3.056.06-4.122c.05-1.065.217-1.79.465-2.428a4.9 4.9 0 0 1 1.153-1.772A4.9 4.9 0 0 1 5.45 2.525c.637-.248 1.363-.415 2.428-.465C8.944 2.01 9.283 2 12 2m0 1.802c-2.67 0-2.987.01-4.04.059-.976.045-1.505.207-1.858.344-.467.182-.8.399-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.05 1.054-.06 1.37-.06 4.04s.01 2.987.06 4.04c.045.976.207 1.505.344 1.858.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.05 1.37.06 4.041.06s2.987-.01 4.04-.06c.976-.045 1.505-.207 1.858-.344.466-.182.8-.399 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.05-1.054.06-1.37.06-4.041s-.01-2.987-.06-4.04c-.045-.976-.207-1.505-.344-1.858a3.1 3.1 0 0 0-.748-1.15 3.1 3.1 0 0 0-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.054-.05-1.37-.06-4.041-.06M12 6.865a5.135 5.135 0 1 1 0 10.27 5.135 5.135 0 0 1 0-10.27M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.538-8.671a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0"/></svg></a>
+              <a href="https://www.linkedin.com/company/burch-contracting" target="_blank" rel="noopener noreferrer" aria-label="Burch Contracting on LinkedIn" class="text-slate-400 hover:text-white transition-colors"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.94v5.666H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124M7.119 20.452H3.554V9h3.565zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg></a>
+            </div>
+          </div>
+          <div>
+            <p class="font-semibold text-white mb-4">Our Services</p>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/room-additions" class="hover:text-white transition-colors">Additions</a></li>
+              <li><a href="/garage-builder" class="hover:text-white transition-colors">Garages</a></li>
+              <li><a href="/outdoor-living/decks" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
+              <li><a href="/remodeling" class="hover:text-white transition-colors">Remodeling</a></li>
+              <li><a href="/bathroom-remodeling" class="hover:text-white transition-colors">Bathroom Remodeling</a></li>
+              <li><a href="/kitchen-remodeling" class="hover:text-white transition-colors">Kitchen Remodeling</a></li>
+              <li><a href="/commercial-upfits" class="hover:text-white transition-colors">Commercial Upfits</a></li>
+              <li><a href="/commercial-roofing" class="hover:text-white transition-colors">Commercial Roofing</a></li>
+              <li><a href="/insurance-restoration" class="hover:text-white transition-colors">Insurance Restoration</a></li>
+              <li><a href="/ada-compliance" class="hover:text-white transition-colors">ADA Compliance</a></li>
+              <li><a href="/handyman" class="hover:text-white transition-colors">Handyman Services</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-semibold text-white mb-4">Plan &amp; Budget</p>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/cost" class="hover:text-white transition-colors">Cost Guides</a></li>
+              <li><a href="/blog" class="hover:text-white transition-colors">Guides &amp; Articles</a></li>
+              <li><a href="/calculator/estimate" class="hover:text-white transition-colors">Project Cost Calculator</a></li>
+              <li><a href="/services" class="hover:text-white transition-colors">Services &amp; Pricing</a></li>
+            </ul>
+            <p class="font-semibold text-white mb-4 mt-8">Service Areas</p>
+            <ul class="space-y-2 text-sm">
+${SERVICE_AREAS.map((a) => `
+              <li><a href="/service-areas/${a.slug}" class="hover:text-white transition-colors">${esc(a.name)}, ${esc(a.state)}</a></li>`).join('')}
+              <li><a href="/#service-areas" class="hover:text-white transition-colors">All Service Areas</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-semibold text-white mb-4">Contact</p>
+            <ul class="space-y-3 text-sm">
+              <li class="flex items-start gap-2">
+                <svg class="w-4 h-4 text-blue-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-2.003 3.5-4.697 3.5-8.333 0-4.552-3.507-7.994-8-7.994s-8 3.442-8 7.994c0 3.636 1.556 6.33 3.5 8.333a19.583 19.583 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+                <a href="https://www.google.com/maps/place/Burch+Contracting/@34.6465,-82.1158,17z" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">${SITE.address}<br/>${SITE.city}, ${SITE.state} ${SITE.zip}</a>
+              </li>
+              <li>
+                <a href="tel:${SITE.phoneLink}" class="flex items-center gap-2 hover:text-white transition-colors">
+                  <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd"/></svg>
+                  ${SITE.phone}
+                </a>
+              </li>
+              <li>
+                <a href="mailto:${SITE.email}" class="flex items-center gap-2 hover:text-white transition-colors">
+                  <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+                  ${SITE.email}
+                </a>
+              </li>
+            </ul>
+            <p class="font-semibold text-white mb-4 mt-8">Company</p>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+              <li><a href="/about" class="hover:text-white transition-colors">About</a></li>
+              <li><a href="/projects" class="hover:text-white transition-colors">Projects</a></li>
+              <li><a href="/faqs" class="hover:text-white transition-colors">FAQs</a></li>
+              <li><a href="/contact" class="hover:text-white transition-colors">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+          <p>&copy; <span id="year"></span> Burch Contracting. All rights reserved.</p>
+          <p class="flex items-center gap-4">
+            <a href="/privacy-policy" class="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="/terms-of-service" class="hover:text-white transition-colors">Terms of Service</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script type="module" src="/src/js/analytics.js"></script>
+    <!--
+      Nav behaviour, the footer year, the testimonials carousel and the contact
+      form all live in src/js/main.js, which is bundled by vite and guards every
+      binding on element presence. This used to be an inline copy of the menu,
+      accordion and year logic, because the service and guide generators never
+      loaded main.js.
+
+      Unifying the footer in Phase 3.1 then put that inline copy onto the nine
+      pages that DO load main.js — faqs and all eight service areas — so the
+      hamburger and the mobile accordions were bound twice, each tap toggled
+      the hidden class twice, and the menu did nothing. On the site's local
+      pages. Neither gate could see it: the snapshot strips scripts, and the
+      chrome hash was consistent because every page got the same bad copy.
+
+      One owner, no inline duplicate. See docs/DECISIONS.md.
+    -->
+    <script type="module" src="/src/js/main.js"></script>
+  </body>
+</html>`
+
+/**
+ * The footer, plus any page-specific module scripts.
+ *
+ * projects.html and the calculators load their own bundle alongside main.js.
+ * The plain `footer` export closes the document, so those pages need a seam;
+ * this provides one rather than having callers string-surgery the closing tags.
+ */
+export function pageFooter(extraScripts = []) {
+  const extra = extraScripts
+    .map((src) => `    <script type="module" src="${src}"></script>`)
+    .join('\n')
+  return extra ? footer.replace('  </body>', `${extra}\n  </body>`) : footer
+}
+
+/** Byline + review dates. Real dates only — see the caller for where they come from. */
+export function authorBox({ published, modified }) {
+  return `          <aside class="mt-12 bg-slate-50 border border-slate-100 rounded-2xl p-6 lg:p-8" itemscope itemtype="https://schema.org/Person">
+            <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
+            <h2 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h2>
+            <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
+            <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | NC Licensed (Limited) #${SITE.licenseNC} | ${SITE.experience} years | ${SITE.rating} Google Rating | BBB ${SITE.bbb} Rated</p>
+            <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${published}">${published}</time> &middot; Last reviewed: <time datetime="${modified}">${modified}</time></p>
+          </aside>`
+}

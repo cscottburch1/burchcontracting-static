@@ -1,0 +1,395 @@
+export const SITE = {
+  name: 'Burch Contracting',
+  domain: 'https://burchcontracting.com',
+  phone: '(864) 724-4600',
+  phoneTel: '+18647244600',
+  email: 'estimates@burchcontracting.com',
+  license: 'CLG118679',
+  licenseNC: '107292',
+  owner: 'C. Scott Burch',
+  office: '1095 Water Tank Rd, Gray Court, SC 29645',
+  ogImage: '/images/custom-deck-greenville-sc.webp',
+}
+
+// Real permit-office links only — the same 3 already used in faqs.html's
+// permit table (see src/build/geo.mjs's faqsPage()). Spartanburg County
+// (Woodruff) has no office link here because none has been verified yet —
+// see CITABILITY-FACTS-NEEDED.md rather than guessing a URL.
+export const PERMIT_OFFICES = {
+  'Greenville County': { name: 'Greenville County Building Safety', url: 'https://www.greenvillecounty.org/buildingsafety/Permits.aspx' },
+  'Laurens County': { name: 'Laurens County Building Codes', url: 'https://www.laurenscountysc.gov/departments/building_codes/permits___documents.php' },
+  'Spartanburg County': { name: 'Spartanburg County Building Codes', url: null },
+}
+export const SC_BUILDING_CODES_COUNCIL_URL = 'https://llr.sc.gov/bcc/'
+
+// Real completed projects (see projects.html) mapped to the service-area
+// page for their city — reused, not duplicated content: the same facts
+// power both projects.html's case-study card and this page's "Featured
+// Project" section. Keep in sync with projects.html's project cards and
+// src/build/trust-layer.mjs's CASE_STUDY_MATERIALS if either changes.
+// Cities with no entry here get a FACT-NEEDED prompt instead (see
+// src/build/geo.mjs's cityProjectsSectionHtml()).
+export const CITY_PROJECTS = {
+  greenville: [
+    { title: 'Custom Multi-Level Deck', description: 'Multi-level wood deck with outdoor bar, fire pit, and built-in seating for entertaining.', category: 'Decks' },
+  ],
+  'fountain-inn': [
+    { title: 'Screened Porch Addition', description: "New screened porch addition tied into the home's existing roofline and trim details.", category: 'Screened Porches' },
+    { title: 'Room Addition', description: 'Ground-floor room addition with siding and roofline matched to the existing home.', category: 'Room Additions' },
+  ],
+  simpsonville: [
+    { title: 'Detached Two-Car Garage', description: 'Gray siding with white trim, dual garage doors, and landscaped approach pad.', category: 'Garages' },
+  ],
+  woodruff: [
+    { title: 'Bath-to-Shower Conversion', description: 'Tub removed and replaced with a tiled walk-in shower, new fixtures, and updated surround.', category: 'ADA Bath to Shower' },
+    { title: 'Walk-In Shower Remodel', description: 'Modern step-in shower with glass enclosure and updated wall tile throughout the bath.', category: 'Remodeling' },
+  ],
+}
+
+// Local building conditions per city (soil/site, lot slope, HOA prevalence,
+// flood/drainage) — genuinely new per-city facts that don't exist anywhere
+// else on the site. 100% FACT-NEEDED by design (see
+// src/build/geo.mjs's LOCAL_CONDITION_FIELDS comment): no city has any
+// of these fields populated yet, so every field on every city currently
+// renders nothing. Add a city as `{ 'Typical soil/site conditions': '...' }`
+// (only the fields you actually have) and the row/section reappears
+// automatically — no generator change needed.
+export const LOCAL_CONDITIONS = {}
+
+export const SERVICE_AREAS = [
+  {
+    slug: 'simpsonville',
+    name: 'Simpsonville',
+    state: 'SC',
+    county: 'Greenville County',
+    driveTime: '15 min from office',
+    tagline: 'Our Home Base',
+    highlight: 'Simpsonville is our highest-volume market — more garages, decks, and additions built here than anywhere else we serve.',
+    about: 'Simpsonville has grown from a small railroad town into one of Upstate South Carolina\'s most desirable communities. With a thriving downtown, excellent schools, and suburban convenience, homeowners here regularly invest in decks, screened porches, garages, and room additions.',
+    neighborhoods: [
+      { name: 'Downtown Simpsonville', detail: 'Historic homes and walkable streets — craftsman and bungalow styles from the 1920s–1960s.' },
+      { name: 'Five Forks Area', detail: 'Family-friendly communities with contemporary single-family homes built from the 1990s onward.' },
+      { name: 'Hillcrest & Southeast', detail: 'Established neighborhoods with ranch and split-level homes and mature landscaping.' },
+    ],
+    insights: ['Highly rated Greenville County schools attract growing families.', 'Strong downtown with local shops and community events.', 'Convenient access to Greenville with small-town charm.'],
+    geo: { latitude: 34.7371, longitude: -82.2543 },
+  },
+  {
+    slug: 'fountain-inn',
+    name: 'Fountain Inn',
+    state: 'SC',
+    county: 'Greenville County',
+    driveTime: '10 min from office',
+    tagline: 'Historic Downtown',
+    highlight: 'Just 10 minutes from our Gray Court office — Fountain Inn is one of the closest communities we serve, with steady demand for garages, additions, and porch projects.',
+    about: 'Fountain Inn blends historic downtown character with newer residential growth along the I-385 corridor. Homeowners here call us for room additions, bath remodels, detached garages, and screened porches that match existing architecture.',
+    neighborhoods: [
+      { name: 'Downtown Fountain Inn', detail: 'Renovated cottages and traditional homes near the historic district.' },
+      { name: 'Woodfield & Neely Farm', detail: 'Newer subdivisions with open floor plans and two-story traditional designs.' },
+    ],
+    insights: ['Growing population along the I-385 corridor.', 'Mix of historic homes and new construction.', 'Strong demand for garage and addition projects.'],
+    geo: { latitude: 34.6940, longitude: -82.1987 },
+  },
+  {
+    slug: 'mauldin',
+    name: 'Mauldin',
+    state: 'SC',
+    county: 'Greenville County',
+    driveTime: '20 min from office',
+    tagline: 'Established Community',
+    highlight: 'Mauldin homeowners value contractors who show up, communicate clearly, and finish on schedule — that is how we have earned repeat business here for decades.',
+    about: 'Mauldin sits between Greenville and Simpsonville with established subdivisions and steady residential investment. We build decks, garages, kitchen and bath remodels, and additions for Mauldin families who want quality work without franchise-style runaround.',
+    neighborhoods: [
+      { name: 'Bethel & Butler Springs', detail: 'Mature subdivisions with ranch and two-story homes from the 1980s–2000s.' },
+      { name: 'BridgeWay & surrounds', detail: 'Newer construction with open-concept layouts and unfinished basements.' },
+    ],
+    insights: ['Central Greenville County location with easy highway access.', 'Active homeowners association communities.', 'Consistent demand for remodeling and outdoor living projects.'],
+    geo: { latitude: 34.7782, longitude: -82.3101 },
+  },
+  {
+    slug: 'greenville',
+    name: 'Greenville',
+    state: 'SC',
+    county: 'Greenville County',
+    driveTime: '25 min from office',
+    tagline: 'Upstate Hub',
+    highlight: 'From Taylors to the Eastside, we take on Greenville-area projects where homeowners want a licensed GC who handles permits, inspections, and finish quality.',
+    about: 'Greenville is the economic center of the Upstate. Whether you are updating a bungalow near downtown, adding a screened porch in a suburban neighborhood, or building a detached garage, Burch Contracting brings 30+ years of local building experience.',
+    neighborhoods: [
+      { name: 'North Main & Augusta Road', detail: 'Established neighborhoods with renovation-friendly housing stock.' },
+      { name: 'Taylors fringe', detail: 'Suburban lots suited for garages, decks, and additions.' },
+    ],
+    insights: ['Diverse housing stock from historic to new construction.', 'Strong remodeling and flood restoration demand.', 'City and county permit experience across Greenville.'],
+    geo: { latitude: 34.8526, longitude: -82.3940 },
+  },
+  {
+    slug: 'five-forks',
+    name: 'Five Forks',
+    state: 'SC',
+    county: 'Greenville County',
+    driveTime: '18 min from office',
+    tagline: 'Family Friendly',
+    highlight: 'Five Forks families often call us for screened porches, deck expansions, and room additions that add usable space without moving.',
+    about: 'Five Forks is one of Greenville County\'s most family-oriented communities, with newer homes and active outdoor lifestyles. We build screened porches for bug-free summers, custom decks for entertaining, and additions that integrate with your home\'s existing design.',
+    neighborhoods: [
+      { name: 'Five Forks master plans', detail: 'Contemporary two-story homes built from the 2000s–present.' },
+      { name: 'Nearby Simpsonville fringe', detail: 'Larger lots suited for detached garages and porches.' },
+    ],
+    insights: ['High concentration of families with school-age children.', 'Outdoor living projects are especially popular.', 'Strong resale market supports addition investments.'],
+    geo: { latitude: 34.8043, longitude: -82.2296 },
+  },
+  {
+    slug: 'woodruff',
+    name: 'Woodruff',
+    state: 'SC',
+    county: 'Spartanburg County',
+    driveTime: '20 min from office',
+    tagline: 'Historic Charm',
+    highlight: 'We have completed bath remodels, deck builds, and addition projects throughout Woodruff — Scott knows Spartanburg County codes and inspection requirements.',
+    about: 'Woodruff offers small-town living with convenient access to Greenville and Spartanburg. Homeowners here hire Burch Contracting for kitchen and bath remodels, composite decks, room additions, and garage construction with straightforward pricing.',
+    neighborhoods: [
+      { name: 'Downtown Woodruff', detail: 'Traditional homes with renovation and modernization potential.' },
+      { name: 'Highway 101 corridors', detail: 'Ranch homes and newer builds on larger lots.' },
+    ],
+    insights: ['Spartanburg County permitting experience.', 'Bath and kitchen remodels are common requests.', 'Composite decks popular for low-maintenance outdoor living.'],
+    geo: { latitude: 34.7396, longitude: -82.0371 },
+  },
+  {
+    slug: 'laurens',
+    name: 'Laurens',
+    state: 'SC',
+    county: 'Laurens County',
+    driveTime: '25 min from office',
+    tagline: 'County Seat',
+    highlight: 'Laurens County is our backyard — our office in Gray Court sits right in the heart of the county we have served since 1995.',
+    about: 'Laurens is the county seat and a hub for surrounding rural and suburban communities. We build room additions, detached garages, and remodeling projects for Laurens homeowners who want a local contractor accountable for every detail.',
+    neighborhoods: [
+      { name: 'City of Laurens', detail: 'Historic downtown homes and mid-century neighborhoods.' },
+      { name: 'Rural Laurens County', detail: 'Larger parcels ideal for detached garages and ADUs.' },
+    ],
+    insights: ['County seat with established residential core.', 'Rural properties suited for workshop garages.', 'Local contractor with Laurens County experience.'],
+    geo: { latitude: 34.4990, longitude: -82.0143 },
+  },
+  {
+    slug: 'gray-court',
+    name: 'Gray Court',
+    state: 'SC',
+    county: 'Laurens County',
+    driveTime: 'Our office location',
+    tagline: 'Our Office Location',
+    highlight: 'Gray Court is home to Burch Contracting\'s office at 1095 Water Tank Rd — when you hire us here, you are hiring your neighbor.',
+    about: 'Gray Court is where Scott Burch built his reputation — a rural Laurens County community where word-of-mouth and repeat customers drive the business. Garages, additions, decks, and remodels for Gray Court homeowners get the shortest response times and most direct access to Scott on site.',
+    neighborhoods: [
+      { name: 'Gray Court & surrounds', detail: 'Rural residential properties with room for detached structures.' },
+      { name: 'Water Tank Rd area', detail: 'Our office location — central to Laurens County projects.' },
+    ],
+    insights: ['Burch Contracting office is located here.', 'Fastest response times for local homeowners.', 'Rural and suburban project experience since 1995.'],
+    geo: { latitude: 34.6465, longitude: -82.1158 },
+    isOffice: true,
+  },
+]
+
+export const CORE_SERVICES = [
+  { name: 'Custom Decks', url: '/outdoor-living/decks', summary: 'Wood and composite decks for outdoor entertaining.' },
+  { name: 'Screened Porches', url: '/outdoor-living/screened-porches', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
+  { name: 'Garages', url: '/garage-builder', summary: 'Attached and detached garage construction.' },
+  { name: 'Room Additions', url: '/room-additions', summary: 'Ground-floor and second-story home expansions.' },
+  { name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
+  { name: 'Bathroom Remodeling', url: '/bathroom-remodeling', summary: 'Full bathroom remodels, from powder rooms to custom primary spa baths.' },
+  { name: 'Commercial Upfits', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
+  { name: 'Commercial Roofing', url: '/commercial-roofing', summary: 'Flat and metal roof installation, repair, and maintenance.' },
+  { name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
+  { name: 'ADA Compliance', url: '/ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
+]
+
+export const GLOBAL_FAQS = [
+  {
+    question: 'Is Burch Contracting a licensed general contractor?',
+    answer: 'Yes. Burch Contracting holds SC General Contractor License #CLG118679 and NC General Contractor License (Limited) #107292. Scott Burch has been a licensed residential builder since 1995 and a licensed general contractor since 2014. The company is fully insured and BBB A+ rated.',
+  },
+  {
+    question: 'What areas does Burch Contracting serve in Upstate SC?',
+    answer: 'Burch Contracting serves Simpsonville, Fountain Inn, Mauldin, Greenville, Five Forks, Woodruff, Laurens, Gray Court, and surrounding Upstate South Carolina communities. The office is located at 1095 Water Tank Rd, Gray Court, SC 29645.',
+  },
+  {
+    question: 'How do I get a free consultation from Burch Contracting?',
+    answer: 'Call (864) 724-4600 or fill out our online project request form. Scott will review your project scope and provide a free ballpark price range. A detailed written estimate, concept drawings, or floor plans are available for a fee, fully credited toward your project if you hire us.',
+  },
+  {
+    question: 'Does Scott Burch work on the job site?',
+    answer: 'Yes. When you hire Burch Contracting, you work directly with Scott Burch — not a salesperson who disappears after you sign. Scott oversees projects and stays accountable for quality, code compliance, and communication.',
+  },
+  {
+    question: 'What types of projects does Burch Contracting build?',
+    answer: 'Burch Contracting builds custom decks, screened porches, detached and attached garages, room additions, ADUs, kitchen and bath remodels, basement finishing, flood restoration, insurance damage documentation, and light commercial upfits across Upstate SC.',
+  },
+  {
+    question: 'How much does a deck cost in Upstate SC?',
+    answer: 'Custom decks in Upstate SC typically range from $33,000 to $58,000 depending on size, materials, railing, and site conditions. Use the deck cost calculator at burchcontracting.com/calculator/decks or request a free consultation for an exact quote.',
+  },
+  {
+    question: 'How much does a screened porch cost in Simpsonville SC?',
+    answer: 'Screened porches in Simpsonville and surrounding areas typically run $15,000 to $65,000 for new construction. Converting an existing deck can save 50–70% since the framing and floor are already in place. Use the porch calculator at burchcontracting.com/calculator/porch for a planning estimate.',
+  },
+  {
+    question: 'How much does a detached garage cost in Upstate SC?',
+    answer: 'Detached two-car garages (576 sqft) in Upstate SC commonly range from $52,000 to $62,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $109,000 to $131,000. Use the garage calculator at burchcontracting.com/calculator/garages or contact us for a detailed quote.',
+  },
+  {
+    question: 'How much does a room addition cost per square foot?',
+    answer: 'Room additions in Upstate SC typically cost $200 to $340 per square foot depending on scope, structural work, finishes, and HVAC integration. A 400 sq ft addition often falls between $78,000 and $152,000. Use the addition calculator for a planning range.',
+  },
+  {
+    question: 'Does Burch Contracting handle permits and inspections?',
+    answer: 'Yes. Burch Contracting pulls required building permits, coordinates HOA approvals when needed, and schedules inspections through local jurisdictions in Greenville, Laurens, and Spartanburg counties.',
+  },
+  {
+    question: 'What is Burch Contracting\'s BBB and Google rating?',
+    answer: 'Burch Contracting has a BBB A+ rating (since 2014) and a 5.0 Google rating based on verified customer reviews from homeowners across Upstate SC.',
+  },
+  {
+    question: 'How long has Burch Contracting been in business?',
+    answer: 'Scott Burch started in construction in 1987, received his residential builder\'s license in 1995, and founded Burch Contracting the same year. The company has served Upstate SC homeowners for more than 30 years.',
+  },
+]
+
+export const SERVICE_FAQS = [
+  {
+    category: 'Decks',
+    faqs: [
+      {
+        question: 'What deck materials does Burch Contracting install?',
+        answer: 'Burch Contracting builds decks with pressure-treated lumber, hardwood, and composite materials such as Trex. Material choice depends on budget, maintenance preference, and how you plan to use the space.',
+      },
+      {
+        question: 'How long does it take to build a custom deck?',
+        answer: 'Most custom decks take 3 to 5 weeks from permit approval to completion, depending on size, complexity, and weather. Scott confirms your exact timeline as part of your estimate.',
+      },
+    ],
+  },
+  {
+    category: 'Screened Porches',
+    faqs: [
+      {
+        question: 'What is the difference between aluminum and wood screened porches?',
+        answer: 'Aluminum framing is rust-resistant and low-maintenance with a 30+ year lifespan. Wood framing allows custom columns and trim to match traditional homes. Both options provide bug-free outdoor living.',
+      },
+      {
+        question: 'Can you convert my existing deck into a screened porch?',
+        answer: 'Yes. Deck conversions are often 50–70% less expensive than new porch construction when the existing structure can support the roof and screen system. Scott evaluates your deck during the site visit.',
+      },
+    ],
+  },
+  {
+    category: 'Garages',
+    faqs: [
+      {
+        question: 'Does Burch Contracting build detached and attached garages?',
+        answer: 'Yes. Burch Contracting builds both attached and detached garages including two-car, three-car, and workshop configurations with options for electrical, insulation, and custom door placements.',
+      },
+    ],
+  },
+  {
+    category: 'Additions & Remodeling',
+    faqs: [
+      {
+        question: 'Can Burch Contracting match my existing home when building an addition?',
+        answer: 'Yes. Architectural matching — roofline, siding, windows, and trim — is a standard part of every room addition we build so the new space looks original to the home.',
+      },
+      {
+        question: 'Does Burch Contracting do kitchen and bathroom remodels?',
+        answer: 'Yes. Kitchen and bath renovations are core services including demolition, plumbing, tile, cabinetry, flooring, and finish work. Bath-to-shower conversions are one of our most requested remodel projects.',
+      },
+    ],
+  },
+  {
+    category: 'Insurance Restoration',
+    faqs: [
+      {
+        question: 'How much does insurance restoration cost?',
+        answer: 'Costs vary based on the extent of storm or water damage and the scope of repairs needed. We offer a free consultation and ballpark range. A detailed written estimate with full documentation is available for a fee, fully credited back if you hire us.',
+      },
+      {
+        question: 'Does Burch Contracting help with insurance claims?',
+        answer: 'Yes. Burch Contracting provides on-site damage assessments to support your insurance claim. Detailed documentation and a full written estimate are available for a fee, credited back if you hire us, then we complete the approved repair work.',
+      },
+    ],
+  },
+  {
+    category: 'Commercial Roofing',
+    faqs: [
+      {
+        question: 'What commercial roofing systems do you install?',
+        answer: "We install TPO, EPDM, and PVC single-ply membranes, modified bitumen, standing seam and R-panel metal roofing, and silicone or acrylic restoration coatings. The right system depends on the building's deck type, slope, drainage, and how long the roof needs to perform before its next major repair.",
+      },
+      {
+        question: 'Should I recover my existing commercial roof or do a full tear-off?',
+        answer: 'A recover installs a new membrane over the existing roof and costs less, but building code allows only two roof systems on a building before a tear-off is required — if your roof already has one recover on it, or the existing substrate is wet or deteriorated, a full tear-off is the only code-compliant option.',
+      },
+      {
+        question: 'Does Burch Contracting handle commercial roof leaks and emergency repairs?',
+        answer: 'Yes. We respond to active leaks and storm-related emergencies with temporary weatherproofing, followed by a permanent repair. Because we also handle the interior side of the building, ceiling, drywall, insulation, and flooring damaged by the leak gets repaired under the same contract instead of requiring a second contractor.',
+      },
+      {
+        question: 'Does Burch Contracting offer commercial roof maintenance or inspection agreements?',
+        answer: "Yes, and it's core to how we work with property managers and building owners, not an add-on. Scheduled inspections catch membrane wear, flashing failures, and drainage issues before they become leaks, extending the roof's service life.",
+      },
+      {
+        question: 'Does Burch Contracting handle storm and hail damage insurance claims for commercial roofs?',
+        answer: 'Yes. We document storm and hail damage, work directly with your insurance adjuster, and complete the approved repair or replacement — the same insurance restoration process we run for residential claims, applied to commercial roofing.',
+      },
+    ],
+  },
+  {
+    category: 'ADA Compliance',
+    faqs: [
+      {
+        question: 'Does Burch Contracting handle ADA compliance projects?',
+        answer: 'Yes. Burch Contracting builds residential accessibility modifications (roll-in showers, grab bars, ramps) and commercial ADA compliance upgrades (entrance ramps, restroom retrofits, door widening) to meet current ADA standards.',
+      },
+      {
+        question: 'How much does an ADA compliance modification cost?',
+        answer: 'Costs vary widely based on scope — from a single bathroom grab bar installation to a full commercial restroom retrofit or entrance ramp. We provide a free consultation and ballpark range; a detailed written estimate is available for a fee, credited back if you hire us.',
+      },
+    ],
+  },
+]
+
+export function cityFaqs(area) {
+  return [
+    {
+      question: `Does Burch Contracting serve ${area.name}, ${area.state}?`,
+      answer: `Yes. Burch Contracting actively serves ${area.name}, ${area.state} and ${area.county}. ${area.highlight}`,
+    },
+    {
+      question: `How far is Burch Contracting from ${area.name}, SC?`,
+      answer: `Burch Contracting is ${area.driveTime} from ${area.name}. Our office is at 1095 Water Tank Rd, Gray Court, SC 29645.`,
+    },
+    {
+      question: `What home improvement services are available in ${area.name}, SC?`,
+      answer: `Homeowners in ${area.name} hire Burch Contracting for custom decks, screened porches, garage construction, room additions, kitchen and bath remodeling, basement finishing, and commercial upfits.`,
+    },
+    {
+      question: `Is Burch Contracting licensed to work in ${area.county}?`,
+      answer: `Yes. Burch Contracting holds SC General Contractor License #CLG118679 and pulls permits in ${area.county} and surrounding jurisdictions. The company is fully insured with BBB A+ rating.`,
+    },
+    {
+      question: `How do I get a construction estimate in ${area.name}, SC?`,
+      answer: `Call (864) 724-4600 or request an estimate at burchcontracting.com/contact. Scott Burch will visit your ${area.name} property and provide a written quote with scope, price, and timeline.`,
+    },
+  ]
+}
+
+export function faqPageSchema(faqs) {
+  return {
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  }
+}

@@ -1,0 +1,241 @@
+<main id="main-content">
+
+      <!-- Page hero -->
+      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav class="mb-4" aria-label="Breadcrumb">
+            <ol class="flex items-center gap-2 text-sm text-slate-400">
+              <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+              <li aria-hidden="true"><span>/</span></li>
+              <li class="text-slate-200" aria-current="page">Contact</li>
+            </ol>
+          </nav>
+          <h1 class="text-4xl lg:text-5xl font-bold mb-4">Get Your Free Consultation</h1>
+          <p class="text-xl text-slate-300 max-w-2xl mb-4">
+            Tell us about your project and we'll get back to you soon.
+          </p>
+          <p class="text-sm text-slate-400">
+            <strong class="text-slate-200">We typically reply within 1-2 business days. (Depending on the volume of inquiries.)</strong>
+          </p>
+        </div>
+      </section>
+      {{trust.byline}}
+    {{trust.answers}}
+
+      <!-- Contact section -->
+      <section class="bg-slate-50 py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+            <!-- Estimate form -->
+            <div class="lg:col-span-2">
+              <div id="request-form" class="scroll-mt-28 bg-white rounded-2xl border border-slate-100 shadow-sm p-8 lg:p-10">
+                <h2 class="text-xl font-bold text-slate-900 mb-6">Request Your Free Consultation</h2>
+
+                <div id="form-status" class="hidden mb-6 p-4 rounded-lg text-sm font-medium" role="alert" aria-live="polite"></div>
+
+                <form
+                  id="contact-form"
+                  novalidate
+                  class="space-y-5"
+                  data-contact-endpoint="/api/contact.php"
+                  data-recaptcha-site-key="6Lf1br8tAAAAAJF-tBtv8Ry1B6i_hqp5kfwn0j48"
+                >
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div>
+                      <label for="firstName" class="block text-sm font-medium text-slate-700 mb-1.5">First Name <span class="text-red-500" aria-hidden="true">*</span></label>
+                      <input type="text" id="firstName" name="firstName" required autocomplete="given-name" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors" placeholder="John" />
+                      <p id="error-firstName" class="hidden mt-1 text-xs text-red-600"></p>
+                    </div>
+                    <div>
+                      <label for="lastName" class="block text-sm font-medium text-slate-700 mb-1.5">Last Name <span class="text-red-500" aria-hidden="true">*</span></label>
+                      <input type="text" id="lastName" name="lastName" required autocomplete="family-name" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors" placeholder="Smith" />
+                      <p id="error-lastName" class="hidden mt-1 text-xs text-red-600"></p>
+                    </div>
+                    <div>
+                      <label for="phone" class="block text-sm font-medium text-slate-700 mb-1.5">Phone <span class="text-red-500" aria-hidden="true">*</span></label>
+                      <input type="tel" id="phone" name="phone" required autocomplete="tel" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors" placeholder="(864) 724-4600" />
+                      <p id="error-phone" class="hidden mt-1 text-xs text-red-600"></p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email <span class="text-red-500" aria-hidden="true">*</span></label>
+                    <input type="email" id="email" name="email" required autocomplete="email" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors" placeholder="john@example.com" />
+                    <p id="error-email" class="hidden mt-1 text-xs text-red-600"></p>
+                  </div>
+
+                  <div>
+                    <label for="address" class="block text-sm font-medium text-slate-700 mb-1.5">Street Address <span class="text-red-500" aria-hidden="true">*</span></label>
+                    <input type="text" id="address" name="address" required autocomplete="street-address" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors" placeholder="123 Oak Street" />
+                    <p id="error-address" class="hidden mt-1 text-xs text-red-600"></p>
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div class="sm:col-span-1">
+                      <label for="city" class="block text-sm font-medium text-slate-700 mb-1.5">City <span class="text-red-500" aria-hidden="true">*</span></label>
+                      <input type="text" id="city" name="city" required autocomplete="address-level2" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors" placeholder="Simpsonville" />
+                      <p id="error-city" class="hidden mt-1 text-xs text-red-600"></p>
+                    </div>
+                    <div>
+                      <label for="state" class="block text-sm font-medium text-slate-700 mb-1.5">State <span class="text-red-500" aria-hidden="true">*</span></label>
+                      <input type="text" id="state" name="state" required maxlength="2" autocomplete="address-level1" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors uppercase" placeholder="SC" />
+                      <p id="error-state" class="hidden mt-1 text-xs text-red-600"></p>
+                    </div>
+                    <div>
+                      <label for="zipCode" class="block text-sm font-medium text-slate-700 mb-1.5">Zip Code <span class="text-red-500" aria-hidden="true">*</span></label>
+                      <input type="text" id="zipCode" name="zipCode" required maxlength="10" autocomplete="postal-code" inputmode="numeric" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors" placeholder="29681" />
+                      <p id="error-zipCode" class="hidden mt-1 text-xs text-red-600"></p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="projectType" class="block text-sm font-medium text-slate-700 mb-1.5">Project Type <span class="text-red-500" aria-hidden="true">*</span></label>
+                    <select id="projectType" name="projectType" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors bg-white">
+                      <option value="" disabled selected hidden>What do you need built?</option>
+                      <option value="deck">Deck</option>
+                      <option value="screened-porch">Screened Porch</option>
+                      <option value="covered-patio">Covered Patio</option>
+                      <option value="addition">Home Addition</option>
+                      <option value="garage">Garage</option>
+                      <option value="remodeling">Remodeling</option>
+                      <option value="commercial">Commercial Upfit</option>
+                      <option value="other">Other / Not Sure</option>
+                    </select>
+                    <p id="error-projectType" class="hidden mt-1 text-xs text-red-600"></p>
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label for="budgetRange" class="block text-sm font-medium text-slate-700 mb-1.5">Approximate Budget <span class="text-slate-400 font-normal">(Optional)</span></label>
+                      <select id="budgetRange" name="budgetRange" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors bg-white">
+                        <option value="">Select a range</option>
+                        <option value="under-10k">Under $10,000</option>
+                        <option value="10k-25k">$10,000 – $25,000</option>
+                        <option value="25k-50k">$25,000 – $50,000</option>
+                        <option value="50k-100k">$50,000 – $100,000</option>
+                        <option value="over-100k">Over $100,000</option>
+                        <option value="not-sure">Not Sure Yet</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="timeframe" class="block text-sm font-medium text-slate-700 mb-1.5">Desired Timeframe <span class="text-slate-400 font-normal">(Optional)</span></label>
+                      <select id="timeframe" name="timeframe" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors bg-white">
+                        <option value="">Select a timeframe</option>
+                        <option value="asap">As soon as possible</option>
+                        <option value="1-3months">Within 1–3 months</option>
+                        <option value="3-6months">3–6 months</option>
+                        <option value="6-12months">6–12 months</option>
+                        <option value="flexible">Flexible / Planning ahead</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="referralSource" class="block text-sm font-medium text-slate-700 mb-1.5">How did you hear about us? <span class="text-slate-400 font-normal">(Optional)</span></label>
+                    <select id="referralSource" name="referralSource" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors bg-white">
+                      <option value="">Select one</option>
+                      <option value="google">Google Search</option>
+                      <option value="referral">Friend or Family Referral</option>
+                      <option value="neighbor">Saw Work in Neighborhood</option>
+                      <option value="repeat">Previous Customer</option>
+                      <option value="facebook">Facebook</option>
+                      <option value="nextdoor">Nextdoor</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="description" class="block text-sm font-medium text-slate-700 mb-1.5">Project Description <span class="text-red-500" aria-hidden="true">*</span></label>
+                    <textarea id="description" name="description" required rows="5" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors resize-y" placeholder="Tell us about your project. What are you looking to build? Any specific requirements or timeline?"></textarea>
+                    <p id="error-description" class="hidden mt-1 text-xs text-red-600"></p>
+                  </div>
+
+                  <div>
+                    <label for="file-upload" class="block text-sm font-medium text-slate-700 mb-1.5">Upload Images or Documents <span class="text-slate-400 font-normal">(Optional)</span></label>
+                    <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors">
+                      <input type="file" id="file-upload" name="attachments" multiple accept="image/*,.pdf,.doc,.docx" class="sr-only" />
+                      <label for="file-upload" class="cursor-pointer flex flex-col items-center">
+                        <svg class="w-8 h-8 text-slate-400 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 7.5 7.5 12M12 7.5v9"/>
+                        </svg>
+                        <span class="text-sm font-medium text-slate-700 mb-1">Click to upload or drag and drop</span>
+                        <span class="text-xs text-slate-500">Photos, inspiration images, or plans (PNG, JPG, PDF up to 10MB each)</span>
+                      </label>
+                    </div>
+                    <ul id="file-list" class="hidden mt-3 text-sm text-slate-600 space-y-1"></ul>
+                  </div>
+
+                  <!-- Honeypot -->
+                  <div class="hidden" aria-hidden="true">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+                  </div>
+
+                  <div>
+                    <button type="submit" id="submit-btn" class="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-60 disabled:cursor-not-allowed text-white px-8 py-4 rounded-lg font-semibold text-base transition-colors duration-200 shadow-sm">
+                      Submit Request
+                    </button>
+                    <p class="mt-3 text-xs text-slate-500 text-center">By submitting this form, you agree to be contacted about your project. We respect your privacy and will never share your information.</p>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="space-y-6">
+              <h2 class="sr-only">How to Reach Us</h2>
+
+              <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-8">
+                <h3 class="text-xl font-bold text-slate-900 mb-5">Contact Information</h3>
+                <ul class="space-y-5 text-sm">
+                  <li>
+                    <p class="font-semibold text-slate-900 mb-1">Phone</p>
+                    <a href="tel:+18647244600" class="text-blue-700 hover:text-blue-800 font-medium">(864) 724-4600</a>
+                  </li>
+                  <li>
+                    <p class="font-semibold text-slate-900 mb-1">Email</p>
+                    <a href="mailto:estimates@burchcontracting.com" class="text-blue-700 hover:text-blue-800 font-medium break-all">estimates@burchcontracting.com</a>
+                  </li>
+                  <li>
+                    <p class="font-semibold text-slate-900 mb-1">Service Area</p>
+                    <p class="text-slate-600">Simpsonville, Mauldin, Fountain Inn, Woodruff, Laurens, Gray Court, and surrounding areas in Upstate SC</p>
+                  </li>
+                  <li>
+                    <p class="font-semibold text-slate-900 mb-1">Business Hours</p>
+                    <p class="text-slate-600">Monday – Friday: 8:00 AM – 5:00 PM</p>
+                    <p class="text-slate-600">Saturday: By Appt Only</p>
+                    <p class="text-slate-600">Sunday: Closed</p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-blue-50 rounded-2xl border border-blue-100 p-8">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">What Happens Next?</h3>
+                <ol class="space-y-4 text-sm text-slate-700">
+                  <li class="flex gap-3">
+                    <span class="shrink-0 w-6 h-6 rounded-full bg-blue-700 text-white text-xs font-bold flex items-center justify-center">1</span>
+                    <span class="pt-0.5">We review your request and reach out within 1-3 business days, (depending on volume of requests), to confirm details.</span>
+                  </li>
+                  <li class="flex gap-3">
+                    <span class="shrink-0 w-6 h-6 rounded-full bg-blue-700 text-white text-xs font-bold flex items-center justify-center">2</span>
+                    <span class="pt-0.5">We schedule a convenient time to visit your property and walk through the scope.</span>
+                  </li>
+                  <li class="flex gap-3">
+                    <span class="shrink-0 w-6 h-6 rounded-full bg-blue-700 text-white text-xs font-bold flex items-center justify-center">3</span>
+                    <span class="pt-0.5">You receive a free, no-obligation consultation. Want a detailed written estimate, concept drawings, or floor plans? Available for a fee, fully credited back if you hire us.</span>
+                  </li>
+                  <li class="flex gap-3">
+                    <span class="shrink-0 w-6 h-6 rounded-full bg-blue-700 text-white text-xs font-bold flex items-center justify-center">4</span>
+                    <span class="pt-0.5">Once approved, we schedule your project start date and assign a dedicated project lead.</span>
+                  </li>
+                </ol>
+              </div>
+            </aside>
+
+          </div>
+        </div>
+      </section>
+
+    {{trust.table}}
+    </main>

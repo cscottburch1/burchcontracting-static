@@ -1,0 +1,63 @@
+// Cloudflare Worker config for burchcontracting.com — see CLOUDFLARE-CUTOVER.md.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "burchcontracting",
+  "main": "cloudflare/worker.js",
+  "compatibility_date": "2026-09-01",
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Exact file paths only. The automatic modes redirect with 307s and would
+    // change live URLs; cloudflare/worker.js maps clean URLs to files and
+    // issues the 301s itself.
+    "html_handling": "none",
+    "not_found_handling": "none",
+    // The Worker must see every request before the asset server. Without this,
+    // /about.html is served as a file and can never 301 to /about — and a
+    // _redirects rule for it would also rewrite the Worker's own asset
+    // lookups, making /about redirect to itself. See cloudflare/worker.js.
+    "run_worker_first": true
+  },
+
+  "vars": {
+    // Hostnames where /.well-known/* is forwarded to Hostinger.
+    "ORIGIN_HOSTS": "burchcontracting.com"
+  },
+
+  // Leads and their activity notes (cloudflare/schema.sql), used by cloudflare/api.js.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "burchcontracting-leads",
+      "database_id": "dd9a2289-436e-4b97-9c49-c4fac9e29c51"
+    }
+  ],
+
+  // Admin login attempts per IP (cloudflare/api.js). namespace_id is any
+  // integer, unique within the Cloudflare account.
+  "ratelimits": [
+    { "name": "LOGIN_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
+
+  // Serves burchcontracting.com. The DNS record still points at Hostinger, so
+  // the route is what sends requests to this Worker first.
+  //
+  // DELETING THE ROUTE IS NOT A ROLLBACK, not since Phase 4. It does send
+  // traffic straight back to Hostinger — but Hostinger stopped receiving a copy
+  // of the site when the FTP deploy was deleted, so it would serve a frozen
+  // 2026-09-22 snapshot. Roll back with `wrangler rollback`. See docs/RUNBOOK.md.
+  //
+  // Needs "Always Use HTTPS" and a www → root Redirect Rule in the zone,
+  // because Hostinger used to perform both redirects (CLOUDFLARE-CUTOVER.md,
+  // step 4).
+  "routes": [{ "pattern": "burchcontracting.com/*", "zone_name": "burchcontracting.com" }],
+
+  // workers.dev stays on because branch preview URLs require it. Every page's
+  // canonical tag points at burchcontracting.com, so search engines don't
+  // treat that copy as a second site.
+  "workers_dev": true,
+  "preview_urls": true,
+
+  "observability": { "enabled": true }
+}
