@@ -969,3 +969,50 @@ nothing points at them from the pages meant to sell the work.
 It is deliberately **not** in `npm test` yet. It joins at 6.3, in the commit that
 makes it pass — per the gate-adding rule, a gate added green is a gate nobody
 has seen work.
+
+---
+
+## 2026-09-22 — The www and http redirects are now asserted, not assumed
+
+A third of this property's search clicks arrive on a hostname that is supposed
+to 301 away.
+
+From the Search Console export of 2026-09-22 (28 days to 2026-09-20, committed
+at `migration/gsc-2026-09-22-pre-phase-6/`):
+
+| Page | Clicks | Impressions | Position |
+|---|---|---|---|
+| `https://www.burchcontracting.com/` | **19** | 998 | **3.25** |
+| `https://burchcontracting.com/` | 12 | 697 | 30.52 |
+
+The www version outranks the canonical root by 27 positions and earns more
+clicks — 19 of the property's 57. Google has had it indexed for years and still
+prefers it.
+
+**Nothing in this repository produces that redirect.** It is two Cloudflare zone
+settings: "Always Use HTTPS", and a www → root Redirect Rule
+(`CLOUDFLARE-CUTOVER.md`, step 4). They were configured by hand at cutover. If
+either is switched off — by a dashboard change, a plan change, a zone migration —
+every one of those clicks lands on an unredirected duplicate of the whole site,
+every canonical points somewhere else, and no build, gate or test would notice.
+
+**Decision.** `scripts/check-routing.mjs` asserts six hostname redirects against
+production: www and http, on `/` and `/services`, with and without a query
+string. `deploy.yml`'s verification repeats four of them, because that step is
+what runs against production on every deploy. Both assert a **single hop**, a
+**301**, and the **query string preserved**.
+
+They cannot go in `migration/routing-baseline.json`: that file is keyed by path,
+and these are hostnames. They are skipped on any non-production base, because
+www and http do not exist on `wrangler dev` or a preview URL.
+
+Verified working at the time of writing — all four combinations already 301
+correctly in one hop. This records behaviour that is right, so that it stays
+right. Tamper-tested by pointing one expectation at a wrong target; it failed
+naming both the observed and expected location and where to look in Cloudflare.
+
+**A regression this caught.** The workflow being replaced in Phase 5 checked two
+of these (`http://…/garages/` and `https://www.…/garages/`). Rewriting the verify
+step dropped them, and nothing noticed for three deploys. That is an argument for
+the check living in `check-routing` — which runs locally, in CI and on deploy —
+rather than only in a workflow step that can be rewritten out.
