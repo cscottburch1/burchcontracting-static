@@ -81,10 +81,30 @@ jobs:
       - name: Run every gate
         run: npm test
 
+      # Two stamps, for two different questions.
+      #
+      # dist/version.txt answers "did the deploy land at all". Every page gets
+      # an HTML comment as well, which answers "is THIS page the new build" —
+      # a question the whole-site check below could not ask, and needed to.
+      # Nine of seventy-one pages mismatched on run 35743001349 and the log
+      # could not say whether that was propagation lag or a Cloudflare
+      # transform, because it only printed "mismatch".
+      #
+      # Deploy-time only: it is appended to dist/, never produced by
+      # `npm run build`, so local builds, the gates and the snapshot are
+      # untouched. It is an HTML comment, so it is not visible text, not a
+      # link, not schema, and not in any field the snapshot compares.
       - name: Stamp build version
         run: |
           echo "commit=${GITHUB_SHA}" > dist/version.txt
           echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
+
+          stamped=0
+          while IFS= read -r -d '' f; do
+            echo "<!-- build:$GITHUB_SHA -->" >> "$f"
+            stamped=$((stamped + 1))
+          done < <(find dist -name '*.html' -print0)
+          echo "stamped $stamped page(s) with $GITHUB_SHA"
 
       # `wrangler deploy`, never `versions upload` + `versions deploy`. That was
       # tried on 2026-09-16 and the promoted version came up with NO secrets —
@@ -97,6 +117,15 @@ jobs:
           # This repository is public: strip any account email Wrangler prints.
           redact() { sed -E 's/[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}/[redacted email]/g'; }
           npx wrangler deploy 2>&1 | redact
+
+          # A new Worker version reaches Cloudflare's colos over a few seconds.
+          # Verification used to start immediately, and on run 35743001349 the
+          # version marker passed (that colo had the new build) while nine page
+          # fetches were still answered from colos serving the six-day-old one.
+          # This does not replace the per-page retry below; it just stops the
+          # common case from needing it.
+          echo "settling for 10s before verification"
+          sleep 10
 
       # Everything below is the reason a push trigger could ever be safe here.
       # Any failure falls through to the rollback step.
@@ -187,13 +216,60 @@ jobs:
           #     correctly 404s — failing the job on a curl error, not a
           #     mismatch.
           echo "— whole-site content"
+          strip=".github/scripts/strip-cf-email-obfuscation.py"
+          work=$(mktemp -d)
           mismatch=0
+          retried=0
+
           while IFS='|' read -r rel url_path; do
             [ -n "$rel" ] || continue
-            local_hash=$(python3 .github/scripts/strip-cf-email-obfuscation.py "dist/$rel" | sha256sum | cut -d' ' -f1)
-            live_hash=$(curl -fsSL "$BASE_URL$url_path?nocache=$GITHUB_RUN_ID" | python3 .github/scripts/strip-cf-email-obfuscation.py | sha256sum | cut -d' ' -f1)
+
+            python3 "$strip" "dist/$rel" > "$work/local.html"
+            local_hash=$(sha256sum < "$work/local.html" | cut -d' ' -f1)
+
+            # Fetch, then ask the page which build it is before comparing it.
+            # A page still being served from a colo with the previous version
+            # is a propagation fact, not a content defect, and retrying is the
+            # correct response. Total wait per page is ~60s across six attempts.
+            served_stamp=""
+            live_hash=""
+            for wait in 0 2 4 8 16 30; do
+              [ "$wait" -gt 0 ] && { sleep "$wait"; retried=$((retried + 1)); }
+              curl -fsSL "$BASE_URL$url_path?nocache=$GITHUB_RUN_ID-$wait" > "$work/served.raw"
+
+              # Parameter expansion, not `grep | head`: see the note on the
+              # representative-page checks above.
+              raw=$(cat "$work/served.raw")
+              served_stamp=""
+              if [[ "$raw" == *"<!-- build:"* ]]; then
+                after=${raw##*<!-- build:}
+                served_stamp=${after%% *}
+              fi
+
+              python3 "$strip" "$work/served.raw" > "$work/served.html"
+              live_hash=$(sha256sum < "$work/served.html" | cut -d' ' -f1)
+
+              # Done when the page is the new build AND matches. A stale stamp
+              # or a hash mismatch both justify another attempt: the second can
+              # happen while a colo is mid-swap and the stamp is already new.
+              if [ "$served_stamp" = "$GITHUB_SHA" ] && [ "$local_hash" = "$live_hash" ]; then
+                break
+              fi
+            done
+
             if [ "$local_hash" != "$live_hash" ]; then
               echo "::error::Content mismatch on $url_path (built from $rel)"
+              echo "    served stamp: ${served_stamp:-<none found>}"
+              echo "    local stamp:  $GITHUB_SHA"
+              if [ "$served_stamp" != "$GITHUB_SHA" ]; then
+                echo "    the served page is NOT this build — propagation, not content"
+              fi
+              # diff into a file first. `diff | head` would hand diff an EPIPE
+              # under pipefail, which is the bug that broke this step's first
+              # version.
+              diff "$work/local.html" "$work/served.html" > "$work/diff.txt" 2>&1 || true
+              echo "    first 20 lines of diff (local vs served):"
+              head -20 "$work/diff.txt" || true
               mismatch=1
             fi
           done < <(node --input-type=module -e '
@@ -201,7 +277,7 @@ jobs:
             for (const [file, url] of Object.entries(PAGE_URLS)) console.log(`${file}|${url}`);
           ')
           [ "$mismatch" = "0" ] || exit 1
-          echo "  every built page matches what is live"
+          echo "  every built page matches what is live (${retried} retry/retries needed)"
 
           # 4. Same status codes, redirect targets and security headers the
           #    Hostinger site served (migration/routing-baseline.json).
