@@ -861,3 +861,57 @@ is the reason the push trigger was left commented out.
 rather than the content's is not tested until it has been run against both a
 matching and a non-matching input. Proving "it fails when tampered" was not
 enough here, because nobody had run it against a page that passes.
+
+---
+
+## 2026-09-22 — A verification failure has to say which failure it was
+
+Run 35743001349. The `grep -q` fix worked: all five representative pages passed,
+including the canonical check that would have failed next. The whole-site byte
+comparison then failed on 9 of 71 pages and rolled back.
+
+The nine were `privacy-policy`, `terms-of-service`, `remodeling`,
+`kitchen-remodeling`, `outdoor-living/decks`, `calculator/estimate`,
+`calculator/basement-finishing`, `service-areas/simpsonville` and
+`service-areas/five-forks` — one from every page family, with the other 62
+matching byte-for-byte. Not a systematic build or transform problem, then:
+something was different about those nine *at the moment they were fetched*.
+
+Two candidates, and **the log could not distinguish them**: propagation lag (a
+colo still serving the six-day-old version) or a Cloudflare transform the strip
+script does not cover. The check printed `mismatch` and nothing else, which is
+the same shape of defect as a check that cannot fail — it produced a result
+nobody could act on.
+
+**Three changes.**
+
+1. **Every page carries a build stamp.** `<!-- build:$GITHUB_SHA -->`, appended
+   to each file in `dist/` by the deploy workflow — never by `npm run build`, so
+   local builds, the gates and the snapshot are untouched. It is an HTML
+   comment: not visible text, not a link, not schema, not in any field the
+   snapshot compares. The page can now be asked which build it is before its
+   bytes are compared.
+2. **Per-page retry on a stale stamp**, six attempts with backoff, about 60
+   seconds. A page served from a colo that has not caught up is a propagation
+   fact, not a content defect, and retrying is the correct response.
+3. **A diagnosable failure.** On a final mismatch the log prints the served
+   stamp, the local stamp, an explicit line when the served page is not this
+   build, and the first 20 lines of `diff`. Plus a 10-second settle after
+   `wrangler deploy`, so the common case never needs the retry.
+
+**Which it was is now decidable from the log**, and that is the point: if the
+next run passes, it was propagation and the retry is the permanent fix; if it
+fails, the diff names exactly what Cloudflare changed and the strip script gains
+a line.
+
+**Proved before shipping**, both directions, against a local server that serves
+the old build first and the new one after:
+
+- stale stamp → detected, retried, matched on the second attempt;
+- correct stamp with genuinely different bytes → six retries, then failure with
+  both stamps and a readable diff;
+- no stamp at all → detected and reported as such.
+
+`head -20` reads the diff from a **file**, not a pipe. Piping into `head` would
+hand `diff` an `EPIPE` under `pipefail` — the bug from the previous run, in a
+new costume.
