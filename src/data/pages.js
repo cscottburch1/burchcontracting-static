@@ -375,7 +375,9 @@ export const HAND_AUTHORED_PAGES = [
         ]
       }
     ],
-    "scripts": []
+    "scripts": [],
+    "ogType": "website",
+    "ogDescription": "Scott Burch has built and restored homes for Upstate SC homeowners since 1995 — decks, screened porches, garages, additions, remodeling, and insurance restoration. SC Licensed #CLG118679 | NC Licensed (Limited) #107292. BBB A+ rated. Free consultations."
   },
   {
     "file": "about.html",
@@ -547,7 +549,8 @@ export const HAND_AUTHORED_PAGES = [
         ]
       }
     ],
-    "scripts": []
+    "scripts": [],
+    "ogType": "website"
   },
   {
     "file": "contact.html",
@@ -719,7 +722,8 @@ export const HAND_AUTHORED_PAGES = [
         ]
       }
     ],
-    "scripts": []
+    "scripts": [],
+    "ogType": "website"
   },
   {
     "file": "services.html",
@@ -954,7 +958,8 @@ export const HAND_AUTHORED_PAGES = [
         ]
       }
     ],
-    "scripts": []
+    "scripts": [],
+    "ogType": "website"
   },
   {
     "file": "projects.html",
@@ -1128,7 +1133,8 @@ export const HAND_AUTHORED_PAGES = [
     ],
     "scripts": [
       "/src/js/projects.js"
-    ]
+    ],
+    "ogType": "website"
   },
   {
     "file": "privacy-policy.html",
@@ -1174,7 +1180,8 @@ export const HAND_AUTHORED_PAGES = [
         ]
       }
     ],
-    "scripts": []
+    "scripts": [],
+    "ogType": "website"
   },
   {
     "file": "terms-of-service.html",
@@ -1220,6 +1227,7 @@ export const HAND_AUTHORED_PAGES = [
         ]
       }
     ],
-    "scripts": []
+    "scripts": [],
+    "ogType": "website"
   }
 ]

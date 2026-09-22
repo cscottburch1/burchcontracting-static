@@ -193,6 +193,27 @@ function scriptInfo(html) {
   return { external: external.sort(), inline: inline.sort() }
 }
 
+/**
+ * Every og:* and twitter:* meta, as a sorted property=value list.
+ *
+ * Added after a regression the gate could not see. Phase 3.3a-ii moved seven
+ * pages onto documentHead(), whose defaults turned og:type from 'website' into
+ * 'article' on all of them and replaced the home page's distinct hand-written
+ * social blurb with its meta description. The snapshot captured `description`
+ * and nothing else from <head>, so it reported those pages as changed only in
+ * their link counts, and the commit claimed the extraction was mechanical.
+ *
+ * Social metadata is the text that appears when someone shares a page. It is
+ * content, and it is now compared as such.
+ */
+function socialMeta(html) {
+  const out = []
+  const re = /<meta\s+(?:property|name)=["']((?:og|twitter):[^"']+)["']\s+content=["']([^"']*)["']/gi
+  let m
+  while ((m = re.exec(html))) out.push(`${m[1]}=${decodeEntities(m[2])}`)
+  return out.sort()
+}
+
 // --- walk -------------------------------------------------------------------
 
 /**
@@ -256,6 +277,7 @@ function snapshot() {
       footerLinks: footBlock ? internalLinks(footBlock).unique : [],
       footerHash: chromeHash(html, 'footer'),
       scripts: scriptInfo(html),
+      social: socialMeta(html),
       text: visibleText(html),
     }
   }
@@ -303,6 +325,22 @@ function diff(beforeFile, afterFile) {
     const linksLost = b.links.filter((x) => !a.links.includes(x))
     const linksGained = a.links.filter((x) => !b.links.includes(x))
     if (linksLost.length) fieldDiffs.push(`links LOST (${linksLost.length}): ${linksLost.join(', ')}`)
+    if (b.social && a.social) {
+      const lost = b.social.filter((x) => !a.social.includes(x))
+      const gained = a.social.filter((x) => !b.social.includes(x))
+      for (const x of lost) {
+        const [k] = x.split('=')
+        const repl = gained.find((g) => g.startsWith(k + '='))
+        if (repl) fieldDiffs.push(`social ${k} CHANGED:
+      before: ${x.slice(k.length + 1).slice(0, 110)}
+      after:  ${repl.slice(k.length + 1).slice(0, 110)}`)
+        else fieldDiffs.push(`social ${k} REMOVED: ${x.slice(k.length + 1).slice(0, 110)}`)
+      }
+      for (const x of gained) {
+        const [k] = x.split('=')
+        if (!lost.some((l) => l.startsWith(k + '='))) fieldDiffs.push(`social ${k} ADDED: ${x.slice(k.length + 1).slice(0, 110)}`)
+      }
+    }
     if (b.scripts && a.scripts) {
       for (const kind of ['external', 'inline']) {
         const lost = b.scripts[kind].filter((x) => !a.scripts[kind].includes(x))

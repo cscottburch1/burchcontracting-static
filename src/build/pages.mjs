@@ -23,6 +23,20 @@
  * rejected: it would have preserved formatting at the cost of keeping a second,
  * stringly-typed representation of data the rest of the pipeline holds as
  * objects, which is the opposite of what this phase is for.
+ *
+ * WHAT THE FIRST VERSION OF THIS FILE GOT WRONG
+ *
+ * It passed only title, description, canonical, ogImage and schema, and let
+ * documentHead() default the rest. That silently changed og:type from 'website'
+ * to 'article' on all seven pages, and on the home page it replaced a distinct
+ * hand-written social blurb with the meta description — a content regression on
+ * the most-shared URL on the site, in a commit whose message claimed the
+ * extraction was mechanical.
+ *
+ * No gate saw it, because the snapshot captured the meta description and
+ * nothing else from <head>. It now captures every og:* and twitter:*. The
+ * lesson is narrower than "add a field": a default is a content decision when
+ * the thing being defaulted already had a value.
  */
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -47,6 +61,8 @@ export function render() {
           description: page.description,
           canonical: page.canonical,
           ogImage: page.ogImage,
+          ogType: page.ogType,
+          ogDescription: page.ogDescription,
           schema: page.schema,
         }),
         main,

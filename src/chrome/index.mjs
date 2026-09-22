@@ -48,7 +48,27 @@ export function esc(value) {
  * check-build catches and the Worker's X-Robots-Tag covers anyway.
  * That script matches this exact string — keep it byte-identical.
  */
-export function seoHead({ title, description, canonical, ogImage = '/images/custom-deck-greenville-sc.webp' }) {
+/**
+ * ogType and ogDescription are separate parameters because collapsing them into
+ * the page description silently changed seven pages.
+ *
+ * og:type was hardcoded 'article', which is right for a guide and wrong for the
+ * home page, the legal pages and the rest — they shipped 'website' and Phase
+ * 3.3a-ii turned them all into articles. og:description and twitter:description
+ * reused `description`, which cost the home page a distinct, hand-written
+ * social blurb on the most-shared URL on the site.
+ *
+ * Neither was visible to any gate: the snapshot captured the meta description
+ * and nothing else from <head>. It now captures every og:* and twitter:*.
+ */
+export function seoHead({
+  title,
+  description,
+  canonical,
+  ogImage = '/images/custom-deck-greenville-sc.webp',
+  ogType = 'article',
+  ogDescription = description,
+}) {
   const image = `${SITE.url}${ogImage}`
   return `    <meta name="robots" content="index, follow" />
     <meta name="description" content="${esc(description)}" />
@@ -56,16 +76,16 @@ export function seoHead({ title, description, canonical, ogImage = '/images/cust
     <link rel="canonical" href="${canonical}" />
     <meta name="theme-color" content="#1d4ed8" />
     <meta name="google-site-verification" content="ntiguLhlJqrZC6Iwzu-HD4CGZrBaofiBXgsdc-F8B0w" />
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="${ogType}" />
     <meta property="og:site_name" content="${SITE.name}" />
     <meta property="og:title" content="${esc(title)}" />
-    <meta property="og:description" content="${esc(description)}" />
+    <meta property="og:description" content="${esc(ogDescription)}" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:image" content="${image}" />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${esc(title)}" />
-    <meta name="twitter:description" content="${esc(description)}" />
+    <meta name="twitter:description" content="${esc(ogDescription)}" />
     <meta name="twitter:image" content="${image}" />`
 }
 
@@ -100,13 +120,13 @@ function schemaScripts(schema) {
     .join('\n')
 }
 
-export function documentHead({ title, description, canonical, ogImage, schema }) {
+export function documentHead({ title, description, canonical, ogImage, schema, ogType, ogDescription }) {
   return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-${seoHead({ title, description, canonical, ...(ogImage ? { ogImage } : {}) })}
+${seoHead({ title, description, canonical, ...(ogImage ? { ogImage } : {}), ...(ogType ? { ogType } : {}), ...(ogDescription ? { ogDescription } : {}) })}
 ${schemaScripts(schema)}
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
