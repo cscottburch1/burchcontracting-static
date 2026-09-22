@@ -37,24 +37,25 @@ import { dirname, resolve } from 'node:path'
 import * as guides from './guides.mjs'
 import * as services from './services.mjs'
 import * as geo from './geo.mjs'
+import * as handAuthored from './pages.mjs'
 
 const project = resolve(import.meta.dirname, '../..')
 const outDir = resolve(project, '.build/pages')
 
 /**
- * Pages still authored by hand, copied verbatim until Phase 3.3 renders them.
+ * Pages still copied verbatim rather than rendered.
+ *
+ * Phase 3.3a-ii removed the seven hand-authored pages from this list; they are
+ * now rendered by pages.mjs through the shared chrome. What remains is the
+ * eleven calculators, which Phase 3.3b converts, and 404.html, which stays here
+ * permanently — it must keep noindex, it has no entry in PAGE_URLS, and it is
+ * the one page whose chrome may differ.
+ *
  * This list and CHROME_EXEMPT in scripts/check-build.mjs describe the same
- * nineteen pages and empty together.
+ * pages and shrink together. Done means both are exactly ['404.html'].
  */
 const COPIED_PAGES = [
   '404.html',
-  'about.html',
-  'contact.html',
-  'index.html',
-  'privacy-policy.html',
-  'projects.html',
-  'services.html',
-  'terms-of-service.html',
   'calculator/ada-bath-shower.html',
   'calculator/additions.html',
   'calculator/basement-finishing.html',
@@ -83,6 +84,7 @@ mkdirSync(outDir, { recursive: true })
 const rendered = [
   ...guides.render(),
   ...services.render(),
+  ...handAuthored.render(),
 ]
 const geoResult = geo.render()
 rendered.push(...geoResult.pages)

@@ -84,6 +84,22 @@ function pathFromCanonical(canonical) {
   }
 }
 
+/**
+ * One <script type="application/ld+json"> per schema object.
+ *
+ * Accepts an array because the hand-authored pages carry two blocks each — the
+ * page's own graph plus the one generate-trust-layer.mjs injects — and the
+ * snapshot counts blocks. Collapsing them into one would change the count from
+ * 75 and would merge two graphs that were deliberately separate.
+ */
+function schemaScripts(schema) {
+  if (!schema) return ''
+  const blocks = Array.isArray(schema) ? schema : [schema]
+  return blocks
+    .map((b) => `    <script type="application/ld+json">${typeof b === 'string' ? b : JSON.stringify(b)}</script>`)
+    .join('\n')
+}
+
 export function documentHead({ title, description, canonical, ogImage, schema }) {
   return `<!doctype html>
 <html lang="en">
@@ -91,7 +107,7 @@ export function documentHead({ title, description, canonical, ogImage, schema })
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 ${seoHead({ title, description, canonical, ...(ogImage ? { ogImage } : {}) })}
-    <script type="application/ld+json">${JSON.stringify(schema)}</script>
+${schemaScripts(schema)}
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -282,7 +298,23 @@ ${SERVICE_AREAS.map((a) => `
 
       One owner, no inline duplicate. See docs/DECISIONS.md.
     -->
-    <script type="module" src="/src/js/main.js"></script>`
+    <script type="module" src="/src/js/main.js"></script>
+  </body>
+</html>`
+
+/**
+ * The footer, plus any page-specific module scripts.
+ *
+ * projects.html and the calculators load their own bundle alongside main.js.
+ * The plain `footer` export closes the document, so those pages need a seam;
+ * this provides one rather than having callers string-surgery the closing tags.
+ */
+export function pageFooter(extraScripts = []) {
+  const extra = extraScripts
+    .map((src) => `    <script type="module" src="${src}"></script>`)
+    .join('\n')
+  return extra ? footer.replace('  </body>', `${extra}\n  </body>`) : footer
+}
 
 /** Byline + review dates. Real dates only — see the caller for where they come from. */
 export function authorBox({ published, modified }) {

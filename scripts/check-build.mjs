@@ -235,15 +235,10 @@ if (orphans.length) {
 // 3.3 moves them to src/templates/ rendered through src/chrome/, and empties
 // this list down to 404.html. Shrinking it is the measure of that phase.
 const CHROME_EXEMPT = new Set([
-  // Hand-authored pages (Phase 3.3 removes all but 404.html).
+  // 404.html stays permanently: it keeps noindex, has no PAGE_URLS entry, and
+  // is the one page whose chrome may differ. Phase 3.3a-ii removed the other
+  // seven hand-authored pages, which pages.mjs now renders.
   '404.html',
-  'about.html',
-  'contact.html',
-  'index.html',
-  'privacy-policy.html',
-  'projects.html',
-  'services.html',
-  'terms-of-service.html',
   // Calculator pages (Phase 3.3).
   'calculator/ada-bath-shower.html',
   'calculator/additions.html',

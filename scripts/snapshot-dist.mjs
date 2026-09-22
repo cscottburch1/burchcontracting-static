@@ -176,7 +176,13 @@ function scriptInfo(html) {
     const attrs = m[1]
     const src = /src=["']([^"']+)["']/i.exec(attrs)?.[1]
     if (src) {
-      external.push(src.replace(/-[A-Za-z0-9_]{8,}\.(js|css)$/, '.$1'))
+      // Vite's content hash is exactly 8 characters of base64url, which
+      // INCLUDES '-'. An earlier version excluded '-' from the class, so
+      // calculator_ada-bath-shower-DHAC-MWo.js never matched and its hash
+      // leaked into the snapshot, making every rebuild look like a script
+      // change on that one page. Anchored at exactly 8 so the hyphens inside
+      // a name like 'ada-bath-shower' are not eaten as well.
+      external.push(src.replace(/-[A-Za-z0-9_-]{8}\.(js|css)$/, '.$1'))
       continue
     }
     const body = m[2].trim()
