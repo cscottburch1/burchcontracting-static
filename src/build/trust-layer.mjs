@@ -53,13 +53,30 @@ const SCHEMA_ONLY_FILES = ['services.html']
 // directly rather than hand-typed, so it can't drift if a service's
 // calculator assignment ever changes. estimate.html has no single parent
 // (it's the all-in-one calculator) — links to /services.html instead.
+// A calculator can be claimed twice: bathroom-remodeling claims bath-remodel
+// through its own `calculator` field, and remodeling (whole-home) claims the
+// same one through its `calculators` list. The specific claim wins.
+//
+// This used to be decided by array order — Object.fromEntries keeps the last
+// entry, so whichever service happened to sit later in services.js became the
+// breadcrumb parent. Reordering SERVICES by tier in Phase 6.1 flipped it, and
+// /calculator/bath-remodel started telling Google its parent was "Home
+// Remodeling" instead of "Bathroom Remodeling". Nothing failed; the graph was
+// still valid, just wrong.
+//
+// The generic claims are laid down first and the specific ones overwrite them,
+// so the result no longer depends on the order of the list.
 const CALCULATOR_PARENT_SERVICE_URL = {
   ...Object.fromEntries(
-    SERVICES.flatMap((s) => {
-      if (s.calculator) return [[`calculator/${s.calculator}.html`, pageUrl(`${s.slug}/index.html`)]]
-      if (s.calculators) return s.calculators.map((c) => [`calculator/${c.id}.html`, pageUrl(`${s.slug}/index.html`)])
-      return []
-    })
+    SERVICES.flatMap((s) =>
+      (s.calculators ?? []).map((c) => [`calculator/${c.id}.html`, pageUrl(`${s.slug}/index.html`)])
+    )
+  ),
+  ...Object.fromEntries(
+    SERVICES.filter((s) => s.calculator).map((s) => [
+      `calculator/${s.calculator}.html`,
+      pageUrl(`${s.slug}/index.html`),
+    ])
   ),
   'calculator/estimate.html': pageUrl('services.html'),
 }

@@ -46,38 +46,35 @@ export const NAV_CLASS = {
 /** Services dropdown, as its two rendered columns. */
 export const SERVICES_MENU = [
   [
+    { heading: 'Remodeling', items: [
+      { href: '/bathroom-remodeling', label: 'Bathroom Remodeling' },
+      { href: '/kitchen-remodeling', label: 'Kitchen Remodeling' },
+      { href: '/ada-bath-to-shower', label: 'ADA Bath to Shower' },
+      { href: '/remodeling', label: 'Home Remodeling' },
+    ] },
+    { heading: 'Additions & Basements', items: [
+      { href: '/room-additions', label: 'Room Additions' },
+      { href: '/basement-finishing', label: 'Basement Finishing' },
+    ] },
     { heading: 'Outdoor Living', items: [
       { href: '/outdoor-living/decks', label: 'Custom Decks' },
       { href: '/outdoor-living/screened-porches', label: 'Screened Porches' },
       { href: '/outdoor-living/covered-patios', label: 'Covered Patios' },
     ] },
-    { heading: 'Construction', items: [
-      { href: '/garage-builder', label: 'Garages' },
-      { href: '/room-additions', label: 'Room Additions' },
-      { href: '/adu-builder', label: 'ADU Builder' },
-      { href: '/basement-finishing', label: 'Basement Finishing' },
-    ] },
   ],
   [
-    // A raw '&' rather than '&amp;' — this is what ships today, and matching it
-    // exactly is what lets this commit prove header(null) is byte-identical to
-    // the literal it replaced. It is a (tolerated) HTML validity wart; fixing it
-    // is a one-character content change that belongs in its own commit, not
-    // smuggled into a refactor whose whole claim is that nothing changed.
-    { heading: 'Remodeling & More', items: [
-      { href: '/remodeling', label: 'Home Remodeling' },
-      { href: '/bathroom-remodeling', label: 'Bathroom Remodeling' },
-      { href: '/kitchen-remodeling', label: 'Kitchen Remodeling' },
-      { href: '/insurance-restoration', label: 'Insurance Restoration' },
+    { heading: 'Garages & ADUs', items: [
+      { href: '/garage-builder', label: 'Garages' },
+      { href: '/adu-builder', label: 'ADU Builder' },
     ] },
     { heading: 'Commercial', items: [
       { href: '/commercial-upfits', label: 'Commercial Upfits' },
       { href: '/commercial-roofing', label: 'Commercial Roofing' },
     ] },
-    { heading: 'Accessibility', items: [
-      { href: '/ada-compliance', label: 'ADA Compliance' },
-      { href: '/ada-bath-to-shower', label: 'ADA Bath to Shower' },
+    { heading: 'Repairs & Accessibility', items: [
       { href: '/handyman', label: 'Handyman Services' },
+      { href: '/insurance-restoration', label: 'Insurance Restoration' },
+      { href: '/ada-compliance', label: 'ADA Compliance' },
     ] },
   ],
 ]

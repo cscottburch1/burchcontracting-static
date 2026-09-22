@@ -63,11 +63,35 @@ export const SITE = {
   domain: 'burchcontracting.com'
 };
 
+/**
+ * Tier order: lead offers first, separate tracks last.
+ *
+ * Phase 6 encodes the service hierarchy once, as `tier` on each service, and
+ * derives every ordered presentation of the list from it — the nav mega-menu,
+ * the footer, the homepage grid. Before this, each of those was a hand-written
+ * list in its own file, and they disagreed: the footer led with additions and
+ * garages, the homepage grid led with decks, and bathroom and kitchen
+ * remodeling had no homepage card at all.
+ *
+ *   1       lead offers          bath, kitchen, tub-to-shower, whole-home
+ *   2       supported            room additions, basement finishing
+ *   3       maintained           garages, decks, porches, patios, ADUs, handyman
+ *   'track' separate audience    commercial x2, insurance restoration, ADA compliance
+ *
+ * Sorting is stable, so the order inside a tier is the order authored below.
+ */
+export const TIER_ORDER = [1, 2, 3, 'track']
+
+export function servicesByTier() {
+  return [...SERVICES].sort((a, b) => TIER_ORDER.indexOf(a.tier) - TIER_ORDER.indexOf(b.tier))
+}
+
 export const SERVICES = [
   {
     id: 'decks',
     title: 'Custom Deck Builder',
     slug: 'outdoor-living/decks',
+    tier: 3,
     category: 'Outdoor Living',
     description: 'Professional deck construction with pressure-treated and composite materials. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Custom Deck Builder - Upstate SC',
@@ -128,6 +152,7 @@ export const SERVICES = [
     id: 'screened-porches',
     title: 'Screened Porch Builder',
     slug: 'outdoor-living/screened-porches',
+    tier: 3,
     category: 'Outdoor Living',
     description: 'Custom screened porches and three-season rooms. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Screened Porch Builder - Upstate SC',
@@ -191,6 +216,7 @@ export const SERVICES = [
     id: 'covered-patios',
     title: 'Covered Patio Builder',
     slug: 'outdoor-living/covered-patios',
+    tier: 3,
     category: 'Outdoor Living',
     description: 'Custom covered patios and outdoor living spaces. Professional construction serving Upstate SC since 1995.',
     h1: 'Covered Patio Builder - Upstate SC',
@@ -264,6 +290,7 @@ export const SERVICES = [
     // clicks (migration/baseline-2026-09.md). id stays 'garages' — it keys
     // FAQs and content dates, not URLs.
     slug: 'garage-builder',
+    tier: 3,
     category: 'Construction',
     description: 'Custom garage construction: detached, attached, workshop, and garage apartments. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Garage Builder - Upstate SC',
@@ -336,6 +363,7 @@ export const SERVICES = [
     // Slug restored to the legacy Next.js path (see the garage-builder note
     // above). id stays 'additions'.
     slug: 'room-additions',
+    tier: 2,
     category: 'Construction',
     description: 'Custom room additions: bedrooms, master suites, sunrooms, in-law suites. Full design-build service from foundation to finish.',
     h1: 'Room Addition Contractor - Upstate SC',
@@ -408,6 +436,7 @@ export const SERVICES = [
     id: 'adu-builder',
     title: 'ADU Builder',
     slug: 'adu-builder',
+    tier: 3,
     category: 'Construction',
     description: 'Accessory Dwelling Unit construction: garage apartments, backyard cottages, in-law suites. Rental income potential $850-$1,500/month.',
     h1: 'ADU Builder - Accessory Dwelling Units Upstate SC',
@@ -466,102 +495,10 @@ export const SERVICES = [
     ]
   },
   {
-    id: 'remodeling',
-    title: 'Home Remodeling',
-    slug: 'remodeling',
-    category: 'Remodeling',
-    description: 'Complete home remodeling: kitchens, bathrooms, whole-house renovations. Professional design-build service.',
-    h1: 'Home Remodeling Contractor - Upstate SC',
-    intro: "From kitchen and bathroom renovations to whole-house remodels, I handle all phases: design, demolition, structural work, electrical, plumbing, and complete finishing. Every project managed personally from start to finish.",
-    stats: {
-      // Bath + kitchen scope only (see note on the Whole-House tier below for
-      // why that one isn't rolled into this headline figure).
-      costRange: '$5,600-$75,000 Typical',
-      timeline: '2-8 Weeks Typical',
-      experience: 'Since 1995',
-      rating: 'BBB A+ Rated'
-    },
-    pricePerSqFt: 'Varies by scope',
-    timeline: '2-8 weeks',
-    commonProjects: [
-      {
-        name: 'Modest Bathroom Remodel',
-        size: '5×8 full bath',
-        cost: projectCostString('bathRemodel', 'basicRefresh', 40),
-        details: 'New tub/shower, vanity, toilet, flooring, tile work, updated electrical and plumbing'
-      },
-      {
-        name: 'Mid-Range Kitchen Remodel',
-        size: '10×12 kitchen',
-        cost: projectCostString('kitchenRemodel', 'midRangeRemodel', 120),
-        details: 'New cabinets, countertops, appliances, flooring, lighting, backsplash, reconfigured layout'
-      },
-      {
-        name: 'Luxury Master Bath',
-        size: '8×12 or larger',
-        cost: projectCostString('bathRemodel', 'fullGutRenovation', 96),
-        details: 'Custom tile shower, soaking tub, double vanity, heated floors, premium fixtures'
-      }
-    ],
-    pricingTiers: [
-      {
-        name: 'Bathroom Remodeling',
-        range: combinedCostString(
-          projectEstimate('bathRemodel', 'basicRefresh', 35),
-          projectEstimate('bathRemodel', 'fullGutRenovation', 100)
-        ),
-        description: 'Full bathroom renovation including new fixtures, tile, vanity, flooring, and updated plumbing/electrical. Modest remodel $6-8K, luxury master bath $60-72K.'
-      },
-      {
-        name: 'Kitchen Remodeling',
-        range: combinedCostString(
-          projectEstimate('kitchenRemodel', 'standardRefresh', 200),
-          projectEstimate('kitchenRemodel', 'premiumCustom', 200)
-        ),
-        description: 'Complete kitchen renovation with new cabinets, countertops, appliances, flooring, lighting. Budget refresh $25-30K, mid-range remodel $38-45K, high-end custom $54-64K+.'
-      },
-      {
-        name: 'Whole-House Remodel',
-        // NOTE: large increase from the original "$50,000-$150,000+". The
-        // wholeHomeRemodel service in calculator-config.js (added 2026-07-05)
-        // is scoped to comprehensive renovation of a typical 2,000 sqft home
-        // at $135-290/sqft — its mathematical floor is well above the old
-        // figure. Flagged for visibility in the reconciliation PR.
-        range: combinedCostString(
-          projectEstimate('wholeHomeRemodel', 'standardRefresh', 2000),
-          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
-          { plus: true }
-        ),
-        description: 'Comprehensive home renovation including multiple rooms, structural changes, systems upgrades, complete interior refresh. Custom scope and pricing.'
-      }
-    ],
-    timelines: {
-      kitchen: '4-8 weeks',
-      bathroom: '2-4 weeks',
-      wholeHouse: '12-20 weeks'
-    },
-    // Three separate calculators exist for this service (kitchen, bath,
-    // whole-home) — a single `calculator` field can't link all three, which
-    // is why kitchen-remodel.html and whole-home-remodel.html had no
-    // inbound link from anywhere despite being real, sitemapped pages.
-    calculators: [
-      { id: 'kitchen-remodel', label: 'Kitchen Cost Calculator' },
-      { id: 'bath-remodel', label: 'Bath Cost Calculator' },
-      { id: 'whole-home-remodel', label: 'Whole-Home Cost Calculator' }
-    ],
-    relatedServices: [
-      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
-      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling' },
-      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
-      { name: 'Room Additions', url: '/room-additions' },
-      { name: 'Basement Finishing', url: '/basement-finishing' },
-      { name: 'ADU Construction', url: '/adu-builder' }
-    ]
-  },
-  {
     id: 'bathroom-remodeling',
     title: 'Bathroom Remodeling',
     slug: 'bathroom-remodeling',
+    tier: 1,
     category: 'Remodeling',
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     metaTitle: 'Bathroom Remodeling Simpsonville SC | Burch Contracting',
@@ -739,6 +676,7 @@ export const SERVICES = [
     id: 'kitchen-remodeling',
     title: 'Kitchen Remodeling',
     slug: 'kitchen-remodeling',
+    tier: 1,
     category: 'Remodeling',
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     metaTitle: 'Kitchen Remodeling Simpsonville SC | Burch Contracting',
@@ -866,6 +804,7 @@ export const SERVICES = [
     id: 'commercial-upfits',
     title: 'Commercial Upfits',
     slug: 'commercial-upfits',
+    tier: 'track',
     category: 'Commercial',
     description: 'Commercial tenant improvements and build-outs: retail, office, food service. Complete design-build service.',
     h1: 'Commercial Upfits & Tenant Improvements - Upstate SC',
@@ -926,6 +865,7 @@ export const SERVICES = [
     id: 'commercial-roofing',
     title: 'Commercial Roofing',
     slug: 'commercial-roofing',
+    tier: 'track',
     category: 'Commercial',
     description: '30+ years installing TPO, EPDM, PVC & metal roofing for Upstate SC commercial buildings. Free consultation, licensed contractor.',
     h1: 'Commercial Roofing Contractor - Upstate SC',
@@ -988,6 +928,7 @@ export const SERVICES = [
     id: 'basement-finishing',
     title: 'Basement Finishing',
     slug: 'basement-finishing',
+    tier: 2,
     category: 'Construction',
     description: 'Professional basement finishing with moisture control, egress windows, and complete interior build-out. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Basement Finishing Contractor - Upstate SC',
@@ -1055,6 +996,7 @@ export const SERVICES = [
     id: 'insurance-restoration',
     title: 'Insurance Restoration & Repair Services',
     slug: 'insurance-restoration',
+    tier: 'track',
     category: 'Insurance Restoration',
     description: 'Professional storm damage, water damage, and insurance claim restoration services in Upstate SC. Free consultations and full repair services.',
     h1: 'Insurance Restoration & Repair Services',
@@ -1098,6 +1040,7 @@ export const SERVICES = [
     id: 'ada-compliance',
     title: 'ADA Compliance & Accessibility Modifications',
     slug: 'ada-compliance',
+    tier: 'track',
     category: 'Accessibility',
     description: 'Ramps, bathrooms, doorways, and other accessibility improvements for commercial and residential properties to meet current ADA standards.',
     h1: 'ADA Compliance & Accessibility Modifications',
@@ -1163,6 +1106,7 @@ export const SERVICES = [
     id: 'ada-bath-to-shower',
     title: 'ADA Bath to Shower Conversions',
     slug: 'ada-bath-to-shower',
+    tier: 1,
     category: 'Accessibility Remodeling',
     description: 'Convert bathtubs into accessible, zero-entry roll-in showers with ADA-compliant grab bars, low-threshold entry, and non-slip surfaces.',
     h1: 'ADA Bath to Shower Conversions',
@@ -1226,9 +1170,104 @@ export const SERVICES = [
     ]
   },
   {
+    id: 'remodeling',
+    title: 'Home Remodeling',
+    slug: 'remodeling',
+    tier: 1,
+    category: 'Remodeling',
+    description: 'Complete home remodeling: kitchens, bathrooms, whole-house renovations. Professional design-build service.',
+    h1: 'Home Remodeling Contractor - Upstate SC',
+    intro: "From kitchen and bathroom renovations to whole-house remodels, I handle all phases: design, demolition, structural work, electrical, plumbing, and complete finishing. Every project managed personally from start to finish.",
+    stats: {
+      // Bath + kitchen scope only (see note on the Whole-House tier below for
+      // why that one isn't rolled into this headline figure).
+      costRange: '$5,600-$75,000 Typical',
+      timeline: '2-8 Weeks Typical',
+      experience: 'Since 1995',
+      rating: 'BBB A+ Rated'
+    },
+    pricePerSqFt: 'Varies by scope',
+    timeline: '2-8 weeks',
+    commonProjects: [
+      {
+        name: 'Modest Bathroom Remodel',
+        size: '5×8 full bath',
+        cost: projectCostString('bathRemodel', 'basicRefresh', 40),
+        details: 'New tub/shower, vanity, toilet, flooring, tile work, updated electrical and plumbing'
+      },
+      {
+        name: 'Mid-Range Kitchen Remodel',
+        size: '10×12 kitchen',
+        cost: projectCostString('kitchenRemodel', 'midRangeRemodel', 120),
+        details: 'New cabinets, countertops, appliances, flooring, lighting, backsplash, reconfigured layout'
+      },
+      {
+        name: 'Luxury Master Bath',
+        size: '8×12 or larger',
+        cost: projectCostString('bathRemodel', 'fullGutRenovation', 96),
+        details: 'Custom tile shower, soaking tub, double vanity, heated floors, premium fixtures'
+      }
+    ],
+    pricingTiers: [
+      {
+        name: 'Bathroom Remodeling',
+        range: combinedCostString(
+          projectEstimate('bathRemodel', 'basicRefresh', 35),
+          projectEstimate('bathRemodel', 'fullGutRenovation', 100)
+        ),
+        description: 'Full bathroom renovation including new fixtures, tile, vanity, flooring, and updated plumbing/electrical. Modest remodel $6-8K, luxury master bath $60-72K.'
+      },
+      {
+        name: 'Kitchen Remodeling',
+        range: combinedCostString(
+          projectEstimate('kitchenRemodel', 'standardRefresh', 200),
+          projectEstimate('kitchenRemodel', 'premiumCustom', 200)
+        ),
+        description: 'Complete kitchen renovation with new cabinets, countertops, appliances, flooring, lighting. Budget refresh $25-30K, mid-range remodel $38-45K, high-end custom $54-64K+.'
+      },
+      {
+        name: 'Whole-House Remodel',
+        // NOTE: large increase from the original "$50,000-$150,000+". The
+        // wholeHomeRemodel service in calculator-config.js (added 2026-07-05)
+        // is scoped to comprehensive renovation of a typical 2,000 sqft home
+        // at $135-290/sqft — its mathematical floor is well above the old
+        // figure. Flagged for visibility in the reconciliation PR.
+        range: combinedCostString(
+          projectEstimate('wholeHomeRemodel', 'standardRefresh', 2000),
+          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
+          { plus: true }
+        ),
+        description: 'Comprehensive home renovation including multiple rooms, structural changes, systems upgrades, complete interior refresh. Custom scope and pricing.'
+      }
+    ],
+    timelines: {
+      kitchen: '4-8 weeks',
+      bathroom: '2-4 weeks',
+      wholeHouse: '12-20 weeks'
+    },
+    // Three separate calculators exist for this service (kitchen, bath,
+    // whole-home) — a single `calculator` field can't link all three, which
+    // is why kitchen-remodel.html and whole-home-remodel.html had no
+    // inbound link from anywhere despite being real, sitemapped pages.
+    calculators: [
+      { id: 'kitchen-remodel', label: 'Kitchen Cost Calculator' },
+      { id: 'bath-remodel', label: 'Bath Cost Calculator' },
+      { id: 'whole-home-remodel', label: 'Whole-Home Cost Calculator' }
+    ],
+    relatedServices: [
+      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
+      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling' },
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Room Additions', url: '/room-additions' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'ADU Construction', url: '/adu-builder' }
+    ]
+  },
+  {
     id: 'handyman',
     title: 'Handyman Services',
     slug: 'handyman',
+    tier: 3,
     category: 'Handyman & Repairs',
     description: 'Handyman jobs $125-$4,400 in Upstate SC: plumbing, electrical, carpentry & painting. Licensed contractor, serving since 1995.',
     h1: 'Handyman Services - Upstate SC',

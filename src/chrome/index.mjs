@@ -15,7 +15,7 @@
  * footer hash across all 70 governed pages, so a second copy cannot reappear
  * quietly.
  */
-import { SITE, SERVICES } from '../data/services.js'
+import { SITE, SERVICES, servicesByTier } from '../data/services.js'
 import { NAV, activeNavItem } from '../data/nav.js'
 import {
   desktopAreasItems, desktopCta, desktopDropdownButton, desktopServicesColumns,
@@ -26,6 +26,7 @@ import {
 /** The four plain links between the dropdowns and the CTA. */
 const TAIL_ITEMS = [NAV[3], NAV[4], NAV[5], NAV[6]]
 import { SERVICE_AREAS } from '../data/geo-aeo.js'
+import { pageUrl } from '../data/url-map.js'
 
 export function esc(value) {
   return String(value)
@@ -34,6 +35,8 @@ export function esc(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
 }
+
+const JOIN_NL = String.fromCharCode(10)
 
 const DEFAULT_OG_IMAGE = '/images/custom-deck-greenville-sc.webp'
 
@@ -103,6 +106,25 @@ export function seoHead({
     <meta name="twitter:title" content="${esc(title)}" />
     <meta name="twitter:description" content="${esc(ogDescription)}" />
     <meta name="twitter:image" content="${image}" />`
+}
+
+/**
+ * The "Our Services" column, in tier order.
+ *
+ * This was eleven hand-written <li>s leading with additions and garages, which
+ * is what the business was organised around before Phase 6 and had already
+ * drifted from both the nav and the homepage grid — three lists, three orders,
+ * none of them derived. It comes from servicesByTier() now, so the footer
+ * cannot disagree with the hierarchy again, and all sixteen services get an
+ * internal link rather than the eleven someone picked.
+ */
+function footerServiceLinks() {
+  return servicesByTier()
+    .map(
+      (service) =>
+        `              <li><a href="${pageUrl(`${service.slug}/index.html`)}" class="hover:text-white transition-colors">${esc(service.title)}</a></li>`
+    )
+    .join(JOIN_NL)
 }
 
 /** Everything between </head> and the page's own <main>. */
@@ -250,17 +272,7 @@ export const footer = `    <footer class="bg-slate-950 text-slate-400">
           <div>
             <p class="font-semibold text-white mb-4">Our Services</p>
             <ul class="space-y-2 text-sm">
-              <li><a href="/room-additions" class="hover:text-white transition-colors">Additions</a></li>
-              <li><a href="/garage-builder" class="hover:text-white transition-colors">Garages</a></li>
-              <li><a href="/outdoor-living/decks" class="hover:text-white transition-colors">Decks &amp; Porches</a></li>
-              <li><a href="/remodeling" class="hover:text-white transition-colors">Remodeling</a></li>
-              <li><a href="/bathroom-remodeling" class="hover:text-white transition-colors">Bathroom Remodeling</a></li>
-              <li><a href="/kitchen-remodeling" class="hover:text-white transition-colors">Kitchen Remodeling</a></li>
-              <li><a href="/commercial-upfits" class="hover:text-white transition-colors">Commercial Upfits</a></li>
-              <li><a href="/commercial-roofing" class="hover:text-white transition-colors">Commercial Roofing</a></li>
-              <li><a href="/insurance-restoration" class="hover:text-white transition-colors">Insurance Restoration</a></li>
-              <li><a href="/ada-compliance" class="hover:text-white transition-colors">ADA Compliance</a></li>
-              <li><a href="/handyman" class="hover:text-white transition-colors">Handyman Services</a></li>
+${footerServiceLinks()}
             </ul>
           </div>
           <div>
