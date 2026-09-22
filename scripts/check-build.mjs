@@ -684,6 +684,31 @@ if (dateProblems.length) {
   failures.push({ check: 'content-dates-not-derived', detail: dateProblems })
 }
 
+// --- Check 10: no unanswered TODO reaches a reader ---
+// Phase 6. This is a content phase, and the ground rule is that a missing fact
+// is left as `TODO(owner): <what is needed>` in the data file rather than
+// invented. That rule is only safe if a TODO can never be rendered: a data file
+// is read by the author, a page is read by a customer.
+//
+// Visible text only. TODO markers in source comments are the mechanism working
+// as intended, and `TODO(phase-6)` in a comment is how the deferred items in
+// service-comparison.js and promoted-faqs.js are tracked.
+const todoLeaks = []
+for (const page of pages) {
+  const visible = page.html
+    .replace(/<script[\s\S]*?<\/script>/g, ' ')
+    .replace(/<style[\s\S]*?<\/style>/g, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+  if (!visible.includes('TODO(')) continue
+  const at = visible.indexOf('TODO(')
+  todoLeaks.push(`${page.rel}: renders "${visible.slice(at, at + 70).replace(/\s+/g, ' ').trim()}" as visible text`)
+}
+if (todoLeaks.length) {
+  failed = true
+  failures.push({ check: 'todo-in-visible-text', detail: todoLeaks })
+}
+
 // --- Report ---
 if (failed) {
   console.error('check-build FAILED\n')

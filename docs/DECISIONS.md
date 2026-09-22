@@ -915,3 +915,57 @@ the old build first and the new one after:
 `head -20` reads the diff from a **file**, not a pipe. Piping into `head` would
 hand `diff` an `EPIPE` under `pipefail` — the bug from the previous run, in a
 new costume.
+
+---
+
+## 2026-09-22 — Phase 6 is a content PR, and its snapshot diff is not supposed to be zero
+
+Phases 0–5, 7 and 8 were technically neutral: same 71 pages, same URLs, same
+content, from a build that can now be trusted. Every commit there was measured
+against "the snapshot shows nothing changed", and where something did change it
+was a defect being corrected and was enumerated.
+
+Phase 6 is the business change those phases were clearing the way for:
+bathroom and kitchen remodeling become the lead offers, garages stop being the
+front door, and every page's title, description and content depth follows. Before
+the migration, "bathroom remodeling" ranked 1.6; it is now 16. Recovering that is
+the point.
+
+**So the snapshot's job changes.** It is no longer a proof that nothing moved. It
+is the instrument that enumerates what moved, so every changed field on every
+page can be attributed to a numbered item in the PR. A field that changes without
+an attribution is still a defect; a field that changes with one is the work.
+
+**One expected chrome-hash change.** Reordering the Services mega-menu changes
+anchor order and text order, so the header hash moves on all 70 governed pages
+at once. That is the only chrome-hash change this PR may contain, it happens in
+a single commit, and the chrome baseline is re-recorded in that same commit.
+Outside it, a changed chrome hash is a defect exactly as before.
+
+**Missing facts are left missing.** Where the work needs a fact nobody has
+written down — a count of bathrooms remodeled, a real bath project with photos,
+a year — the data file gets `TODO(owner): <what is needed>` and the PR body
+lists it. `check-build`'s check 10 fails the build if a `TODO(` ever reaches
+visible text, so the convention is safe: a data file is read by the author, a
+page is read by a customer.
+
+**The Tier 1 floor was written before the content that satisfies it.** 
+`scripts/check-tier1.mjs` asserts that every `tier: 1` service page carries 6+
+FAQ questions, links to its own calculator, links to at least one cost guide,
+and has a headline range that agrees with its own pricing table. Run against
+`main` with tiers temporarily assigned, it produced ten findings:
+
+- `remodeling` has 5 FAQs, no calculator, no cost-guide link, and a headline of
+  "$5,600-$75,000" against its own table's $5,578–$644,314 — a wider
+  contradiction than the `garage-builder` one the plan cites.
+- `bathroom-remodeling` and `kitchen-remodeling` link to no cost guide, and
+  price their headline in absolute dollars while their tables are per square
+  foot, so the two cannot be compared at all until 6.6 derives both.
+- `ada-bath-to-shower` has 5 FAQs and no cost-guide link.
+
+None of the four Tier 1 pages links to a single cost guide. The guides exist;
+nothing points at them from the pages meant to sell the work.
+
+It is deliberately **not** in `npm test` yet. It joins at 6.3, in the commit that
+makes it pass — per the gate-adding rule, a gate added green is a gate nobody
+has seen work.
