@@ -32,6 +32,7 @@ import { GLOBAL_FAQS, faqPageSchema } from '../data/geo-aeo.js'
 import { SERVICES, SITE } from '../data/services.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { PROMOTED_FAQS } from '../data/promoted-faqs.js'
+import { CHOOSE_IF, PERMIT_REQUIRED } from '../data/service-comparison.js'
 
 const FALLBACK_DATES = { datePublished: '2026-07-19', dateModified: '2026-07-19' }
 
@@ -283,43 +284,13 @@ function contactTableHtml() {
       </section>`
 }
 
-// "Choose this if" one-liners: editorial framing, not factual claims beyond
-// what each service's own intro/description (services.js) already says —
-// no new capability or number asserted here.
-const CHOOSE_IF = {
-  'outdoor-living/decks': 'you want outdoor entertaining space and can choose your budget tier (PT lumber to premium composite).',
-  'outdoor-living/screened-porches': 'you want bug-free outdoor living, from a basic screened enclosure to a climate-controlled room.',
-  'outdoor-living/covered-patios': 'you want an open-air, roofed outdoor space rather than a fully screened-in one.',
-  garages: 'you need vehicle storage, workshop space, or a garage apartment for rental/guest use.',
-  additions: 'you need more square footage — a bedroom, suite, or multi-generational space — without moving.',
-  'adu-builder': 'you want a separate income-producing or in-law living space on your existing lot.',
-  remodeling: 'your kitchen, bath, basement, or whole home needs updating rather than expanding.',
-  'commercial-upfits': 'you are building out a leased commercial space for your business.',
-  'commercial-roofing': 'you need commercial roof installation, repair, or a maintenance/inspection agreement.',
-  'basement-finishing': 'you have unfinished basement square footage you want converted to living space.',
-  'insurance-restoration': 'you have storm or water damage and need documentation plus repairs.',
-  'ada-compliance': 'you need ramps, doorway widening, or other ADA modifications for a home or business.',
-  'ada-bath-to-shower': 'you specifically need a tub converted to a curbless, accessible roll-in shower.',
-  handyman: 'you need one or a few small tasks done, not a full construction project.',
-}
-
-// Permit-required column: only asserts "Yes" where a SERVICE_FAQS or
-// GLOBAL_FAQS answer on the site already says so explicitly (see
-// service-faqs.js) — everything else gets an honest "Case-by-case" rather
-// than a guessed yes/no, per the ground rule against inventing facts.
-const PERMIT_REQUIRED = {
-  'outdoor-living/decks': 'Yes',
-  garages: 'Yes',
-  additions: 'Yes',
-  'adu-builder': 'Depends on zoning',
-  'commercial-upfits': 'Yes',
-  'ada-compliance': 'Case-by-case',
-}
 
 function servicesComparisonTableHtml() {
   const rows = SERVICES.map((s) => {
-    const permit = PERMIT_REQUIRED[s.slug] ?? 'Case-by-case'
-    const chooseIf = CHOOSE_IF[s.slug] ?? ''
+    // No fallbacks. check-build asserts both maps cover every slug, so a
+    // missing entry is a failed build rather than a blank cell on /services.
+    const permit = PERMIT_REQUIRED[s.slug]
+    const chooseIf = CHOOSE_IF[s.slug]
     const linkHtml = s.calculator
       ? `<a href="${pageUrl(`calculator/${s.calculator}.html`)}" class="text-blue-700 hover:text-blue-800 underline">Calculator</a> &middot; <a href="${pageUrl(`${s.slug}/index.html`)}" class="text-blue-700 hover:text-blue-800 underline">Details</a>`
       : `<a href="${pageUrl(`${s.slug}/index.html`)}" class="text-blue-700 hover:text-blue-800 underline">Details</a>`

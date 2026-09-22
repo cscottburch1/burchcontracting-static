@@ -26,15 +26,25 @@
  *      failing; the comment on check 5 has the details.
  *   6. Calculator headline price copy drifting from what the calculator
  *      itself computes — see CALCULATOR_PAGES in src/js/calculator-config.js.
+ *   7. Incomplete per-service data: every service needs an entry in
+ *      SERVICE_FAQS, CHOOSE_IF and PERMIT_REQUIRED, and neither comparison map
+ *      may hold a key matching no service. All three used to degrade quietly
+ *      — [], an empty string, a defaulted "Case-by-case" — so a half-filled
+ *      service looked exactly like a finished one.
+ *   8. Two pages sharing a title or a meta description, or a page missing
+ *      either. Both are unique across all 71 today; this keeps them so.
  *
  * WHICH TREE EACH CHECK READS
  *
- * Checks 1, 2, 3b, 5 read .build/pages/, the rendered pages src/build/index.mjs
+ * Checks 1, 2, 3b, 5, 8 read .build/pages/, the rendered pages src/build/index.mjs
  * writes — not the repo tree, which no longer holds pages at all. Checks 3 and 4
  * read dist/, because they verify what actually ships: the staging noindex is
  * injected into dist/ only, and the reCAPTCHA key check is about the deployed
  * bundle. Check 6 reads neither — it compares two values in src/, the hand-typed
  * intro prose against the computed band, which is where that drift starts.
+ * Check 7 reads src/data/ for the same reason: incomplete data is a fact about
+ * the source, and catching it there names the map and the slug rather than the
+ * blank cell it would have produced.
  *
  * So this guard needs `npm run build` to have run. It used to be able to run
  * standalone against committed HTML; that stopped being true when the committed
@@ -52,6 +62,9 @@ import { CALCULATOR_PAGES } from '../src/js/calculator-config.js'
 import { servicePerSqftBand } from '../src/data/pricing-sync.js'
 import { chromeHash, chromeSource } from './lib/chrome-hash.mjs'
 import { NAV_CLASS, activeNavItem } from '../src/data/nav.js'
+import { SERVICES } from '../src/data/services.js'
+import { SERVICE_FAQS } from '../src/data/service-faqs.js'
+import { CHOOSE_IF, PERMIT_REQUIRED } from '../src/data/service-comparison.js'
 
 const root = path.resolve(import.meta.dirname, '..')
 const EXCLUDE_DIRS = new Set(['node_modules', 'dist', '.git', 'public'])
@@ -543,6 +556,85 @@ if (priceCopyMismatches.length) {
   failures.push({ check: 'calculator-price-copy-drift', detail: priceCopyMismatches })
 }
 
+// --- Check 7: the per-service data maps must cover every service ---
+// Phase 3.4. Three maps are keyed per service and every one of them used to
+// degrade quietly when a key was absent: SERVICE_FAQS returned [], CHOOSE_IF
+// rendered an empty string after the words "Choose this if", PERMIT_REQUIRED
+// fell back to "Case-by-case". A service added to services.js got a page, a
+// sitemap entry and a row in the comparison table, and nothing said its data
+// was incomplete.
+//
+// Two of these were wrong on the day this check was written, and had been for
+// months: CHOOSE_IF and PERMIT_REQUIRED each held two entries keyed by
+// service.id where the lookup used service.slug, so four rows on /services
+// read "Choose this if" and stopped. A blank cell is not a visible failure —
+// which is the whole reason it survived a launch and two audits.
+//
+// Keyed deliberately differently: SERVICE_FAQS by service.id, the other two by
+// service.slug, because that is what each lookup uses today. Asserting the key
+// each map is actually read with is the point; normalising them would hide
+// exactly the mismatch that caused this.
+const dataGaps = []
+for (const s of SERVICES) {
+  if (!SERVICE_FAQS[s.id]?.length) {
+    dataGaps.push(`SERVICE_FAQS has no entry for service id '${s.id}' (${s.title})`)
+  }
+  if (!CHOOSE_IF[s.slug]) {
+    dataGaps.push(`CHOOSE_IF has no entry for slug '${s.slug}' (${s.title}) — /services would render "Choose this if" and stop`)
+  }
+  if (!PERMIT_REQUIRED[s.slug]) {
+    dataGaps.push(`PERMIT_REQUIRED has no entry for slug '${s.slug}' (${s.title}) — decide it, do not let it default`)
+  }
+}
+// A key matching no service is the other half of the same bug: copy someone
+// wrote and reviewed that no page can ever render.
+for (const [name, map] of [['CHOOSE_IF', CHOOSE_IF], ['PERMIT_REQUIRED', PERMIT_REQUIRED]]) {
+  for (const key of Object.keys(map)) {
+    if (!SERVICES.some((s) => s.slug === key)) {
+      dataGaps.push(`${name} has a key '${key}' that matches no service slug — dead copy, nothing renders it`)
+    }
+  }
+}
+for (const key of Object.keys(SERVICE_FAQS)) {
+  if (!SERVICES.some((s) => s.id === key)) {
+    dataGaps.push(`SERVICE_FAQS has a key '${key}' that matches no service id — dead copy, nothing renders it`)
+  }
+}
+if (dataGaps.length) {
+  failed = true
+  failures.push({ check: 'service-data-gap', detail: dataGaps })
+}
+
+// --- Check 8: every page needs its own title and description ---
+// Phase 3.4. Two pages sharing a title is the classic duplicate-content
+// signal, and it is the kind of thing a copy-paste in a generator produces
+// silently. Both are currently unique across all 71 pages; this keeps them so.
+const headMetaProblems = []
+const titles = new Map()
+const descriptions = new Map()
+for (const page of pages) {
+  const title = (page.html.match(/<title>([^<]*)<\/title>/) || [])[1]
+  const description = (page.html.match(/<meta name="description" content="([^"]*)"/) || [])[1]
+  // Reported through this check's own array, not dataGaps: check 7 has already
+  // published its findings by the time this loop runs, so anything pushed there
+  // now would be collected and silently never shown.
+  if (!title) headMetaProblems.push(`${page.rel}: no <title>`)
+  if (!description) headMetaProblems.push(`${page.rel}: no meta description`)
+  if (title) titles.set(title, [...(titles.get(title) ?? []), page.rel])
+  if (description) descriptions.set(description, [...(descriptions.get(description) ?? []), page.rel])
+}
+for (const [label, map] of [['title', titles], ['description', descriptions]]) {
+  for (const [value, pagesWithIt] of map) {
+    if (pagesWithIt.length > 1) {
+      headMetaProblems.push(`${pagesWithIt.length} pages share a ${label} — ${pagesWithIt.join(', ')} — "${value.slice(0, 80)}"`)
+    }
+  }
+}
+if (headMetaProblems.length) {
+  failed = true
+  failures.push({ check: 'duplicate-or-missing-title-or-description', detail: headMetaProblems })
+}
+
 // --- Report ---
 if (failed) {
   console.error('check-build FAILED\n')
@@ -553,5 +645,5 @@ if (failed) {
   }
   process.exit(1)
 } else {
-  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans, ${process.env.BUILD_ENV === 'staging' ? 'staging build: every page confirmed noindex' : 'indexing confirmed (no stray noindex, robots.txt has no blanket Disallow)'}, reCAPTCHA site key verified single-source in dist/, FAQPage schema matched against visible text, calculator price copy checked against computed output.`)
+  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans, ${process.env.BUILD_ENV === 'staging' ? 'staging build: every page confirmed noindex' : 'indexing confirmed (no stray noindex, robots.txt has no blanket Disallow)'}, reCAPTCHA site key verified single-source in dist/, FAQPage schema matched against visible text both ways, calculator price copy checked against computed output, ${SERVICES.length} services complete in SERVICE_FAQS/CHOOSE_IF/PERMIT_REQUIRED with no dead keys, every title and description unique.`)
 }

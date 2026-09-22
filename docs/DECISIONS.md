@@ -444,3 +444,45 @@ Established before writing any of it:
    `services.mjs` once. Adding active nav state means it becomes a function
    taking the current URL, and all four call sites change. `documentHead()`
    already receives `canonical`, so the path is derivable there.
+
+---
+
+## 2026-09-22 — Missing per-service data fails the build instead of rendering blank
+
+Three maps are keyed per service, and every one of them degraded quietly when a
+key was absent: `SERVICE_FAQS` returned `[]`, `CHOOSE_IF` produced an empty
+string after the words "Choose this if", `PERMIT_REQUIRED` fell back to
+`?? 'Case-by-case'`. Add a service to `services.js` and it got a page, a sitemap
+entry and a row in the comparison table on /services, with nothing anywhere
+saying its data was half-finished.
+
+The 2026-08-29 entry above recorded this for `bathroom-remodeling` and
+`kitchen-remodeling`. It undercounted. `CHOOSE_IF` and `PERMIT_REQUIRED` each
+held two entries keyed by `service.id` — `garages`, `additions` — while both
+lookups used `service.slug`, so they matched nothing. Four rows on /services
+read "Choose this if" and stopped, and two of those four had copy that had been
+written, reviewed and then never rendered. In the output a dead key and a
+missing key look identical, which is why it survived a launch and two audits.
+
+**Decision.** `check-build` asserts, for all sixteen services, that every one has
+an entry in all three maps, and that neither comparison map holds a key matching
+no service. The `??` fallbacks are deleted, so a missing entry is a failed build
+rather than a blank cell. Every `PERMIT_REQUIRED` value is written out,
+including the twelve that were previously defaulting: "Case-by-case" is now a
+decision on the record rather than the absence of one, and the two services the
+map already said were "Yes" now render "Yes".
+
+The maps moved to `src/data/service-comparison.js`. They are editorial data, and
+a gate reaching into `src/build/` to assert their coverage had the dependency
+pointing the wrong way.
+
+**Also decided:** every page must have a title and a meta description, and no two
+pages may share either. Both were already true across all 71 pages; the check
+exists because a copy-paste in a generator is exactly how that stops being true,
+silently.
+
+**What this cost.** /services gained 406 characters of visible text: four filled
+cells and two corrected permit values. The two new `CHOOSE_IF` lines are derived
+from those services' own `description` and `intro` in `services.js`, asserting no
+capability or number that page does not already state — the same rule the other
+fourteen lines follow.
