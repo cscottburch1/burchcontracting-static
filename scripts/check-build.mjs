@@ -10,27 +10,35 @@
  *      every build — it used to run only when an env var was set, which meant
  *      it went quiet on exactly the builds that needed it.
  *   3b. One chrome: every non-exempt page must carry the same <header> and
- *      the same <footer>. Exemptions are the hand-authored and calculator
- *      pages that still hold their own committed chrome; Phase 3.3 empties
- *      that list down to 404.html.
+ *      the same <footer>. As of Phase 3.3b the only exemption is 404.html, and
+ *      it is permanent — see CHROME_EXEMPT for why adding another needs a
+ *      reason as durable as that one.
  *   4. reCAPTCHA site key drift: dist/contact.html must have a well-formed
  *      data-recaptcha-site-key, and no dist/assets/*.js may contain a key
  *      literal — see LAUNCH-CHECKLIST.md #3 for why this must be the only
  *      place the site key lives.
- *   5. FAQPage schema/visible-content divergence: every Question.name in a
- *      page's FAQPage JSON-LD must also appear as real visible text on that
- *      same page (Google's actual rule — mark up nothing the user can't
- *      see), checked in both directions so nothing is schema-only or
- *      visible-only.
+ *   5. FAQPage schema/visible-content divergence, in both directions: every
+ *      Question.name in a page's FAQPage JSON-LD must appear as real visible
+ *      text on that same page (Google's actual rule — mark up nothing the user
+ *      cannot see), AND every visible question heading must appear in the
+ *      schema. The second direction was added in Phase 3.3b after a render
+ *      ordering bug dropped three questions per calculator with nothing
+ *      failing; the comment on check 5 has the details.
  *   6. Calculator headline price copy drifting from what the calculator
  *      itself computes — see CALCULATOR_PAGES in src/js/calculator-config.js.
  *
- * Checks 1-3, 5, 6 scan the repo's own HTML source files directly (index.html,
- * service pages, generated service-area/calculator pages, etc.) — the same
- * files `npm run build` bundles into dist/ — rather than requiring a prior
- * build step, so those can run standalone in CI or locally. Check 4 reads
- * dist/ directly, since it's specifically verifying what actually gets
- * deployed; it requires `npm run build` to have already run.
+ * WHICH TREE EACH CHECK READS
+ *
+ * Checks 1, 2, 3b, 5 read .build/pages/, the rendered pages src/build/index.mjs
+ * writes — not the repo tree, which no longer holds pages at all. Checks 3 and 4
+ * read dist/, because they verify what actually ships: the staging noindex is
+ * injected into dist/ only, and the reCAPTCHA key check is about the deployed
+ * bundle. Check 6 reads neither — it compares two values in src/, the hand-typed
+ * intro prose against the computed band, which is where that drift starts.
+ *
+ * So this guard needs `npm run build` to have run. It used to be able to run
+ * standalone against committed HTML; that stopped being true when the committed
+ * HTML stopped existing.
  *
  * Exception: 404.html is excluded from the noindex check. Per
  * LAUNCH-CHECKLIST.md #1, 404.html must carry noindex permanently, in
@@ -230,27 +238,17 @@ if (orphans.length) {
 // Without that, a page could never match any other and this check could only be
 // satisfied by deleting an accessibility affordance.
 //
-// EXEMPTIONS BELOW ARE TEMPORARY. They are the pages that still carry their own
-// committed chrome because they are hand-authored rather than generated. Phase
-// 3.3 moves them to src/templates/ rendered through src/chrome/, and empties
-// this list down to 404.html. Shrinking it is the measure of that phase.
+// THIS LIST IS DONE SHRINKING. It held eighteen pages that carried their own
+// committed chrome; 3.3a-ii rendered the seven hand-authored ones and 3.3b the
+// eleven calculators. Every page in dist/ but one now shares one header and one
+// footer, and the assertion below proves it rather than assuming it.
+//
+// Adding to this list re-opens the hole the list was made to close, so an
+// addition needs a reason as durable as 404.html's.
 const CHROME_EXEMPT = new Set([
-  // 404.html stays permanently: it keeps noindex, has no PAGE_URLS entry, and
-  // is the one page whose chrome may differ. Phase 3.3a-ii removed the other
-  // seven hand-authored pages, which pages.mjs now renders.
+  // Keeps noindex permanently, has no PAGE_URLS entry, and is the one page
+  // whose chrome may differ.
   '404.html',
-  // Calculator pages (Phase 3.3).
-  'calculator/ada-bath-shower.html',
-  'calculator/additions.html',
-  'calculator/basement-finishing.html',
-  'calculator/bath-remodel.html',
-  'calculator/covered-patios.html',
-  'calculator/decks.html',
-  'calculator/estimate.html',
-  'calculator/garages.html',
-  'calculator/kitchen-remodel.html',
-  'calculator/porch.html',
-  'calculator/whole-home-remodel.html',
 ])
 
 {
@@ -439,7 +437,7 @@ if (!fs.existsSync(distContactPath)) {
   }
 }
 
-// --- Check 5: FAQPage schema must match visible content, both directions ---
+// --- Check 5: FAQPage schema and visible content must agree, both ways ---
 // A Question.name pulled out of parsed JSON is plain text; the page's own
 // visible HTML has it HTML-escaped. Escaping the plain text the same way
 // esc() does everywhere else in this codebase (not decoding the HTML) keeps
@@ -458,9 +456,19 @@ function escLikeGenerators(s) {
 // this check exists to guard, so this stays scoped to avoid failing the
 // build on an unrelated, already-existing issue.
 const faqMismatches = []
+function decodeEntities(s) {
+  return String(s)
+    .replaceAll('&amp;', '&')
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#39;', "'")
+}
+
 for (const page of pages.filter((p) => p.rel.startsWith('calculator/'))) {
   const scriptMatches = [...page.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
   const bodyOnly = page.html.replace(/<script[\s\S]*?<\/script>/g, '')
+  const schemaQuestions = new Set()
   for (const m of scriptMatches) {
     let data
     try {
@@ -475,7 +483,28 @@ for (const page of pages.filter((p) => p.rel.startsWith('calculator/'))) {
         if (!bodyOnly.includes(escLikeGenerators(q.name))) {
           faqMismatches.push(`${page.rel}: schema Question "${q.name}" not found as visible text`)
         }
+        schemaQuestions.add(q.name)
       }
+    }
+  }
+
+  // THE OTHER DIRECTION: a question heading on the page that the schema does
+  // not carry.
+  //
+  // The comment above this check used to claim both directions were covered.
+  // They were not, and the gap had teeth. A calculator's own cost question
+  // lives in its pricing table, and trustRender() reads that table's <h2> to
+  // build the page's FAQPage. Fill the table AFTER the trust blocks instead of
+  // before and the heading still renders, the page still validates, the build
+  // still succeeds, check-build still passed — and every calculator quietly
+  // shipped a FAQPage one question short. Verified by making that exact edit in
+  // Phase 3.3b: nothing failed. Only a before/after snapshot caught it, and a
+  // snapshot is something a person has to remember to run.
+  for (const m of bodyOnly.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)) {
+    const heading = decodeEntities(String(m[1]).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim())
+    if (!heading.endsWith('?')) continue
+    if (!schemaQuestions.has(heading)) {
+      faqMismatches.push(`${page.rel}: visible question heading "${heading}" is missing from the page's FAQPage schema`)
     }
   }
 }

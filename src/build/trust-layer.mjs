@@ -45,7 +45,7 @@ const SCHEMA_ONLY_FILES = ['services.html']
 // Maps each calculator to the SERVICE_FAQS (service-faqs.js) entry whose
 // Q&A content applies to it. Index 0 of each array is always the cost
 // question — already covered by the calculator's own AEO-table H2 (see
-// generate-calculator-tables.mjs), so it's skipped here to avoid a
+// src/build/calculator-tables.mjs), so it's skipped here to avoid a
 // duplicate heading; indices 1-3 (timeline, comparison/material, permit —
 // see service-faqs.js's own ordering) get promoted instead. This is the
 // same "answer-block breadth" gap called out in Phase 0 recon: calculators
@@ -712,45 +712,4 @@ ${extraFaqs
   if (tableBuilder) blocks.table = tableBuilder()
 
   return { main: html, blocks, schema }
-}
-
-const TOKEN_PREFIX = '{{trust.'
-
-/**
- * Places each block on its {{trust.*}} placeholder.
- *
- * Fails in BOTH directions, deliberately. A block with no placeholder means a
- * whole section — a byline, a comparison table, a set of answers — would be
- * built and then dropped on the floor; a placeholder with no block means a
- * literal '{{trust.table}}' ships to a reader. The old patcher had a third
- * behaviour for the first case: insert the block at a guessed anchor. That is
- * how content ended up in places no one chose.
- *
- * The whole placeholder LINE is replaced, indentation included, because each
- * block string already carries its own.
- */
-export function applyTrustBlocks(main, blocks, relFile) {
-  const nl = String.fromCharCode(10)
-  const lines = main.split(nl)
-
-  for (const [key, block] of Object.entries(blocks)) {
-    const token = `${TOKEN_PREFIX}${key}}}`
-    const at = lines.findIndex((line) => line.trim() === token)
-    if (at === -1) {
-      throw new Error(
-        `${relFile}: the trust layer produced a '${key}' block, but src/templates/${relFile} has no ${token} placeholder. ` +
-          `Add the placeholder where the block belongs — do not drop the block.`
-      )
-    }
-    lines[at] = block
-  }
-
-  const stray = lines.findIndex((line) => line.includes(TOKEN_PREFIX))
-  if (stray !== -1) {
-    throw new Error(
-      `${relFile}: line ${stray + 1} still holds ${lines[stray].trim()} — the trust layer produced no block for it.`
-    )
-  }
-
-  return lines.join(nl)
 }

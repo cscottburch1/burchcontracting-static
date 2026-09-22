@@ -16,22 +16,22 @@
  * points back at the project's public/, and an alias maps /src to the real
  * src/. Both are needed because absolute paths inside a page resolve from root.
  *
- * THE VERBATIM COPIES ARE TEMPORARY
+ * ONE PAGE IS STILL COPIED, AND ALWAYS WILL BE
  *
- * Twelve pages are not generated yet — eleven calculators and 404.html. Since
- * vite now scans exactly one directory, they have to be in it, so they are
- * copied across byte-for-byte. That keeps this step content-neutral: the
- * snapshot must show zero difference.
+ * 404.html. It must keep noindex permanently, it has no entry in PAGE_URLS, and
+ * it is the one page whose chrome is allowed to differ. Since vite scans exactly
+ * one directory, it has to be in that directory, so it is copied across.
  *
- * Phase 3.3b replaces the calculator copies with real rendering, at which point
- * COPIED_PAGES holds 404.html alone — permanently, since that page must keep
- * noindex and is the one page whose chrome is allowed to differ.
+ * Nothing else is. As of Phase 3.3b every other page in dist/ is rendered by a
+ * pure render() in this directory, from data in src/data/ and templates in
+ * src/templates/, and no committed .html file is both a source and an output.
+ * That is the end state Phase 3 was for.
  *
- * ORDER MATTERS, for one remaining step. generate-calculator-tables.mjs still
- * patches the eleven calculator source pages in place, so it must run before
- * this file copies them. package.json's prebuild enforces that. Phase 3.3b
- * converts it the way 3.3c converted the trust layer, and the ordering
- * constraint goes away with it.
+ * There is no longer an ordering constraint between prebuild steps, because
+ * there are no longer several prebuild steps: `npm run prebuild` is this file.
+ * The one real dependency that remained — a calculator's pricing table has to
+ * be in place before the trust layer reads its <h2> — is now two statements in
+ * pages.mjs, which is where a dependency between two steps belongs.
  */
 import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
@@ -45,31 +45,16 @@ const project = resolve(import.meta.dirname, '../..')
 const outDir = resolve(project, '.build/pages')
 
 /**
- * Pages still copied verbatim rather than rendered.
+ * Pages copied verbatim rather than rendered.
  *
- * Phase 3.3a-ii removed the seven hand-authored pages from this list; they are
- * now rendered by pages.mjs through the shared chrome. What remains is the
- * eleven calculators, which Phase 3.3b converts, and 404.html, which stays here
- * permanently — it must keep noindex, it has no entry in PAGE_URLS, and it is
- * the one page whose chrome may differ.
+ * 3.3a-ii removed the seven hand-authored pages and 3.3b the eleven
+ * calculators. 404.html is what is left, and it is not scaffolding: see above.
  *
  * This list and CHROME_EXEMPT in scripts/check-build.mjs describe the same
- * pages and shrink together. Done means both are exactly ['404.html'].
+ * page. If one of them ever grows, the other should too, and the reason should
+ * be as durable as this one.
  */
-const COPIED_PAGES = [
-  '404.html',
-  'calculator/ada-bath-shower.html',
-  'calculator/additions.html',
-  'calculator/basement-finishing.html',
-  'calculator/bath-remodel.html',
-  'calculator/covered-patios.html',
-  'calculator/decks.html',
-  'calculator/estimate.html',
-  'calculator/garages.html',
-  'calculator/kitchen-remodel.html',
-  'calculator/porch.html',
-  'calculator/whole-home-remodel.html',
-]
+const COPIED_PAGES = ['404.html']
 
 function write(relPath, contents) {
   const target = resolve(outDir, relPath)
@@ -115,7 +100,7 @@ writeFileSync(resolve(project, '.build/sitemap.xml'), geo.renderSitemap(), 'utf-
 const total = rendered.length + copied
 console.log(
   `build: ${total} pages -> .build/pages/ ` +
-  `(${rendered.length} rendered, ${copied} copied verbatim pending Phase 3.3), plus sitemap.xml`
+  `(${rendered.length} rendered, ${copied} copied verbatim), plus sitemap.xml`
 )
 
 if (missing.length) {

@@ -55,52 +55,83 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 import { documentHead, imageUrl, pageFooter } from '../chrome/index.mjs'
+import { CALCULATOR_PAGES_META } from '../data/calculators.js'
 import { HAND_AUTHORED_PAGES } from '../data/pages.js'
 import { pageUrl } from '../data/url-map.js'
-import { applyTrustBlocks, trustRender } from './trust-layer.mjs'
+import { calculatorTable, tabledPages } from './calculator-tables.mjs'
+import { assertNoPlaceholders, fillBlocks } from './placeholders.mjs'
+import { trustRender } from './trust-layer.mjs'
 
 const templatesDir = resolve(import.meta.dirname, '../templates')
 
-export function render() {
-  return HAND_AUTHORED_PAGES.map((page) => {
-    const name = page.file.replace(/\.html$/, '')
-    const template = readFileSync(resolve(templatesDir, `${name}.html`), 'utf-8').trimEnd()
+/**
+ * One page: its template, its generated blocks, and the chrome around both.
+ *
+ * ORDER IS LOAD-BEARING on the calculators. The pricing table goes in first,
+ * because trustRender() reads the table's own <h2> and the paragraph under it
+ * to build the page's FAQPage schema — that is the visible question the schema
+ * marks up. Fill the trust blocks first and every calculator's FAQPage silently
+ * loses an entry, with nothing failing.
+ *
+ * This used to be enforced by the order of two commands in package.json's
+ * prebuild ("ORDER MATTERS", said a comment in index.mjs). It is a sequence of
+ * two statements in one function now, which is where a dependency between two
+ * steps belongs.
+ */
+function renderPage(page) {
+  const name = page.file.replace(/\.html$/, '')
+  let main = readFileSync(resolve(templatesDir, `${name}.html`), 'utf-8').trimEnd()
 
-    // Five of the seven carry a trust layer. The other two — the legal pages —
-    // have no placeholders and no Article schema, so trustRender is not called
-    // for them at all rather than called and discarded.
-    const hasTrustLayer = template.includes('{{trust.')
-    let main = template
-    let schema = page.schema
+  if (main.includes('{{calculator.')) {
+    main = fillBlocks(main, 'calculator', { table: calculatorTable(page.file) }, page.file)
+  }
 
-    if (hasTrustLayer) {
-      const trust = trustRender({
-        relFile: page.file,
-        main: template,
+  // The two legal pages have no trust layer and no Article schema, so
+  // trustRender is not called for them rather than called and discarded.
+  const schema = page.schema ? [...page.schema] : []
+  if (main.includes('{{trust.')) {
+    const trust = trustRender({
+      relFile: page.file,
+      main,
+      description: page.description,
+      canonical: page.canonical,
+      image: imageUrl(page.ogImage),
+    })
+    main = fillBlocks(trust.main, 'trust', trust.blocks, page.file)
+    schema.push(trust.schema)
+  }
+
+  assertNoPlaceholders(main, page.file)
+
+  return {
+    url: pageUrl(page.file),
+    file: page.file,
+    html: [
+      documentHead({
+        title: page.title,
         description: page.description,
         canonical: page.canonical,
-        image: imageUrl(page.ogImage),
-      })
-      main = applyTrustBlocks(trust.main, trust.blocks, page.file)
-      schema = [...page.schema, trust.schema]
-    }
+        ogImage: page.ogImage,
+        ogType: page.ogType,
+        ogDescription: page.ogDescription,
+        schema,
+      }),
+      main,
+      pageFooter(page.scripts),
+    ].join('\n'),
+  }
+}
 
-    return {
-      url: pageUrl(page.file),
-      file: page.file,
-      html: [
-        documentHead({
-          title: page.title,
-          description: page.description,
-          canonical: page.canonical,
-          ogImage: page.ogImage,
-          ogType: page.ogType,
-          ogDescription: page.ogDescription,
-          schema,
-        }),
-        main,
-        pageFooter(page.scripts),
-      ].join('\n'),
+export function render() {
+  // Every page calculator-tables.mjs builds a table for must be rendered here,
+  // or a pricing table is computed and thrown away — the failure fillBlocks()
+  // catches per page, asserted once for the set.
+  const rendered = new Set(CALCULATOR_PAGES_META.map((p) => p.file))
+  for (const file of tabledPages()) {
+    if (!rendered.has(file)) {
+      throw new Error(`${file}: a pricing table is built for this page, but it is not in src/data/calculators.js`)
     }
-  })
+  }
+
+  return [...HAND_AUTHORED_PAGES, ...CALCULATOR_PAGES_META].map(renderPage)
 }
