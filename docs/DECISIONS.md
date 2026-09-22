@@ -687,3 +687,24 @@ break — the `REQUEST_FILENAME`-guarded `/calculator/*` catch-all, the exact-ma
 `greer` rule ordered before the generic service-area pattern, and `$1` capture
 substitution — plus all six security headers on both a 200 and a 301, and that
 no PHP source or schema is served at any of the seven paths that used to exist.
+
+---
+
+## 2026-09-22 — The mobile menu was checked by hand, at `c049e0c`
+
+The double-bound mobile menu (`92f5094`: `main.js` became the only owner of nav
+behaviour) could never be fully closed by a gate. `check-build` asserts there is
+one handler in `.build/pages/` and the snapshot proves the markup is identical
+across pages, but neither can see whether a tap opens the menu — that needs a
+browser at phone width.
+
+Checked by the owner at `c049e0c`, after Phases 3 and 4 had moved the chrome,
+the calculators and the whole routing layer beneath it. Reported as fine.
+
+**What this covers:** the home page, a service page, a service-area page and a
+calculator, at phone width, menu opening and accordions expanding.
+
+**What it does not:** it is a point-in-time observation, not a regression test.
+The gates that can run every build already do; this closes the one item they
+structurally cannot. If nav markup or `main.js` changes again, it needs
+repeating — there is nothing in the repo that will notice.
