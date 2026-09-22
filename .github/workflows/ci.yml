@@ -1,0 +1,56 @@
+name: CI
+
+# Every push and every pull request. Builds and runs every gate. Deploys
+# nothing — that is deploy.yml, and keeping the two apart is the point: on
+# 2026-09-16 a second automated path to the same Worker took the site down, and
+# the way you avoid a second path is by having exactly one thing that deploys.
+#
+# What runs here is `npm test`, the same command a developer runs locally, so
+# green in CI and green on a laptop mean the same thing.
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Full history. src/build/content-dates.mjs derives every page's
+          # datePublished and dateModified from git, and the default
+          # fetch-depth of 1 gives it one commit per file — which would stamp
+          # today's date on all 70 URLs. check-build's check 9 fails the build
+          # if that happens, so a shallow checkout here is a red CI run rather
+          # than a quietly wrong sitemap, but there is no reason to provoke it.
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # One source for the Node version: .nvmrc, which crawler-access.yml
+          # already reads. A hardcoded 22 here would be a second place to update.
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run every gate
+        run: npm test
+
+      - name: Upload dist/
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 7

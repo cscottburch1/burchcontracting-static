@@ -708,3 +708,66 @@ calculator, at phone width, menu opening and accordions expanding.
 The gates that can run every build already do; this closes the one item they
 structurally cannot. If nav markup or `main.js` changes again, it needs
 repeating — there is nothing in the repo that will notice.
+
+---
+
+## 2026-09-22 — One CI path, and a deploy that verifies itself or rolls back
+
+Phase 5. `cloudflare.yml` did everything: it was the only workflow, it was
+`workflow_dispatch`-only because deploy-on-push had caused an outage, and its
+header had grown into a five-paragraph account of why. It is now two files.
+
+`ci.yml` runs on every push and every pull request: build, `npm test`, upload
+`dist/`. It deploys nothing.
+
+`deploy.yml` is the only thing that deploys. Build, `npm test`, `wrangler
+deploy`, then verification against production — the five secrets by name, the
+new commit answering, five representative pages at 200 with `index, follow` and
+their own canonical, `check-routing`, `check-crawler-access`, and a HEAD on both
+contact endpoints returning 405. Any failure triggers `wrangler rollback` and
+then fails the job, because a rolled-back deploy is a failed deploy.
+
+**One deviation in the other direction.** The plan specified five
+representative pages for post-deploy verification. The workflow being replaced
+compared *every* built page byte-for-byte against the live response, and
+dropping that to satisfy a spec that simply did not mention it would have been a
+real loss of coverage. Both run: the five probes check what a human would
+eyeball (status, `index, follow`, canonical), and the whole-site hash check
+proves what shipped is what was built.
+
+**`npm test` is one command, and the same one in both places.** `check-build`,
+`check-schema`, `check-links`, `check-wrangler-config`, and `check-routing`
+against a `wrangler dev` the runner starts and tears down itself — including the
+`workerd` children, which survive killing the parent on Windows and then hold a
+lock on `dist/` that makes the next build fail with `EPERM`. That happened twice
+during this cleanup, and the second time a gate passed against a stale `dist/`.
+
+**The noindex scan is not a separate script.** The plan listed it as one;
+`check-build`'s check 3 already is it, in both directions plus the robots.txt
+blanket-Disallow case. A second copy would be a second thing to keep in step,
+and "one source of truth" applies to gates.
+
+**The push trigger is written but commented out.** This is a deliberate
+deviation from the plan, which asked for push-to-main. The verification and
+rollback above are what would make that safe, and they have never run. Enabling
+push now would make the first exercise of an unproven deploy path a real deploy
+of whatever just merged — and what is about to merge is a 23-commit branch. The
+workflow header and `RUNBOOK.md` both say: dispatch it once, confirm green,
+then uncomment two lines. That is the owner's call, not a thing to assume.
+
+**A gate that could not fail, caught before it shipped.** `check-schema`'s fifth
+assertion was written as "every Service node's `url` is in the sitemap". No
+Service node on this site has a `url` field, so it found nothing and reported
+"0 Service URLs present" as a pass. It compares each Service page's canonical
+against the sitemap now, and covers 24 pages. Written down because the first
+draft looked exactly like a working check.
+
+**A real defect the new gate found.** `check-schema` failed on its first run:
+four of the home page's eight FAQPage questions were not visible text. Not
+missing content — wording drift between the schema and the accordion, e.g. the
+schema asked "How much does a screened porch cost in Simpsonville SC?" while the
+page asked "...in Upstate SC?". `check-build`'s check 5 had recorded this as a
+known, deferred, out-of-scope issue since it was scoped to calculators. The
+schema now matches the visible text on all four. The reverse case is untouched
+and allowed: the accordion asks "How much does a room addition cost per square
+foot?", which no schema marks up, and marking up less than is visible is fine.

@@ -53,18 +53,54 @@ an ordinary day and nothing in the data distinguishes the two.
 
 ```
 BUILD_ENV=production npm run build
-npm run check-build
+npm test
 ```
 
-`BUILD_ENV=production` is required on both. The build must run before
-`check-build`, which reads `.build/pages/` and `dist/`; run on their own they
-will happily validate a previous build's output.
+`npm test` is every gate: `check-build` (which includes the noindex scan),
+`check-schema`, `check-links`, `check-wrangler-config`, and `check-routing`
+against a `wrangler dev` it starts and tears down itself. It is the same
+command CI runs, so green locally and green in CI mean the same thing.
+
+Use `npm test -- --no-routing` to skip the Worker if you only touched content.
+
+The build must run first. The gates read `.build/pages/` and `dist/`; run on
+their own they will happily validate a previous build's output — which has
+happened twice, when a `vite preview` or `wrangler dev` held a Windows file
+lock on `dist/`, the build failed with `EPERM`, and the gates passed against
+yesterday's files.
+
+### 3a. Never connect the Cloudflare dashboard Git integration
+
+**Workers & Pages → the Worker → Builds must never be connected to this repo.**
+
+On 2026-09-16 it was. It deployed on every push, built without the indexing
+flag the model then required, and carried none of the `wrangler secret put`
+secrets. Every push shipped noindex on all 70 pages and wiped all five Worker
+secrets, taking down admin login and lead emails and silently disabling the
+reCAPTCHA check while the contact form kept accepting submissions.
+
+`scripts/check-wrangler-config.mjs` fails the build if a `build` block appears
+in `wrangler.jsonc`, which is how that integration configures itself. The
+dashboard setting itself is invisible from inside the repo, so this line is the
+only guard against it.
 
 ### 4. Deploy
 
-A human runs the deploy, by hand, from the Actions tab
-(`.github/workflows/cloudflare.yml`). Automated deploy-on-push has taken this
-site down. The full procedure and secret rotation are Phase 7 additions.
+Actions tab → **Deploy** → Run workflow. `.github/workflows/deploy.yml` is the
+only thing that deploys, and its push trigger is commented out.
+
+It builds, runs every gate, deploys with `wrangler deploy`, and then verifies
+against production: exactly the five Worker secrets, the new commit answering,
+five representative pages returning 200 with `index, follow` and their own
+canonical, `check-routing`, `check-crawler-access`, and a HEAD on both contact
+endpoints returning 405. **Any failure rolls the Worker back automatically and
+then fails the job.** A rolled-back deploy is a failed deploy and shows red.
+
+**The push trigger has never run.** Enabling it would make the first exercise of
+an unproven deploy path a real deploy of whatever just merged. Run it once with
+Run workflow, confirm it goes green, then uncomment the two `push:` lines in
+`deploy.yml` if you want it automatic. The workflow header has the same
+instructions.
 
 ### 5. Rollback is `wrangler rollback` — not deleting the Worker route
 

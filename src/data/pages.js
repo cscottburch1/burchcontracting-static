@@ -271,7 +271,7 @@ export const HAND_AUTHORED_PAGES = [
               },
               {
                 "@type": "Question",
-                "name": "What areas does Burch Contracting serve in Upstate SC?",
+                "name": "What areas does Burch Contracting serve?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Burch Contracting serves Simpsonville, Fountain Inn, Mauldin, Greenville, Five Forks, Woodruff, Laurens, Gray Court, and surrounding Upstate South Carolina communities."
@@ -279,7 +279,7 @@ export const HAND_AUTHORED_PAGES = [
               },
               {
                 "@type": "Question",
-                "name": "How much does a screened porch cost in Simpsonville SC?",
+                "name": "How much does a screened porch cost in Upstate SC?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Screened porches in Simpsonville and surrounding areas typically run $15,000 to $65,000 for new construction. Converting an existing deck can save 50–70%."
@@ -287,7 +287,7 @@ export const HAND_AUTHORED_PAGES = [
               },
               {
                 "@type": "Question",
-                "name": "How much does a detached garage cost in Upstate SC?",
+                "name": "How much does a detached garage cost?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Detached two-car garages (576 sqft) in Upstate SC commonly range from $52,000 to $62,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $109,000 to $131,000."
@@ -303,7 +303,7 @@ export const HAND_AUTHORED_PAGES = [
               },
               {
                 "@type": "Question",
-                "name": "Does Burch Contracting handle permits and inspections?",
+                "name": "Does Burch Contracting handle permits?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Yes. Burch Contracting pulls required building permits, coordinates HOA approvals when needed, and schedules inspections through local jurisdictions."
