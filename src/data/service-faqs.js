@@ -4,7 +4,7 @@
  * Keyed by service `id` (matches SERVICES[].id in src/data/services.js).
  *
  * HOW TO INTEGRATE (for Claude Code):
- *   Option A (recommended): import this map in generate-services.mjs and
+ *   Option A (recommended): import this map in src/build/services.mjs and
  *   look up faqs by id at render time:
  *       import { SERVICE_FAQS } from '../src/data/service-faqs.js'
  *       const faqs = SERVICE_FAQS[service.id] || []

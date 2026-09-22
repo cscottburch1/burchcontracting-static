@@ -69,8 +69,9 @@ makes Google stop trusting the field across the whole file.
 in CI, so a live `git log` would see exactly one commit per file and stamp
 today's date on all 70 pages, every build.
 
-**Superseded by the 2026-09-21 cleanup (Phase 3)**, which moves the computation
-into CI with `fetch-depth: 0` and stops committing the output.
+**Superseded by the 2026-09-22 entry at the end of this file**, which moved the
+computation into the build with `fetch-depth: 0` and stopped committing the
+output.
 
 ---
 
@@ -181,8 +182,15 @@ hand-reverted to 2026-07-23, and three times the next script run silently lost
 it — the third time by someone who did not know the first two had happened.
 
 **Decision:** stop relying on anyone remembering. A committed
-`src/data/content-date-overrides.json`, merged last by the script, survives a
-re-run. Implemented in the 2026-09-21 cleanup (Phase 3).
+`src/data/content-date-overrides.json`, applied last, survives a re-run.
+Implemented in Phase 3.6.
+
+**And lost a fourth time, on the first run of the replacement.** Moving the
+computation to build time recomputed both pages from git and pushed them to
+2026-09-11 again, before the overrides file had entries for them. Caught by
+diffing the new output against the file it replaced, which is the only reason
+it is not a fifth. Both pages are now pinned in that file with this history in
+the `why` field.
 
 **Source:** `docs/archive/FINDINGS.md` #8, and the header of `content-dates.js`.
 
@@ -486,3 +494,106 @@ cells and two corrected permit values. The two new `CHOOSE_IF` lines are derived
 from those services' own `description` and `intro` in `services.js`, asserting no
 capability or number that page does not already state — the same rule the other
 fourteen lines follow.
+
+---
+
+## 2026-09-22 — A gate is not tested until the tamper is proven to create the failure
+
+Adding a gate and watching it pass proves nothing. The gate has to be shown
+failing on the thing it exists to catch, and that means two separate assertions,
+not one:
+
+1. **The edit landed.** Re-read the file and confirm the change is there. A
+   `sed` whose pattern does not match exits 0 and changes nothing.
+2. **The edit created the failure condition.** Confirm the bad state actually
+   exists — the duplicate is duplicated, the key is really absent, the two
+   strings really are identical.
+
+Step 2 is the one that gets skipped, and it was skipped here. The first test of
+the duplicate-title gate (check 8) substituted `"Recent Projects | Burch
+Contracting"` for about.html's title, intending to collide with projects.html.
+The real title is `"Recent Projects | Burch Contracting Upstate SC"`. Two words
+apart, no duplicate, no failure — and the gate looked fine. It was not: check 8
+was pushing its findings into check 7's array, which had already been reported
+by the time that loop ran, so a missing title would have been collected and
+never shown. A correct test of a broken gate found the bug; the incorrect test
+had reported success.
+
+This is the same failure mode as the two regexes in Phase 3.3 that contained a
+literal backspace where `\b` was intended. Both matched nothing, both were
+"verified" by a run that passed, and a gate that cannot match anything passes
+every time.
+
+Related, from the earlier chrome work: a tamper must be applied to the tree the
+gate actually reads. Tampering `dist/` to test a check that scans
+`.build/pages/` also proves nothing, for the same reason.
+
+**Phase 7:** this belongs in `RUNBOOK.md` under how to add a gate, as a
+numbered procedure rather than a paragraph.
+
+---
+
+## 2026-09-22 — Content dates are computed at build time and passed to render(), not imported
+
+Supersedes 2026-08-05 ("precomputed and committed") and closes the three-times-
+lost legal-page override above.
+
+`scripts/compute-content-dates.mjs` ran by hand and wrote a committed
+`src/data/content-dates.js`, because CI checked out at `fetch-depth: 1` and a
+live `git log` there would stamp today on all 70 pages. The workaround worked
+and the discipline did not: nobody re-runs a script no gate asks for. At the
+start of this cleanup the committed file was stale on 41 URLs and wrong on 27
+more. Both workflows that build now use `fetch-depth: 0`, `content-dates.js` and
+its generator are deleted, and `src/build/content-dates.mjs` derives dates every
+build.
+
+**Decision: `render({ dates })`, not an imported module.** Three reasons, in
+order of weight:
+
+1. An imported `content-dates.js` would have to be *generated into `src/`
+   before the build could read it* — a build artifact in the source tree and a
+   prebuild ordering constraint, which is exactly the pair of things Phases
+   3.2d through 3.3b spent four commits removing. Reintroducing them for this
+   one input would undo the shape of the whole phase.
+2. Passing them keeps the generators pure. A generator can be rendered with any
+   dates, so its output can be asserted without git — which matters because
+   these five modules produce every page on the site and had no way to be
+   tested in isolation before.
+3. It puts the build's one global input in one place. `src/build/index.mjs`
+   calls `contentDates()` once and hands the result to all four renderers and
+   the sitemap. Previously each module imported it and applied its own
+   fallback — three different ones, including two spellings of the site
+   relaunch date — so a missing entry produced a different confident guess
+   depending on which generator asked. Every fallback is now deleted: the
+   computation throws instead.
+
+The cost is real and worth naming: `renderSitemap()`, `serviceAreaPage()`,
+`authorBox()`, `guidePage()`, `hubPage()` and `servicePage()` all gained a
+parameter. `scripts/write-sitemap.mjs` would have needed a second call into git
+to keep rendering the sitemap itself, so it copies `.build/sitemap.xml` instead —
+which also ends a duplication nobody had noticed, where the build and the
+post-build step each produced that file independently.
+
+**What git cannot do, and what covers each gap.** Recorded in full in the header
+of `src/build/content-dates.mjs`; in short, lineage across the 3.3 extractions
+is declared rather than detected (git's rename detection failed, and at a lower
+threshold matched `decks.html` to an unrelated file dated 2026-06-01 —
+confidently wrong rather than obviously wrong); "did the substance change" is
+declared via a `Content-Change: none` commit trailer plus a seed list, because
+the conventional-commit type is not a good enough signal in this repo's own
+history; and per-service dates remain a known limitation, since git tracks
+files and not the objects inside them.
+
+**Verified against the file it replaces:** 21 of 22 keys identical. The one
+difference is deliberate — `services.js`'s `datePublished` moves from 2026-07-02
+to 2026-06-01, correcting `FINDINGS.md` #7, where every service claimed the
+data file's creation date and so looked newer than it was.
+
+**A known gap, stated rather than half-fixed.** A page's content now lives in
+two places — its template and its entry in `pages.js` or a data file — and only
+the template's history is tracked. So `0607478`, which restored the home page's
+social description by editing `pages.js`, does not move index.html's
+`dateModified`. Widening the lineage to include those data files would bump all
+seven hand-authored pages whenever any one of their titles changed, trading
+under-reporting for over-reporting. Left as-is; the override file can correct
+any specific page this matters for.

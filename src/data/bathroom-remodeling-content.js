@@ -1,7 +1,7 @@
 /**
  * Long-form supplemental content for the /bathroom-remodeling pillar page.
  * Kept out of services.js to keep that file scannable — these are two raw
- * HTML blocks consumed by generate-services.mjs via
+ * HTML blocks consumed by src/build/services.mjs via
  * service.richContentBeforeProcess / service.richContentAfterProcess.
  *
  * SOURCING: every dollar figure here is either (a) computed from

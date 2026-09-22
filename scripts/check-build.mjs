@@ -33,10 +33,15 @@
  *      service looked exactly like a finished one.
  *   8. Two pages sharing a title or a meta description, or a page missing
  *      either. Both are unique across all 71 today; this keeps them so.
+ *   9. Content dates that look stamped rather than derived. Phase 3.6 moved
+ *      them to build time from git, which is only correct when the checkout has
+ *      history; with actions/checkout's default fetch-depth of 1 every page
+ *      gets today's date and the sitemap tells Google the whole site changed
+ *      this morning. Silent otherwise — the build succeeds either way.
  *
  * WHICH TREE EACH CHECK READS
  *
- * Checks 1, 2, 3b, 5, 8 read .build/pages/, the rendered pages src/build/index.mjs
+ * Checks 1, 2, 3b, 5, 8, 9 read .build/pages/, the rendered pages src/build/index.mjs
  * writes — not the repo tree, which no longer holds pages at all. Checks 3 and 4
  * read dist/, because they verify what actually ships: the staging noindex is
  * injected into dist/ only, and the reCAPTCHA key check is about the deployed
@@ -635,6 +640,50 @@ if (headMetaProblems.length) {
   failures.push({ check: 'duplicate-or-missing-title-or-description', detail: headMetaProblems })
 }
 
+// --- Check 9: content dates must look derived, not stamped ---
+// Phase 3.6. Dates now come from git at build time, which is only correct when
+// the checkout has history. With actions/checkout's default fetch-depth of 1,
+// every file has exactly one commit and every page gets today's date — 70 URLs
+// in the sitemap all claiming to have changed this morning, which is precisely
+// how a site teaches Google to ignore lastmod. That failure is silent: the
+// build succeeds and the sitemap looks well-formed.
+//
+// Two signals, both cheap. Neither can be satisfied by a shallow clone, and
+// both tolerate the legitimate case where one page really did change today.
+const dateProblems = []
+{
+  const today = new Date().toISOString().slice(0, 10)
+  const pairs = pages
+    .map((page) => {
+      const m = page.html.match(/"datePublished":"(\d{4}-\d{2}-\d{2})","dateModified":"(\d{4}-\d{2}-\d{2})"/)
+      return m ? { rel: page.rel, published: m[1], modified: m[2] } : null
+    })
+    .filter(Boolean)
+
+  if (pairs.length < 10) {
+    dateProblems.push(`only ${pairs.length} page(s) carry an Article datePublished/dateModified pair — expected most of the site`)
+  } else {
+    const publishedToday = pairs.filter((p) => p.published === today)
+    if (publishedToday.length > 3) {
+      dateProblems.push(
+        `${publishedToday.length} pages claim datePublished ${today}. A handful of genuinely new pages is normal; ` +
+          `most of the site is not. This is what a shallow clone looks like — actions/checkout needs fetch-depth: 0.`
+      )
+    }
+    const distinctPublished = new Set(pairs.map((p) => p.published))
+    if (distinctPublished.size === 1) {
+      dateProblems.push(
+        `every page shares one datePublished (${[...distinctPublished][0]}) — git history is not being read, ` +
+          `or src/data/content-date-overrides.json has flattened it.`
+      )
+    }
+  }
+}
+if (dateProblems.length) {
+  failed = true
+  failures.push({ check: 'content-dates-not-derived', detail: dateProblems })
+}
+
 // --- Report ---
 if (failed) {
   console.error('check-build FAILED\n')
@@ -645,5 +694,5 @@ if (failed) {
   }
   process.exit(1)
 } else {
-  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans, ${process.env.BUILD_ENV === 'staging' ? 'staging build: every page confirmed noindex' : 'indexing confirmed (no stray noindex, robots.txt has no blanket Disallow)'}, reCAPTCHA site key verified single-source in dist/, FAQPage schema matched against visible text both ways, calculator price copy checked against computed output, ${SERVICES.length} services complete in SERVICE_FAQS/CHOOSE_IF/PERMIT_REQUIRED with no dead keys, every title and description unique.`)
+  console.log(`check-build passed — ${pages.length} pages scanned, ${sitemapUrls.length} sitemap URLs checked for orphans, ${process.env.BUILD_ENV === 'staging' ? 'staging build: every page confirmed noindex' : 'indexing confirmed (no stray noindex, robots.txt has no blanket Disallow)'}, reCAPTCHA site key verified single-source in dist/, FAQPage schema matched against visible text both ways, calculator price copy checked against computed output, ${SERVICES.length} services complete in SERVICE_FAQS/CHOOSE_IF/PERMIT_REQUIRED with no dead keys, every title and description unique, content dates derived from git history rather than stamped.`)
 }

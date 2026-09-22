@@ -1,20 +1,16 @@
 import { SITE, SERVICES } from '../data/services.js'
 import { SERVICE_FAQS } from '../data/service-faqs.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../data/site-schema.js'
-import { CONTENT_DATES } from '../data/content-dates.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { footer, header } from '../chrome/index.mjs'
 
-// Real git-history-derived dates for everything driven by services.js (see
-// scripts/compute-content-dates.mjs). Falls back to LAST_UPDATED_ISO below
-// if the dates file hasn't been (re)generated yet, so a missing/stale
-// content-dates.js can't silently break the build.
-const SERVICE_DATES = CONTENT_DATES?.['__datafile__src/data/services.js']
-
-
-// Fallback only, used if src/data/content-dates.js is missing or doesn't
-// have an entry yet — real dates now come from git history (see above).
-const LAST_UPDATED_ISO = '2026-07-19'
+// Dates arrive as a render() argument. They used to be read from a committed
+// content-dates.js at module load, with a '2026-07-19' fallback for when that
+// file was missing or stale — which meant a stale dates file produced the site
+// relaunch date on sixteen service pages rather than an error. There is no
+// fallback now: src/build/content-dates.mjs computes them from git every build
+// and throws if it cannot.
+const DATA_FILE_KEY = '__datafile__src/data/services.js'
 
 function esc(value) {
   return String(value)
@@ -47,9 +43,8 @@ function seoHead({ title, description, canonical, ogImage = '/images/custom-deck
 
 
 
-function authorBox() {
-  const published = SERVICE_DATES?.datePublished ?? LAST_UPDATED_ISO
-  const modified = SERVICE_DATES?.dateModified ?? LAST_UPDATED_ISO
+function authorBox(serviceDates) {
+  const { datePublished: published, dateModified: modified } = serviceDates
   return `          <aside class="mt-12 bg-slate-50 border border-slate-100 rounded-2xl p-6 lg:p-8" itemscope itemtype="https://schema.org/Person">
             <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-3">Written by</p>
             <h3 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h3>
@@ -73,7 +68,7 @@ function faqHtml(faqs, idPrefix = 'faq') {
     .join('\n')
 }
 
-function servicePage(service) {
+function servicePage(service, serviceDates) {
   // Every URL comes from src/data/url-map.js, the single source of truth, so
   // a canonical can never point at a URL that itself redirects. These pages
   // build to {slug}/index.html and are served at /{slug} — the trailing-slash
@@ -88,8 +83,7 @@ function servicePage(service) {
   const description = service.description
   const faqs = SERVICE_FAQS[service.id] || []
 
-  const published = SERVICE_DATES?.datePublished ?? LAST_UPDATED_ISO
-  const modified = SERVICE_DATES?.dateModified ?? LAST_UPDATED_ISO
+  const { datePublished: published, dateModified: modified } = serviceDates
 
   const serviceSchema = {
     '@type': 'Service',
@@ -274,7 +268,7 @@ ${commonProjectsHtml}
               </tbody>
             </table>
           </div>
-${authorBox()}
+${authorBox(serviceDates)}
         </div>
       </section>`
     : ''
@@ -313,7 +307,7 @@ ${pricingTiersHtml}
             <p class="text-lg text-slate-600 mt-2">${esc(service.flatFee.note)}</p>
             <p class="mt-6 font-medium text-slate-900">${esc(service.flatFee.credit)}</p>
           </div>
-${authorBox()}
+${authorBox(serviceDates)}
         </div>
       </section>`
   }
@@ -396,7 +390,7 @@ ${cat.items
       )
       .join('\n')}
           </div>
-${authorBox()}
+${authorBox(serviceDates)}
         </div>
       </section>`
     : ''
@@ -409,7 +403,7 @@ ${authorBox()}
   // same category/items lists already shown as cards below), or
   // howItWorks otherwise (the same 3-step process already shown as an
   // ordered list). No new facts, just a second, tabular presentation of
-  // data that's already there — see generate-services.mjs's
+  // data that's already there — see src/build/services.mjs's
   // serviceCategoriesSectionHtml / howItWorksSectionHtml for the source.
   const hasOtherTable = Boolean(service.commonProjects || service.pricingTiers || service.flatFee)
   const fallbackTableSectionHtml =
@@ -479,7 +473,7 @@ ${service.howItWorks
     ? `
       <section class="bg-white py-12 border-t border-slate-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-${authorBox()}
+${authorBox(serviceDates)}
         </div>
       </section>`
     : ''
@@ -637,16 +631,19 @@ ${footer}
 
 /**
  * Pure render: data in, pages out. No filesystem, no side effects, nothing at
- * module top level. See scripts/generate-services.mjs for why that matters.
+ * module top level. See src/build/services.mjs for why that matters.
  *
  * `file` is where the caller writes each page today, so this step changes
  * nothing observable. Phase 3.2d moves output to .build/pages/ and drops it.
  */
-export function render() {
+export function render({ dates }) {
+  const serviceDates = dates[DATA_FILE_KEY]
+  if (!serviceDates) throw new Error(`services: no content dates under ${DATA_FILE_KEY}`)
+
   // Every service page uses the nested directory + index.html pattern.
   return SERVICES.map((service) => ({
     url: pageUrl(`${service.slug}/index.html`),
     file: `${service.slug}/index.html`,
-    html: servicePage(service),
+    html: servicePage(service, serviceDates),
   }))
 }

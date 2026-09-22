@@ -14,9 +14,9 @@
  *
  * `schema` holds only each page's OWN graph. Five of these pages ship a second
  * Article/Person block, which Phase 3.3c stopped storing here: trustRender()
- * builds it from the template's <h1> and content-dates.js, so a copy in this
- * file would be a derived value free to go stale. src/build/pages.mjs appends
- * it. The rendered block count is unchanged at 75.
+ * builds it from the template's <h1> and the git-derived content dates, so a
+ * copy here would be a derived value free to go stale. src/build/pages.mjs
+ * appends it. The rendered block count is unchanged at 75.
  */
 export const HAND_AUTHORED_PAGES = [
   {

@@ -1,6 +1,6 @@
 /**
  * Canonical LocalBusiness + Organization JSON-LD nodes, shared by every
- * page generator (generate-services.mjs, generate-geo-aeo.mjs) so entity
+ * page generator (src/build/services.mjs, src/build/geo.mjs) so entity
  * data — address, geo, sameAs, license, areas served — can't drift between
  * generators the way it did before this file existed: the 13 service pages
  * and the 8 service-area + faqs.html pages had no LocalBusiness/Organization
@@ -83,7 +83,7 @@ export const ORGANIZATION_SCHEMA = {
 /**
  * Canonical Person node for Scott Burch, shared by every page's Article
  * schema (see articleSchema() below) via @id reference — same pattern
- * generate-services.mjs already used for its per-page Service.author before
+ * src/build/services.mjs already used for its per-page Service.author before
  * this existed. One definition here so hasCredential/jobTitle can't drift
  * per page the way sameAs once did (see LOCAL_BUSINESS_SCHEMA comment).
  */
@@ -123,10 +123,11 @@ export const WEBSITE_SCHEMA = {
 }
 
 /**
- * Article schema for a content page. datePublished/dateModified should come
- * from src/data/content-dates.js (real git-history-derived dates), not be
- * guessed — see that file's generator, scripts/compute-content-dates.mjs,
- * for why they're checked in rather than computed live at build time.
+ * Article schema for a content page. datePublished/dateModified come from
+ * src/build/content-dates.mjs, which derives them from git history on every
+ * build and is handed to each render() as an argument. They are never guessed:
+ * read that module's header for the three things git cannot tell you and how
+ * src/data/content-date-overrides.json covers each.
  *
  * Carries its own '@id' (url + '#article') so a page's WebPage node can
  * reference it via mainEntityOfPage without a second, redundant copy of

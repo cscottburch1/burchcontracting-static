@@ -1,19 +1,19 @@
 /**
  * Shared page chrome — the <head> block, site header/nav, footer, author box
- * and FAQ accordion markup.
+ * and FAQ accordion markup. Every page in dist/ but 404.html is built from it.
  *
- * Why this exists: generate-services.mjs and generate-geo-aeo.mjs each carry
- * their own verbatim copy of this markup, so the nav has to be edited in two
- * places and has already drifted once (geo-aeo's seoHead defaults ogImage to
- * SITE.ogImage, a field SITE doesn't have). scripts/generate-guides.mjs would
- * have made a third copy; it imports this instead.
+ * It exists because the markup used to be copied. src/build/services.mjs and
+ * src/build/geo.mjs each held their own verbatim <head>/nav/footer, so the nav
+ * had to be edited in two places and had already drifted (geo's seoHead
+ * defaulted ogImage to SITE.ogImage, a field SITE does not have). They could
+ * not even import from one another: both wrote files at module top level, so
+ * importing one ran it.
  *
- * The two older generators still hold their own copies — switching them over
- * is a follow-up, deliberately not bundled into the content restore, because
- * they're working and a chrome refactor would put 17 service pages and 8
- * service-area pages in the blast radius of a content PR. They cannot import
- * from each other in any case: both write files at module top level, so
- * importing one runs it.
+ * Phase 3.1 moved all of them onto this module, 3.2 made the generators pure
+ * so importing one does nothing, and 3.3 brought the eighteen hand-authored
+ * pages and calculators across. check-build asserts one header hash and one
+ * footer hash across all 70 governed pages, so a second copy cannot reappear
+ * quietly.
  */
 import { SITE, SERVICES } from '../data/services.js'
 import { NAV, activeNavItem } from '../data/nav.js'

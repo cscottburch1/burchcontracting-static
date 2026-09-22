@@ -36,6 +36,7 @@
 import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 
+import { contentDates } from './content-dates.mjs'
 import * as guides from './guides.mjs'
 import * as services from './services.mjs'
 import * as geo from './geo.mjs'
@@ -68,12 +69,19 @@ function write(relPath, contents) {
 rmSync(outDir, { recursive: true, force: true })
 mkdirSync(outDir, { recursive: true })
 
+// One call, one result, passed to everything. Computing dates here rather than
+// letting each generator import them is what keeps the generators pure: they
+// can be rendered with any dates, which is what makes them testable, and the
+// single global input to the build has exactly one place that decides it.
+// See docs/DECISIONS.md, 2026-09-22.
+const dates = contentDates()
+
 const rendered = [
-  ...guides.render(),
-  ...services.render(),
-  ...handAuthored.render(),
+  ...guides.render({ dates }),
+  ...services.render({ dates }),
+  ...handAuthored.render({ dates }),
 ]
-const geoResult = geo.render()
+const geoResult = geo.render({ dates })
 rendered.push(...geoResult.pages)
 
 for (const page of rendered) write(page.file, page.html)
@@ -95,7 +103,7 @@ for (const rel of COPIED_PAGES) {
 // The sitemap is not a page: its own destination, no chrome, none of the page
 // gates. Written beside .build/pages/ so the scan never treats it as an input;
 // scripts/write-sitemap.mjs puts it in dist/ after the build.
-writeFileSync(resolve(project, '.build/sitemap.xml'), geo.renderSitemap(), 'utf-8')
+writeFileSync(resolve(project, '.build/sitemap.xml'), geo.renderSitemap({ dates }), 'utf-8')
 
 const total = rendered.length + copied
 console.log(

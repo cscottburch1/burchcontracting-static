@@ -29,6 +29,11 @@ export const CHOOSE_IF = {
   // The two FINDINGS.md #2 flagged as blank. Both derived from these services'
   // own description and intro in services.js — the same rule as every line
   // above, no new capability or number.
+  //
+  // TODO(phase-6): revisit as lead offers. Phase 6 makes bathroom and kitchen
+  // remodeling the lead services, at which point these stop being one row in a
+  // comparison table and start carrying real weight. They were written to fill
+  // a blank cell honestly, not to sell.
   'bathroom-remodeling': 'you want one bathroom done properly — design, plumbing, waterproofing, tile and finish work — rather than a whole-home project.',
   'kitchen-remodeling': 'you want cabinetry, countertops, backsplash and lighting replaced in the kitchen rather than throughout the house.',
   'commercial-upfits': 'you are building out a leased commercial space for your business.',

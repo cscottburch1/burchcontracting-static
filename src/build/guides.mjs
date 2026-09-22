@@ -35,7 +35,6 @@ import {
   articleSchema,
   webPageSchema,
 } from '../data/site-schema.js'
-import { CONTENT_DATES } from '../data/content-dates.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { COST_GUIDES } from '../data/guides-cost.js'
 import { ARTICLES } from '../data/guides-articles.js'
@@ -52,11 +51,16 @@ import { authorBox, documentHead, esc, footer } from '../chrome/index.mjs'
  * not a flattering guess, and deliberately not today's date, which would
  * claim brand-new content for text that has existed for months.
  *
- * dateModified is real: it comes from the git history of the data files via
- * scripts/compute-content-dates.mjs, which has entries for both.
+ * dateModified is real: src/build/content-dates.mjs derives it from the git
+ * history of the data file behind each kind, and render() takes it as an
+ * argument. The '2026-09-11' fallback that used to sit here is gone — it stood
+ * in for a missing content-dates.js, which no longer exists to be missing.
  */
 const RESTORED_PUBLISHED = '2026-05-14'
-const FALLBACK_MODIFIED = '2026-09-11'
+const DATA_FILE_KEY = {
+  cost: '__datafile__src/data/guides-cost.js',
+  blog: '__datafile__src/data/guides-articles.js',
+}
 
 const KINDS = {
   cost: {
@@ -68,7 +72,6 @@ const KINDS = {
       'What building and remodeling projects actually cost in Upstate South Carolina, by project type and city. Every figure computed from our own pricing, not estimated.',
     hubIntro:
       'Straight answers on what projects cost in the Upstate, by type and by city. Every dollar figure on these pages is computed from the same pricing engine behind our calculators, so the guide and the calculator can never disagree.',
-    dates: CONTENT_DATES?.['__datafile__src/data/guides-cost.js'],
     entries: COST_GUIDES,
   },
   blog: {
@@ -80,7 +83,6 @@ const KINDS = {
       'Practical guides on costs, materials, timelines and permits for South Carolina remodeling and construction projects, written by a licensed contractor.',
     hubIntro:
       'Practical answers to the questions homeowners actually ask before starting a project — costs, materials, timelines, permits and what holds its value. Written from 30+ years of building in the Upstate, with prices computed from our own pricing engine.',
-    dates: CONTENT_DATES?.['__datafile__src/data/guides-articles.js'],
     entries: ARTICLES,
   },
 }
@@ -270,13 +272,12 @@ ${related
       </section>`
 }
 
-function guidePage(guide, kind, related) {
+function guidePage(guide, kind, related, modified) {
   const file = `${KINDS[kind].dir}/${guide.slug}.html`
   const url = pageUrl(file)
   const canonical = `${SITE_ORIGIN}${url}`
   const p = priceHelper(guide.serviceKey, guide.slug)
   const published = RESTORED_PUBLISHED
-  const modified = KINDS[kind].dates?.dateModified ?? FALLBACK_MODIFIED
   const hubUrl = pageUrl(`${KINDS[kind].dir}/index.html`)
 
   const article = articleSchema({
@@ -374,11 +375,10 @@ ${footer}
 </html>`
 }
 
-function hubPage(kind) {
+function hubPage(kind, modified) {
   const config = KINDS[kind]
   const file = `${config.dir}/index.html`
   const canonical = `${SITE_ORIGIN}${pageUrl(file)}`
-  const modified = config.dates?.dateModified ?? FALLBACK_MODIFIED
 
   const rows = config.entries
     .map((guide) => {
@@ -528,7 +528,7 @@ function relatedFor(guide, kind) {
  * module top level.
  *
  * Phase 3.2. This generator used to write files as it ran, which is why
- * generate-services.mjs and generate-geo-aeo.mjs could not import it or each
+ * src/build/services.mjs and src/build/geo.mjs could not import it or each
  * other — importing would have written files as a side effect of the import.
  * That is the reason all three carried a verbatim copy of the chrome.
  *
@@ -536,21 +536,25 @@ function relatedFor(guide, kind) {
  * this step changes nothing observable; Phase 3.2d moves every generator's
  * output to .build/pages/ and drops it in favour of `url` alone.
  */
-export function render() {
+export function render({ dates }) {
   const pages = []
   for (const kind of Object.keys(KINDS)) {
     const dir = KINDS[kind].dir
+    const forKind = dates[DATA_FILE_KEY[kind]]
+    if (!forKind) throw new Error(`guides: no content dates under ${DATA_FILE_KEY[kind]}`)
+    const modified = forKind.dateModified
+
     for (const guide of KINDS[kind].entries) {
       pages.push({
         url: pageUrl(`${dir}/${guide.slug}.html`),
         file: `${dir}/${guide.slug}.html`,
-        html: guidePage(guide, kind, relatedFor(guide, kind)),
+        html: guidePage(guide, kind, relatedFor(guide, kind), modified),
       })
     }
     pages.push({
       url: pageUrl(`${dir}/index.html`),
       file: `${dir}/index.html`,
-      html: hubPage(kind),
+      html: hubPage(kind, modified),
     })
   }
   return pages

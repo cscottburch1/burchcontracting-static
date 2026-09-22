@@ -15,22 +15,35 @@
  * scripts/check-build.mjs (orphan check) and scripts/indexnow-submit.mjs. Both
  * previously read public/sitemap.xml and would have failed silently or with
  * ENOENT once it stopped being written there.
+ *
+ * This COPIES what the build already produced rather than rendering again.
+ * It used to call renderSitemap() itself, which meant two independent
+ * productions of the same file: src/build/index.mjs wrote .build/sitemap.xml
+ * and this wrote dist/sitemap.xml, and nothing guaranteed they matched. Phase
+ * 3.6 made content dates a render() argument, at which point re-rendering here
+ * would have needed its own second call into git to recompute them — a second
+ * answer to "when did this page change", which is precisely the duplication
+ * this cleanup exists to remove.
  */
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { renderSitemap } from '../src/build/geo.mjs'
 
 const root = resolve(import.meta.dirname, '..')
 const distDir = resolve(root, 'dist')
+const built = resolve(root, '.build/sitemap.xml')
 
 if (!existsSync(distDir)) {
   console.error('write-sitemap: dist/ not found — run the build first.')
   process.exit(1)
 }
+if (!existsSync(built)) {
+  console.error('write-sitemap: .build/sitemap.xml not found — run `npm run prebuild` first.')
+  process.exit(1)
+}
 
-const xml = renderSitemap()
 mkdirSync(distDir, { recursive: true })
-writeFileSync(resolve(distDir, 'sitemap.xml'), xml, 'utf-8')
+copyFileSync(built, resolve(distDir, 'sitemap.xml'))
+const xml = readFileSync(built, 'utf-8')
 
 const count = (xml.match(/<loc>/g) ?? []).length
 console.log(`write-sitemap: wrote dist/sitemap.xml (${count} URLs).`)

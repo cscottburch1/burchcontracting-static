@@ -15,19 +15,22 @@ import { SERVICES } from '../data/services.js'
 import { COST_GUIDES } from '../data/guides-cost.js'
 import { ARTICLES } from '../data/guides-articles.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../data/site-schema.js'
-import { CONTENT_DATES } from '../data/content-dates.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { footer, header } from '../chrome/index.mjs'
 
 
-// Real git-history-derived dates for everything driven by geo-aeo.js (see
-// scripts/compute-content-dates.mjs). '2026-07-19' fallback matches the
-// site relaunch date used elsewhere when content-dates.js lacks an entry.
-const AREA_DATES = CONTENT_DATES?.['__datafile__src/data/geo-aeo.js'] ?? { datePublished: '2026-07-19', dateModified: '2026-07-19' }
-
-// Same idea, for everything driven by services.js (used by generateSitemap()
-// below for the dedicated service pages).
-const SERVICES_DATES = CONTENT_DATES?.['__datafile__src/data/services.js'] ?? { datePublished: '2026-07-19', dateModified: '2026-07-19' }
+// The content-dates keys this module reads. The dates themselves arrive as a
+// render() / renderSitemap() argument.
+//
+// Both used to be module-level constants read from a committed
+// content-dates.js, each with a `?? { '2026-07-19' }` fallback. That fallback
+// is how the sitemap once carried the site relaunch date on every service-area
+// URL: the dates file was stale, nothing said so, and the fallback supplied a
+// confident wrong answer. src/build/content-dates.mjs throws instead.
+const AREA_KEY = '__datafile__src/data/geo-aeo.js'
+const SERVICES_KEY = '__datafile__src/data/services.js'
+const COST_KEY = '__datafile__src/data/guides-cost.js'
+const BLOG_KEY = '__datafile__src/data/guides-articles.js'
 
 function esc(value) {
   return String(value)
@@ -60,7 +63,7 @@ function seoHead({ title, description, canonical, ogImage = SITE.ogImage }) {
 
 
 
-function authorBox(cityName) {
+function authorBox(cityName, areaDates) {
   // cityName is 'Upstate SC' itself on faqs.html (a sitewide page, not a
   // single city) — "serving Upstate SC, SC and Upstate SC" reads as a typo,
   // so that one case drops the redundant second clause.
@@ -73,7 +76,7 @@ function authorBox(cityName) {
             <h3 class="text-xl font-bold text-slate-900" itemprop="name">${SITE.owner}</h3>
             <p class="text-blue-700 font-medium text-sm mt-1" itemprop="jobTitle">Owner &amp; Lead Contractor</p>
             <p class="text-slate-600 text-sm mt-3 leading-relaxed">SC Licensed General Contractor #${SITE.license} | NC Licensed (Limited) #${SITE.licenseNC} | ${servingLine} Scott Burch oversees every project with transparent pricing and hands-on job-site accountability.</p>
-            <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${AREA_DATES.datePublished}">${AREA_DATES.datePublished}</time> &middot; Last reviewed: <time datetime="${AREA_DATES.dateModified}">${AREA_DATES.dateModified}</time></p>
+            <p class="text-slate-500 text-xs mt-3">Published: <time datetime="${areaDates.datePublished}">${areaDates.datePublished}</time> &middot; Last reviewed: <time datetime="${areaDates.dateModified}">${areaDates.dateModified}</time></p>
           </aside>`
 }
 
@@ -190,9 +193,9 @@ ${rows.join('\n')}
       </section>`
 }
 
-function serviceAreaPage(area) {
+function serviceAreaPage(area, areaDates) {
   const faqs = cityFaqs(area)
-  // Same promotion pattern as generate-services.mjs: the first 2 city FAQs
+  // Same promotion pattern as src/build/services.mjs: the first 2 city FAQs
   // (does-Burch-serve-this-city + drive-time, per cityFaqs()'s own order)
   // get a visible <h2> question heading right under the hero instead of
   // only living in the accordion further down — an accordion <summary>
@@ -249,8 +252,8 @@ ${promotedFaqs
         headline: `Deck Builder, Garage Contractor & Home Additions in ${area.name}, SC`,
         description,
         url: canonical,
-        datePublished: AREA_DATES.datePublished,
-        dateModified: AREA_DATES.dateModified,
+        datePublished: areaDates.datePublished,
+        dateModified: areaDates.dateModified,
       }),
       {
         '@type': 'BreadcrumbList',
@@ -411,7 +414,7 @@ ${services}
           <div class="space-y-4">
 ${faqHtml(remainingFaqs, area.slug)}
           </div>
-${authorBox(area.name)}
+${authorBox(area.name, areaDates)}
           <p class="mt-6 text-center"><a href="/faqs" class="text-blue-700 hover:text-blue-800 font-semibold text-sm">View all FAQs &rarr;</a></p>
         </div>
       </section>
@@ -441,7 +444,7 @@ ${footer}
 </html>`
 }
 
-function faqsPage() {
+function faqsPage(areaDates) {
   const canonical = `${SITE_ORIGIN}${pageUrl('faqs.html')}`
   const title = 'FAQs | Burch Contracting Upstate SC Contractor'
   const allFaqs = [
@@ -498,8 +501,8 @@ ${faqHtml(group.faqs, group.category.toLowerCase().replace(/\s+/g, '-'))}
         headline: 'Frequently Asked Questions',
         description,
         url: canonical,
-        datePublished: AREA_DATES.datePublished,
-        dateModified: AREA_DATES.dateModified,
+        datePublished: areaDates.datePublished,
+        dateModified: areaDates.dateModified,
       }),
       {
         '@type': 'BreadcrumbList',
@@ -553,7 +556,7 @@ ${promotedFaqSectionHtml}
 ${globalSection}
           </div>
 ${serviceSections}
-${authorBox('Upstate SC')}
+${authorBox('Upstate SC', areaDates)}
           <div class="mt-10 overflow-x-auto rounded-xl border border-slate-200">
             <table class="w-full border-collapse text-left">
               <caption class="caption-top text-sm text-slate-500 text-left px-4 py-3 bg-slate-50">Building permit &amp; code offices for counties Burch Contracting serves</caption>
@@ -612,22 +615,20 @@ ${footer}
 // date the sitemap happened to be built — a blanket build-date stamp on
 // every URL is exactly what makes Google stop trusting (and eventually
 // ignore) lastmod across the whole file. Real per-page dates come from
-// CONTENT_DATES (scripts/compute-content-dates.mjs, itself derived from
-// git history — see that file's header for why it's checked in rather than
-// computed live). changefreq/priority are dropped entirely per Google's own
+// the dates passed in, which src/build/content-dates.mjs derives from git on
+// every build. changefreq/priority are dropped entirely per Google's own
 // guidance that both are ignored.
-function generateSitemap() {
-  // Hand-authored static pages: dateKey is the file's own key in
-  // CONTENT_DATES. Generated pages (faqs.html, service pages, service-area
-  // pages) use their driving datafile's shared date instead — see
-  // AREA_DATES / SERVICES_DATES above.
+function generateSitemap(dates) {
+  // Hand-authored static pages: the second element is the page's own key in
+  // the dates map. Generated pages (faqs.html, service pages, service-area
+  // pages) get their driving data file's shared pair instead.
   const staticPages = [
     ['/', 'index.html'],
     ['/services', 'services.html'],
     ['/projects', 'projects.html'],
     ['/about', 'about.html'],
     ['/contact', 'contact.html'],
-    ['/faqs', AREA_DATES],
+    ['/faqs', dates[AREA_KEY]],
     ['/calculator/decks', 'calculator/decks.html'],
     ['/calculator/garages', 'calculator/garages.html'],
     ['/calculator/porch', 'calculator/porch.html'],
@@ -643,7 +644,7 @@ function generateSitemap() {
     ['/terms-of-service', 'terms-of-service.html'],
   ].map(([path, dateKeyOrDates]) => [
     path,
-    typeof dateKeyOrDates === 'string' ? (CONTENT_DATES?.[dateKeyOrDates] ?? AREA_DATES) : dateKeyOrDates,
+    typeof dateKeyOrDates === 'string' ? dates[dateKeyOrDates] : dateKeyOrDates,
   ])
 
   // Derived from SERVICES (src/data/services.js) so every dedicated
@@ -651,18 +652,18 @@ function generateSitemap() {
   // without needing to remember to update this list by hand.
   // Both lists read their URLs from src/data/url-map.js, so the sitemap can
   // only ever list the final, non-redirecting address of each page.
-  const servicePages = SERVICES.map((service) => [pageUrl(`${service.slug}/index.html`), SERVICES_DATES])
+  const servicePages = SERVICES.map((service) => [pageUrl(`${service.slug}/index.html`), dates[SERVICES_KEY]])
 
-  const areaPages = SERVICE_AREAS.map((area) => [pageUrl(`service-areas/${area.slug}.html`), AREA_DATES])
+  const areaPages = SERVICE_AREAS.map((area) => [pageUrl(`service-areas/${area.slug}.html`), dates[AREA_KEY]])
 
-  // Cost guides and articles (scripts/generate-guides.mjs). Derived from the
+  // Cost guides and articles (src/build/guides.mjs). Derived from the
   // same data the generator uses, so a restored guide can't be published and
   // then left out of the sitemap. Their datePublished is the archived original
   // (see RESTORED_PUBLISHED there); lastmod here is the data file's real git
   // dateModified, which is what lastmod is actually for.
   const guideDates = {
-    cost: CONTENT_DATES?.['__datafile__src/data/guides-cost.js'] ?? AREA_DATES,
-    blog: CONTENT_DATES?.['__datafile__src/data/guides-articles.js'] ?? AREA_DATES,
+    cost: dates[COST_KEY],
+    blog: dates[BLOG_KEY],
   }
   const guidePages = [
     [pageUrl('cost/index.html'), guideDates.cost],
@@ -698,19 +699,21 @@ ${urls}
  * areas — it is not special, and treating it as such is how it ended up
  * hand-maintained-looking in a repo that generates everything else.
  */
-export function render() {
+export function render({ dates }) {
   areaFactsNeeded.length = 0
+  const areaDates = dates[AREA_KEY]
+  if (!areaDates) throw new Error(`geo: no content dates under ${AREA_KEY}`)
 
   const pages = SERVICE_AREAS.map((area) => ({
     url: pageUrl(`service-areas/${area.slug}.html`),
     file: `service-areas/${area.slug}.html`,
-    html: serviceAreaPage(area),
+    html: serviceAreaPage(area, areaDates),
   }))
 
   pages.push({
     url: pageUrl('faqs.html'),
     file: 'faqs.html',
-    html: faqsPage(),
+    html: faqsPage(areaDates),
   })
 
   return { pages, factsNeeded: [...areaFactsNeeded] }
@@ -732,6 +735,9 @@ export function render() {
  * generate-cloudflare-files all read it from dist/, so nothing that consumes it
  * is affected.
  */
-export function renderSitemap() {
-  return generateSitemap()
+export function renderSitemap({ dates }) {
+  for (const key of [AREA_KEY, SERVICES_KEY, COST_KEY, BLOG_KEY]) {
+    if (!dates[key]) throw new Error(`sitemap: no content dates under ${key}`)
+  }
+  return generateSitemap(dates)
 }

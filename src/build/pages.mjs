@@ -46,8 +46,8 @@
  * from src/data/, and land on named {{trust.*}} placeholders in the template.
  *
  * That is why the Article graph is appended to page.schema rather than stored
- * in it: its headline comes from the template's own <h1> and its dates from
- * content-dates.js, so storing it would be storing a derived value — the exact
+ * in it: its headline comes from the template's own <h1> and its dates from git
+ * history, so storing it would be storing a derived value — the exact
  * duplication this phase removes. Every block and every graph this produces was
  * verified byte-identical to what the marker spans held before the conversion.
  */
@@ -78,7 +78,7 @@ const templatesDir = resolve(import.meta.dirname, '../templates')
  * two statements in one function now, which is where a dependency between two
  * steps belongs.
  */
-function renderPage(page) {
+function renderPage(page, dates) {
   const name = page.file.replace(/\.html$/, '')
   let main = readFileSync(resolve(templatesDir, `${name}.html`), 'utf-8').trimEnd()
 
@@ -96,6 +96,7 @@ function renderPage(page) {
       description: page.description,
       canonical: page.canonical,
       image: imageUrl(page.ogImage),
+      dates: dates[page.file],
     })
     main = fillBlocks(trust.main, 'trust', trust.blocks, page.file)
     schema.push(trust.schema)
@@ -122,7 +123,7 @@ function renderPage(page) {
   }
 }
 
-export function render() {
+export function render({ dates }) {
   // Every page calculator-tables.mjs builds a table for must be rendered here,
   // or a pricing table is computed and thrown away — the failure fillBlocks()
   // catches per page, asserted once for the set.
@@ -133,5 +134,9 @@ export function render() {
     }
   }
 
-  return [...HAND_AUTHORED_PAGES, ...CALCULATOR_PAGES_META].map(renderPage)
+  for (const page of [...HAND_AUTHORED_PAGES, ...CALCULATOR_PAGES_META]) {
+    if (!dates[page.file]) throw new Error(`${page.file}: no content dates — see src/build/content-dates.mjs`)
+  }
+
+  return [...HAND_AUTHORED_PAGES, ...CALCULATOR_PAGES_META].map((page) => renderPage(page, dates))
 }

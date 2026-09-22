@@ -1,7 +1,7 @@
 /**
  * Long-form supplemental content for the /kitchen-remodeling/ pillar page.
  * Kept out of services.js to keep that file scannable — two raw HTML blocks
- * consumed by generate-services.mjs via service.richContentBeforeProcess /
+ * consumed by src/build/services.mjs via service.richContentBeforeProcess /
  * service.richContentAfterProcess. Same pattern as
  * bathroom-remodeling-content.js.
  *

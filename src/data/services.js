@@ -1,7 +1,7 @@
 /**
  * Service Pages Data
  * Central data source for all dedicated service pages
- * Powers scripts/generate-services.mjs
+ * Powers src/build/services.mjs
  *
  * PRICING SOURCE OF TRUTH: src/js/calculator-config.js is the single
  * authoritative pricing engine for this site (see PRICING.md). Every

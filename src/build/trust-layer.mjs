@@ -26,15 +26,12 @@
  * failure, not a silently dropped section.
  */
 import { SCOTT_PERSON_SCHEMA, ORGANIZATION_SCHEMA, LOCAL_BUSINESS_SCHEMA, WEBSITE_SCHEMA, articleSchema, webPageSchema } from '../data/site-schema.js'
-import { CONTENT_DATES } from '../data/content-dates.js'
 import { SERVICE_FAQS } from '../data/service-faqs.js'
 import { GLOBAL_FAQS, faqPageSchema } from '../data/geo-aeo.js'
 import { SERVICES, SITE } from '../data/services.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { PROMOTED_FAQS } from '../data/promoted-faqs.js'
 import { CHOOSE_IF, PERMIT_REQUIRED } from '../data/service-comparison.js'
-
-const FALLBACK_DATES = { datePublished: '2026-07-19', dateModified: '2026-07-19' }
 
 // services.html already has its own hand-placed "Written by" byline further
 // down the page (not right after the H1 like the other 15) — inserting a
@@ -448,7 +445,7 @@ function calculatorMethodologyFaqs(serviceName) {
  * description, canonical and image are parameters now. The patcher scraped them
  * out of the page's own <head>, which a template does not have.
  */
-export function trustRender({ relFile, main, description, canonical, image }) {
+export function trustRender({ relFile, main, description, canonical, image, dates }) {
   let html = main
   const blocks = {}
 
@@ -458,7 +455,6 @@ export function trustRender({ relFile, main, description, canonical, image }) {
   }
   const headline = stripTags(h1Match[1])
 
-  const dates = CONTENT_DATES[relFile] ?? FALLBACK_DATES
 
   const article = articleSchema({
     headline,

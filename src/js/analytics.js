@@ -1,7 +1,7 @@
 /**
  * GA4 analytics — self-initializing on import, so every page just needs one
  * script tag (this file), not a dependency on main.js. Several generated
- * service pages (scripts/generate-services.mjs) don't load main.js at all.
+ * service pages (src/build/services.mjs) don't load main.js at all.
  *
  * Suppressed entirely on nicheprohub.com (staging) so that domain's traffic
  * never reaches GA4 — no gtag.js is even loaded there, not just untracked.

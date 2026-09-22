@@ -78,7 +78,7 @@ if (missed.length) {
     `apply-staging-noindex: ${missed.length} page(s) had no recognizable robots meta to replace:\n  ` +
     missed.join('\n  ') +
     '\n\nEvery page must emit exactly:\n  ' + INDEXABLE +
-    '\nCheck the seoHead() helpers in scripts/page-chrome.mjs, generate-services.mjs and generate-geo-aeo.mjs.'
+    '\nCheck the seoHead() helpers in src/chrome/index.mjs, src/build/services.mjs and src/build/geo.mjs.'
   )
   process.exit(1)
 }

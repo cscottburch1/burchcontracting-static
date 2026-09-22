@@ -20,6 +20,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # Full history. src/build/content-dates.mjs derives every page's
+          # datePublished and dateModified from git on each build, and the
+          # default fetch-depth of 1 gives it one commit per file — which
+          # would stamp today's date on all 70 URLs in the sitemap. That risk
+          # is why the dates used to be precomputed and committed instead.
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

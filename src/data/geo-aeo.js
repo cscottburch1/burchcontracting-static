@@ -12,7 +12,7 @@ export const SITE = {
 }
 
 // Real permit-office links only — the same 3 already used in faqs.html's
-// permit table (see generate-geo-aeo.mjs's faqsPage()). Spartanburg County
+// permit table (see src/build/geo.mjs's faqsPage()). Spartanburg County
 // (Woodruff) has no office link here because none has been verified yet —
 // see CITABILITY-FACTS-NEEDED.md rather than guessing a URL.
 export const PERMIT_OFFICES = {
@@ -28,7 +28,7 @@ export const SC_BUILDING_CODES_COUNCIL_URL = 'https://llr.sc.gov/bcc/'
 // Project" section. Keep in sync with projects.html's project cards and
 // src/build/trust-layer.mjs's CASE_STUDY_MATERIALS if either changes.
 // Cities with no entry here get a FACT-NEEDED prompt instead (see
-// generate-geo-aeo.mjs's cityProjectsSectionHtml()).
+// src/build/geo.mjs's cityProjectsSectionHtml()).
 export const CITY_PROJECTS = {
   greenville: [
     { title: 'Custom Multi-Level Deck', description: 'Multi-level wood deck with outdoor bar, fire pit, and built-in seating for entertaining.', category: 'Decks' },
@@ -49,7 +49,7 @@ export const CITY_PROJECTS = {
 // Local building conditions per city (soil/site, lot slope, HOA prevalence,
 // flood/drainage) — genuinely new per-city facts that don't exist anywhere
 // else on the site. 100% FACT-NEEDED by design (see
-// generate-geo-aeo.mjs's LOCAL_CONDITION_FIELDS comment): no city has any
+// src/build/geo.mjs's LOCAL_CONDITION_FIELDS comment): no city has any
 // of these fields populated yet, so every field on every city currently
 // renders nothing. Add a city as `{ 'Typical soil/site conditions': '...' }`
 // (only the fields you actually have) and the row/section reappears
