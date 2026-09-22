@@ -812,3 +812,52 @@ created the failure condition. Three gates in this repo have shipped incapable
 of matching anything — a regex with a literal backspace where a word boundary
 was meant, a FAQ check that claimed both directions and did one, and a Service
 check reading a `url` field no node has. All three passed every run.
+
+---
+
+## 2026-09-22 — Never `| grep -q` under `set -o pipefail`
+
+The first real run of `deploy.yml` (run 35741546873) deployed successfully,
+propagated, passed the secrets check and the version-marker check, then failed
+on the first representative page with:
+
+```
+printf: write error: Broken pipe
+::error::/ is not index,follow
+```
+
+The page *was* `index, follow`. The check failed **because** the string was
+there.
+
+`if ! printf '%s' "$body" | grep -q '...'` — `grep -q` exits the instant it
+matches and closes its end of the pipe. `printf` is still writing a 90 KB page,
+takes `EPIPE`, and exits non-zero. GitHub runs every `run:` block under
+`bash -eo pipefail`, so a non-zero anywhere in the pipeline makes the whole
+pipeline non-zero, and the script reads that as "the string was not found".
+
+The failure mode is inverted, which is the worst shape a gate can have: it fails
+on a correct page and **passes on a page that lacks the string entirely**, since
+then `grep` reads to EOF, `printf` completes, and only `grep` returns 1. A page
+that had actually shipped `noindex` would have sailed through.
+
+The canonical check on the next line had the same bug and would have failed one
+line later.
+
+**Decision.** Bash substring tests, `[[ "$body" == *"..."* ]]`. No subprocess, no
+pipe, nothing for `pipefail` to misread. The status extraction moved to
+parameter expansion (`${body##*HTTP_STATUS:}`) for the same reason.
+
+Every other pipe in the workflow was audited: `sed`, `cut`, `sha256sum`,
+`node -e` reading stdin to `end`, and a `while read` loop all consume to EOF and
+cannot orphan their writer. `grep -q` was the only short-circuiting consumer.
+
+**What this run actually proved.** The deploy path works — build, gates,
+`wrangler deploy`, propagation, secrets intact, version marker correct — and the
+automatic rollback works, on its first exercise, on a deploy where nothing
+visible changed. That is the cheapest possible test of the rollback path, and it
+is the reason the push trigger was left commented out.
+
+**The rule this adds:** a gate whose failure depends on the *shell's* behaviour
+rather than the content's is not tested until it has been run against both a
+matching and a non-matching input. Proving "it fails when tampered" was not
+enough here, because nobody had run it against a page that passes.
