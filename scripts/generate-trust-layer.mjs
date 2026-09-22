@@ -27,6 +27,7 @@ import { SERVICE_FAQS } from '../src/data/service-faqs.js'
 import { GLOBAL_FAQS, faqPageSchema } from '../src/data/geo-aeo.js'
 import { SERVICES, SITE } from '../src/data/services.js'
 import { SITE_ORIGIN, pageUrl } from '../src/data/url-map.js'
+import { PROMOTED_FAQS } from '../src/data/promoted-faqs.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -107,17 +108,6 @@ const CALCULATOR_FAQ_SOURCE = {
 // for a second copy of the same content from a data file. The block is
 // removed from the accordion and re-rendered as an H2, so nothing ends up
 // duplicated on the page.
-const PROMOTE_FROM_OWN_ACCORDION = {
-  'index.html': [
-    'Is Burch Contracting a licensed general contractor?',
-    'What areas does Burch Contracting serve?',
-    'How much does a deck cost in Upstate SC?',
-  ],
-  'services.html': [
-    'How do I get a free consultation and ballpark estimate?',
-    'Is Burch Contracting licensed and insured?',
-  ],
-}
 
 // Phase 6: FAQPage schema for calculators, built from whatever H2+<p>
 // question/answer pairs are already visibly rendered on the page (its own
@@ -700,10 +690,10 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
   // always recompute from their data-file source, even if ANSWERS_START is
   // already present — they're pure lookups, so re-running safely picks up
   // an edit to service-faqs.js/geo-aeo.js instead of silently going stale.
-  // Only PROMOTE_FROM_OWN_ACCORDION is gated on "already present": it's
-  // destructive (removes the source <details> from the accordion as it
-  // promotes it), so re-running it after the accordion entry is already
-  // gone would just fail to find it.
+  // The promoted entries used to be the exception here: they were scraped out
+  // of the page's own accordion, which destroyed the source, so they could not
+  // be recomputed. They come from src/data/promoted-faqs.js now, so every
+  // branch below is a pure lookup and nothing in this function is one-way.
   let extraFaqs = []
   const answersAlreadyPresent = html.includes(ANSWERS_START)
   if (faqSourceId) {
@@ -716,16 +706,26 @@ for (const relFile of [...FILES, ...SCHEMA_ONLY_FILES]) {
     extraFaqs = CONTACT_FAQ_INDICES.map((i) => ({ ...GLOBAL_FAQS[i], alreadyEscaped: false }))
   } else if (relFile === 'projects.html') {
     extraFaqs = PROJECTS_FAQ_INDICES.map((i) => ({ ...GLOBAL_FAQS[i], alreadyEscaped: false }))
-  } else if (answersAlreadyPresent) {
-    // Idempotent re-run of an accordion-promotion page: its source
-    // <details> entries were already removed on the first run — nothing to
-    // recompute.
-  } else if (PROMOTE_FROM_OWN_ACCORDION[relFile]) {
-    for (const q of PROMOTE_FROM_OWN_ACCORDION[relFile]) {
-      const result = promoteFromAccordion(html, q)
-      html = result.html
-      if (result.promoted) extraFaqs.push({ ...result.promoted, alreadyEscaped: true })
-      else console.warn(`  ! ${relFile}: could not find accordion entry "${q}" to promote — skipped`)
+  } else if (PROMOTED_FAQS[relFile]) {
+    // Read from data, not scraped out of the page.
+    //
+    // This used to call promoteFromAccordion() for each question, which takes
+    // the Q&A from the page's own <details> and DELETES the source. That works
+    // exactly once: on a re-run the source is gone, so the branch above used to
+    // detect an existing answers block and skip, leaving the section frozen at
+    // whatever the first run produced. It could never pick up an edit.
+    //
+    // Harmless while this generator patched committed HTML in place. Fatal the
+    // moment these pages render from a template, because the sources are
+    // already absent from src/templates/ — a regeneration would find nothing
+    // and silently drop the section. See src/data/promoted-faqs.js.
+    extraFaqs = PROMOTED_FAQS[relFile].map((f) => ({ ...f, alreadyEscaped: true }))
+
+    // The deletion still has to happen on any page that still carries the
+    // source <details>. It is a no-op once they are gone, which is now safe
+    // rather than lossy, because the content no longer depends on finding them.
+    for (const { question } of PROMOTED_FAQS[relFile]) {
+      html = promoteFromAccordion(html, question).html
     }
   }
 
