@@ -18,10 +18,11 @@
  *                            additions/         is now room-additions/
  *   - the home page stays    /
  *
- * Build output keeps its file shape (about.html, garage-builder/index.html):
- * Apache resolves the extensionless request through mod_rewrite rules in
- * public/.htaccess, and Cloudflare through cloudflare/worker.js plus the
- * generated dist/_redirects.
+ * Build output keeps its file shape (about.html, garage-builder/index.html).
+ * cloudflare/worker.js maps the extensionless request onto the file and issues
+ * the 301s itself. No dist/_redirects is generated, deliberately: Cloudflare
+ * applies that file to the Worker's own asset lookups too, which made /about
+ * redirect to itself.
  *
  * NOTE: scripts/rewrite-urls.mjs deliberately skips this file. It rewrites old
  * URLs to new ones wherever it finds them, which would otherwise turn the
@@ -126,8 +127,8 @@ export const UNLISTED_FILES = ['404.html']
 export const SITE_ORIGIN = 'https://burchcontracting.com'
 
 /**
- * The 2026-07 rebuild's URL -> the restored URL. Drives the link codemod, the
- * 301s in public/.htaccess and the generated dist/_redirects. Keys are written
+ * The 2026-07 rebuild's URL -> the restored URL. Drives the link codemod and
+ * the 301s cloudflare/worker.js issues. Keys are written
  * with a leading OLD_ prefix stripped at load time so this table can never be
  * mangled by the codemod that consumes it (see NOTE at the top of this file).
  */

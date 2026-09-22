@@ -4,7 +4,7 @@
  * index is what Copilot and ChatGPT search read from, and the retired Next.js
  * site had this while the static site did not.
  *
- * Runs after a verified production deploy (.github/workflows/cloudflare.yml).
+ * Runs after a verified production deploy (.github/workflows/deploy.yml).
  *
  *   node scripts/indexnow-submit.mjs                     # every sitemap URL
  *   node scripts/indexnow-submit.mjs --dry-run           # print, send nothing
