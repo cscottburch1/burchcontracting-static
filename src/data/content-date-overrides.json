@@ -48,6 +48,7 @@
   },
 
   "mechanicalCommits": {
+    "db21e9c": "refactor(dates): the commit that introduced this mechanism. Its only touch on a tracked path is three comment lines in src/data/geo-aeo.js, renaming generate-geo-aeo.mjs to src/build/geo.mjs. It carries no Content-Change trailer and could not list its own hash here, so on the first build after it landed /faqs and all eight service-area pages claimed dateModified 2026-09-22. Check 9 did not fire: nine of seventy is under its threshold, correctly, because nine genuinely changed pages is plausible. See docs/DECISIONS.md, 2026-09-22.",
     "6d8e92e": "contact form repairs — the diff to contact.html is one reCAPTCHA site-key attribute",
     "43ec78e": "fix(recaptcha): rotated v3 key pair — again one attribute value, invisible to a reader",
     "7cfd664": "fix(seo): sitemap lastmod + content dates — metadata only",

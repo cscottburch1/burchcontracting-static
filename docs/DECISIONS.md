@@ -597,3 +597,44 @@ social description by editing `pages.js`, does not move index.html's
 seven hand-authored pages whenever any one of their titles changed, trading
 under-reporting for over-reporting. Left as-is; the override file can correct
 any specific page this matters for.
+
+---
+
+## 2026-09-22 — This repo is never squash-merged or rebase-merged
+
+Content dates come from git. That makes the shape of the history a content
+decision, and squashing destroys the shape.
+
+A squash commit replaces every commit in a branch with one new commit that
+touches every file the branch touched. It becomes the newest commit on every
+path, so it becomes the newest touch on every template and every data file, so
+every page on the site takes its `dateModified` from it. The sitemap then tells
+Google that all seventy URLs changed on merge day. That is precisely the outcome
+`check-build`'s check 9 exists to prevent, and a squash causes it from outside
+the branch, after every gate has passed.
+
+A `Content-Change: none` trailer cannot save it either, because a real PR
+contains real content changes — PR #22 fills four blank cells on /services and
+corrects sixteen `datePublished` values. The squash commit would be honestly
+substantive and wrong about scope at the same time.
+
+**Decision.** Merge commits only. On GitHub: Settings → General → Pull Requests,
+uncheck "Allow squash merging" and "Allow rebase merging". This is an owner
+action in the repository settings; nothing in this repo can enforce it, which is
+why it is written down here and in `RUNBOOK.md` rather than added as a gate.
+
+Rebase merging is excluded for the same reason in a quieter form: it rewrites
+committer dates and can reorder what "newest" means on a path.
+
+**How this was found.** By the smaller version of it happening. `db21e9c`, the
+commit that introduced build-time dates, renamed a path in three comment lines
+of `src/data/geo-aeo.js`. Mechanical, but it carried no trailer and could not
+list its own hash in its own seed list, so /faqs and all eight service-area
+pages shipped claiming they changed that morning — nine URLs. Check 9 did not
+fire, correctly: nine of seventy is an ordinary day's editing, and no threshold
+can tell "nine pages changed" from "nine pages did not", because the difference
+is not in the data. A squash is the same bug at seventy pages.
+
+`scripts/dates-set-by-head.mjs` reports which URLs take their `dateModified`
+from HEAD, so the author sees the list before pushing. It is an aid, not a gate,
+for the reason above.
