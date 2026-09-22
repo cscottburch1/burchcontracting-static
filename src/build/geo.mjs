@@ -618,7 +618,17 @@ ${footer}
 // the dates passed in, which src/build/content-dates.mjs derives from git on
 // every build. changefreq/priority are dropped entirely per Google's own
 // guidance that both are ignored.
-function generateSitemap(dates) {
+/**
+ * Every public URL paired with the date entry it takes lastmod from.
+ *
+ * Exported because scripts/dates-set-by-head.mjs needs the same mapping to
+ * answer "which pages does __datafile__src/data/geo-aeo.js actually reach".
+ * That script read the previously built sitemap for it, so a stale build
+ * artifact silently answered "none" — it reported one date key and no URLs,
+ * which is the understatement the script exists to prevent. Deriving the report
+ * and the sitemap from one function means they cannot disagree.
+ */
+export function sitemapEntries(dates) {
   // Hand-authored static pages: the second element is the page's own key in
   // the dates map. Generated pages (faqs.html, service pages, service-area
   // pages) get their driving data file's shared pair instead.
@@ -672,11 +682,15 @@ function generateSitemap(dates) {
     ...ARTICLES.map((guide) => [pageUrl(`blog/${guide.slug}.html`), guideDates.blog]),
   ]
 
-  const urls = [...staticPages, ...servicePages, ...areaPages, ...guidePages]
+  return [...staticPages, ...servicePages, ...areaPages, ...guidePages]
+}
+
+function generateSitemap(dates) {
+  const urls = sitemapEntries(dates)
     .map(
-      ([path, dates]) => `  <url>
+      ([path, entry]) => `  <url>
     <loc>${SITE.domain}${path}</loc>
-    <lastmod>${dates.dateModified}</lastmod>
+    <lastmod>${entry.dateModified}</lastmod>
   </url>`
     )
     .join('\n')

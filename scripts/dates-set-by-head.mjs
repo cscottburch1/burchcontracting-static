@@ -24,17 +24,33 @@
  *
  *   node scripts/dates-set-by-head.mjs
  *
+ * It inspects HEAD and nothing else, and takes no arguments. Asking about an
+ * older commit would mean recomputing every date as of that commit, which is a
+ * different question from the one this answers: what is about to be pushed.
+ *
  * If the list is wrong, either add `Content-Change: none` to the commit message
  * (amend, if it is not pushed) or add the hash to `mechanicalCommits` in
- * src/data/content-date-overrides.json with a reason.
+ * src/data/content-date-overrides.json with a reason. Note that a date can
+ * resolve to today from an EARLIER commit than HEAD — that is the case this is
+ * most useful for, and the report says so rather than treating HEAD's own
+ * trailer as the end of the matter.
  */
 import { execFileSync } from 'node:child_process'
-import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 import { contentDates, readOverrides } from '../src/build/content-dates.mjs'
+import { sitemapEntries } from '../src/build/geo.mjs'
 
 const root = resolve(import.meta.dirname, '..')
+
+// HEAD only, deliberately. contentDates() reads the history reachable from the
+// working tree, so asking about an older commit would mean recomputing every
+// date as of that commit — a different and much larger question than the one
+// this answers, which is "what is about to be pushed".
+if (process.argv.length > 2) {
+  console.error('dates-set-by-head: takes no arguments; it inspects HEAD only.')
+  process.exit(2)
+}
 
 function git(args) {
   return execFileSync('git', args, { cwd: root }).toString().trim()
@@ -61,25 +77,20 @@ const affectedKeys = Object.entries(dates)
   .sort()
 
 /**
- * The URLs those keys actually reach, read from the sitemap the last build
- * produced.
+ * The URLs those keys actually reach.
  *
  * Reporting keys alone understates the damage, and understating it is how this
  * gets waved through: the defect that prompted this script showed up as one key,
  * __datafile__src/data/geo-aeo.js, which is nine live URLs. A person skims "1
  * entry" and moves on. They do not skim nine URLs.
+ *
+ * Computed through the same sitemapEntries() the sitemap itself uses, not read
+ * from the last build's output. The first version read .build/sitemap.xml,
+ * which meant a stale or absent artifact answered "no URLs" and the expansion
+ * silently did nothing — the failure mode this whole script exists to report.
  */
-const builtSitemap = resolve(root, '.build/sitemap.xml')
-function urlsClaiming(date) {
-  if (!existsSync(builtSitemap)) return null
-  const xml = readFileSync(builtSitemap, 'utf-8')
-  const out = []
-  for (const m of xml.matchAll(/<loc>(.*?)<\/loc>\s*<lastmod>(.*?)<\/lastmod>/gs)) {
-    if (m[2] === date) out.push(m[1])
-  }
-  return out
-}
-const affectedUrls = urlsClaiming(headDate)
+const entries = sitemapEntries(dates)
+const affectedUrls = entries.filter(([, d]) => d.dateModified === headDate).map(([path]) => path)
 
 console.log(`HEAD ${shortHead}  ${headDate}  ${subject}`)
 console.log(
@@ -96,17 +107,20 @@ console.log(`${affectedKeys.length} date entr${affectedKeys.length === 1 ? "y re
 for (const key of affectedKeys) console.log(`  ${key}`)
 console.log()
 
-if (affectedUrls === null) {
-  console.log('Run `npm run prebuild` for the list of URLs these reach — a __datafile__ entry')
-  console.log('is one line here and can be dozens of live pages.')
-} else if (affectedUrls.length) {
+if (affectedUrls.length) {
   console.log(`${affectedUrls.length} URL(s) will carry lastmod ${headDate}:`)
   for (const url of affectedUrls) console.log(`  ${url}`)
+  console.log()
 }
-console.log()
 
 if (hasTrailer || seeded) {
-  console.log('Marked mechanical, so these dates come from an earlier commit, not this one.')
+  // Not reassurance. HEAD is marked, so something EARLIER set these dates to
+  // today — and if that commit was mechanical too, it is unmarked and these
+  // pages are about to lie. This is the path that catches the previous commit's
+  // mistake, which is when anyone would actually be running this.
+  console.log('HEAD is marked mechanical, so an EARLIER commit set the dates above.')
+  console.log(`Check what that commit was: git log --since=${headDate} --format='%h %s'`)
+  console.log('If it did not change what a reader sees, add its hash to mechanicalCommits.')
 } else {
   console.log(
     'Nothing marks this commit mechanical, so each of the above will tell Google it changed\n' +
