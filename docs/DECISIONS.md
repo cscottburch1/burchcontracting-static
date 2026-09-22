@@ -677,8 +677,10 @@ a copy of the site, so it is no longer a fallback. `wrangler.jsonc` says that
 deleting the Worker route sends traffic straight back to Hostinger — that is
 still true, and it is now the wrong thing to do: it would serve a copy frozen at
 2026-09-22. **Rollback is `wrangler rollback` to a previous Worker version.**
-Recorded here, in `.github/workflows/cloudflare.yml`, and in `README.md`, because
-the old instruction is written in several places people will still find.
+Recorded here, in the deploy workflow, in `README.md` and in `RUNBOOK.md`,
+because the old instruction is written in several places people will still find.
+(That workflow was `cloudflare.yml` when this entry was written; Phase 5 split it
+into `ci.yml` and `deploy.yml`.)
 
 **Proof.** 481 paths checked against `migration/routing-baseline.json` (recorded
 from live production 2026-09-12) via `wrangler dev`, before and after the
@@ -771,3 +773,42 @@ known, deferred, out-of-scope issue since it was scoped to calculators. The
 schema now matches the visible text on all four. The reverse case is untouched
 and allowed: the accordion asks "How much does a room addition cost per square
 foot?", which no schema marks up, and marking up less than is visible is fine.
+
+---
+
+## 2026-09-22 — Phase 7: four documents, and what was deliberately left out
+
+`README.md` was describing a site that no longer existed — auto-deploy to
+Hostinger on push, a live URL of `dev.burchcontracting.com`, a file tree with
+`index.html` and `services.html` at the root, a link to a `DEPLOYMENT.md`
+archived in Phase 1, and Node 20. Every one of those was wrong, and the first
+was dangerous: it told a reader that pushing to `main` ships the site.
+
+Four documents now, and only four:
+
+- `README.md` — what this is, how to run it, how to change something, where to
+  read next.
+- `docs/ARCHITECTURE.md` — the pipeline, a table of where each kind of fact
+  lives, what is generated versus committed, and **which gate reads which
+  tree**. That last table is here because tampering with the wrong tree to test
+  a gate has already produced a confident wrong conclusion.
+- `docs/RUNBOOK.md` — every operation, each with the incident that shaped it.
+- `docs/DECISIONS.md` — this file.
+
+**Nothing was deleted from the root.** The plan said to delete every root-level
+`.md` except `PRICING.md`; Phase 1 had already archived them, so the only two
+left were `README.md` and `PRICING.md`. Recorded because "did nothing" and
+"forgot" look identical in a diff.
+
+**History stays here and nowhere else.** The other three documents describe the
+current state only. Where a rule needs a reason, they give the reason in a
+sentence and this file has the account. That split is what stops the runbook
+turning back into the five-paragraph workflow header it replaced.
+
+**One rule earned its own section.** `RUNBOOK.md` → Adding a gate now says that
+every new assertion must be shown to fail at least once before it is trusted,
+and that tampering means two assertions: that the edit landed, and that the edit
+created the failure condition. Three gates in this repo have shipped incapable
+of matching anything — a regex with a literal backspace where a word boundary
+was meant, a FAQ check that claimed both directions and did one, and a Service
+check reading a `url` field no node has. All three passed every run.
