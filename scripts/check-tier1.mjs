@@ -19,18 +19,21 @@
  *    them from the service pages.
  * 4. A headline range that agrees with its own pricing table. `garage-builder`
  *    is the canonical contradiction: the hero says "$39,000-$145,000" and the
- *    first table row says a 2-car is "$51,798–$62,381". Where the table is
- *    priced per square foot rather than in absolute dollars, the two cannot be
- *    compared directly and this reports that instead — Phase 6.6 makes the
- *    derivation uniform, at which point this check becomes a strict equality.
+ *    first table row says a 2-car is "$51,798–$62,381". Compared in the
+ *    headline's own unit — the first version compared bath and kitchen's
+ *    absolute headlines against their per-sq-ft tier table and called them
+ *    "not comparable" while an absolute project table sat on the same page —
+ *    allowing only displayRound(). headlineAgreesWithTable() in pricing-sync.js
+ *    is the one implementation; check-build's check 12 runs it on every service.
  *
- * NOT IN `npm test` UNTIL 6.3. It is written and demonstrated failing first, as
- * the gate-adding rule in RUNBOOK.md requires, and wired in by the commit that
- * makes it pass. A gate added green is a gate nobody has seen work.
+ * In `npm test` since Phase 6.6, the commit that made it pass. It was written
+ * and shown failing first (10 findings at 6.0, 3 after 6.3), as the gate-adding
+ * rule in RUNBOOK.md requires: a gate added green is a gate nobody has seen work.
  */
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 
+import { headlineAgreesWithTable } from '../src/data/pricing-sync.js'
 import { SERVICES } from '../src/data/services.js'
 import { pageUrl } from '../src/data/url-map.js'
 
@@ -40,15 +43,6 @@ const distDir = resolve(root, 'dist')
 if (!existsSync(distDir)) {
   console.error('check-tier1: dist/ not found — run `npm run build` first.')
   process.exit(1)
-}
-
-/** Dollar amounts in a string, as numbers. Ignores "/sq ft" suffixes. */
-function amounts(text) {
-  return [...String(text).matchAll(/\$([0-9][0-9,]*)/g)].map((m) => Number(m[1].replace(/,/g, '')))
-}
-
-function isPerSqFt(text) {
-  return /sq\s?ft/i.test(String(text))
 }
 
 const tier1 = SERVICES.filter((s) => s.tier === 1)
@@ -92,30 +86,13 @@ for (const service of tier1) {
     failures.push(`${label}: links to no cost guide under /cost/`)
   }
 
-  // 4. headline range vs its own table
-  const hero = amounts(service.stats?.costRange ?? '')
-  const tierRanges = (service.pricingTiers ?? []).map((t) => t.range ?? '')
-  const perSqFt = tierRanges.some(isPerSqFt)
-  const tableAmounts = tierRanges.flatMap(amounts)
-
-  if (!hero.length) {
+  // 4. headline range vs its own table — the same function check-build's
+  // check 12 runs over every service.
+  if (!service.stats?.costRange || !/\$/.test(service.stats.costRange)) {
     failures.push(`${label}: stats.costRange has no dollar amount`)
-  } else if (perSqFt) {
-    failures.push(
-      `${label}: headline is absolute dollars ("${service.stats.costRange}") but the table is per square foot ` +
-        `("${tierRanges.find(isPerSqFt)}") — not comparable. Phase 6.6 derives both from calculator-config.`
-    )
-  } else if (tableAmounts.length) {
-    const heroMin = Math.min(...hero)
-    const heroMax = Math.max(...hero)
-    const tableMin = Math.min(...tableAmounts)
-    const tableMax = Math.max(...tableAmounts)
-    if (heroMin !== tableMin || heroMax !== tableMax) {
-      failures.push(
-        `${label}: headline "${service.stats.costRange}" says $${heroMin.toLocaleString()}–$${heroMax.toLocaleString()}, ` +
-          `its own table says $${tableMin.toLocaleString()}–$${tableMax.toLocaleString()}`
-      )
-    }
+  } else {
+    const problem = headlineAgreesWithTable(service)
+    if (problem) failures.push(`${label}: ${problem}`)
   }
 }
 

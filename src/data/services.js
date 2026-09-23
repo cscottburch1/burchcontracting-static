@@ -29,6 +29,7 @@ import {
   tierPerSqftString,
   servicePerSqftBand,
   servicePerSqftString,
+  displayRange,
 } from './pricing-sync.js'
 import { bathroomRemodelingBeforeProcess, bathroomRemodelingAfterProcess } from './bathroom-remodeling-content.js'
 import { kitchenRemodelingBeforeProcess, kitchenRemodelingAfterProcess } from './kitchen-remodeling-content.js'
@@ -42,6 +43,13 @@ function formatBand(band, suffix = '/sq ft') {
 function spanPerSqft(lowBand, highBand, suffix = '/sq ft') {
   return formatBand({ min: lowBand.min, max: highBand.max }, suffix)
 }
+
+// Garage-with-apartment pricing is not in calculator-config — there is no
+// garage-apartment rate, so this is the one garage figure that is typed, not
+// computed. One constant, so the table row and the headline read the same
+// number. TODO(owner): add a garage-apartment rate to calculator-config.js
+// (or confirm $85,000–$145,000) so this can be derived like the rest.
+const GARAGE_APARTMENT = { budgetLow: 85000, customHigh: 145000 }
 
 export const SITE = {
   name: 'Burch Contracting',
@@ -160,7 +168,11 @@ export const SERVICES = [
     h1: 'Screened Porch Builder - Upstate SC',
     intro: "From simple porch conversions to luxury three-season rooms with HVAC, I handle all aspects: foundation work, framing, screening systems, electrical, and interior finishing. Every porch designed for year-round comfort in Upstate SC's climate.",
     stats: {
-      costRange: '$15,000-$65,000 Range',
+      costRange:
+        displayRange(
+          projectEstimate('screenedPorches', 'newScreenedPorch', 192),
+          projectEstimate('screenedPorches', 'upgradedOutdoorRoom', 300, { material: 'premium', complexity: 'complex' })
+        ) + ' Range',
       timeline: '3-6 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
@@ -225,7 +237,7 @@ export const SERVICES = [
     h1: 'Covered Patio Builder - Upstate SC',
     intro: "I build custom covered patios that extend your outdoor living space with protection from sun and rain. From simple roof extensions to fully-featured outdoor kitchens with lighting and ceiling fans, every patio is designed to complement your home's architecture and maximize your outdoor enjoyment.",
     stats: {
-      costRange: combinedCostString(
+      costRange: displayRange(
         projectEstimate('coveredPatios', 'basicRoof', 192),
         projectEstimate('coveredPatios', 'premiumOutdoorLiving', 400),
         { plus: true }
@@ -304,7 +316,7 @@ export const SERVICES = [
       // ($145,000) is the apartment-above-garage tier below, which calculator-config.js
       // has no equivalent for (it prices the garage structure only, not living space) —
       // left as the original hand-authored figure.
-      costRange: '$39,000-$145,000 Range',
+      costRange: displayRange(projectEstimate('garages', 'detachedStandard', 576), GARAGE_APARTMENT) + ' Range',
       timeline: '6-10 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
@@ -327,7 +339,7 @@ export const SERVICES = [
       {
         name: 'Garage with Apartment Above',
         size: '24×30 + 720 sq ft living',
-        cost: '$85,000–$145,000',
+        cost: combinedCostString(GARAGE_APARTMENT, GARAGE_APARTMENT),
         details: 'Two-story construction, full apartment finish, separate HVAC, rental income potential'
       }
     ],
@@ -344,7 +356,7 @@ export const SERVICES = [
       },
       {
         name: 'Garage with Apartment',
-        range: '$85,000-$145,000',
+        range: combinedCostString(GARAGE_APARTMENT, GARAGE_APARTMENT),
         description: 'Two-story construction with 576-720 sq ft apartment above garage. Full living space with kitchenette, bath, bedroom. Generates $850-$1,200/month rental income.'
       }
     ],
@@ -513,7 +525,7 @@ export const SERVICES = [
     h1: 'Bathroom Remodeling Contractor — Simpsonville & Fountain Inn, SC',
     intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${projectCostString('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${projectCostString('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${projectCostString('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${projectCostString('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
-      costRange: combinedCostString(
+      costRange: displayRange(
         projectEstimate('bathRemodel', 'basicRefresh', 25),
         projectEstimate('bathRemodel', 'fullGutRenovation', 130),
         { plus: true }
@@ -691,7 +703,7 @@ export const SERVICES = [
     h1: 'Kitchen Remodeling Contractor — Simpsonville & Fountain Inn, SC',
     intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${projectCostString('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${projectCostString('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
-      costRange: combinedCostString(
+      costRange: displayRange(
         projectEstimate('kitchenRemodel', 'standardRefresh', 100),
         projectEstimate('kitchenRemodel', 'premiumCustom', 220),
         { plus: true }
@@ -1197,7 +1209,12 @@ export const SERVICES = [
     stats: {
       // Bath + kitchen scope only (see note on the Whole-House tier below for
       // why that one isn't rolled into this headline figure).
-      costRange: '$5,600-$75,000 Typical',
+      costRange:
+        displayRange(
+          projectEstimate('bathRemodel', 'basicRefresh', 35),
+          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
+          { plus: true }
+        ) + ' Typical',
       timeline: '2-8 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'

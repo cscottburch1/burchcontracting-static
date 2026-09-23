@@ -90,3 +90,66 @@ export function servicePerSqftString(serviceKey) {
   const { min, max } = servicePerSqftBand(serviceKey)
   return `$${Math.round(min)}-${Math.round(max)} Per Sq Ft`
 }
+
+/**
+ * Nearest $500, for headline display only (Phase 6.6). A headline like
+ * "$3,984–$98,018+" reads as false precision on a range that wide; the table
+ * under it keeps the calculator's exact figures, and nothing here touches
+ * calculator math.
+ */
+export function displayRound(amount) {
+  return Math.round(amount / 500) * 500
+}
+
+/**
+ * A service's headline range: the low end of its cheapest table row through
+ * the high end of its priciest, rounded for display. Pass the SAME estimates
+ * the table rows use, so the headline cannot disagree with the table under it
+ * — which is what headlineAgreesWithTable() asserts.
+ */
+export function displayRange(lowEstimate, highEstimate, { plus = false } = {}) {
+  return `${formatCurrency(displayRound(lowEstimate.budgetLow))}–${formatCurrency(displayRound(highEstimate.customHigh))}${plus ? '+' : ''}`
+}
+
+/** Every amount in a price string. "$39-92" is two amounts: the second has no $ of its own. */
+function dollarAmounts(text) {
+  return [...String(text).matchAll(/\$([0-9][0-9,]*)(?:\s*[-–]\s*\$?([0-9][0-9,]*))?/g)]
+    .flatMap((m) => [m[1], m[2]])
+    .filter(Boolean)
+    .map((n) => Number(n.replace(/,/g, '')))
+}
+
+function perSqFt(text) {
+  return /sq\s?ft/i.test(String(text))
+}
+
+/**
+ * Does a service's headline (stats.costRange) equal min..max of its own
+ * table rows in the same unit? Returns null if it does, or a sentence saying
+ * how it does not. Used by check-build (every service) and check-tier1.
+ *
+ * "Its own table" is every commonProjects cost and pricingTiers range quoted
+ * in the headline's unit — absolute dollars or per square foot. Each bound
+ * may match exactly or after displayRound(). A headline with no dollar amount
+ * ("Custom Quote") has nothing to agree with.
+ */
+export function headlineAgreesWithTable(service) {
+  const headline = service.stats?.costRange ?? ''
+  const hero = dollarAmounts(headline)
+  if (!hero.length) return null
+  const unitPerSqFt = perSqFt(headline)
+  const rows = [
+    ...(service.commonProjects ?? []).map((p) => p.cost),
+    ...(service.pricingTiers ?? []).map((t) => t.range),
+  ].filter((text) => text && perSqFt(text) === unitPerSqFt)
+  const table = rows.flatMap(dollarAmounts)
+  if (!table.length) return null
+  const [heroMin, heroMax] = [Math.min(...hero), Math.max(...hero)]
+  const [tableMin, tableMax] = [Math.min(...table), Math.max(...table)]
+  const agrees = (h, t) => h === t || h === displayRound(t)
+  if (agrees(heroMin, tableMin) && agrees(heroMax, tableMax)) return null
+  return (
+    `headline "${headline}" says $${heroMin.toLocaleString()}–$${heroMax.toLocaleString()}, ` +
+    `its own ${unitPerSqFt ? 'per-sq-ft' : 'dollar'} table says $${tableMin.toLocaleString()}–$${tableMax.toLocaleString()}`
+  )
+}

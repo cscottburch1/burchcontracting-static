@@ -38,6 +38,9 @@
  *      history; with actions/checkout's default fetch-depth of 1 every page
  *      gets today's date and the sitemap tells Google the whole site changed
  *      this morning. Silent otherwise — the build succeeds either way.
+ *  10. A TODO( in any page's visible text (Phase 6.0).
+ *  11. The service hierarchy not derived from `tier` (Phase 6.1a).
+ *  12. A service's headline price disagreeing with its own table (Phase 6.6).
  *
  * WHICH TREE EACH CHECK READS
  *
@@ -64,7 +67,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { CALCULATOR_PAGES } from '../src/js/calculator-config.js'
-import { servicePerSqftBand } from '../src/data/pricing-sync.js'
+import { headlineAgreesWithTable, servicePerSqftBand } from '../src/data/pricing-sync.js'
 import { chromeHash, chromeSource } from './lib/chrome-hash.mjs'
 import { NAV_CLASS, activeNavItem } from '../src/data/nav.js'
 import { SERVICES, servicesByTier } from '../src/data/services.js'
@@ -776,6 +779,23 @@ const hierarchy = []
 if (hierarchy.length) {
   failed = true
   failures.push({ check: 'service-hierarchy-not-derived', detail: hierarchy })
+}
+
+// --- Check 12: every service's headline price agrees with its own table ---
+// Phase 6.6. garage-builder's hero said "$39,000-$145,000" over a table whose
+// cheapest row was $51,798; screened porches said "$15,000-$65,000" over
+// $13,551-$51,429; whole-home said "$5,600-$75,000" over $5,578-$644,314.
+// Each headline was typed once and the table under it was later derived, so
+// they drifted with nothing to notice. Headlines now come from displayRange()
+// with the same estimates as their table rows; this asserts the result for all
+// sixteen, in the headline's own unit, allowing only displayRound(). Reads
+// src/, like checks 6 and 7: the drift starts in the data, so name the service.
+const headlineDrift = SERVICES.map((s) => [s, headlineAgreesWithTable(s)])
+  .filter(([, problem]) => problem)
+  .map(([s, problem]) => `${s.id}: ${problem}`)
+if (headlineDrift.length) {
+  failed = true
+  failures.push({ check: 'headline-price-disagrees-with-table', detail: headlineDrift })
 }
 
 // --- Report ---
