@@ -11,7 +11,7 @@ import {
   CITY_PROJECTS,
   LOCAL_CONDITIONS,
 } from '../data/geo-aeo.js'
-import { SERVICES } from '../data/services.js'
+import { SERVICES, servicesByTier } from '../data/services.js'
 import { COST_GUIDES } from '../data/guides-cost.js'
 import { ARTICLES } from '../data/guides-articles.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../data/site-schema.js'
@@ -63,6 +63,24 @@ function seoHead({ title, description, canonical, ogImage = SITE.ogImage }) {
 }
 
 
+
+/**
+ * The services every area page lists, in tier order (Phase 6.4) — the same
+ * sort as the nav, footer and homepage grid, so a city page cannot lead with
+ * decks while the site leads with bathrooms. Feeds the visible list, the
+ * at-a-glance table and the Service node's serviceType, so the three agree.
+ */
+function coreServicesByTier() {
+  const order = servicesByTier().map((s) => s.id)
+  const dead = CORE_SERVICES.filter((s) => !order.includes(s.id))
+  if (dead.length) throw new Error(`geo-aeo.js CORE_SERVICES: no service has id ${dead.map((s) => `'${s.id}'`).join(', ')}`)
+  return [...CORE_SERVICES].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
+}
+
+/** One string for the H1 and the Article headline, which must match. */
+function areaHeadline(area) {
+  return `Bathroom & Kitchen Remodeling, Additions & More in ${area.name}, SC`
+}
 
 function authorBox(cityName, areaDates) {
   // cityName is 'Upstate SC' itself on faqs.html (a sitewide page, not a
@@ -247,10 +265,10 @@ ${promotedFaqs
           name: area.name,
           containedInPlace: { '@type': 'AdministrativeArea', name: area.county },
         },
-        serviceType: ['Deck Builder', 'Garage Construction', 'Screened Porches', 'Room Additions', 'Remodeling', 'Insurance Restoration', 'ADA Compliance'],
+        serviceType: coreServicesByTier().map((s) => s.name),
       },
       articleSchema({
-        headline: `Deck Builder, Garage Contractor & Home Additions in ${area.name}, SC`,
+        headline: areaHeadline(area),
         description,
         url: canonical,
         datePublished: areaDates.datePublished,
@@ -278,7 +296,7 @@ ${promotedFaqs
 
   const insights = area.insights.map((item) => `              <li class="flex items-start gap-2 text-slate-700 text-sm"><span class="text-blue-700 mt-0.5" aria-hidden="true">&#10003;</span><span>${esc(item)}</span></li>`).join('\n')
 
-  const services = CORE_SERVICES.map(
+  const services = coreServicesByTier().map(
     (service) => `              <li class="bg-white border border-slate-100 rounded-xl p-5 hover:border-blue-200 transition-colors">
                 <h3 class="font-bold text-slate-900 mb-2">${esc(service.name)}</h3>
                 <p class="text-slate-600 text-sm mb-3">${esc(service.summary)}</p>
@@ -323,7 +341,7 @@ ${header(new URL(canonical).pathname)}
             </ol>
           </nav>
           <p class="text-blue-300 font-semibold text-sm uppercase tracking-widest mb-3">Service Area: ${esc(area.name)}, SC</p>
-          <h1 class="text-4xl lg:text-5xl font-bold mb-4">Deck Builder, Garage Contractor &amp; Home Additions in ${esc(area.name)}, SC</h1>
+          <h1 class="text-4xl lg:text-5xl font-bold mb-4">${esc(areaHeadline(area))}</h1>
           <p class="text-xl text-slate-300 max-w-3xl mb-8">${esc(area.highlight)}</p>
           <div class="flex flex-col sm:flex-row gap-4">
             <a href="/contact" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors">Get Free Consultation</a>
@@ -384,7 +402,7 @@ ${neighborhoods}
                 </tr>
                 <tr class="border-t border-slate-200">
                   <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Core Services Offered</th>
-                  <td class="px-4 py-3 text-slate-600 text-sm">${CORE_SERVICES.map((s) => esc(s.name)).join('; ')}</td>
+                  <td class="px-4 py-3 text-slate-600 text-sm">${coreServicesByTier().map((s) => esc(s.name)).join('; ')}</td>
                 </tr>
                 <tr class="border-t border-slate-200">
                   <th scope="row" class="px-4 py-3 font-bold text-slate-900 text-left whitespace-nowrap">Contractor Licenses</th>

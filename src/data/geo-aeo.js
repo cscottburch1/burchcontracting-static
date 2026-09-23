@@ -189,17 +189,23 @@ export const SERVICE_AREAS = [
   },
 ]
 
+// The services listed on every service-area page. `id` is the service's id in
+// services.js: src/build/geo.mjs renders these in servicesByTier() order, so the
+// order written here does not matter, and an id matching no service fails the
+// build (Phase 6.4). Remodeling now leads every city page, as it leads the site.
 export const CORE_SERVICES = [
-  { name: 'Custom Decks', url: '/outdoor-living/decks', summary: 'Wood and composite decks for outdoor entertaining.' },
-  { name: 'Screened Porches', url: '/outdoor-living/screened-porches', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
-  { name: 'Garages', url: '/garage-builder', summary: 'Attached and detached garage construction.' },
-  { name: 'Room Additions', url: '/room-additions', summary: 'Ground-floor and second-story home expansions.' },
-  { name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
-  { name: 'Bathroom Remodeling', url: '/bathroom-remodeling', summary: 'Full bathroom remodels, from powder rooms to custom primary spa baths.' },
-  { name: 'Commercial Upfits', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
-  { name: 'Commercial Roofing', url: '/commercial-roofing', summary: 'Flat and metal roof installation, repair, and maintenance.' },
-  { name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
-  { name: 'ADA Compliance', url: '/ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
+  { id: 'bathroom-remodeling', name: 'Bathroom Remodeling', url: '/bathroom-remodeling', summary: 'Full bathroom remodels, from powder rooms to custom primary spa baths.' },
+  { id: 'kitchen-remodeling', name: 'Kitchen Remodeling', url: '/kitchen-remodeling', summary: 'Cabinets, quartz and granite counters, and layout changes.' },
+  { id: 'ada-bath-to-shower', name: 'ADA Tub-to-Shower Conversions', url: '/ada-bath-to-shower', summary: 'Zero-entry roll-in showers with ADA grab bars and non-slip floors.' },
+  { id: 'remodeling', name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
+  { id: 'additions', name: 'Room Additions', url: '/room-additions', summary: 'Ground-floor and second-story home expansions.' },
+  { id: 'decks', name: 'Custom Decks', url: '/outdoor-living/decks', summary: 'Wood and composite decks for outdoor entertaining.' },
+  { id: 'screened-porches', name: 'Screened Porches', url: '/outdoor-living/screened-porches', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
+  { id: 'garages', name: 'Garages', url: '/garage-builder', summary: 'Attached and detached garage construction.' },
+  { id: 'commercial-upfits', name: 'Commercial Upfits', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
+  { id: 'commercial-roofing', name: 'Commercial Roofing', url: '/commercial-roofing', summary: 'Flat and metal roof installation, repair, and maintenance.' },
+  { id: 'insurance-restoration', name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
+  { id: 'ada-compliance', name: 'ADA Compliance', url: '/ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
 ]
 
 export const GLOBAL_FAQS = [
