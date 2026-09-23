@@ -39,7 +39,7 @@ export const HAND_AUTHORED_PAGES = [
             "url": "https://burchcontracting.com/",
             "image": "https://burchcontracting.com/images/burch-contracting-logo.webp",
             "logo": "https://burchcontracting.com/images/burch-contracting-logo.webp",
-            "description": "Scott Burch has built and restored homes for Upstate SC homeowners since 1995 — decks, screened porches, garages, additions, remodeling, and insurance restoration. SC Licensed #CLG118679 | NC Licensed (Limited) #107292. BBB A+ rated.",
+            "description": "Scott Burch has built and restored homes for Upstate SC homeowners since 1995 — bathroom and kitchen remodeling, whole-home renovations, additions, basements, decks, screened porches, garages, and insurance restoration. SC Licensed #CLG118679 | NC Licensed (Limited) #107292. BBB A+ rated.",
             "telephone": "+18647244600",
             "email": "estimates@burchcontracting.com",
             "foundingDate": "1995",

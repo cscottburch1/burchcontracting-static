@@ -7,6 +7,7 @@
  */
 import { HOME_SERVICE_CARDS } from '../data/home-cards.js'
 import { SERVICES, servicesByTier } from '../data/services.js'
+import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 
 function esc(value) {
   return String(value)
@@ -26,9 +27,40 @@ function card(service, { heading, image, alt, blurb }) {
               </div>
               <div class="p-6">
                 <p class="text-slate-600 text-sm leading-relaxed mb-4">${esc(blurb)}</p>
-                <a href="/${service.slug}" class="text-blue-700 hover:text-blue-800 font-semibold text-sm">Learn More &rarr;</a>
+                <a href="${pageUrl(`${service.slug}/index.html`)}" class="text-blue-700 hover:text-blue-800 font-semibold text-sm">Learn More &rarr;</a>
               </div>
             </article>`
+}
+
+/**
+ * The homepage LocalBusiness node's hasOfferCatalog: every service, in tier
+ * order, so the structured data leads with the same offers the page does.
+ * Derived rather than typed into pages.js for the same reason as the grid.
+ */
+export function withOfferCatalog(schema) {
+  const catalog = {
+    '@type': 'OfferCatalog',
+    name: 'Burch Contracting services',
+    itemListElement: servicesByTier().map((service) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: service.title, url: `${SITE_ORIGIN}${pageUrl(`${service.slug}/index.html`)}` },
+    })),
+  }
+  let found = 0
+  const out = schema.map((block) =>
+    block['@graph']
+      ? {
+          ...block,
+          '@graph': block['@graph'].map((node) => {
+            if (node['@id'] !== `${SITE_ORIGIN}/#business`) return node
+            found++
+            return { ...node, hasOfferCatalog: catalog }
+          }),
+        }
+      : block
+  )
+  if (found !== 1) throw new Error(`index.html: expected one #business node to carry hasOfferCatalog, found ${found}`)
+  return out
 }
 
 export function homeServiceGrid() {

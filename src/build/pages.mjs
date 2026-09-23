@@ -59,7 +59,7 @@ import { CALCULATOR_PAGES_META } from '../data/calculators.js'
 import { HAND_AUTHORED_PAGES } from '../data/pages.js'
 import { pageUrl } from '../data/url-map.js'
 import { calculatorTable, tabledPages } from './calculator-tables.mjs'
-import { homeServiceGrid } from './home-grid.mjs'
+import { homeServiceGrid, withOfferCatalog } from './home-grid.mjs'
 import { assertNoPlaceholders, fillBlocks } from './placeholders.mjs'
 import { trustRender } from './trust-layer.mjs'
 
@@ -87,13 +87,15 @@ function renderPage(page, dates) {
     main = fillBlocks(main, 'calculator', { table: calculatorTable(page.file) }, page.file)
   }
 
-  if (main.includes('{{home.')) {
+  const homeGrid = main.includes('{{home.')
+  if (homeGrid) {
     main = fillBlocks(main, 'home', { services: homeServiceGrid() }, page.file)
   }
 
   // The two legal pages have no trust layer and no Article schema, so
   // trustRender is not called for them rather than called and discarded.
-  const schema = page.schema ? [...page.schema] : []
+  let schema = page.schema ? [...page.schema] : []
+  if (homeGrid) schema = withOfferCatalog(schema)
   if (main.includes('{{trust.')) {
     const trust = trustRender({
       relFile: page.file,
