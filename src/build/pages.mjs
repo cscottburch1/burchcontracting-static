@@ -59,6 +59,7 @@ import { CALCULATOR_PAGES_META } from '../data/calculators.js'
 import { HAND_AUTHORED_PAGES } from '../data/pages.js'
 import { pageUrl } from '../data/url-map.js'
 import { calculatorTable, tabledPages } from './calculator-tables.mjs'
+import { homeServiceGrid } from './home-grid.mjs'
 import { assertNoPlaceholders, fillBlocks } from './placeholders.mjs'
 import { trustRender } from './trust-layer.mjs'
 
@@ -84,6 +85,10 @@ function renderPage(page, dates) {
 
   if (main.includes('{{calculator.')) {
     main = fillBlocks(main, 'calculator', { table: calculatorTable(page.file) }, page.file)
+  }
+
+  if (main.includes('{{home.')) {
+    main = fillBlocks(main, 'home', { services: homeServiceGrid() }, page.file)
   }
 
   // The two legal pages have no trust layer and no Article schema, so
