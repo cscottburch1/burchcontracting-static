@@ -1174,6 +1174,9 @@ export const SERVICES = [
       'Insurance-friendly documentation available on request'
     ],
     calculator: 'ada-bath-shower',
+    // No /cost/ guide is about this service; the Simpsonville bathroom cost
+    // guide answers "Is converting a tub to a shower expensive?".
+    extraGuides: ['cost/bathroom-remodel-cost-simpsonville-sc.html'],
     relatedServices: [
       { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
       { name: 'ADA Compliance & Accessibility', url: '/ada-compliance' },
@@ -1258,6 +1261,35 @@ export const SERVICES = [
       bathroom: '2-4 weeks',
       wholeHouse: '12-20 weeks'
     },
+    // Phase 6.3 "what's included". Every item restates something this page
+    // already says — the design-build FAQ, the pricing tiers and the common
+    // projects — so the section adds structure, not claims.
+    serviceCategories: [
+      {
+        name: 'Design & Planning',
+        items: [
+          'Design-build: design, selections and construction under one roof',
+          'No separate designer to hire and coordinate',
+          'Permits pulled as part of the job',
+        ],
+      },
+      {
+        name: 'Structure & Systems',
+        items: [
+          'Demolition and structural changes',
+          'Electrical and plumbing upgrades',
+          'Systems upgrades across multiple rooms',
+        ],
+      },
+      {
+        name: 'Kitchens, Baths & Whole-House',
+        items: [
+          'Kitchens: cabinets, countertops, appliances, flooring, lighting, backsplash, reconfigured layouts',
+          'Bathrooms: tub or shower, vanity, toilet, flooring, tile, updated plumbing and electrical',
+          'Whole-house: multiple rooms and a complete interior refresh',
+        ],
+      },
+    ],
     // Three separate calculators exist for this service (kitchen, bath,
     // whole-home) — a single `calculator` field can't link all three, which
     // is why kitchen-remodel.html and whole-home-remodel.html had no
@@ -1266,6 +1298,18 @@ export const SERVICES = [
       { id: 'kitchen-remodel', label: 'Kitchen Cost Calculator' },
       { id: 'bath-remodel', label: 'Bath Cost Calculator' },
       { id: 'whole-home-remodel', label: 'Whole-Home Cost Calculator' }
+    ],
+    // This service's own calculator, for the pages that link exactly one
+    // (the /services and homepage comparison tables, check-tier1). The three
+    // above are still what this page renders as buttons.
+    calculator: 'whole-home-remodel',
+    // No whole-home cost guide exists yet (queued in RUNBOOK "Next content");
+    // until one does, the kitchen and bathroom guides are this page's.
+    extraGuides: [
+      'cost/kitchen-remodel-cost-simpsonville-sc.html',
+      'cost/kitchen-remodel-cost-greenville-sc.html',
+      'cost/bathroom-remodel-cost-simpsonville-sc.html',
+      'cost/bathroom-remodel-cost-greenville-sc.html',
     ],
     relatedServices: [
       { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },

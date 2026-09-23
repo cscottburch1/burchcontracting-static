@@ -196,6 +196,10 @@ export const SERVICE_FAQS = {
     {
       question: 'Will my kitchen or bathroom be usable during the remodel?',
       answer: 'For most kitchen and bathroom remodels there is a period where the space is out of use while fixtures, plumbing, and finishes are replaced. We sequence the work to keep that window as short as practical and walk you through what to expect before demolition starts.'
+    },
+    {
+      question: 'Do I need a permit for a remodel?',
+      answer: 'If the work changes structure, plumbing, electrical or mechanical systems, yes — which covers most full kitchen, bathroom and whole-house remodels. Paint, flooring, countertops, and replacing a fixture in the same location generally do not. For Greenville County addresses the review runs through Greenville County Building Safety, and HOA approval is a separate matter. We pull the permit on projects we build.'
     }
   ],
 
@@ -460,6 +464,10 @@ export const SERVICE_FAQS = {
     {
       question: 'Can you provide documentation for insurance or a medical need?',
       answer: 'Yes. Insurance-friendly documentation is available on request, which can help when a conversion is tied to a medical need or accessibility requirement.'
+    },
+    {
+      question: 'Does a tub-to-shower conversion need a permit?',
+      answer: 'In most cases, yes. The conversion includes plumbing rough-in and relocation, and new or relocated plumbing needs a permit; for Greenville County addresses the review runs through Greenville County Building Safety. We pull the permit on projects we build, so the inspections are scheduled and met as part of the work rather than left to you.'
     }
   ],
 

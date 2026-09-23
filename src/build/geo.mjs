@@ -17,6 +17,7 @@ import { ARTICLES } from '../data/guides-articles.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../data/site-schema.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { footer, header } from '../chrome/index.mjs'
+import { serviceDates } from './content-dates.mjs'
 
 
 // The content-dates keys this module reads. The dates themselves arrive as a
@@ -662,7 +663,7 @@ export function sitemapEntries(dates) {
   // without needing to remember to update this list by hand.
   // Both lists read their URLs from src/data/url-map.js, so the sitemap can
   // only ever list the final, non-redirecting address of each page.
-  const servicePages = SERVICES.map((service) => [pageUrl(`${service.slug}/index.html`), dates[SERVICES_KEY]])
+  const servicePages = SERVICES.map((service) => [pageUrl(`${service.slug}/index.html`), serviceDates(dates, service)])
 
   const areaPages = SERVICE_AREAS.map((area) => [pageUrl(`service-areas/${area.slug}.html`), dates[AREA_KEY]])
 

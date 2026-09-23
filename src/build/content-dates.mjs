@@ -66,6 +66,7 @@ import { resolve } from 'node:path'
 
 import { CALCULATOR_PAGES_META } from '../data/calculators.js'
 import { HAND_AUTHORED_PAGES } from '../data/pages.js'
+import { SERVICES } from '../data/services.js'
 
 const root = resolve(import.meta.dirname, '../..')
 const overridesPath = resolve(root, 'src/data/content-date-overrides.json')
@@ -156,6 +157,13 @@ export function readOverrides() {
  * same silent-default class as the og:type and PERMIT_REQUIRED defaults this
  * phase removed.
  */
+const SERVICE_PREFIX = '__service__'
+
+/** One service page's dates: its own override if it has one, else services.js's. */
+export function serviceDates(dates, service) {
+  return dates[`${SERVICE_PREFIX}${service.id}`] ?? dates['__datafile__src/data/services.js']
+}
+
 export function contentDates() {
   const { history, mechanicalCommits, dates: literal } = readOverrides()
   const result = {}
@@ -182,6 +190,20 @@ export function contentDates() {
     const d = datesFrom([dataFile, ...(history[key] ?? [])], mechanicalCommits)
     if (!d) missing.push(`${key}`)
     else result[key] = d
+  }
+
+  // Per-service dates (Phase 6.3). See the header, point 3: git cannot tell
+  // which service inside services.js changed, so all sixteen share one pair.
+  // A `__service__<id>` entry in the overrides file corrects one service; a
+  // field it leaves out falls back to the shared pair. Read them through
+  // serviceDates(), never by key.
+  const shared = result[`__datafile__src/data/services.js`]
+  const ids = new Set(SERVICES.map((s) => s.id))
+  for (const [key, value] of Object.entries(literal)) {
+    if (!key.startsWith(SERVICE_PREFIX)) continue
+    const id = key.slice(SERVICE_PREFIX.length)
+    if (!ids.has(id)) missing.push(`${key} (no service has id '${id}')`)
+    else if (shared) result[key] = { datePublished: value.datePublished ?? shared.datePublished, dateModified: value.dateModified ?? shared.dateModified }
   }
 
   if (missing.length) {

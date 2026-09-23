@@ -71,6 +71,10 @@
   },
 
   "dates": {
+    "__service__bathroom-remodeling": {"dateModified":"2026-09-23","why":"Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."},
+    "__service__kitchen-remodeling": {"datePublished":"2026-08-29","dateModified":"2026-09-23","why":"Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates. datePublished 2026-08-29 is when kitchen-remodeling was added (docs/archive/FINDINGS.md #7), not services.js's 2026-06-01."},
+    "__service__ada-bath-to-shower": {"dateModified":"2026-09-23","why":"Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."},
+    "__service__remodeling": {"dateModified":"2026-09-23","why":"Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."},
     "privacy-policy.html": {
       "datePublished": "2026-07-10",
       "dateModified": "2026-07-23",
@@ -84,7 +88,7 @@
     "__datafile__src/data/services.js": {
       "datePublished": "2026-06-01",
       "dateModified": "2026-09-11",
-      "why": "Git tracks files, not the services inside one. Every service shares services.js's history, so each claims the file's creation date. 2026-06-01 is when the earliest of them actually shipped; the file itself was created 2026-07-02, which made every service look newer than it is. See docs/archive/FINDINGS.md #7 — kitchen-remodeling is the clearest case, added 2026-08-29 and claiming 2026-07-02. Per-service dates need per-object history, which git does not have; this at least stops the oldest services from being backdated forward. TODO(phase-6): kitchen and bathroom become lead offers and deserve real per-entry dates."
+      "why": "Git tracks files, not the services inside one. Every service shares services.js's history, so each claims the file's creation date. 2026-06-01 is when the earliest of them actually shipped; the file itself was created 2026-07-02, which made every service look newer than it is. See docs/archive/FINDINGS.md #7 — kitchen-remodeling is the clearest case, added 2026-08-29 and claiming 2026-07-02. Per-service dates need per-object history, which git does not have; this at least stops the oldest services from being backdated forward. Since Phase 6.3 a service can carry its own dates as a __service__<id> entry below; the Tier 1 lead offers do."
     }
   }
 }
