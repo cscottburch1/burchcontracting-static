@@ -66,7 +66,8 @@
     "a24c5f0": "refactor(pages): the 7 hand-authored pages through the shared chrome",
     "ba64e18": "refactor(trust-layer): promoted FAQs come from data — same text, different source",
     "1ca10f2": "refactor(trust-layer): render from data; the seven root pages go",
-    "dd4a1dd": "refactor(build): the calculators render from templates"
+    "dd4a1dd": "refactor(build): the calculators render from templates",
+  "06001c4": "feat(seo): Phase 6.2 titles and descriptions — head metadata only, 0 chars of visible text changed on any page"
   },
 
   "dates": {
