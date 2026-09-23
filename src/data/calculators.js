@@ -1,3 +1,5 @@
+import { adaBathRange, servicePerSqftBand } from './pricing-sync.js'
+
 /**
  * Head metadata for the eleven calculator pages.
  *
@@ -16,11 +18,18 @@
  * template's own <h1>, the pricing table's <h2>, and src/data/. There is
  * nothing left to store.
  */
+// The two prices below come from calculator-config through pricing-sync (Phase
+// 6.6, owner pricing of 2026-09-23); they were typed, and both were wrong.
+const basementBand = () => {
+  const { min, max } = servicePerSqftBand('basementFinishing')
+  return `$${Math.round(min)}-$${Math.round(max)}/sq ft`
+}
+
 export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/ada-bath-shower.html",
     "title": "ADA Bath-to-Shower Cost Calculator Simpsonville & Greenville SC | Burch Contracting",
-    "description": "$10,500-$19,800 for an ADA bath-to-shower conversion in Upstate SC. Roll-in showers, grab bars. SC Licensed #CLG118679.",
+    "description": `${adaBathRange()} for an ADA bath-to-shower conversion in Upstate SC. Roll-in showers, grab bars. SC Licensed #CLG118679.`,
     "canonical": "https://burchcontracting.com/calculator/ada-bath-shower",
     "ogImage": "/images/ada-compliance-residential.webp",
     "ogType": "website",
@@ -42,7 +51,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/basement-finishing.html",
     "title": "Basement Finishing Cost Calculator Simpsonville & Greenville SC | Burch Contracting",
-    "description": "$30-$75/sq ft basement finishing costs in Upstate SC — basic space up to a premium build-out. SC Licensed #CLG118679.",
+    "description": `${basementBand()} basement finishing costs in Upstate SC — basic space up to a premium build-out. SC Licensed #CLG118679.`,
     "canonical": "https://burchcontracting.com/calculator/basement-finishing",
     "ogImage": "/images/finished-basement.webp",
     "ogType": "website",

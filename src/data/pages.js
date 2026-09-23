@@ -282,7 +282,7 @@ export const HAND_AUTHORED_PAGES = [
                 "name": "How much does a screened porch cost in Upstate SC?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Screened porches in Simpsonville and surrounding areas typically run $15,000 to $65,000 for new construction. Converting an existing deck can save 50–70%."
+                  "text": "Screened porches in Simpsonville and surrounding areas typically run {{range.screened-porches}} for new construction. Converting an existing deck can save 50–70%."
                 }
               },
               {
@@ -290,7 +290,7 @@ export const HAND_AUTHORED_PAGES = [
                 "name": "How much does a detached garage cost?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Detached two-car garages (576 sqft) in Upstate SC commonly range from $52,000 to $62,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $109,000 to $131,000."
+                  "text": "Detached garages in Upstate SC commonly run {{range.garages}}, from a standard two-car (576 sqft) to a 3-car or workshop configuration (900 sqft)."
                 }
               },
               {

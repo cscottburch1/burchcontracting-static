@@ -1,7 +1,7 @@
 import {
   PRICING_CONFIG,
   PRICING_UPDATED,
-  ADA_BATH_SHOWER_ITEMS,
+  adaBathEstimate,
   formatCurrency,
   formatPercent,
 } from './calculator-config.js'
@@ -52,55 +52,10 @@ function initCalculator(root) {
   render()
 }
 
+// The math lives in calculator-config.js so the build's pricing table and the
+// service page's headline run the same code as this calculator.
 function computeEstimate(state) {
-  const location = PRICING_CONFIG.locationFactors[state.location]
-  let directLow = 0
-  let directHigh = 0
-  const includedItems = []
-
-  for (const item of ADA_BATH_SHOWER_ITEMS) {
-    let low = item.low
-    let high = item.high
-    let included = Boolean(item.always)
-
-    if (item.group === 'finish') {
-      included = state.finish === item.groupValue
-    }
-    if (item.optional) {
-      included = item.id === 'grabBars' ? state.grabBars : included
-    }
-    if (item.hasThermostatic) {
-      included = true
-      if (state.thermostatic) {
-        low = item.high
-        high = item.high
-      } else {
-        low = item.low
-        high = item.low
-      }
-    }
-
-    if (included) {
-      directLow += low
-      directHigh += high
-      includedItems.push({ ...item, low, high })
-    }
-  }
-
-  const adjustedLow = directLow * location.factor
-  const adjustedHigh = directHigh * location.factor
-  const finalLow = adjustedLow * (1 + PRICING_CONFIG.defaultOverheadAndProfit)
-  const finalHigh = adjustedHigh * (1 + PRICING_CONFIG.defaultOverheadAndProfit)
-
-  return {
-    directLow,
-    directHigh,
-    finalLow,
-    finalHigh,
-    mostCommon: (finalLow + finalHigh) / 2,
-    includedItems,
-    location,
-  }
+  return adaBathEstimate(state)
 }
 
 function card(title, body) {

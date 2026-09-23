@@ -17,17 +17,15 @@ import { CALCULATOR_PAGES_META } from '../data/calculators.js'
 import { COST_GUIDES } from '../data/guides-cost.js'
 import { ARTICLES } from '../data/guides-articles.js'
 import { SERVICE_AREAS } from '../data/geo-aeo.js'
-import { servicePerSqftBand } from '../data/pricing-sync.js'
+import { adaBathRange, servicePerSqftBand } from '../data/pricing-sync.js'
 import { servicesByTier } from '../data/services.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 
 const url = (file) => `${SITE_ORIGIN}${pageUrl(file)}`
 
 // Calculator page id -> calculator-config service key, for the price band.
-// Basement and ADA bath-to-shower are left out on purpose: each page's
-// published price disagrees with calculator-config and the owner has not yet
-// said which is right (Phase 6.6). Printing either figure here would take a
-// side. Add them back once decided.
+// ADA bath-to-shower is itemized, not per sq ft, so it is priced separately
+// below with adaBathRange().
 const PRICED_CALCULATORS = {
   'bath-remodel': 'bathRemodel',
   'kitchen-remodel': 'kitchenRemodel',
@@ -37,6 +35,7 @@ const PRICED_CALCULATORS = {
   porch: 'screenedPorches',
   'covered-patios': 'coveredPatios',
   garages: 'garages',
+  'basement-finishing': 'basementFinishing',
 }
 
 const TIER_HEADINGS = {
@@ -68,7 +67,8 @@ export function render() {
   const calculatorLines = calculators.map((meta) => {
     const id = meta.file.replace(/^calculator\/|\.html$/g, '')
     const key = PRICED_CALCULATORS[id]
-    return `- [${calculatorLabel(meta)}](${url(meta.file)})${key ? `: ${perSqft(key)} installed, computed from calculator-config.js.` : '.'}`
+    const price = key ? `${perSqft(key)} installed` : id === 'ada-bath-shower' ? `${adaBathRange()} installed, itemized` : null
+    return `- [${calculatorLabel(meta)}](${url(meta.file)})${price ? `: ${price}, computed from calculator-config.js.` : '.'}`
   })
 
   const serviceSections = Object.entries(TIER_HEADINGS).map(([tier, heading]) => {

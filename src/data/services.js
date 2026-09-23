@@ -30,6 +30,11 @@ import {
   servicePerSqftBand,
   servicePerSqftString,
   displayRange,
+  adaBathRange,
+  quotedPerSqft,
+  quotedCost,
+  quotedEstimate,
+  handymanRate,
 } from './pricing-sync.js'
 import { bathroomRemodelingBeforeProcess, bathroomRemodelingAfterProcess } from './bathroom-remodeling-content.js'
 import { kitchenRemodelingBeforeProcess, kitchenRemodelingAfterProcess } from './kitchen-remodeling-content.js'
@@ -43,13 +48,6 @@ function formatBand(band, suffix = '/sq ft') {
 function spanPerSqft(lowBand, highBand, suffix = '/sq ft') {
   return formatBand({ min: lowBand.min, max: highBand.max }, suffix)
 }
-
-// Garage-with-apartment pricing is not in calculator-config — there is no
-// garage-apartment rate, so this is the one garage figure that is typed, not
-// computed. One constant, so the table row and the headline read the same
-// number. TODO(owner): add a garage-apartment rate to calculator-config.js
-// (or confirm $85,000–$145,000) so this can be derived like the rest.
-const GARAGE_APARTMENT = { budgetLow: 85000, customHigh: 145000 }
 
 export const SITE = {
   name: 'Burch Contracting',
@@ -312,11 +310,10 @@ export const SERVICES = [
     h1: 'Garage Builder - Upstate SC',
     intro: "From basic 2-car detached garages to luxury 3-car workshops with apartments above, I handle everything: site prep, foundation, framing, roofing, electrical, and finishing. Every garage engineered to match your home's architecture and meet your specific needs.",
     stats: {
-      // Low end reconciled to calculator-config.js (attachedBasic @576sf). High end
-      // ($145,000) is the apartment-above-garage tier below, which calculator-config.js
-      // has no equivalent for (it prices the garage structure only, not living space) —
-      // left as the original hand-authored figure.
-      costRange: displayRange(projectEstimate('garages', 'detachedStandard', 576), GARAGE_APARTMENT) + ' Range',
+      // The 2-car and workshop rows, in dollars. The apartment tier is quoted per
+      // sq ft (QUOTED_RATES.garageApartment, owner 2026-09-23), so it sits above
+      // this range rather than inside it — hence the "+".
+      costRange: displayRange(projectEstimate('garages', 'detachedStandard', 576), projectEstimate('garages', 'upgradedWorkshop', 900), { plus: true }) + ' Range',
       timeline: '6-10 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
@@ -339,7 +336,7 @@ export const SERVICES = [
       {
         name: 'Garage with Apartment Above',
         size: '24×30 + 720 sq ft living',
-        cost: combinedCostString(GARAGE_APARTMENT, GARAGE_APARTMENT),
+        cost: quotedPerSqft('garageApartment'),
         details: 'Two-story construction, full apartment finish, separate HVAC, rental income potential'
       }
     ],
@@ -356,7 +353,7 @@ export const SERVICES = [
       },
       {
         name: 'Garage with Apartment',
-        range: combinedCostString(GARAGE_APARTMENT, GARAGE_APARTMENT),
+        range: quotedPerSqft('garageApartment'),
         description: 'Two-story construction with 576-720 sq ft apartment above garage. Full living space with kitchenette, bath, bedroom. Generates $850-$1,200/month rental income.'
       }
     ],
@@ -460,48 +457,48 @@ export const SERVICES = [
     h1: 'ADU Builder - Accessory Dwelling Units Upstate SC',
     intro: "From garage apartments to detached backyard cottages, I handle all aspects of ADU construction: zoning review, design, construction, and utilities. ADUs provide rental income ($850-$1,500/month) or flexible living space for family members.",
     stats: {
-      costRange: '$65,000-$220,000 Range',
+      costRange: displayRange(quotedEstimate('adu', 576), quotedEstimate('adu', 900, 1200)) + ' Range',
       timeline: '10-16 Weeks Typical',
       experience: 'Since 1995',
       rental: 'Income $850-$1,500/mo'
     },
-    pricePerSqFt: '$110-185/sq ft',
+    pricePerSqFt: quotedPerSqft('adu'),
     timeline: '10-16 weeks',
     rentalIncome: '$850-$1,500/month',
     commonProjects: [
       {
         name: 'Garage Apartment',
         size: '576 sq ft above 2-car garage',
-        cost: '$65,000–$95,000',
+        cost: quotedCost('adu', 576),
         details: 'Studio or 1-bed layout, kitchenette, full bath, separate entrance, rental income $850-$1,200/mo'
       },
       {
         name: '1-Bedroom Detached Cottage',
         size: '600-800 sq ft',
-        cost: '$125,000–$185,000',
+        cost: quotedCost('adu', 600, 800),
         details: 'Full kitchen, bathroom, living area, separate utilities, full-time living capable'
       },
       {
         name: '2-Bedroom ADU',
         size: '900-1,200 sq ft',
-        cost: '$175,000–$220,000',
+        cost: quotedCost('adu', 900, 1200),
         details: 'Full home features, 2 bed/1-2 bath, complete kitchen, laundry, rental income $1,200-$1,500/mo'
       }
     ],
     pricingTiers: [
       {
         name: 'Garage Apartment',
-        range: '$65,000-$95,000',
+        range: quotedCost('adu', 576),
         description: '576 sq ft above new or existing 2-car garage. Open studio or 1-bedroom layout, kitchenette, full bath, HVAC, separate entrance. Most economical ADU option.'
       },
       {
         name: 'Detached Cottage',
-        range: '$125,000-$185,000',
+        range: quotedCost('adu', 600, 800),
         description: '600-800 sq ft detached structure. Complete kitchen, bathroom, bedroom, living area. Separate utilities, full code compliance. Perfect for in-law suite or long-term rental.'
       },
       {
         name: 'Premium 2-Bedroom',
-        range: '$175,000-$220,000',
+        range: quotedCost('adu', 900, 1200),
         description: '900-1,200 sq ft full-featured home. Two bedrooms, 1-2 bathrooms, complete kitchen, laundry room. Highest rental income potential at $1,200-$1,500/month.'
       }
     ],
@@ -829,47 +826,47 @@ export const SERVICES = [
     h1: 'Commercial Upfits & Tenant Improvements - Upstate SC',
     intro: "From retail spaces to medical offices and restaurant build-outs, I handle all phases: space planning, permitting, construction, inspections, and final finishes. Every project delivered on time and within budget.",
     stats: {
-      costRange: '$30-100+ Per Sq Ft',
+      costRange: 'Custom Quote',
       timeline: '4-16 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: '$30-100+/sq ft',
+    pricePerSqFt: 'Custom quote',
     timeline: '4-16 weeks',
     commonProjects: [
       {
         name: 'Small Retail or Office',
         size: '1,000-2,000 sq ft',
-        cost: '$30,000–$80,000',
+        cost: 'Custom quote',
         details: 'Interior walls, flooring, lighting, HVAC, restroom updates, storefront modifications. 4-8 week timeline.'
       },
       {
         name: 'Medical or Professional Office',
         size: '2,000-3,500 sq ft',
-        cost: '$80,000–$200,000',
+        cost: 'Custom quote',
         details: 'Multiple exam rooms, reception area, ADA compliance, specialized HVAC, medical plumbing. 8-12 week timeline.'
       },
       {
         name: 'Restaurant or Food Service',
         size: '2,500-4,000 sq ft',
-        cost: '$150,000–$400,000+',
+        cost: 'Custom quote',
         details: 'Commercial kitchen equipment, hood systems, grease trap, dining area finishes, health dept compliance. 12-16 week timeline.'
       }
     ],
     pricingTiers: [
       {
         name: 'Basic Office/Retail',
-        range: '$30-50/sq ft',
+        range: 'Custom quote',
         description: 'Simple build-out with interior walls, flooring, lighting, basic electrical, HVAC adjustments. Minimal plumbing. Standard finishes. 4-8 weeks for 1K-2K sf spaces.'
       },
       {
         name: 'Mid-Range Professional',
-        range: '$50-80/sq ft',
+        range: 'Custom quote',
         description: 'Multiple rooms, upgraded finishes, ADA compliance, restroom additions, specialized systems. Medical, dental, or professional office. 8-12 weeks typical timeline.'
       },
       {
         name: 'Complex Food Service',
-        range: '$80-100+/sq ft',
+        range: 'Custom quote',
         description: 'Restaurant or food service with commercial kitchen, hood systems, grease trap, health department compliance, heavy electrical/plumbing. 12-16 weeks for 2.5K-4K sf.'
       }
     ],
@@ -955,47 +952,47 @@ export const SERVICES = [
     h1: 'Basement Finishing Contractor - Upstate SC',
     intro: "From simple storage spaces to luxury home theaters, I handle all aspects of basement finishing: egress windows, moisture control, electrical, plumbing, and complete interior finishing. Every project code-compliant and built to last.",
     stats: {
-      costRange: '$30-75 Per Sq Ft',
+      costRange: servicePerSqftString('basementFinishing'),
       timeline: '6-10 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: '$30-75/sq ft',
+    pricePerSqFt: formatBand(servicePerSqftBand('basementFinishing')),
     timeline: '6-10 weeks',
     commonProjects: [
       {
         name: 'Basic 1,000 sq ft Finish',
         size: '1,000 sq ft',
-        cost: '$30,000–$45,000',
+        cost: projectCostString('basementFinishing', 'basicFinish', 1000),
         details: 'Egress windows, vapor barrier, framing, insulation, drywall, paint, LVP flooring, basic electrical, HVAC extension'
       },
       {
         name: 'Mid-Range with Bedroom & Bath',
         size: '1,000 sq ft',
-        cost: '$45,000–$60,000',
+        cost: projectCostString('basementFinishing', 'standardLivingSuite', 1000),
         details: 'Everything in Basic plus full bathroom with ejector pump, bedroom closet, upgraded lighting, premium finishes'
       },
       {
         name: 'High-End Luxury Basement',
         size: '1,000 sq ft',
-        cost: '$60,000–$75,000+',
+        cost: projectCostString('basementFinishing', 'premiumBuildOut', 1000),
         details: 'Multiple bedrooms/baths, wet bar, home theater wiring, custom built-ins, premium tile, soundproofing'
       }
     ],
     pricingTiers: [
       {
         name: 'Basic Finish',
-        range: '$30-45/sq ft',
+        range: tierPerSqftString('basementFinishing', 'basicFinish'),
         description: 'Simple living space conversion with egress windows, vapor barrier, framing, R-13 insulation, drywall, paint, LVP flooring, basic electrical (recessed lights, outlets), HVAC extension.'
       },
       {
         name: 'Mid-Range Finish',
-        range: '$45-60/sq ft',
+        range: tierPerSqftString('basementFinishing', 'standardLivingSuite'),
         description: 'Everything in Basic plus full bathroom with ejector pump, bedroom closet framing, upgraded lighting (dimmers, decorative fixtures), premium paint, upgraded flooring (carpet in bedrooms, tile in bath).'
       },
       {
         name: 'High-End Finish',
-        range: '$60-75/sq ft',
+        range: tierPerSqftString('basementFinishing', 'premiumBuildOut'),
         description: 'Luxury finishes including multiple bedrooms/bathrooms, wet bar with plumbing, home theater wiring (dedicated circuits, speaker pre-wire), custom built-ins, premium tile work, soundproofing.'
       }
     ],
@@ -1136,11 +1133,12 @@ export const SERVICES = [
     h1: 'ADA Bath to Shower Conversions',
     intro: "Convert your existing bathtub into a safe, accessible, zero-entry roll-in shower — ADA-compliant grab bars, low-threshold entry, and non-slip surfaces, built for aging-in-place and long-term safety.",
     heroImage: '/images/ada-bath-to-shower/ada-bath-to-shower-conversion-simpsonville.webp',
-    // Fixed-scope itemized pricing (see ADA_BATH_SHOWER_ITEMS in
-    // calculator-config.js) — not sqft-based, so this range is
-    // informational only, not computed via pricing-sync.js.
+    // Itemized, not per sq ft: adaBathEstimate() in calculator-config.js, from
+    // the calculator's opening state to its priciest configuration. It used to
+    // say "$10,500-$19,800", the raw line-item sum with no location factor or
+    // overhead & profit.
     stats: {
-      costRange: '$10,500-$19,800 Typical',
+      costRange: adaBathRange() + ' Typical',
       timeline: '1-2 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
@@ -1344,51 +1342,51 @@ export const SERVICES = [
     tier: 3,
     category: 'Handyman & Repairs',
     metaTitle: 'Handyman Services Simpsonville & Greenville SC | Burch Contracting',
-    description: 'Handyman jobs $125-$4,400 in Simpsonville, Greenville, Fountain Inn & Mauldin SC: plumbing, electrical, carpentry & painting. Licensed contractor since 1995.',
+    description: `Handyman work in Simpsonville, Greenville, Fountain Inn & Mauldin SC at ${handymanRate()}: plumbing, electrical, carpentry & painting. Licensed contractor since 1995.`,
     h1: 'Handyman Services - Upstate SC',
     intro: "From a single outlet swap to a water heater replacement, I handle the smaller jobs too — plumbing fixtures, electrical, doors and windows, carpentry, drywall repair, and interior painting. Same licensing and accountability as every larger project, just sized for a shorter task list.",
     stats: {
-      costRange: '$125-$4,400 Typical',
+      costRange: handymanRate(),
       timeline: 'Same-Day to 1 Week',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: 'Priced per task',
+    pricePerSqFt: 'Priced per hour',
     timeline: 'Same-day to 1 week',
     commonProjects: [
       {
         name: 'Outlet or Light Fixture Swap',
         size: 'Single fixture',
-        cost: '$125–$730',
+        cost: handymanRate(),
         details: 'Outlet and switch replacement, GFCI upgrades, light fixture or ceiling fan installation.'
       },
       {
         name: 'Interior Door or Room Paint',
         size: 'Single room',
-        cost: '$400–$2,050',
+        cost: handymanRate(),
         details: 'Interior or exterior door installation, baseboards, crown molding, or a full room repaint.'
       },
       {
         name: 'Water Heater Replacement',
         size: '40-50 gal or tankless',
-        cost: '$1,100–$4,400',
+        cost: handymanRate(),
         details: 'Standard tank or tankless water heater installation, fully licensed and code-compliant.'
       }
     ],
     pricingTiers: [
       {
         name: 'Small Repairs & Fixture Swaps',
-        range: '$125-$730',
+        range: handymanRate(),
         description: 'Outlet and switch replacement, light fixtures, GFCI and dimmer upgrades, small drywall patches, ceiling fans, faucet and toilet installation.'
       },
       {
         name: 'Installations & Carpentry',
-        range: '$400-$2,050',
+        range: handymanRate(),
         description: 'Interior and exterior doors, windows, baseboards, crown molding, custom shelving, and full-room interior painting.'
       },
       {
         name: 'Larger Plumbing & Repairs',
-        range: '$1,100-$4,400',
+        range: handymanRate(),
         description: 'Standard or tankless water heater replacement, large drywall repairs, and popcorn ceiling removal.'
       }
     ],

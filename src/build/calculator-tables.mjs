@@ -14,7 +14,7 @@
  * committed page was both a source and an output. It returns strings now; the
  * table lands on a {{calculator.table}} placeholder in the page's template.
  */
-import { PRICING_CONFIG, CALCULATOR_PAGES, ADA_BATH_SHOWER_ITEMS, defaultSquareFootage, formatCurrency } from '../js/calculator-config.js'
+import { PRICING_CONFIG, CALCULATOR_PAGES, adaBathEstimate, defaultSquareFootage, formatCurrency } from '../js/calculator-config.js'
 import { projectCostString, tierPerSqftString, servicePerSqftString } from '../data/pricing-sync.js'
 
 /**
@@ -135,32 +135,9 @@ for (const page of STANDARD_PAGES) {
 
 // --- ada-bath-shower.html: itemized, not sqft-based ---------------------
 {
-  const location = PRICING_CONFIG.locationFactors.fountainInnArea
-  const defaultState = { finish: 'fiberglass', grabBars: true, thermostatic: false }
-  const included = []
-  let directLow = 0
-  let directHigh = 0
-
-  for (const item of ADA_BATH_SHOWER_ITEMS) {
-    let low = item.low
-    let high = item.high
-    let isIncluded = Boolean(item.always)
-    if (item.group === 'finish') isIncluded = defaultState.finish === item.groupValue
-    if (item.optional) isIncluded = item.id === 'grabBars' ? defaultState.grabBars : isIncluded
-    if (item.hasThermostatic) {
-      isIncluded = true
-      low = item.low
-      high = item.low
-    }
-    if (isIncluded) {
-      directLow += low
-      directHigh += high
-      included.push({ ...item, low, high })
-    }
-  }
-
-  const finalLow = directLow * location.factor * (1 + PRICING_CONFIG.defaultOverheadAndProfit)
-  const finalHigh = directHigh * location.factor * (1 + PRICING_CONFIG.defaultOverheadAndProfit)
+  // The calculator's opening state: fiberglass, grab bars, standard valve,
+  // Fountain Inn area — the same function the calculator itself runs.
+  const { includedItems: included, finalLow, finalHigh } = adaBathEstimate()
 
   const rows = included
     .map((item) =>

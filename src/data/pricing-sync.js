@@ -5,7 +5,7 @@
  * source of truth for all pricing on this site — this module never invents
  * a number, it only formats what calculateEstimate() already produces.
  */
-import { PRICING_CONFIG, calculateEstimate, formatCurrency } from '../js/calculator-config.js'
+import { PRICING_CONFIG, QUOTED_RATES, adaBathEstimate, calculateEstimate, formatCurrency } from '../js/calculator-config.js'
 
 const DEFAULT_LOCATION = 'fountainInnArea'
 
@@ -152,4 +152,45 @@ export function headlineAgreesWithTable(service) {
     `headline "${headline}" says $${heroMin.toLocaleString()}–$${heroMax.toLocaleString()}, ` +
     `its own ${unitPerSqFt ? 'per-sq-ft' : 'dollar'} table says $${tableMin.toLocaleString()}–$${tableMax.toLocaleString()}`
   )
+}
+
+/**
+ * ADA bath-to-shower, cheapest configuration to priciest: the calculator's
+ * opening state (fiberglass, grab bars, standard valve, Fountain Inn area)
+ * through tile, grab bars, thermostatic valve, Simpsonville/Greenville.
+ * Rounded to $100, which is how the owner states it: "$9,800–$25,400".
+ */
+export function adaBathRange() {
+  const low = adaBathEstimate().finalLow
+  const high = adaBathEstimate({ location: 'simpsonvilleArea', finish: 'tile', grabBars: true, thermostatic: true }).finalHigh
+  const to100 = (n) => Math.round(n / 100) * 100
+  return `${formatCurrency(to100(low))}–${formatCurrency(to100(high))}`
+}
+
+/** An owner-quoted per-sq-ft rate as "$X-Y/sq ft" (see QUOTED_RATES). */
+export function quotedPerSqft(key) {
+  const r = QUOTED_RATES[key]
+  return `$${r.perSqftLow}-${r.perSqftHigh}/sq ft`
+}
+
+/**
+ * An owner-quoted per-sq-ft rate applied to a size range, shaped like a
+ * projectEstimate() so displayRange() takes it: low rate x smallest size
+ * through high rate x largest.
+ */
+export function quotedEstimate(key, minSqft, maxSqft = minSqft) {
+  const r = QUOTED_RATES[key]
+  return { budgetLow: r.perSqftLow * minSqft, customHigh: r.perSqftHigh * maxSqft }
+}
+
+/** quotedEstimate() as "$X–$Y". */
+export function quotedCost(key, minSqft, maxSqft = minSqft) {
+  const e = quotedEstimate(key, minSqft, maxSqft)
+  return `${formatCurrency(e.budgetLow)}–${formatCurrency(e.customHigh)}`
+}
+
+/** The handyman rate: "$65/hr, 2-hour minimum ($130)". */
+export function handymanRate() {
+  const { hourly, minimumHours } = QUOTED_RATES.handyman
+  return `$${hourly}/hr, ${minimumHours}-hour minimum (${formatCurrency(hourly * minimumHours)})`
 }

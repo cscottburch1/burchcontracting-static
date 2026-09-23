@@ -1016,3 +1016,30 @@ of these (`http://…/garages/` and `https://www.…/garages/`). Rewriting the v
 step dropped them, and nothing noticed for three deploys. That is an argument for
 the check living in `check-routing` — which runs locally, in CI and on deploy —
 rather than only in a workflow step that can be rewritten out.
+
+---
+
+## 2026-09-23 — Owner pricing decisions, and the sitemap keeps no priority
+
+Phase 6.6 found five services whose published prices either contradicted the
+calculator or came from nowhere. They were not reconciled by guesswork; the
+owner decided each one:
+
+| Service | Was | Now | Source |
+|---|---|---|---|
+| Basement finishing | $30–$75/sq ft, typed | $48–$121/sq ft | `calculator-config.js`, which the basement calculator already used |
+| ADA bath-to-shower | $10,500–$19,800 (raw line-item sum) | $9,800–$25,400 | `adaBathEstimate()`, cheapest to priciest configuration |
+| ADUs | $65,000–$220,000, typed | $225–$325/sq ft, like new-home construction | `QUOTED_RATES.adu` |
+| Garage with apartment | $85,000–$145,000, typed | $200–$325/sq ft | `QUOTED_RATES.garageApartment` |
+| Handyman | $125–$4,400 by task, typed | $65/hour, two-hour minimum | `QUOTED_RATES.handyman` |
+| Commercial upfits | $30–$100+/sq ft, typed | Custom quote | no rate, deliberately |
+
+`QUOTED_RATES` in `calculator-config.js` holds the three owner-quoted rates.
+They are final customer prices, so no location factor or overhead & profit is
+applied on top. Everything that shows one of these prices reads it from there.
+
+**The sitemap keeps no `priority`.** Plan item 2 asked for tier-derived
+priorities; that contradicts the 2026-07-23 entry above (Google ignores both
+`priority` and `changefreq`). The owner confirmed: `lastmod` updates
+automatically from content dates, and nothing else is added. Item 2 is closed
+as not done.

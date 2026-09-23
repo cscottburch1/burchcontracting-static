@@ -37,6 +37,24 @@
  * ------------------------------------------------------------------
  */
 
+import { SERVICES } from './services.js'
+import { adaBathRange, handymanRate, quotedPerSqft } from './pricing-sync.js'
+
+// Prices in the answers below are read from the service pages they belong to
+// (Phase 6.6, owner pricing of 2026-09-23), so an FAQ cannot quote a figure its
+// own page contradicts. Nine answers did: porches and garages still quoted the
+// old typed headlines, covered patios "$15,000 to $45,000" over a table reaching
+// $61,415, and basement, ADU, ADA, commercial and handyman the pre-decision prices.
+function service(id) {
+  const found = SERVICES.find((s) => s.id === id)
+  if (!found) throw new Error(`service-faqs.js: no service '${id}'`)
+  return found
+}
+/** A service's headline range without its trailing label ("Range", "Typical"). */
+const price = (id) => service(id).stats.costRange.replace(/ (Range|Typical)$/, '')
+/** A service's per-sq-ft band without the unit, e.g. "$48-121". */
+const perSqft = (id) => service(id).pricePerSqFt.replace('/sq ft', '')
+
 export const SERVICE_FAQS = {
   decks: [
     {
@@ -64,7 +82,7 @@ export const SERVICE_FAQS = {
   'screened-porches': [
     {
       question: 'How much does a screened porch cost in Upstate SC?',
-      answer: 'Screened porches typically run $15,000 to $65,000: a basic enclosure on an existing deck at the low end, a mid-range three-season room with EZE-Breeze windows in the middle, and a premium climate-controlled porch with insulation and HVAC at the top.'
+      answer: `Screened porches typically run ${price('screened-porches')}: a basic enclosure on an existing deck at the low end, a mid-range three-season room with EZE-Breeze windows in the middle, and a premium climate-controlled porch with insulation and HVAC at the top.`
     },
     {
       question: 'What is the difference between a screened porch and a three-season room?',
@@ -87,7 +105,7 @@ export const SERVICE_FAQS = {
   'covered-patios': [
     {
       question: 'How much does a covered patio cost?',
-      answer: 'Covered patios typically range from $15,000 to $45,000, or $75-$150 per square foot: a basic roof over an existing slab at the low end, a mid-range outdoor room with columns and lighting in the middle, and a premium space with a kitchen or fireplace at the top.'
+      answer: `Covered patios typically run ${price('covered-patios')}, or ${perSqft('covered-patios')} per square foot: a basic roof over an existing slab at the low end, a mid-range outdoor room with columns and lighting in the middle, and a premium space with a kitchen or fireplace at the top.`
     },
     {
       question: 'What is the difference between a covered patio and a screened porch?',
@@ -110,7 +128,7 @@ export const SERVICE_FAQS = {
   garages: [
     {
       question: 'How much does it cost to build a garage in Upstate SC?',
-      answer: 'Garage construction typically runs $39,000 to $145,000 depending on size and type. A standard 2-car detached garage is most affordable, a 3-car or workshop garage with upgraded electrical is mid-range, and a two-story garage with a finished apartment above is the top of the range.'
+      answer: `Garage construction typically runs ${price('garages')} depending on size and type. A standard 2-car detached garage is most affordable, a 3-car or workshop garage with upgraded electrical is mid-range, and a two-story garage with a finished apartment above is the top of the range, at ${quotedPerSqft('garageApartment').replace('/sq ft', '')} per square foot.`
     },
     {
       question: 'How long does it take to build a detached garage?',
@@ -156,7 +174,7 @@ export const SERVICE_FAQS = {
   'adu-builder': [
     {
       question: 'How much does it cost to build an ADU?',
-      answer: 'ADUs typically cost $65,000 to $220,000, or roughly $110 to $185 per square foot. A garage apartment is the most economical option, a detached 1-bedroom cottage sits in the middle, and a full 2-bedroom ADU is the top of the range.'
+      answer: `ADUs are priced like new-home construction, ${perSqft('adu-builder')} per square foot — roughly ${price('adu-builder')} across the sizes we build. A garage apartment is the most economical option, a detached 1-bedroom cottage sits in the middle, and a full 2-bedroom ADU is the top of the range.`
     },
     {
       question: 'What is an ADU?',
@@ -250,7 +268,7 @@ export const SERVICE_FAQS = {
     },
     {
       question: 'How much does a tub-to-shower conversion cost?',
-      answer: 'An accessible, ADA-style roll-in tub-to-shower conversion — demo, new pan, waterproofing, tile or fiberglass surround, grab bars, and a low-threshold entry — typically runs $10,500 to $19,800 with us. A standard (non-accessible) conversion that keeps a curb and skips ADA-specific items like a roll-in base and extra grab bars usually costs less than that range, since it drops the accessibility-specific line items. See our ADA bath-to-shower conversions for the accessible version and its calculator.'
+      answer: `An accessible, ADA-style roll-in tub-to-shower conversion — demo, new pan, waterproofing, tile or fiberglass surround, grab bars, and a low-threshold entry — typically runs ${adaBathRange()} with us. A standard (non-accessible) conversion that keeps a curb and skips ADA-specific items like a roll-in base and extra grab bars usually costs less than that range, since it drops the accessibility-specific line items. See our ADA bath-to-shower conversions for the accessible version and its calculator.`
     },
     {
       question: 'Should I keep a bathtub in the house?',
@@ -332,7 +350,7 @@ export const SERVICE_FAQS = {
   'commercial-upfits': [
     {
       question: 'How much does a commercial build-out cost?',
-      answer: 'Commercial upfits typically run $30 to $100+ per square foot. A basic office or retail build-out is at the lower end, a mid-range professional or medical space in the middle, and a restaurant or food-service build-out with commercial kitchen systems at the top.'
+      answer: 'Commercial upfits are priced by custom quote for each space. A basic office or retail build-out is at the lower end, a mid-range professional or medical space in the middle, and a restaurant or food-service build-out with commercial kitchen systems at the top. Contact us to scope and quote your build-out.'
     },
     {
       question: 'What is a commercial upfit or tenant improvement?',
@@ -378,7 +396,7 @@ export const SERVICE_FAQS = {
   'basement-finishing': [
     {
       question: 'How much does it cost to finish a basement?',
-      answer: 'Basement finishing typically runs $30 to $75 per square foot depending on finish level. A basic living-space conversion is at the lower end, a mid-range finish with a bedroom and full bath in the middle, and a high-end finish with a wet bar, home theater wiring, and custom built-ins at the top.'
+      answer: `Basement finishing typically runs ${perSqft('basement-finishing')} per square foot depending on finish level. A basic living-space conversion is at the lower end, a mid-range finish with a bedroom and full bath in the middle, and a high-end finish with a wet bar, home theater wiring, and custom built-ins at the top.`
     },
     {
       question: 'How long does basement finishing take?',
@@ -447,7 +465,7 @@ export const SERVICE_FAQS = {
   'ada-bath-to-shower': [
     {
       question: 'How much does an ADA bath-to-shower conversion cost?',
-      answer: 'A tub-to-shower conversion typically costs $10,500 to $19,800. The range depends on the shower base and surround you choose (fiberglass versus tile-ready), plumbing relocation, and the grab bars, valve, and accessible door or curtain selected.'
+      answer: `A tub-to-shower conversion typically costs ${adaBathRange()}. The range depends on the shower base and surround you choose (fiberglass versus tile-ready), plumbing relocation, and the grab bars, valve, and accessible door or curtain selected.`
     },
     {
       question: 'How long does a tub-to-shower conversion take?',
@@ -478,7 +496,7 @@ export const SERVICE_FAQS = {
     },
     {
       question: 'How much does handyman work cost?',
-      answer: 'Most single-task jobs run $125 to $730 — outlet swaps, light fixtures, and small drywall patches at the low end. Installations like doors, windows, or a full room repaint typically run $400 to $2,050. Larger jobs like a water heater replacement run $1,100 to $4,400.'
+      answer: `Handyman work is billed at ${handymanRate()}, so the smallest job is the two-hour minimum. Outlet swaps, light fixtures, and small drywall patches are the shorter jobs; installations like doors, windows, or a full room repaint take longer; a water heater replacement is among the larger ones.`
     },
     {
       question: 'Is there a minimum job size?',
