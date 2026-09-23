@@ -224,11 +224,11 @@ ${promotedFaqs
 `
     : ''
   const canonical = `${SITE_ORIGIN}${pageUrl(`service-areas/${area.slug}.html`)}`
-  const title = `Deck Builder, Garage Contractor & Home Additions ${area.name} SC | Burch Contracting`
+  const title = `Bathroom & Kitchen Remodeling in ${area.name}, SC | Additions & More | Burch Contracting`
   // Leads with a number (drive time) per Phase 7 — real, area-specific, and
   // distinct per city rather than a reworded generic opener.
   const driveTimeLead = area.driveTime === 'Our office location' ? 'Our home office' : `${area.driveTime.replace(' from office', '')} from our office`
-  const description = `${driveTimeLead} — decks, garages & additions in ${area.name}, SC. SC Licensed #${SITE.license}, BBB A+, free consultations.`
+  const description = `${driveTimeLead} — bathroom & kitchen remodeling, additions & more in ${area.name}, SC. SC Licensed #${SITE.license}, BBB A+, free consultations.`
 
   const schema = {
     '@context': 'https://schema.org',

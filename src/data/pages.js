@@ -21,8 +21,8 @@
 export const HAND_AUTHORED_PAGES = [
   {
     "file": "index.html",
-    "title": "General Contractor in Upstate SC | Burch Contracting",
-    "description": "$40-$340/sq ft: decks, additions, garages & screened porches in Upstate SC since 1995. SC Licensed #CLG118679, BBB A+ rated.",
+    "title": "Bathroom & Kitchen Remodeling Contractor | Simpsonville & Greenville SC | Burch Contracting",
+    "description": "Bathroom and kitchen remodeling, room additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC since 1995. SC Licensed #CLG118679, BBB A+ rated.",
     "canonical": "https://burchcontracting.com/",
     "ogImage": "/images/custom-deck-greenville-sc.webp",
     "schema": [
@@ -458,8 +458,8 @@ export const HAND_AUTHORED_PAGES = [
   },
   {
     "file": "contact.html",
-    "title": "Get a Free Consultation | Simpsonville SC Contractor | Burch Contracting",
-    "description": "30+ years in Upstate SC — free consultation from Burch Contracting. Decks, additions, garages, remodeling.",
+    "title": "Free Remodeling Consultation | Simpsonville & Greenville SC | Burch Contracting",
+    "description": "Free consultation for bathroom and kitchen remodeling, additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Burch Contracting, since 1995.",
     "canonical": "https://burchcontracting.com/contact",
     "ogImage": "/images/burch-contracting-logo.webp",
     "schema": [
@@ -580,8 +580,8 @@ export const HAND_AUTHORED_PAGES = [
   },
   {
     "file": "services.html",
-    "title": "Services & Pricing | Burch Contracting",
-    "description": "Every Burch Contracting service compared: cost range, timeline & permit status. SC Licensed #CLG118679, BBB A+, free consultations.",
+    "title": "Services & Pricing | Simpsonville & Greenville SC | Burch Contracting",
+    "description": "Every Burch Contracting service compared — remodeling, additions, outdoor living, commercial — by cost range, timeline & permit status. SC Licensed #CLG118679.",
     "canonical": "https://burchcontracting.com/services",
     "ogImage": "/images/custom-deck-greenville-sc.webp",
     "schema": [

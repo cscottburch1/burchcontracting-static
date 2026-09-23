@@ -74,11 +74,11 @@ function servicePage(service, serviceDates) {
   // build to {slug}/index.html and are served at /{slug} — the trailing-slash
   // and .html forms 301 here.
   const canonical = `${SITE_ORIGIN}${pageUrl(`${service.slug}/index.html`)}`
-  // Nearly every service's <title> is just "{title} | Burch Contracting" —
-  // service.metaTitle is an escape hatch for pages that need a geo-targeted
-  // title tag distinct from the shorter nav/breadcrumb label in
-  // service.title (e.g. "Bathroom Remodeling Simpsonville SC" vs. the
-  // nav's plain "Bathroom Remodeling").
+  // Every service carries a geo-targeted service.metaTitle (Phase 6.2),
+  // distinct from the short nav/breadcrumb label in service.title — e.g.
+  // "Bathroom Remodeling Simpsonville & Greenville SC | …" vs. the nav's
+  // plain "Bathroom Remodeling". The label stays short because it is
+  // chrome: changing it moves the header on every page.
   const title = service.metaTitle ?? `${service.title} | Burch Contracting`
   const description = service.description
   const faqs = SERVICE_FAQS[service.id] || []
