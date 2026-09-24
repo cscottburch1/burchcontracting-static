@@ -71,6 +71,7 @@
   },
 
   "dates": {
+    "__service__additions": {"dateModified":"2026-09-23","why":"The page gained its first photo on 2026-09-23 — the owner's finished room addition. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
     "__service__adu-builder": {"dateModified":"2026-09-23","why":"Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
     "__service__commercial-upfits": {"dateModified":"2026-09-23","why":"Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
     "__service__basement-finishing": {"dateModified":"2026-09-23","why":"Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},

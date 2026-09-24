@@ -380,6 +380,8 @@ export const SERVICES = [
     category: 'Construction',
     metaTitle: 'Room Additions Simpsonville & Greenville SC | Primary Suites | Burch Contracting',
     description: 'Room additions in Simpsonville, Greenville, Fountain Inn & Mauldin SC: bedrooms, primary suites, sunrooms, in-law suites. Design-build from foundation to finish.',
+    heroImage: '/images/room-addition-finished-interior.webp',
+    heroAlt: 'Finished room addition interior with a six-panel door, ceiling fan and wide-plank vinyl flooring',
     h1: 'Room Addition Contractor - Upstate SC',
     intro: "From single-story bedroom additions to two-story master suites, I handle all phases: design, foundation work, framing, roofing, HVAC integration, and complete interior finishing to seamlessly match your existing home's style and quality.",
     stats: {
@@ -694,7 +696,8 @@ export const SERVICES = [
     tier: 1,
     category: 'Remodeling',
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
-    heroImage: '/images/kitchen-remodeling-sc.webp',
+    heroImage: '/images/kitchen-remodel-white-shaker-granite.webp',
+    heroAlt: 'Remodeled kitchen with white shaker cabinets, dark granite countertops, stainless appliances and wide-plank vinyl flooring',
     metaTitle: 'Kitchen Remodeling Contractor Simpsonville & Greenville SC | Burch Contracting',
     description: 'Kitchen remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: cabinets, quartz & granite counters, layout changes. SC Licensed #CLG118679, since 1995, BBB A+.',
     h1: 'Kitchen Remodeling Contractor — Simpsonville & Fountain Inn, SC',
@@ -949,6 +952,8 @@ export const SERVICES = [
     category: 'Construction',
     metaTitle: 'Basement Finishing Simpsonville & Greenville SC | Burch Contracting',
     description: 'Basement finishing in Simpsonville, Greenville, Fountain Inn & Mauldin SC: moisture control, egress windows, full interior build-out. Licensed since 1995.',
+    heroImage: '/images/basement-finishing-bottom-floor.webp',
+    heroAlt: 'Finished basement with a new staircase, painted walls, recessed lighting and wide-plank vinyl flooring',
     h1: 'Basement Finishing Contractor - Upstate SC',
     intro: "From simple storage spaces to luxury home theaters, I handle all aspects of basement finishing: egress windows, moisture control, electrical, plumbing, and complete interior finishing. Every project code-compliant and built to last.",
     stats: {
@@ -1202,6 +1207,8 @@ export const SERVICES = [
     category: 'Remodeling',
     metaTitle: 'Home Remodeling Contractor Simpsonville & Greenville SC | Burch Contracting',
     description: 'Whole-home remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: kitchens, bathrooms and full-house renovations, design-build. Licensed since 1995.',
+    heroImage: '/images/whole-home-remodel-porch-after.webp',
+    heroAlt: 'Whole-home remodel with new siding, windows and a covered porch with painted stairs and railings',
     h1: 'Home Remodeling Contractor - Upstate SC',
     intro: "From kitchen and bathroom renovations to whole-house remodels, I handle all phases: design, demolition, structural work, electrical, plumbing, and complete finishing. Every project managed personally from start to finish.",
     stats: {

@@ -28,8 +28,8 @@ export const HOME_SERVICE_CARDS = {
   },
   'kitchen-remodeling': {
     heading: 'Kitchen Remodeling',
-    image: '/images/kitchen-remodeling-sc.webp',
-    alt: 'Complete kitchen remodel with custom cabinets granite countertops and new appliances in Upstate South Carolina',
+    image: '/images/kitchen-remodel-white-shaker-granite.webp',
+    alt: 'Remodeled kitchen with white shaker cabinets, dark granite countertops, stainless appliances and wide-plank vinyl flooring',
     blurb: 'Tired of that old kitchen? Let our highly experienced crews update it to the fresh new look you have been dreaming of.',
   },
   'ada-bath-to-shower': {
@@ -40,20 +40,20 @@ export const HOME_SERVICE_CARDS = {
   },
   remodeling: {
     heading: 'Home Remodeling',
-    image: '/images/newly-remodeled-whole-home-interior.webp',
-    alt: 'Remodeled open-plan living and dining area with wide-plank wood floors, opening into a kitchen with white shaker cabinets and stainless appliances',
+    image: '/images/whole-home-remodel-exterior-after.webp',
+    alt: 'Whole-home remodel exterior with new gray vinyl siding, architectural shingle roof and covered porch',
     blurb: 'We provide turnkey remodeling and renovation services to your home using our professional crews.',
   },
   additions: {
     heading: 'Home Additions',
-    image: '/images/room-addition-fountain-inn-sc.webp',
-    alt: 'Custom home addition construction with matching siding and roofing in Fountain Inn SC',
+    image: '/images/room-addition-finished-bedroom.webp',
+    alt: 'Finished room addition with gray-blue walls, two windows, recessed lighting and wide-plank vinyl flooring',
     blurb: 'Room additions and expansions that add valuable square footage to your home.',
   },
   'basement-finishing': {
     heading: 'Basement Finishing',
-    image: '/images/finished-basement.webp',
-    alt: 'Finished basement renovation with living space in Upstate South Carolina',
+    image: '/images/basement-finishing-after.webp',
+    alt: 'Finished basement hallway with gray-blue walls, white trim and wide-plank vinyl flooring',
     blurb: 'Egress windows, moisture control, and complete interior build-out to turn your basement into living space.',
   },
   decks: {

@@ -394,7 +394,7 @@ ${calculatorButton}
           <div>
 ${heroContentHtml}
           </div>
-          <img src="${esc(service.heroImage)}" alt="${esc(service.h1)}" width="640" height="480" loading="lazy" class="rounded-2xl w-full h-72 lg:h-96 object-cover shadow-lg" />
+          <img src="${esc(service.heroImage)}" alt="${esc(service.heroAlt ?? service.h1)}" width="640" height="480" loading="lazy" class="rounded-2xl w-full h-72 lg:h-96 object-cover shadow-lg" />
         </div>
       </section>`
     : `      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
