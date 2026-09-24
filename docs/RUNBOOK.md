@@ -63,10 +63,12 @@ back automatically and then fails the job.**
 
 ### The push trigger
 
-Commented out. Enabling it would make the first exercise of an unproven deploy
-path a real deploy of whatever just merged. To enable: dispatch the workflow
-once, confirm it goes green, confirm `wrangler secret list` returns all five
-names and live pages say `index, follow`, then uncomment the two `push:` lines.
+Commented out. It was held back until the verify-and-rollback path had been
+exercised; that has now happened (every dispatch since 2026-09-22 has run
+verification, and the rollback worked on the first real failure). **Enabling
+it is an open owner decision.** If the owner decides to: confirm the latest
+dispatch went green, confirm `wrangler secret list` returns all five names and
+live pages say `index, follow`, then uncomment the two `push:` lines.
 
 ### Never connect the Cloudflare dashboard Git integration
 
@@ -257,6 +259,55 @@ If you genuinely must:
    `while read` loop) are fine.
 6. Add it to `npm test` via `scripts/test.mjs`, and to the header comment in
    `check-build.mjs` if it lives there.
+
+### Inventory: every gate, what it reads, where it runs
+
+When a gate is added, removed or changes the tree it reads, update this table
+in the same commit. "Proven" names where a deliberate failing run is recorded.
+
+**Scripts**
+
+| Script | Reads | Runs in | Proven |
+|---|---|---|---|
+| `check-build.mjs` | `.build/pages/`, `dist/`, `src/` (per check, below) | `npm test` → CI, Deploy | per tag, below |
+| `check-schema.mjs` | `.build/pages/`, `dist/sitemap.xml` | `npm test` → CI, Deploy | `6da83d9` (failed on its first run: four homepage FAQ questions) |
+| `check-links.mjs` | `.build/pages/`, `dist/sitemap.xml` | `npm test` → CI, Deploy | `6da83d9` (a link to a missing page; an unlinked sitemap URL) |
+| `check-tier1.mjs` | `dist/` | `npm test` → CI, Deploy | 10 findings at 6.0 (`8177031`); tamper in `d5db1db` |
+| `check-wrangler-config.mjs` | `wrangler.jsonc` | `npm test` → CI, Deploy | `6da83d9` (a `build` block; `run_worker_first` false) |
+| `check-routing.mjs` | a running Worker + `migration/routing-baseline.json` | `npm test` (local `wrangler dev`); Deploy, against production | `5738512` (hostname redirects) |
+| `check-crawler-access.mjs` | production | `crawler-access.yml` (daily), Deploy | none recorded |
+
+**check-build, by tag**
+
+| Check | Tag | Reads | Proven |
+|---|---|---|---|
+| 1 | `double-encoded-ampersand` | `.build/pages/` | a real failure (commit history) |
+| 2 | `orphan-page` | `.build/pages/` hrefs + `dist/sitemap.xml` | DECISIONS 2026-09-24 |
+| 3 | `noindex-in-production` | `dist/` | `4e3a776`, `43cab1e` |
+| 3 | `staging-build-missing-noindex` | `dist/` (`BUILD_ENV=staging`) | DECISIONS 2026-09-24 |
+| 3 | `robots-txt-missing` | `dist/robots.txt` | DECISIONS 2026-09-24 |
+| 3 | `robots-txt-disallows-everything` | `dist/robots.txt` | DECISIONS 2026-09-24 |
+| 3b | `divergent-header`, `divergent-footer` | `dist/` | `6187ef5` |
+| 3c | `inline-nav-handler`, `unbound-nav` | `.build/pages/` | `92f5094` |
+| 3d | `nav-active-marking` | `.build/pages/` | `345484c` |
+| 4 | `recaptcha-site-key` | `dist/contact.html` | DECISIONS 2026-09-24 |
+| 4 | `recaptcha-key-baked-into-js` | `dist/assets/*.js` | DECISIONS 2026-09-24 |
+| 5 | `faq-schema-visible-mismatch` | `.build/pages/` — **calculator pages only** | DECISIONS 2026-09-24 |
+| 6 | `calculator-price-copy-drift` | `src/data/calculator-intros.js` | `dd4a1dd`, `36da544` |
+| 7 | `service-data-gap` | `src/data/` | `bc5f0a2` |
+| 8 | `duplicate-or-missing-title-or-description` | `.build/pages/` | `bc5f0a2` |
+| 9 | `content-dates-not-derived` | `.build/pages/` (JSON-LD dates) | DECISIONS 2026-09-24 (a real shallow clone) |
+| 10 | `todo-in-visible-text` | `.build/pages/` | `8177031` |
+| 11 | `service-hierarchy-not-derived` | `src/data/` + the rendered footer | `0e1fe46` |
+| 12 | `headline-price-disagrees-with-table` | `src/data/` | `d5db1db` |
+| 12 | `prose-price-not-from-table` | `src/data/` (+ `cited-figures.js`) | `36da544` |
+| 13 | `title-over-60-chars` | `.build/pages/` | `7e0d340` |
+| 14 | `description-outside-120-155-chars` | `.build/pages/` (404 exempt) | `2a4ebc9` |
+| 15 | `text-changed-date-did-not` | `.build/pages/` + `content-date-overrides.json` | DECISIONS 2026-09-24 |
+
+Known limits, recorded in DECISIONS 2026-09-24 and left as found: check 5 does
+not check the visible→schema direction outside the calculators, and check 9
+only recognises a shallow clone whose commit is dated today.
 
 ### The search-display and price-copy gates (PR #28)
 

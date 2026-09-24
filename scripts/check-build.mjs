@@ -13,6 +13,9 @@
  *      the same <footer>. As of Phase 3.3b the only exemption is 404.html, and
  *      it is permanent — see CHROME_EXEMPT for why adding another needs a
  *      reason as durable as that one.
+ *   3c. One owner for nav behaviour: no inline nav handler in any page, and
+ *      main.js the only script that binds it (the double-bound mobile menu).
+ *   3d. The current page is marked in the nav, exactly once.
  *   4. reCAPTCHA site key drift: dist/contact.html must have a well-formed
  *      data-recaptcha-site-key, and no dist/assets/*.js may contain a key
  *      literal — see LAUNCH-CHECKLIST.md #3 for why this must be the only

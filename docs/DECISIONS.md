@@ -54,7 +54,7 @@ sitemap and reality. `lastmod` is the only per-URL signal kept, and it must be
 a real per-page content date — a blanket build-date stamp on every URL is what
 makes Google stop trusting the field across the whole file.
 
-**Source:** `generateSitemap()` in `scripts/generate-geo-aeo.mjs`.
+**Source:** `renderSitemap()` in `src/build/geo.mjs` (it was `generateSitemap()` in `scripts/generate-geo-aeo.mjs` when this was written; Phase 3 moved it).
 
 ---
 
