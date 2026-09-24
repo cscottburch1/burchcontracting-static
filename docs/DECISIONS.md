@@ -1046,7 +1046,7 @@ as not done.
 
 ---
 
-## 2026-09-23 — Whole-home remodel: the owner's typical range, $8,000 to $350,000
+## 2026-09-23 — Whole-home remodel: the owner's typical range, $60,000 to $350,000
 
 The whole-home service page's "Whole-House Remodel" row showed $250,430–$644,314+,
 which is the calculator's full span for a 2,000 sq ft home, from its cheapest
@@ -1055,16 +1055,22 @@ $5,500–$644,500. That is what the calculator can produce, not what a homeowner
 is quoted for a whole-home job.
 
 **Decision (owner, 2026-09-23):** the typical range quoted for a whole-home job
-is **$8,000 to $350,000**.
+is **$60,000 to $350,000**.
 
 - It lives in `calculator-config.js` as `QUOTED_RATES.wholeHomeTypical`, a
   typical-range tier, not as a typed string. The row reads it through
   `quotedTypicalString()`.
 - The calculator's own whole-home math is unchanged. Its maximum configuration
   ($644,314 at 2,000 sq ft) is higher than the owner's high, so the row reads
-  **$8,000–$350,000+**, and the headline follows at **$5,500–$350,000+ Typical**.
+  **$60,000–$350,000+**, and the headline follows at **$5,500–$350,000+ Typical**.
   The calculator page's intro still describes the calculator's 2,000 sq ft
   scenario ($250,000–$644,000); it describes that tool, not the typical job.
+
+**Correction (owner, 2026-09-24):** the low end is **$60,000**, not $8,000.
+"$8,000" was the owner's typo when answering the PR #28 prompt; it shipped in
+PR #28 (`e5d56d9`) and was corrected the next day. The high end, $350,000, was
+right. The headline does not move: its low is the page's cheapest table row (a
+small bath, $5,578, shown as $5,500), which is below either figure.
 
 ---
 

@@ -399,7 +399,7 @@ export const QUOTED_RATES = {
   adu: { perSqftLow: 225, perSqftHigh: 325 },
   garageApartment: { perSqftLow: 200, perSqftHigh: 325 },
   handyman: { hourly: 65, minimumHours: 2 },
-  wholeHomeTypical: { low: 8000, high: 350000 },
+  wholeHomeTypical: { low: 60000, high: 350000 },
 }
 
 // Each page's intro paragraph is in src/data/calculator-intros.js (PR #28),
