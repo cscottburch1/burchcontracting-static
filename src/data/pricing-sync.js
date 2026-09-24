@@ -293,7 +293,7 @@ export function quotedTypical(key, calculatorMax) {
   return { budgetLow: low, customHigh: high, plus: Boolean(calculatorMax && calculatorMax.customHigh > high) }
 }
 
-/** quotedTypical() as a table cell: "$8,000–$350,000+". */
+/** quotedTypical() as a table cell: "$60,000–$350,000+". */
 export function quotedTypicalString(key, calculatorMax) {
   const t = quotedTypical(key, calculatorMax)
   return `${formatCurrency(t.budgetLow)}–${formatCurrency(t.customHigh)}${t.plus ? '+' : ''}`
