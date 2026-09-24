@@ -40,7 +40,11 @@
  *      this morning. Silent otherwise — the build succeeds either way.
  *  10. A TODO( in any page's visible text (Phase 6.0).
  *  11. The service hierarchy not derived from `tier` (Phase 6.1a).
- *  12. A service's headline price disagreeing with its own table (Phase 6.6).
+ *  12. A service's headline price disagreeing with its own table (Phase 6.6),
+ *      or a price in its prose that is not proseRound() of a table figure or a
+ *      declared cited figure (PR #28).
+ *  13. A <title> over 60 characters (PR #28).
+ *  14. A meta description outside 120-155 characters, 404.html exempt (PR #28).
  *
  * WHICH TREE EACH CHECK READS
  *
@@ -67,7 +71,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { CALCULATOR_PAGES } from '../src/js/calculator-config.js'
-import { headlineAgreesWithTable, servicePerSqftBand } from '../src/data/pricing-sync.js'
+import { CALCULATOR_INTROS } from '../src/data/calculator-intros.js'
+import { headlineAgreesWithTable, proseAgreesWithTable, servicePerSqftBand } from '../src/data/pricing-sync.js'
+import { citedAmounts } from '../src/data/cited-figures.js'
 import { chromeHash, chromeSource } from './lib/chrome-hash.mjs'
 import { NAV_CLASS, activeNavItem } from '../src/data/nav.js'
 import { SERVICES, servicesByTier } from '../src/data/services.js'
@@ -536,9 +542,9 @@ if (faqMismatches.length) {
 }
 
 // --- Check 6: calculator headline price copy vs. what the calculator
-// actually computes. CALCULATOR_PAGES[key].intro is hand-typed prose (see
-// src/js/calculator-config.js) — this only re-derives the "$X-$Y per
-// square foot" figure, since that's the one part of each intro that maps
+// actually computes. Each intro is in src/data/calculator-intros.js and, since
+// PR #28, computed rather than typed; this still re-derives the "$X-$Y per
+// square foot" figure independently, since that's the one part of each intro that maps
 // cleanly onto a single computed value (servicePerSqftBand). It won't catch
 // every possible drift in a worked dollar example, but it's exactly the
 // class of bug that shipped once already (bath's intro citing $5,600 — a
@@ -547,7 +553,7 @@ if (faqMismatches.length) {
 // project).
 const priceCopyMismatches = []
 for (const [pageKey, cfg] of Object.entries(CALCULATOR_PAGES)) {
-  const perSqftMatch = cfg.intro.match(/\$(\d[\d,]*)[\s–-]+\$?(\d[\d,]*) per square foot/)
+  const perSqftMatch = (CALCULATOR_INTROS[pageKey] ?? '').match(/\$(\d[\d,]*)[\s–-]+\$?(\d[\d,]*) per square foot/)
   if (!perSqftMatch) continue
   const statedMin = Number(perSqftMatch[1].replace(/,/g, ''))
   const statedMax = Number(perSqftMatch[2].replace(/,/g, ''))
@@ -556,7 +562,7 @@ for (const [pageKey, cfg] of Object.entries(CALCULATOR_PAGES)) {
   const realMax = Math.round(real.max)
   if (statedMin !== realMin || statedMax !== realMax) {
     priceCopyMismatches.push(
-      `CALCULATOR_PAGES.${pageKey}.intro claims $${statedMin}-$${statedMax}/sq ft but the calculator computes $${realMin}-$${realMax}/sq ft for '${cfg.serviceKey}' — update the intro string.`
+      `calculator-intros.js ${pageKey} claims $${statedMin}-$${statedMax}/sq ft but the calculator computes $${realMin}-$${realMax}/sq ft for '${cfg.serviceKey}' — the band there should come from servicePerSqftBand().`
     )
   }
 }
@@ -796,6 +802,59 @@ const headlineDrift = SERVICES.map((s) => [s, headlineAgreesWithTable(s)])
 if (headlineDrift.length) {
   failed = true
   failures.push({ check: 'headline-price-disagrees-with-table', detail: headlineDrift })
+}
+
+// Check 12, second half (PR #28): prices in a service page's prose — its
+// intro, FAQ answers and long-form sections — must be proseRound() of a figure
+// in that service's own tables, or a figure declared in cited-figures.js with
+// its source. Rates (per sq ft, per hour, per month) are not prices here.
+const stripTags = (html) => String(html ?? '').replace(/<[^>]+>/g, ' ')
+const proseDrift = SERVICES.flatMap((s) =>
+  proseAgreesWithTable(
+    s,
+    [
+      ['intro', s.intro],
+      ...(SERVICE_FAQS[s.id] ?? []).map((f, i) => [`FAQ "${f.question}"`, f.answer]),
+      ['richContentBeforeProcess', stripTags(s.richContentBeforeProcess)],
+      ['richContentAfterProcess', stripTags(s.richContentAfterProcess)],
+    ],
+    citedAmounts(s.id)
+  ).map((problem) => `${s.id}: ${problem}`)
+)
+if (proseDrift.length) {
+  failed = true
+  failures.push({ check: 'prose-price-not-from-table', detail: proseDrift })
+}
+
+// --- Check 13: no <title> longer than Google shows ---
+// PR #28. Phase 6.2 restored geo- and intent-led titles and let them run to
+// 79-99 characters; Google shows about 60, so the part that got cut was
+// often the geography the rewrite was for. Measured on the decoded text
+// ("&amp;" is one character to a reader). A failure, not a warning.
+const TITLE_MAX = 60
+const longTitles = pages
+  .map((page) => [page.rel, decodeEntities((page.html.match(/<title>([^<]*)<\/title>/) || [])[1] ?? '')])
+  .filter(([, title]) => title.length > TITLE_MAX)
+  .map(([rel, title]) => `${rel}: ${title.length} chars — "${title}"`)
+if (longTitles.length) {
+  failed = true
+  failures.push({ check: `title-over-${TITLE_MAX}-chars`, detail: longTitles })
+}
+
+// --- Check 14: every meta description is 120-155 characters ---
+// PR #28. Google shows about 155; past that the snippet is cut mid-sentence,
+// and the Phase 6.2 descriptions ran to 178. Under 120 wastes the space a
+// search result gives you. 404.html is exempt: it is noindex and never shown.
+const DESCRIPTION_MIN = 120
+const DESCRIPTION_MAX = 155
+const badDescriptions = pages
+  .filter((page) => !NOINDEX_EXEMPT.has(page.rel))
+  .map((page) => [page.rel, decodeEntities((page.html.match(/<meta name="description" content="([^"]*)"/) || [])[1] ?? '')])
+  .filter(([, d]) => d.length < DESCRIPTION_MIN || d.length > DESCRIPTION_MAX)
+  .map(([rel, d]) => `${rel}: ${d.length} chars — "${d}"`)
+if (badDescriptions.length) {
+  failed = true
+  failures.push({ check: `description-outside-${DESCRIPTION_MIN}-${DESCRIPTION_MAX}-chars`, detail: badDescriptions })
 }
 
 // --- Report ---

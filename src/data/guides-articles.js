@@ -29,7 +29,7 @@ export const ARTICLES = [
     h1: 'How Much Does a Screened Porch Cost in South Carolina?',
     metaTitle: 'Screened Porch Cost in South Carolina | Burch Contracting',
     metaDescription:
-      'Screened porch costs in South Carolina per square foot and by size, computed from our own pricing, including the cheaper route of screening an existing deck.',
+      'Screened porch costs in South Carolina per square foot and by size, computed from our own pricing, including the cheaper route of screening a deck.',
     lead: (p) =>
       `Screened porches in South Carolina run <strong>${p.perSqft} per square foot</strong>. A new 15×20 porch built from footings up lands around ${p.tier('newScreenedPorch', 300)}; screening an existing covered deck of the same size costs far less, closer to ${p.tier('enclosureOnly', 300)}, because the floor and roof already exist.`,
     tiers: [
@@ -188,7 +188,7 @@ export const ARTICLES = [
     servicePage: 'basement-finishing/index.html',
     permitCounty: 'Greenville County',
     h1: 'Average Cost of Basement Finishing in South Carolina',
-    metaTitle: 'Basement Finishing Cost in South Carolina | Burch Contracting',
+    metaTitle: 'Basement Finishing Cost in South Carolina',
     metaDescription:
       'Average basement finishing costs in South Carolina per square foot and by scope, computed from our own pricing, plus moisture and egress requirements.',
     lead: (p) =>
@@ -339,7 +339,7 @@ export const ARTICLES = [
     servicePage: 'bathroom-remodeling/index.html',
     permitCounty: 'Greenville County',
     h1: 'Cost of Bathroom Remodeling in Simpsonville, SC',
-    metaTitle: 'Cost of Bathroom Remodeling Simpsonville SC | Burch Contracting',
+    metaTitle: 'Cost of Bathroom Remodeling Simpsonville SC',
     metaDescription:
       'What bathroom remodeling costs in Simpsonville SC by scope, computed from our own pricing, plus the hidden costs that show up behind old tile.',
     lead: (p) =>
@@ -414,7 +414,7 @@ export const ARTICLES = [
     h1: 'Kitchen Remodel Cost in Fountain Inn, SC',
     metaTitle: 'Kitchen Remodel Cost Fountain Inn SC | Burch Contracting',
     metaDescription:
-      'Kitchen remodel costs in Fountain Inn SC by scope, computed from our own pricing, and where the budget actually goes.',
+      'Kitchen remodel costs in Fountain Inn SC by scope, computed from our own pricing, and where the budget actually goes. Written by a licensed contractor.',
     lead: (p) =>
       `Kitchen remodels in Fountain Inn run <strong>${p.perSqft} per square foot</strong>. A 180 sq ft kitchen refresh starts near ${p.tier('standardRefresh', 180)}; a full remodel with new cabinetry runs about ${p.tier('midRangeRemodel', 180)}, and a custom kitchen with layout changes reaches ${p.tier('premiumCustom', 180)}.`,
     tiers: [
@@ -485,7 +485,7 @@ export const ARTICLES = [
     servicePage: 'ada-bath-to-shower/index.html',
     permitCounty: 'Greenville County',
     h1: 'Bath to Shower Conversion Cost in South Carolina',
-    metaTitle: 'Tub to Shower Conversion Cost South Carolina | Burch Contracting',
+    metaTitle: 'Tub to Shower Conversion Cost South Carolina',
     metaDescription:
       'What converting a tub to a walk-in shower costs in South Carolina, what changes structurally, and the accessibility details worth getting right.',
     lead: (p) =>
@@ -570,7 +570,7 @@ export const ARTICLES = [
     h1: 'Composite vs Pressure-Treated Deck: Which Is Better?',
     metaTitle: 'Composite vs Pressure-Treated Deck in SC | Burch Contracting',
     metaDescription:
-      'Composite or pressure-treated decking for a South Carolina home: real cost difference, maintenance, lifespan, and how each handles Upstate sun and humidity.',
+      'Composite or pressure-treated decking for a South Carolina home: real cost difference, maintenance, lifespan, and how each handles Upstate sun.',
     lead: (p) =>
       `On a 320 sq ft deck the difference is roughly ${p.tier('pressureTreated', 320)} in pressure-treated wood against ${p.tier('compositeLowMaintenance', 320)} in composite. Treated wood wins on first cost; composite wins on the decade that follows. Both are built on a treated frame — the choice is only about the surface you walk on and hold.`,
     tiers: [
@@ -834,7 +834,7 @@ export const ARTICLES = [
     servicePage: 'kitchen-remodeling/index.html',
     permitCounty: 'Greenville County',
     h1: 'How to Plan a Kitchen Remodel, Step by Step',
-    metaTitle: 'How to Plan a Kitchen Remodel Step by Step | Burch Contracting',
+    metaTitle: 'How to Plan a Kitchen Remodel Step by Step',
     metaDescription:
       'A practical order of operations for planning a kitchen remodel — budget, layout, selections, contractor and schedule — before demolition day.',
     lead: (p) =>
@@ -906,7 +906,7 @@ export const ARTICLES = [
     servicePage: 'remodeling/index.html',
     permitCounty: null,
     h1: 'Best Home Improvements for Property Value in South Carolina',
-    metaTitle: 'Best Home Improvements for Property Value in SC | Burch Contracting',
+    metaTitle: 'Best Home Improvements for Property Value in SC',
     metaDescription:
       'Which home improvements hold their value best in South Carolina, which rarely pay back, and why usable outdoor space does well in this market.',
     lead: () =>

@@ -1043,3 +1043,58 @@ priorities; that contradicts the 2026-07-23 entry above (Google ignores both
 `priority` and `changefreq`). The owner confirmed: `lastmod` updates
 automatically from content dates, and nothing else is added. Item 2 is closed
 as not done.
+
+---
+
+## 2026-09-23 — Whole-home remodel: the owner's typical range, $8,000 to $350,000
+
+The whole-home service page's "Whole-House Remodel" row showed $250,430–$644,314+,
+which is the calculator's full span for a 2,000 sq ft home, from its cheapest
+tier to its maximum configuration. The page headline followed it to
+$5,500–$644,500. That is what the calculator can produce, not what a homeowner
+is quoted for a whole-home job.
+
+**Decision (owner, 2026-09-23):** the typical range quoted for a whole-home job
+is **$8,000 to $350,000**.
+
+- It lives in `calculator-config.js` as `QUOTED_RATES.wholeHomeTypical`, a
+  typical-range tier, not as a typed string. The row reads it through
+  `quotedTypicalString()`.
+- The calculator's own whole-home math is unchanged. Its maximum configuration
+  ($644,314 at 2,000 sq ft) is higher than the owner's high, so the row reads
+  **$8,000–$350,000+**, and the headline follows at **$5,500–$350,000+ Typical**.
+  The calculator page's intro still describes the calculator's 2,000 sq ft
+  scenario ($250,000–$644,000); it describes that tool, not the typical job.
+
+---
+
+## 2026-09-23 — Titles are held to 60 characters, and descriptions to 120–155
+
+**Why Phase 6 let titles run long.** Phase 6.2 restored geo- and intent-led
+titles from the Next.js site that had ranked, in the pattern "<Service> in
+<Geo> | <specifics> | Burch Contracting". The plan said "≤60 characters where
+possible". The priority was getting the geography and intent back after the July
+rebuild stripped them, and in practice "where possible" rarely applied: 47 of 70
+titles went over, the longest at 91 characters.
+
+**Why 60 is now enforced.** Google shows about 60 characters of a title, and
+the cut fell on exactly the words 6.2 added: the geography, the intent phrase
+or the brand. A title over 60 was paying for words nobody saw. Check 13 fails
+the build on any title over 60. Check 14 does the same for descriptions outside
+120–155, since Google shows about 155 characters of a description.
+
+**The rule order (owner, 2026-09-23).** A title over 60 is shortened in this
+order, stopping as soon as it fits:
+
+1. drop ` | Burch Contracting`. Google shows the site name from the
+   `WebSite`/`Organization` schema on its own line.
+2. drop the trailing phrase after the last ` | `, unless that phrase is the
+   geography itself.
+3. only then replace "Simpsonville & Greenville SC" with "Upstate SC".
+
+The PR #28 prompt drafted steps 2 and 3 the other way round. The owner reversed
+them so the Simpsonville & Greenville wording survives wherever it fits: it
+does on every service page and on 7 of 11 calculators. The homepage is the
+exception. Its trailing segment *is* the geography, so step 2 does not drop it
+and step 3 applies: "Bathroom & Kitchen Remodeling Contractor | Upstate SC".
+Keeping the full geography there would cost the word "Contractor".

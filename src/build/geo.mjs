@@ -243,7 +243,9 @@ ${promotedFaqs
 `
     : ''
   const canonical = `${SITE_ORIGIN}${pageUrl(`service-areas/${area.slug}.html`)}`
-  const title = `Bathroom & Kitchen Remodeling in ${area.name}, SC | Additions & More | Burch Contracting`
+  // ≤60 characters (check-build check 13): the suffix and "| Additions & More"
+  // cut the city off in search results at 83-88.
+  const title = `Bathroom & Kitchen Remodeling in ${area.name}, SC`
   // Leads with a number (drive time) per Phase 7 — real, area-specific, and
   // distinct per city rather than a reworded generic opener.
   const driveTimeLead = area.driveTime === 'Our office location' ? 'Our home office' : `${area.driveTime.replace(' from office', '')} from our office`
@@ -471,7 +473,7 @@ function faqsPage(areaDates) {
     ...SERVICE_FAQS.flatMap((group) => group.faqs),
   ]
   // Leads with a number (the real, computed count) per Phase 7.
-  const description = `${allFaqs.length} real answers on decks, additions, garages & permits in Upstate SC. SC Licensed #${SITE.license}, BBB A+ contractor.`
+  const description = `${allFaqs.length} real answers on costs, permits, decks, additions and garages in Upstate SC, from a licensed contractor. SC Licensed #${SITE.license}, BBB A+.`
 
   // Same promotion pattern as service/service-area pages: first 2 global
   // FAQs (licensing + service area, per GLOBAL_FAQS's own order) become a

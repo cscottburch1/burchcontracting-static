@@ -34,7 +34,10 @@ import {
   quotedPerSqft,
   quotedCost,
   quotedEstimate,
+  quotedTypical,
+  quotedTypicalString,
   handymanRate,
+  proseCost,
 } from './pricing-sync.js'
 import { bathroomRemodelingBeforeProcess, bathroomRemodelingAfterProcess } from './bathroom-remodeling-content.js'
 import { kitchenRemodelingBeforeProcess, kitchenRemodelingAfterProcess } from './kitchen-remodeling-content.js'
@@ -99,7 +102,7 @@ export const SERVICES = [
     slug: 'outdoor-living/decks',
     tier: 3,
     category: 'Outdoor Living',
-    metaTitle: 'Custom Deck Builder Simpsonville & Greenville SC | Burch Contracting',
+    metaTitle: 'Custom Deck Builder Simpsonville & Greenville SC',
     description: 'Custom pressure-treated and composite decks in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Custom Deck Builder - Upstate SC',
     intro: "From pressure-treated pine to premium composite materials, I handle every aspect of custom deck construction: design, permits, footings, framing, and finishing. Every deck engineered for Upstate SC weather and built to last decades.",
@@ -161,7 +164,7 @@ export const SERVICES = [
     slug: 'outdoor-living/screened-porches',
     tier: 3,
     category: 'Outdoor Living',
-    metaTitle: 'Screened Porch Builder Simpsonville & Greenville SC | Burch Contracting',
+    metaTitle: 'Screened Porch Builder Simpsonville & Greenville SC',
     description: 'Screened porches and three-season rooms in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Screened Porch Builder - Upstate SC',
     intro: "From simple porch conversions to luxury three-season rooms with HVAC, I handle all aspects: foundation work, framing, screening systems, electrical, and interior finishing. Every porch designed for year-round comfort in Upstate SC's climate.",
@@ -230,7 +233,7 @@ export const SERVICES = [
     slug: 'outdoor-living/covered-patios',
     tier: 3,
     category: 'Outdoor Living',
-    metaTitle: 'Covered Patio Builder Simpsonville & Greenville SC | Burch Contracting',
+    metaTitle: 'Covered Patio Builder Simpsonville & Greenville SC',
     description: 'Covered patios and outdoor living spaces in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Covered Patio Builder - Upstate SC',
     intro: "I build custom covered patios that extend your outdoor living space with protection from sun and rain. From simple roof extensions to fully-featured outdoor kitchens with lighting and ceiling fans, every patio is designed to complement your home's architecture and maximize your outdoor enjoyment.",
@@ -305,7 +308,7 @@ export const SERVICES = [
     slug: 'garage-builder',
     tier: 3,
     category: 'Construction',
-    metaTitle: 'Garage Builder Simpsonville & Greenville SC | Burch Contracting',
+    metaTitle: 'Garage Builder Simpsonville & Greenville SC',
     description: 'Detached, attached and workshop garages and garage apartments in Simpsonville, Greenville, Fountain Inn & Mauldin SC. SC Licensed #CLG118679, since 1995.',
     h1: 'Garage Builder - Upstate SC',
     intro: "From basic 2-car detached garages to luxury 3-car workshops with apartments above, I handle everything: site prep, foundation, framing, roofing, electrical, and finishing. Every garage engineered to match your home's architecture and meet your specific needs.",
@@ -378,8 +381,8 @@ export const SERVICES = [
     slug: 'room-additions',
     tier: 2,
     category: 'Construction',
-    metaTitle: 'Room Additions Simpsonville & Greenville SC | Primary Suites | Burch Contracting',
-    description: 'Room additions in Simpsonville, Greenville, Fountain Inn & Mauldin SC: bedrooms, primary suites, sunrooms, in-law suites. Design-build from foundation to finish.',
+    metaTitle: 'Room Additions Simpsonville & Greenville SC | Primary Suites',
+    description: 'Room additions in Simpsonville, Greenville, Fountain Inn & Mauldin SC: bedrooms, primary suites, sunrooms, in-law suites. Design-build.',
     heroImage: '/images/room-addition-finished-interior.webp',
     heroAlt: 'Finished room addition interior with a six-panel door, ceiling fan and wide-plank vinyl flooring',
     h1: 'Room Addition Contractor - Upstate SC',
@@ -455,7 +458,7 @@ export const SERVICES = [
     tier: 3,
     category: 'Construction',
     metaTitle: 'ADU Builder Simpsonville & Greenville SC | Burch Contracting',
-    description: 'ADUs in Simpsonville, Greenville, Fountain Inn & Mauldin SC: garage apartments, backyard cottages, in-law suites. Rental income potential $850-$1,500/month.',
+    description: 'ADUs in Simpsonville, Greenville, Fountain Inn & Mauldin SC: garage apartments, backyard cottages, in-law suites. Rental income potential $850-$1,500/mo.',
     h1: 'ADU Builder - Accessory Dwelling Units Upstate SC',
     intro: "From garage apartments to detached backyard cottages, I handle all aspects of ADU construction: zoning review, design, construction, and utilities. ADUs provide rental income ($850-$1,500/month) or flexible living space for family members.",
     stats: {
@@ -519,10 +522,10 @@ export const SERVICES = [
     category: 'Remodeling',
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     heroImage: '/images/bath-shower-conversion-woodruff-sc-1.webp',
-    metaTitle: 'Bathroom Remodeling Simpsonville & Greenville SC | Walk-In Showers, Full Remodels',
-    description: 'Bathroom remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: walk-in showers, tile, full-gut remodels. SC Licensed #CLG118679, since 1995, BBB A+.',
+    metaTitle: 'Bathroom Remodeling Simpsonville & Greenville SC',
+    description: 'Bathroom remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: walk-in showers, tile, full-gut remodels. SC Licensed #CLG118679, since 1995.',
     h1: 'Bathroom Remodeling Contractor — Simpsonville & Fountain Inn, SC',
-    intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${projectCostString('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${projectCostString('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${projectCostString('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${projectCostString('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
+    intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${proseCost('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${proseCost('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${proseCost('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${proseCost('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
       costRange: displayRange(
         projectEstimate('bathRemodel', 'basicRefresh', 25),
@@ -698,10 +701,10 @@ export const SERVICES = [
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
     heroImage: '/images/kitchen-remodel-white-shaker-granite.webp',
     heroAlt: 'Remodeled kitchen with white shaker cabinets, dark granite countertops, stainless appliances and wide-plank vinyl flooring',
-    metaTitle: 'Kitchen Remodeling Contractor Simpsonville & Greenville SC | Burch Contracting',
-    description: 'Kitchen remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: cabinets, quartz & granite counters, layout changes. SC Licensed #CLG118679, since 1995, BBB A+.',
+    metaTitle: 'Kitchen Remodeling Contractor Simpsonville & Greenville SC',
+    description: 'Kitchen remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: cabinets, quartz & granite counters, layout changes. SC Licensed #CLG118679.',
     h1: 'Kitchen Remodeling Contractor — Simpsonville & Fountain Inn, SC',
-    intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${projectCostString('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${projectCostString('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
+    intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${proseCost('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${proseCost('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
       costRange: displayRange(
         projectEstimate('kitchenRemodel', 'standardRefresh', 100),
@@ -824,8 +827,8 @@ export const SERVICES = [
     slug: 'commercial-upfits',
     tier: 'track',
     category: 'Commercial',
-    metaTitle: 'Commercial Upfits & Tenant Improvements Greenville SC | Burch Contracting',
-    description: 'Commercial tenant improvements and build-outs in Greenville, Simpsonville, Fountain Inn & Mauldin SC: retail, office, food service. Complete design-build service.',
+    metaTitle: 'Commercial Upfits & Tenant Improvements Greenville SC',
+    description: 'Commercial tenant improvements and build-outs in Greenville, Simpsonville, Fountain Inn & Mauldin SC: retail, office, food service. Design-build.',
     h1: 'Commercial Upfits & Tenant Improvements - Upstate SC',
     intro: "From retail spaces to medical offices and restaurant build-outs, I handle all phases: space planning, permitting, construction, inspections, and final finishes. Every project delivered on time and within budget.",
     stats: {
@@ -886,8 +889,8 @@ export const SERVICES = [
     slug: 'commercial-roofing',
     tier: 'track',
     category: 'Commercial',
-    metaTitle: 'Commercial Roofing Contractor Greenville & Simpsonville SC | Burch Contracting',
-    description: 'TPO, EPDM, PVC & metal roofing for commercial buildings in Greenville, Simpsonville, Fountain Inn & Mauldin SC. Licensed contractor since 1995, free consultation.',
+    metaTitle: 'Commercial Roofing Contractor Greenville & Simpsonville SC',
+    description: 'TPO, EPDM, PVC & metal roofing for commercial buildings in Greenville, Simpsonville, Fountain Inn & Mauldin SC. Licensed since 1995, free consultation.',
     h1: 'Commercial Roofing Contractor - Upstate SC',
     heroImage: '/images/commercial-tpo-roof.webp',
     intro: "Most roofers only touch the roof. When a leak, a tear-off, or a storm claim damages what's underneath — ceilings, drywall, insulation, flooring — I handle that too, as one contract with one point of contact instead of a roofer and a separate remodeling contractor. From flat-roof systems to standing seam metal, tear-offs to recover, and ongoing maintenance agreements, every project is licensed, code-compliant, and personally overseen.",
@@ -950,7 +953,7 @@ export const SERVICES = [
     slug: 'basement-finishing',
     tier: 2,
     category: 'Construction',
-    metaTitle: 'Basement Finishing Simpsonville & Greenville SC | Burch Contracting',
+    metaTitle: 'Basement Finishing Simpsonville & Greenville SC',
     description: 'Basement finishing in Simpsonville, Greenville, Fountain Inn & Mauldin SC: moisture control, egress windows, full interior build-out. Licensed since 1995.',
     heroImage: '/images/basement-finishing-bottom-floor.webp',
     heroAlt: 'Finished basement with a new staircase, painted walls, recessed lighting and wide-plank vinyl flooring',
@@ -1021,8 +1024,8 @@ export const SERVICES = [
     slug: 'insurance-restoration',
     tier: 'track',
     category: 'Insurance Restoration',
-    metaTitle: 'Insurance Restoration Simpsonville & Greenville SC | Burch Contracting',
-    description: 'Storm damage, water damage and insurance claim restoration in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Free consultations and full repair services.',
+    metaTitle: 'Insurance Restoration Simpsonville & Greenville SC',
+    description: 'Storm damage, water damage and insurance claim restoration in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Free consultations and full repairs.',
     h1: 'Insurance Restoration & Repair Services',
     intro: "Professional storm damage, water damage, and insurance claim restoration in Upstate SC — from a free consultation to full quality repairs. Scott Burch personally oversees every project.",
     stats: {
@@ -1066,7 +1069,7 @@ export const SERVICES = [
     slug: 'ada-compliance',
     tier: 'track',
     category: 'Accessibility',
-    metaTitle: 'ADA Compliance & Accessibility Modifications Greenville SC | Burch Contracting',
+    metaTitle: 'ADA Compliance & Accessibility Modifications Greenville SC',
     description: 'Ramps, accessible bathrooms, doorways and other ADA modifications for homes and businesses in Greenville, Simpsonville, Fountain Inn & Mauldin SC.',
     h1: 'ADA Compliance & Accessibility Modifications',
     intro: "From aging-in-place bathroom conversions to commercial ramps and doorway widening, we design and build accessibility modifications that meet current ADA standards — for homeowners and business owners across Upstate SC.",
@@ -1133,8 +1136,8 @@ export const SERVICES = [
     slug: 'ada-bath-to-shower',
     tier: 1,
     category: 'Accessibility Remodeling',
-    metaTitle: 'ADA Tub-to-Shower Conversions Simpsonville & Greenville SC | Burch Contracting',
-    description: 'Tub-to-shower conversions in Simpsonville, Greenville, Fountain Inn & Mauldin SC: zero-entry roll-in showers, ADA grab bars, non-slip floors. SC Licensed #CLG118679.',
+    metaTitle: 'ADA Tub-to-Shower Conversions Simpsonville & Greenville SC',
+    description: 'Tub-to-shower conversions in Simpsonville, Greenville, Fountain Inn & Mauldin SC: zero-entry roll-in showers, ADA grab bars, non-slip floors.',
     h1: 'ADA Bath to Shower Conversions',
     intro: "Convert your existing bathtub into a safe, accessible, zero-entry roll-in shower — ADA-compliant grab bars, low-threshold entry, and non-slip surfaces, built for aging-in-place and long-term safety.",
     heroImage: '/images/ada-bath-to-shower/ada-bath-to-shower-conversion-simpsonville.webp',
@@ -1205,19 +1208,19 @@ export const SERVICES = [
     slug: 'remodeling',
     tier: 1,
     category: 'Remodeling',
-    metaTitle: 'Home Remodeling Contractor Simpsonville & Greenville SC | Burch Contracting',
-    description: 'Whole-home remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: kitchens, bathrooms and full-house renovations, design-build. Licensed since 1995.',
+    metaTitle: 'Home Remodeling Contractor Simpsonville & Greenville SC',
+    description: 'Whole-home remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: kitchens, bathrooms and full-house renovations, design-build.',
     heroImage: '/images/whole-home-remodel-porch-after.webp',
     heroAlt: 'Whole-home remodel with new siding, windows and a covered porch with painted stairs and railings',
     h1: 'Home Remodeling Contractor - Upstate SC',
     intro: "From kitchen and bathroom renovations to whole-house remodels, I handle all phases: design, demolition, structural work, electrical, plumbing, and complete finishing. Every project managed personally from start to finish.",
     stats: {
-      // Bath + kitchen scope only (see note on the Whole-House tier below for
-      // why that one isn't rolled into this headline figure).
+      // Cheapest table row (a small bath) through the owner's typical
+      // whole-home high (QUOTED_RATES.wholeHomeTypical, PR #28).
       costRange:
         displayRange(
           projectEstimate('bathRemodel', 'basicRefresh', 35),
-          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
+          quotedTypical('wholeHomeTypical', projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000)),
           { plus: true }
         ) + ' Typical',
       timeline: '2-8 Weeks Typical',
@@ -1265,16 +1268,12 @@ export const SERVICES = [
       },
       {
         name: 'Whole-House Remodel',
-        // NOTE: large increase from the original "$50,000-$150,000+". The
-        // wholeHomeRemodel service in calculator-config.js (added 2026-07-05)
-        // is scoped to comprehensive renovation of a typical 2,000 sqft home
-        // at $135-290/sqft — its mathematical floor is well above the old
-        // figure. Flagged for visibility in the reconciliation PR.
-        range: combinedCostString(
-          projectEstimate('wholeHomeRemodel', 'standardRefresh', 2000),
-          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
-          { plus: true }
-        ),
+        // The owner's typical whole-home range (PR #28, 2026-09-23), from
+        // QUOTED_RATES.wholeHomeTypical. The calculator's maximum
+        // configuration for 2,000 sq ft ($644,314) exceeds it, hence the "+";
+        // this row used to show that maximum, which read as what a homeowner
+        // would pay.
+        range: quotedTypicalString('wholeHomeTypical', projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000)),
         description: 'Comprehensive home renovation including multiple rooms, structural changes, systems upgrades, complete interior refresh. Custom scope and pricing.'
       }
     ],
@@ -1348,8 +1347,8 @@ export const SERVICES = [
     slug: 'handyman',
     tier: 3,
     category: 'Handyman & Repairs',
-    metaTitle: 'Handyman Services Simpsonville & Greenville SC | Burch Contracting',
-    description: `Handyman work in Simpsonville, Greenville, Fountain Inn & Mauldin SC at ${handymanRate()}: plumbing, electrical, carpentry & painting. Licensed contractor since 1995.`,
+    metaTitle: 'Handyman Services Simpsonville & Greenville SC',
+    description: `Handyman work in Simpsonville, Greenville, Fountain Inn & Mauldin SC at ${handymanRate()}: plumbing, electrical, carpentry & painting.`,
     h1: 'Handyman Services - Upstate SC',
     intro: "From a single outlet swap to a water heater replacement, I handle the smaller jobs too — plumbing fixtures, electrical, doors and windows, carpentry, drywall repair, and interior painting. Same licensing and accountability as every larger project, just sized for a shorter task list.",
     stats: {

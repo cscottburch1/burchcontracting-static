@@ -15,13 +15,15 @@
  * made to the original content brief.
  */
 
+import { proseAmount } from './pricing-sync.js'
+
 export function bathroomRemodelingBeforeProcess({ luxuryBath }) {
   return `
       <section class="bg-white py-16 lg:py-20 border-t border-slate-100">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div>
             <h2 class="text-3xl font-bold text-slate-900 mb-6">Why Bathroom Remodels Cost What They Cost</h2>
-            <p class="text-slate-600 leading-relaxed">Labor typically accounts for 45-60% of a bathroom remodel budget — a higher share than almost any other room in the house. A bathroom crams plumbing, electrical, waterproofing, tile, and finish carpentry into a space smaller than most bedrooms' closets, and every one of those trades has to show up and do real work even in a small room. There's no such thing as a small mistake behind tile: a waterproofing shortcut that would go unnoticed on paper turns into a rotted subfloor eighteen months later. That's why a $${Math.round(luxuryBath / 1000)}K bathroom and a $${Math.round(luxuryBath / 1000)}K deck are not comparable projects, even at the same price.</p>
+            <p class="text-slate-600 leading-relaxed">Labor typically accounts for 45-60% of a bathroom remodel budget — a higher share than almost any other room in the house. A bathroom crams plumbing, electrical, waterproofing, tile, and finish carpentry into a space smaller than most bedrooms' closets, and every one of those trades has to show up and do real work even in a small room. There's no such thing as a small mistake behind tile: a waterproofing shortcut that would go unnoticed on paper turns into a rotted subfloor eighteen months later. That's why a ${proseAmount(luxuryBath)} bathroom and a ${proseAmount(luxuryBath)} deck are not comparable projects, even at the same price.</p>
           </div>
           <div>
             <h3 class="text-xl font-bold text-slate-900 mb-3">Is a bathroom remodel worth it at resale?</h3>

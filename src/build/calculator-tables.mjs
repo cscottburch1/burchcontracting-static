@@ -15,6 +15,7 @@
  * table lands on a {{calculator.table}} placeholder in the page's template.
  */
 import { PRICING_CONFIG, CALCULATOR_PAGES, adaBathEstimate, defaultSquareFootage, formatCurrency } from '../js/calculator-config.js'
+import { CALCULATOR_INTROS } from '../data/calculator-intros.js'
 import { projectCostString, tierPerSqftString, servicePerSqftString } from '../data/pricing-sync.js'
 
 /**
@@ -80,7 +81,7 @@ for (const page of STANDARD_PAGES) {
   const cfg = CALCULATOR_PAGES[page.calcKey]
   const serviceKey = cfg.serviceKey
   const service = PRICING_CONFIG.services[serviceKey]
-  const sqft = extractSqftFromIntro(cfg.intro) ?? defaultSquareFootage(serviceKey)
+  const sqft = extractSqftFromIntro(CALCULATOR_INTROS[page.calcKey]) ?? defaultSquareFootage(serviceKey)
 
   const rows = Object.entries(service.baseRates)
     .map(([rateId, rate]) =>
@@ -90,7 +91,7 @@ for (const page of STANDARD_PAGES) {
 
   const html = tableSection({
     question: page.question,
-    answer: cfg.intro,
+    answer: CALCULATOR_INTROS[page.calcKey],
     captionLabel: `${cfg.title} pricing tiers — ${cfg.marketArea}`,
     columns: ['Tier', 'Price Range', `Typical at ${sqft} sq ft`, "What's Included"],
     rows,
@@ -192,4 +193,15 @@ export function calculatorTable(relFile) {
 /** The pages this module builds a table for, for the renderer to assert against. */
 export function tabledPages() {
   return Object.keys(TABLES).sort()
+}
+
+/**
+ * The calculator page's intro paragraph as a {{calculator.intro}} block, or
+ * null for a page without one (ada-bath-shower, estimate). Same text as the
+ * answer under the page's pricing table — one string, rendered twice.
+ */
+export function calculatorIntro(relFile) {
+  const page = STANDARD_PAGES.find((p) => 'calculator/' + p.file === relFile)
+  if (!page) return null
+  return `          <p class="text-lg text-slate-300 max-w-3xl mb-4">${CALCULATOR_INTROS[page.calcKey]}</p>`
 }

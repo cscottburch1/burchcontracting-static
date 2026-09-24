@@ -38,7 +38,7 @@
  */
 
 import { SERVICES } from './services.js'
-import { adaBathRange, handymanRate, quotedPerSqft } from './pricing-sync.js'
+import { adaBathRange, handymanRate, proseOf, proseSpan, quotedPerSqft } from './pricing-sync.js'
 
 // Prices in the answers below are read from the service pages they belong to
 // (Phase 6.6, owner pricing of 2026-09-23), so an FAQ cannot quote a figure its
@@ -50,8 +50,27 @@ function service(id) {
   if (!found) throw new Error(`service-faqs.js: no service '${id}'`)
   return found
 }
-/** A service's headline range without its trailing label ("Range", "Typical"). */
-const price = (id) => service(id).stats.costRange.replace(/ (Range|Typical)$/, '')
+/**
+ * A service's whole dollar table, low to high, rounded for a sentence
+ * (proseSpan, PR #28) — the headline says the same range displayRound()-ed.
+ */
+const price = (id) => proseSpan(service(id))
+/** One table row's cost, rounded for a sentence: "$6,400–$7,700". */
+function row(id, name) {
+  const found = [...(service(id).commonProjects ?? [])].find((p) => p.name === name)
+  if (!found) throw new Error(`service-faqs.js: ${id} has no common project '${name}'`)
+  return proseOf(found.cost)
+}
+const low = (id, name) => row(id, name).split('–')[0]
+const high = (id, name) => row(id, name).split('–')[1]
+// The bathroom page's common projects, by name (rows in services.js).
+const B = 'bathroom-remodeling'
+const PR = 'Powder Room Refresh'
+const HB = 'Hall/Guest Bath — Basic Refresh'
+const HM = 'Hall/Guest Bath — Mid-Range Remodel'
+const SP = 'Standard Primary Bath'
+const FG = 'Full-Gut Primary Bath'
+const LG = 'Large Primary / Spa Bath'
 /** A service's per-sq-ft band without the unit, e.g. "$48-121". */
 const perSqft = (id) => service(id).pricePerSqFt.replace('/sq ft', '')
 
@@ -224,19 +243,19 @@ export const SERVICE_FAQS = {
   'bathroom-remodeling': [
     {
       question: 'How much does a bathroom remodel cost in Simpsonville, SC?',
-      answer: 'A bathroom remodel in Simpsonville and Fountain Inn typically runs $6,375 to $30,708 for a full bath, depending on size and scope — a basic 5×8 hall bath refresh starts around $6,375–$7,677, while a mid-range 80 sq ft primary bath runs $25,498–$30,708. Powder rooms start near $3,984, and a full-gut primary bath with custom tile and premium fixtures runs $60,103 and up. Use our bath remodel calculator for an estimate matched to your bathroom’s size and finish level.'
+      answer: `A bathroom remodel in Simpsonville and Fountain Inn typically runs ${low(B, HB)} to ${high(B, SP)} for a full bath, depending on size and scope — a basic 5×8 hall bath refresh starts around ${row(B, HB)}, while a mid-range 80 sq ft primary bath runs ${row(B, SP)}. Powder rooms start near ${low(B, PR)}, and a full-gut primary bath with custom tile and premium fixtures runs ${low(B, FG)} and up. Use our bath remodel calculator for an estimate matched to your bathroom’s size and finish level.`
     },
     {
       question: 'How much does a small bathroom remodel cost?',
-      answer: 'A small bathroom — a powder room or a compact 5×8 hall bath — typically costs $3,984 to $7,677 for a basic refresh: new fixtures, vanity, flooring, and paint with the existing layout and plumbing left in place. Moving fixtures or upgrading to a full tile shower in that same small footprint pushes the mid-range tier to roughly $12,749–$15,354.'
+      answer: `A small bathroom — a powder room or a compact 5×8 hall bath — typically costs ${low(B, PR)} to ${high(B, HB)} for a basic refresh: new fixtures, vanity, flooring, and paint with the existing layout and plumbing left in place. Moving fixtures or upgrading to a full tile shower in that same small footprint pushes the mid-range tier to roughly ${row(B, HM)}.`
     },
     {
       question: 'How much does a master or primary bathroom remodel cost?',
-      answer: 'A primary bathroom remodel typically runs $25,498 to $98,018 depending on size and scope. An 80 sq ft primary bath with a tile shower and updated vanity at the mid-range tier runs about $25,498–$30,708; a full-gut 96 sq ft primary bath with a custom tile shower and double vanity runs $60,103–$72,382; and a large 130+ sq ft spa bath with a freestanding soaking tub, heated floors, and frameless glass runs $81,390–$98,018.'
+      answer: `A primary bathroom remodel typically runs ${low(B, SP)} to ${high(B, LG)} depending on size and scope. An 80 sq ft primary bath with a tile shower and updated vanity at the mid-range tier runs about ${row(B, SP)}; a full-gut 96 sq ft primary bath with a custom tile shower and double vanity runs ${row(B, FG)}; and a large 130+ sq ft spa bath with a freestanding soaking tub, heated floors, and frameless glass runs ${row(B, LG)}.`
     },
     {
       question: 'How much does a powder room remodel cost?',
-      answer: 'A powder room (half bath, roughly 25 sq ft) typically costs $3,984 to $4,798 for a basic refresh — new vanity, toilet, floor tile, lighting, and paint, with no tub or shower involved. Since a powder room has no wet area to waterproof, it’s consistently the least expensive full bathroom project we quote.'
+      answer: `A powder room (half bath, roughly 25 sq ft) typically costs ${low(B, PR)} to ${high(B, PR)} for a basic refresh — new vanity, toilet, floor tile, lighting, and paint, with no tub or shower involved. Since a powder room has no wet area to waterproof, it’s consistently the least expensive full bathroom project we quote.`
     },
     {
       question: 'How long does a bathroom remodel take?',

@@ -1,5 +1,5 @@
 import { SERVICES } from './services.js'
-import { displayRange, projectEstimate } from './pricing-sync.js'
+import { projectEstimate, proseOf, proseRange, proseSpan } from './pricing-sync.js'
 
 // Prices in the FAQs below are read from the service pages' own headline and
 // table rows (Phase 6.6), so an FAQ cannot quote a figure the page it links to
@@ -13,7 +13,9 @@ function service(id) {
 function row(id, name) {
   const found = (service(id).commonProjects ?? []).find((p) => p.name === name)
   if (!found) throw new Error(`geo-aeo.js: ${id} has no common project '${name}'`)
-  return found.cost
+  // Rounded for a sentence (PR #28); the table on the service page keeps
+  // the exact figure.
+  return proseOf(found.cost)
 }
 
 export const SITE = {
@@ -255,7 +257,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How much does a screened porch cost in Simpsonville SC?',
-    answer: `Screened porches in Simpsonville and surrounding areas typically run ${service('screened-porches').stats.costRange.replace(/ Range$/, '')} for new construction. Converting an existing deck can save 50–70% since the framing and floor are already in place. Use the porch calculator at burchcontracting.com/calculator/porch for a planning estimate.`,
+    answer: `Screened porches in Simpsonville and surrounding areas typically run ${proseSpan(service('screened-porches'))} for new construction. Converting an existing deck can save 50–70% since the framing and floor are already in place. Use the porch calculator at burchcontracting.com/calculator/porch for a planning estimate.`,
   },
   {
     question: 'How much does a detached garage cost in Upstate SC?',
@@ -263,7 +265,7 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How much does a room addition cost per square foot?',
-    answer: `Room additions in Upstate SC typically cost ${service('additions').pricePerSqFt.replace('/sq ft', '')} per square foot depending on scope, structural work, finishes, and HVAC integration. A 400 sq ft addition often runs ${displayRange(projectEstimate('homeAdditions', 'basicFinish', 400), projectEstimate('homeAdditions', 'premiumCustom', 400))}. Use the addition calculator for a planning range.`,
+    answer: `Room additions in Upstate SC typically cost ${service('additions').pricePerSqFt.replace('/sq ft', '')} per square foot depending on scope, structural work, finishes, and HVAC integration. A 400 sq ft addition often runs ${proseRange(projectEstimate('homeAdditions', 'basicFinish', 400), projectEstimate('homeAdditions', 'premiumCustom', 400))}. Use the addition calculator for a planning range.`,
   },
   {
     question: 'Does Burch Contracting handle permits and inspections?',

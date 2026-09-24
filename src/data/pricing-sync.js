@@ -194,3 +194,107 @@ export function handymanRate() {
   const { hourly, minimumHours } = QUOTED_RATES.handyman
   return `$${hourly}/hr, ${minimumHours}-hour minimum (${formatCurrency(hourly * minimumHours)})`
 }
+
+/**
+ * Rounding for dollar figures in sentences (PR #28): nearest $100 under
+ * $10,000, nearest $500 from $10,000, nearest $1,000 from $100,000. A sentence
+ * saying "$6,375 to $30,708" reads as false precision; the table under it is
+ * where exact figures belong. Tables keep exact figures and headlines keep
+ * displayRound(); nothing here touches calculator math.
+ */
+export function proseRound(amount) {
+  if (amount < 10000) return Math.round(amount / 100) * 100
+  if (amount < 100000) return Math.round(amount / 500) * 500
+  return Math.round(amount / 1000) * 1000
+}
+
+/** One amount, prose-rounded: "$72,500". */
+export function proseAmount(amount) {
+  return formatCurrency(proseRound(amount))
+}
+
+/** projectCostString(), prose-rounded: "$6,400–$7,700". */
+export function proseCost(serviceKey, rateId, sqft, overrides = {}) {
+  const est = projectEstimate(serviceKey, rateId, sqft, overrides)
+  return `${proseAmount(est.budgetLow)}–${proseAmount(est.customHigh)}`
+}
+
+/** The low end of one estimate to the high end of another, prose-rounded. */
+export function proseRange(lowEstimate, highEstimate, { plus = false } = {}) {
+  return `${proseAmount(lowEstimate.budgetLow)}–${proseAmount(highEstimate.customHigh)}${plus ? '+' : ''}`
+}
+
+/** An exact "$A–$B" (a table cell) re-stated for a sentence. */
+export function proseOf(exactRange) {
+  const [low, high] = dollarAmounts(exactRange)
+  return high === undefined ? proseAmount(low) : `${proseAmount(low)}–${proseAmount(high)}${/\+\s*$/.test(exactRange) ? '+' : ''}`
+}
+
+/**
+ * A service's whole dollar table (its common projects and pricing tiers), low
+ * to high, prose-rounded — what an FAQ answer should say where the headline
+ * says the same range displayRound()-ed. "+" if the headline carries one.
+ */
+export function proseSpan(service) {
+  const rows = [...(service.commonProjects ?? []).map((p) => p.cost), ...(service.pricingTiers ?? []).map((t) => t.range)]
+    .filter((text) => text && !perSqFt(text))
+  const amounts = rows.flatMap(dollarAmounts)
+  const plus = /\+/.test(service.stats?.costRange ?? '')
+  return `${proseAmount(Math.min(...amounts))}–${proseAmount(Math.max(...amounts))}${plus ? '+' : ''}`
+}
+
+/**
+ * Dollar figures in a sentence that are prices, not rates: "$72K" counts as
+ * 72,000; anything per sq ft, per hour or per month is a rate and is skipped.
+ */
+export function proseDollarFigures(text) {
+  const out = []
+  const re = /\$([0-9][0-9,]*(?:\.\d+)?)(K)?(?:\+)?(?:\s*(?:[-–]|to)\s*\$?([0-9][0-9,]*(?:\.\d+)?)(K)?)?(\+)?(\s*(?:\/\s*(?:sq|hr|hour|mo|month)|per\s+(?:sq|square|hour|month)))?/g
+  for (const m of String(text).matchAll(re)) {
+    if (m[6]) continue
+    const n = (v, k) => Number(v.replace(/,/g, '')) * (k ? 1000 : 1)
+    out.push(n(m[1], m[2]))
+    if (m[3]) out.push(n(m[3], m[4]))
+  }
+  return out
+}
+
+/**
+ * Every price in a service's prose must be proseRound() of a figure in that
+ * service's own tables, or a declared cited figure. This is how a hand-typed
+ * number gets caught: it will not be the rounding of anything the page prices.
+ * Returns the problems as sentences; empty if none.
+ */
+export function proseAgreesWithTable(service, proseTexts, cited = []) {
+  const table = [
+    ...(service.commonProjects ?? []).map((p) => p.cost),
+    ...(service.pricingTiers ?? []).map((t) => t.range),
+    ...(service.additionalCosts ?? []).map((c) => c.cost),
+  ].flatMap(dollarAmounts)
+  if (!table.length) return []
+  const allowed = new Set([...table.map(proseRound), ...cited])
+  const problems = []
+  for (const [where, text] of proseTexts) {
+    for (const amount of proseDollarFigures(text)) {
+      if (!allowed.has(amount)) problems.push(`${where}: $${amount.toLocaleString()} is not proseRound() of any figure in this service's tables, and is not a declared cited figure`)
+    }
+  }
+  return problems
+}
+
+/**
+ * An owner-quoted typical range (QUOTED_RATES.<key>: { low, high }), shaped
+ * like a projectEstimate(). Pass the calculator's own priciest estimate for
+ * the same work: if it exceeds the quoted high, the range reads with a "+" —
+ * the calculator keeps its math and the page says the typical job.
+ */
+export function quotedTypical(key, calculatorMax) {
+  const { low, high } = QUOTED_RATES[key]
+  return { budgetLow: low, customHigh: high, plus: Boolean(calculatorMax && calculatorMax.customHigh > high) }
+}
+
+/** quotedTypical() as a table cell: "$8,000–$350,000+". */
+export function quotedTypicalString(key, calculatorMax) {
+  const t = quotedTypical(key, calculatorMax)
+  return `${formatCurrency(t.budgetLow)}–${formatCurrency(t.customHigh)}${t.plus ? '+' : ''}`
+}
