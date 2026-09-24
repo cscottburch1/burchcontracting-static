@@ -188,7 +188,7 @@ export const ARTICLES = [
     servicePage: 'basement-finishing/index.html',
     permitCounty: 'Greenville County',
     h1: 'Average Cost of Basement Finishing in South Carolina',
-    metaTitle: 'Basement Finishing Cost in South Carolina | Burch Contracting',
+    metaTitle: 'Basement Finishing Cost in South Carolina',
     metaDescription:
       'Average basement finishing costs in South Carolina per square foot and by scope, computed from our own pricing, plus moisture and egress requirements.',
     lead: (p) =>
@@ -339,7 +339,7 @@ export const ARTICLES = [
     servicePage: 'bathroom-remodeling/index.html',
     permitCounty: 'Greenville County',
     h1: 'Cost of Bathroom Remodeling in Simpsonville, SC',
-    metaTitle: 'Cost of Bathroom Remodeling Simpsonville SC | Burch Contracting',
+    metaTitle: 'Cost of Bathroom Remodeling Simpsonville SC',
     metaDescription:
       'What bathroom remodeling costs in Simpsonville SC by scope, computed from our own pricing, plus the hidden costs that show up behind old tile.',
     lead: (p) =>
@@ -485,7 +485,7 @@ export const ARTICLES = [
     servicePage: 'ada-bath-to-shower/index.html',
     permitCounty: 'Greenville County',
     h1: 'Bath to Shower Conversion Cost in South Carolina',
-    metaTitle: 'Tub to Shower Conversion Cost South Carolina | Burch Contracting',
+    metaTitle: 'Tub to Shower Conversion Cost South Carolina',
     metaDescription:
       'What converting a tub to a walk-in shower costs in South Carolina, what changes structurally, and the accessibility details worth getting right.',
     lead: (p) =>
@@ -834,7 +834,7 @@ export const ARTICLES = [
     servicePage: 'kitchen-remodeling/index.html',
     permitCounty: 'Greenville County',
     h1: 'How to Plan a Kitchen Remodel, Step by Step',
-    metaTitle: 'How to Plan a Kitchen Remodel Step by Step | Burch Contracting',
+    metaTitle: 'How to Plan a Kitchen Remodel Step by Step',
     metaDescription:
       'A practical order of operations for planning a kitchen remodel — budget, layout, selections, contractor and schedule — before demolition day.',
     lead: (p) =>
@@ -906,7 +906,7 @@ export const ARTICLES = [
     servicePage: 'remodeling/index.html',
     permitCounty: null,
     h1: 'Best Home Improvements for Property Value in South Carolina',
-    metaTitle: 'Best Home Improvements for Property Value in SC | Burch Contracting',
+    metaTitle: 'Best Home Improvements for Property Value in SC',
     metaDescription:
       'Which home improvements hold their value best in South Carolina, which rarely pay back, and why usable outdoor space does well in this market.',
     lead: () =>

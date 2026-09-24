@@ -78,7 +78,7 @@ const KINDS = {
     dir: 'blog',
     hubTitle: 'Guides & Articles',
     hubH1: 'Remodeling & Construction Guides',
-    hubMetaTitle: 'Remodeling & Construction Guides — Upstate SC | Burch Contracting',
+    hubMetaTitle: 'Remodeling & Construction Guides — Upstate SC',
     hubMetaDescription:
       'Practical guides on costs, materials, timelines and permits for South Carolina remodeling and construction projects, written by a licensed contractor.',
     hubIntro:

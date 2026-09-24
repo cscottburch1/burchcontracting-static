@@ -36,7 +36,7 @@ export const COST_GUIDES = [
     servicePage: 'garage-builder/index.html',
     permitCounty: 'Laurens County',
     h1: 'Garage Construction Cost in Laurens, SC',
-    metaTitle: 'Garage Construction Cost Laurens SC | Detached & Attached Garage Pricing',
+    metaTitle: 'Garage Construction Cost Laurens SC',
     metaDescription:
       'What a detached, attached or workshop garage costs in Laurens SC, with per-square-foot ranges computed from our own pricing, plus what moves the number.',
     lead: (p) =>
@@ -114,7 +114,7 @@ export const COST_GUIDES = [
     servicePage: 'room-additions/index.html',
     permitCounty: 'Greenville County',
     h1: 'Home Addition Cost in Greenville, SC',
-    metaTitle: 'Home Addition Cost Greenville SC | Room Addition Pricing & Planning Guide',
+    metaTitle: 'Home Addition Cost Greenville SC',
     metaDescription:
       'Home addition costs in Greenville SC by size and finish level, computed from our own pricing, plus the foundation, roofline and HVAC decisions that move the number.',
     lead: (p) =>
@@ -269,7 +269,7 @@ export const COST_GUIDES = [
     servicePage: 'outdoor-living/decks/index.html',
     permitCounty: 'Greenville County',
     h1: 'Cost to Build a Deck in Simpsonville, SC',
-    metaTitle: 'Cost to Build a Deck in Simpsonville SC | Pricing Guide | Burch Contracting',
+    metaTitle: 'Cost to Build a Deck in Simpsonville SC | Pricing Guide',
     metaDescription:
       'What building a deck costs in Simpsonville SC — pressure-treated versus composite, per square foot and by size, computed from our own pricing.',
     lead: (p) =>
@@ -495,7 +495,7 @@ export const COST_GUIDES = [
     servicePage: 'outdoor-living/screened-porches/index.html',
     permitCounty: 'Greenville County',
     h1: 'Screened Porch vs Sunroom in South Carolina',
-    metaTitle: 'Screened Porch vs Sunroom in SC | Cost, Pros & Cons Comparison Guide',
+    metaTitle: 'Screened Porch vs Sunroom in SC',
     metaDescription:
       'Screened porch or sunroom for a South Carolina home: what each costs, how many months you actually use them, and which suits your house.',
     lead: (p) =>

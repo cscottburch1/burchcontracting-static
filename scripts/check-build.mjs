@@ -798,6 +798,21 @@ if (headlineDrift.length) {
   failures.push({ check: 'headline-price-disagrees-with-table', detail: headlineDrift })
 }
 
+// --- Check 13: no <title> longer than Google shows ---
+// PR #28. Phase 6.2 restored geo- and intent-led titles and let them run to
+// 79-99 characters; Google shows about 60, so the part that got cut was
+// often the geography the rewrite was for. Measured on the decoded text
+// ("&amp;" is one character to a reader). A failure, not a warning.
+const TITLE_MAX = 60
+const longTitles = pages
+  .map((page) => [page.rel, decodeEntities((page.html.match(/<title>([^<]*)<\/title>/) || [])[1] ?? '')])
+  .filter(([, title]) => title.length > TITLE_MAX)
+  .map(([rel, title]) => `${rel}: ${title.length} chars — "${title}"`)
+if (longTitles.length) {
+  failed = true
+  failures.push({ check: `title-over-${TITLE_MAX}-chars`, detail: longTitles })
+}
+
 // --- Report ---
 if (failed) {
   console.error('check-build FAILED\n')
