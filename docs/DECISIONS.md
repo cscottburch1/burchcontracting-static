@@ -1126,3 +1126,52 @@ exclude `service: 'adaBathShower'` or start from that run.
 `calculator_complete` — so there was nothing to match. What "start" should
 mean (the page loading, the calculator scrolling into view, the first click) is
 an owner decision, and it would need adding to both calculators together.
+
+---
+
+## 2026-09-24 — Hand-dated pages carry a text hash, and check 15 holds them to it
+
+**What went wrong.** `3ebd398` corrected the whole-home typical low from $8,000
+to $60,000, which changed the visible text of `/remodeling`. `/remodeling` is
+dated by a literal override, `__service__remodeling`, whose note says to bump
+it in the same commit as any content change. It was not bumped, so the page
+kept claiming 2026-09-23 and no gate noticed. `dates-set-by-head` reported
+"No page takes its dateModified from this commit" at that commit, and it was
+right: literal overrides are not derived from git, so nothing moves them.
+
+**Decision.** Every page whose `dateModified` comes from an entry in the
+`dates` block of `src/data/content-date-overrides.json` (today 18: sixteen
+service pages, privacy, terms) has its visible-text hash stored beside its
+date, in a new `textHashes` block. check-build check 15 recomputes each hash
+from `.build/pages/` and fails when one no longer matches, naming the page:
+
+- text changed, date did not → "bump the override's dateModified";
+- date moved, hash not re-recorded → "run scripts/record-text-hashes.mjs".
+
+Visible text excludes `<head>`, the header and footer chrome, scripts and
+styles, and replaces every ISO date with a placeholder, because the byline
+prints the page's own date and would otherwise make the hash circular.
+
+`scripts/record-text-hashes.mjs` writes the hashes. It refuses to re-record a
+page whose text changed while its date did not, since that would erase the
+finding check 15 exists to raise. `--accept` overrides the refusal for a text
+change that genuinely needs no new date; say why in the commit.
+
+**Seeding (owner decision, option (a)).** On 2026-09-24 every hash was seeded
+from that day's build, except `/remodeling`. Its hash was seeded from a build
+at `e5d56d9`, the last commit dated 2026-09-23, which is the content its date
+actually vouched for. Seeded that way, check 15 failed on `main` naming
+exactly `/remodeling`. A comparison of all 18 pages between `e5d56d9` and that
+day's build showed `/remodeling` as the only difference. It passed once
+`__service__remodeling` moved to 2026-09-24 and the hash was re-recorded.
+
+**Every other override was accepted as correct at seeding on 2026-09-24.** The
+check vouches for changes from that point forward, not for history. It does not
+prove that pages pinned to 2026-09-11 (decks, commercial roofing, insurance
+restoration, ADA compliance) or to 2026-07-23 (privacy, terms) are unchanged
+since those dates.
+
+Proven both ways: the seeded state failed on `/remodeling`. A temporary edit
+to the decks intro failed on `/outdoor-living/decks`, which is dated by the
+shared `services.js` pin. After the bump, and with the tamper restored, it
+passes. The recorder refused to re-baseline `/remodeling` before the bump.

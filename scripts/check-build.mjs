@@ -45,6 +45,8 @@
  *      declared cited figure (PR #28).
  *  13. A <title> over 60 characters (PR #28).
  *  14. A meta description outside 120-155 characters, 404.html exempt (PR #28).
+ *  15. A page dated by a literal override whose visible text changed while its
+ *      dateModified did not (repo-truth, 2026-09-24).
  *
  * WHICH TREE EACH CHECK READS
  *
@@ -74,6 +76,8 @@ import { CALCULATOR_PAGES } from '../src/js/calculator-config.js'
 import { CALCULATOR_INTROS } from '../src/data/calculator-intros.js'
 import { headlineAgreesWithTable, proseAgreesWithTable, servicePerSqftBand } from '../src/data/pricing-sync.js'
 import { citedAmounts } from '../src/data/cited-figures.js'
+import { overrideDatedPages, readOverridesFile } from './lib/override-pages.mjs'
+import { visibleTextHash } from './lib/visible-text.mjs'
 import { chromeHash, chromeSource } from './lib/chrome-hash.mjs'
 import { NAV_CLASS, activeNavItem } from '../src/data/nav.js'
 import { SERVICES, servicesByTier } from '../src/data/services.js'
@@ -855,6 +859,41 @@ const badDescriptions = pages
 if (badDescriptions.length) {
   failed = true
   failures.push({ check: `description-outside-${DESCRIPTION_MIN}-${DESCRIPTION_MAX}-chars`, detail: badDescriptions })
+}
+
+// --- Check 15: a hand-dated page's text cannot change without its date ---
+// Repo-truth, 2026-09-24. A page dated by git moves its own date when its file
+// changes. A page dated by a literal override in content-date-overrides.json
+// does not: someone has to bump it, and on 2026-09-24 nobody did — the
+// whole-home correction changed /remodeling's visible text and its
+// dateModified stayed 2026-09-23. Each such page's visible-text hash is stored
+// beside its date (textHashes, written by scripts/record-text-hashes.mjs). A
+// hash that no longer matches fails, naming the page and saying which of the
+// two things to do. Vouches for changes from the day it was seeded, not for
+// history: see DECISIONS 2026-09-24.
+{
+  const overridesFile = readOverridesFile()
+  const recorded = overridesFile.textHashes ?? {}
+  const dateProblems = []
+  for (const { rel, key, dateModified } of overrideDatedPages(overridesFile)) {
+    const page = pages.find((p) => p.rel === rel)
+    if (!page) continue
+    const hash = visibleTextHash(page.html)
+    const entry = recorded[rel]
+    if (!entry) {
+      dateProblems.push(`${rel}: dated by ${key} but has no recorded text hash — run scripts/record-text-hashes.mjs`)
+    } else if (entry.hash !== hash) {
+      dateProblems.push(
+        entry.dateModified === dateModified
+          ? `${toPublicUrl(rel)}: visible text changed but dateModified is still ${dateModified} (${key}) — bump the override's dateModified, then run scripts/record-text-hashes.mjs`
+          : `${toPublicUrl(rel)}: dateModified moved to ${dateModified} but the text hash was recorded under ${entry.dateModified} — run scripts/record-text-hashes.mjs`
+      )
+    }
+  }
+  if (dateProblems.length) {
+    failed = true
+    failures.push({ check: 'text-changed-date-did-not', detail: dateProblems })
+  }
 }
 
 // --- Report ---
