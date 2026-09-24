@@ -284,8 +284,9 @@ above. Prices in a guide come from `calculator-config.js` through
    gap after 1–3. `/projects` has three bath or kitchen entries of fourteen,
    under the Phase 6 floor of four, and both bath entries are tub/shower
    conversions. Needed, each with photos and a one-paragraph write-up (city,
-   scope, rough size, duration): at least one full bathroom remodel, at least
-   one more kitchen remodel, ideally one whole-home or multi-room remodel.
+   scope, rough size, duration): at least one full bathroom remodel and at
+   least one more kitchen remodel. The whole-home example now exists
+   (Simpsonville, added 2026-09-23).
 
 **Already live, so not queued** (the Phase 6 plan listed them before it knew):
 bathroom remodel cost Simpsonville (`/cost/bathroom-remodel-cost-simpsonville-sc`)

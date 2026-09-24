@@ -766,7 +766,7 @@ export const HAND_AUTHORED_PAGES = [
   {
     "file": "projects.html",
     "title": "Recent Projects | Burch Contracting Upstate SC",
-    "description": "14 real completed projects: bathroom and kitchen remodels, additions, decks & garages across Upstate SC. SC Licensed #CLG118679, BBB A+.",
+    "description": "15 real completed projects: a whole-home renovation, bathroom and kitchen remodels, additions, decks & garages across Upstate SC. SC Licensed #CLG118679, BBB A+.",
     "canonical": "https://burchcontracting.com/projects",
     "ogImage": "/images/room-addition-fountain-inn-sc.webp",
     "schema": [
