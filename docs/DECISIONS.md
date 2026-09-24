@@ -1104,3 +1104,25 @@ does on every service page and on 7 of 11 calculators. The homepage is the
 exception. Its trailing segment *is* the geography, so step 2 does not drop it
 and step 3 applies: "Bathroom & Kitchen Remodeling Contractor | Upstate SC".
 Keeping the full geography there would cost the word "Contractor".
+
+---
+
+## 2026-09-24 — The tub-to-shower calculator reports to GA4
+
+`src/js/ada-bath-calculator.js` sent no events, so use of the calculator for
+ADA bath-to-shower, one of the four lead offers, was invisible in GA4 even though
+the page loaded `analytics.js` and counted page views. It now sends
+`calculator_complete` (with `service: 'adaBathShower'`) through `trackEvent`,
+by the same rule as `calculator.js`: once per page load, on the first change to
+one of the calculator's inputs, never on the default render, the details toggle
+or print.
+
+**Merged 2026-09-24 in PR #31; live from the first Deploy run after that merge
+(see Actions history).** Events before that date do not include this
+calculator, so a before/after comparison of `calculator_complete` should
+exclude `service: 'adaBathShower'` or start from that run.
+
+`calculator_start` was also requested. `calculator.js` has never sent it — only
+`calculator_complete` — so there was nothing to match. What "start" should
+mean (the page loading, the calculator scrolling into view, the first click) is
+an owner decision, and it would need adding to both calculators together.
