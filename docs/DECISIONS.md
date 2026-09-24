@@ -1175,3 +1175,47 @@ Proven both ways: the seeded state failed on `/remodeling`. A temporary edit
 to the decks intro failed on `/outdoor-living/decks`, which is dated by the
 shared `services.js` pin. After the bump, and with the tamper restored, it
 passes. The recorder refused to re-baseline `/remodeling` before the bump.
+
+---
+
+## 2026-09-24 — Negative tests recorded for the eight checks that had none
+
+The survey of 2026-09-24 found eight check-build assertions with no recorded
+failing test. That is absence of evidence, not a known defect. Each has now
+been made to fail on purpose, by tampering the tree it actually reads, and then
+restored to green. Two findings came out of it, recorded after the table.
+
+| Tag | Tamper (tree read) | Failure message |
+|---|---|---|
+| `orphan-page` | removed both inbound links to `/cost/screened-porch-vs-sunroom-sc` from `.build/pages/` (2 pages → 0) | `[orphan-page] 1 issue(s): /cost/screened-porch-vs-sunroom-sc` |
+| `faq-schema-visible-mismatch` (both directions) | renamed the schema Question on `calculator/decks.html` (`.build/pages/`) | `schema Question "How much does a deck cost in Upstate SC? TAMPERED" not found as visible text` **and** `visible question heading "How much does a deck cost in Upstate SC?" is missing from the page's FAQPage schema` |
+| `faq-schema-visible-mismatch` (schema direction alone) | injected a Question the page never shows | `schema Question "Is this question invisible?" not found as visible text` |
+| `recaptcha-site-key` | `data-recaptcha-site-key="YOUR_SITE_KEY_HERE"` in `dist/contact.html` | `…is "YOUR_SITE_KEY_HERE" — not a well-formed reCAPTCHA v3 site key…` |
+| `recaptcha-key-baked-into-js` | a `6L…` literal appended to a `dist/assets/*.js` bundle | `dist/assets/calculator_ada-bath-shower-….js contains a reCAPTCHA key literal…` |
+| `robots-txt-missing` | deleted `dist/robots.txt` | `dist/robots.txt was not produced by the build` |
+| `robots-txt-disallows-everything` | `User-agent: * / Disallow: /` in `dist/robots.txt` | `dist/robots.txt contains a blanket "Disallow: /"` |
+| `content-dates-not-derived` | **a real `git clone --depth 1`**, built from scratch (not a hand edit) | `25 pages claim datePublished 2026-09-24 … This is what a shallow clone looks like — actions/checkout needs fetch-depth: 0.` |
+| `staging-build-missing-noindex` | ran the staging assertion (`BUILD_ENV=staging`) against a production build | `[staging-build-missing-noindex] 70 issue(s)`, every page named |
+
+Each tamper confirmed that its edit landed (the counts and file contents are in
+the PR #31 body) before reading the result. Each was restored, and
+`check-build` passed afterwards.
+
+**Finding 1 — check 5 covers the calculators only.** The check-build header
+says every Question in "a page's" FAQPage must be visible and every visible
+question heading must be in the schema. The loop covers `calculator/` pages
+only. `check-schema` separately asserts "every FAQPage question visible" on all
+pages, so the schema-to-visible direction is covered site-wide. The
+visible-to-schema direction is not: a service or guide page could drop a
+question from its FAQPage with nothing failing. Left as found; widening the
+loop is a follow-up.
+
+**Finding 2 — check 9 only recognises a shallow clone dated today.** It fails
+when more than three pages claim `datePublished` = today, or when every page
+shares one `datePublished`. A shallow clone of a commit authored on an earlier
+day dates its git-derived pages to that day instead. The literal overrides keep
+`datePublished` from being uniform, so neither condition fires and the check
+passes. The deploy workflow checks out with `fetch-depth: 0`, so production is
+not exposed today. But the check promises more than it guarantees. A stronger
+form would compare against HEAD's commit date, or fail when a clone is shallow
+(`git rev-parse --is-shallow-repository`). Left as found.
