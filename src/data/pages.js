@@ -24,7 +24,7 @@ export const HAND_AUTHORED_PAGES = [
     "title": "Bathroom & Kitchen Remodeling Contractor | Simpsonville & Greenville SC | Burch Contracting",
     "description": "Bathroom and kitchen remodeling, room additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC since 1995. SC Licensed #CLG118679, BBB A+ rated.",
     "canonical": "https://burchcontracting.com/",
-    "ogImage": "/images/custom-deck-greenville-sc.webp",
+    "ogImage": "/images/kitchen-remodel-white-shaker-granite.webp",
     "schema": [
       {
         "@context": "https://schema.org",
