@@ -14,12 +14,15 @@ name: Deploy
 # check while the form kept accepting submissions.
 #
 # The post-deploy verification and automatic rollback below are the answer to
-# that incident, and they are what would make a push trigger safe. But they
-# have never run. Enabling push here would mean the first exercise of an
-# unproven deploy path is a real deploy of whatever just merged.
+# that incident, and they are what would make a push trigger safe. They have
+# now run: every workflow_dispatch deploy since 2026-09-22 has gone through
+# verification (the first two failed on bugs in the verification itself, since
+# fixed, and the automatic rollback ran and worked), and every run from
+# 35744454857 on has passed. Whether to enable push is an open owner decision,
+# not a technical precondition.
 #
-# TO ENABLE, in this order:
-#   1. Run this workflow once with workflow_dispatch and let it finish green.
+# TO ENABLE, if the owner decides to:
+#   1. Confirm the latest workflow_dispatch run went green.
 #   2. Confirm `wrangler secret list` still returns all five names and that
 #      live pages say "index, follow".
 #   3. Uncomment the two `push:` lines below.

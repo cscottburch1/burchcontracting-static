@@ -54,7 +54,7 @@ sitemap and reality. `lastmod` is the only per-URL signal kept, and it must be
 a real per-page content date — a blanket build-date stamp on every URL is what
 makes Google stop trusting the field across the whole file.
 
-**Source:** `generateSitemap()` in `scripts/generate-geo-aeo.mjs`.
+**Source:** `renderSitemap()` in `src/build/geo.mjs` (it was `generateSitemap()` in `scripts/generate-geo-aeo.mjs` when this was written; Phase 3 moved it).
 
 ---
 
@@ -1104,3 +1104,136 @@ does on every service page and on 7 of 11 calculators. The homepage is the
 exception. Its trailing segment *is* the geography, so step 2 does not drop it
 and step 3 applies: "Bathroom & Kitchen Remodeling Contractor | Upstate SC".
 Keeping the full geography there would cost the word "Contractor".
+
+---
+
+## 2026-09-24 — The tub-to-shower calculator reports to GA4
+
+`src/js/ada-bath-calculator.js` sent no events, so use of the calculator for
+ADA bath-to-shower, one of the four lead offers, was invisible in GA4 even though
+the page loaded `analytics.js` and counted page views. It now sends
+`calculator_complete` (with `service: 'adaBathShower'`) through `trackEvent`,
+by the same rule as `calculator.js`: once per page load, on the first change to
+one of the calculator's inputs, never on the default render, the details toggle
+or print.
+
+**Merged 2026-09-24 in PR #31; live from the first Deploy run after that merge
+(see Actions history).** Events before that date do not include this
+calculator, so a before/after comparison of `calculator_complete` should
+exclude `service: 'adaBathShower'` or start from that run.
+
+`calculator_start` was also requested. `calculator.js` has never sent it — only
+`calculator_complete` — so there was nothing to match. What "start" should
+mean (the page loading, the calculator scrolling into view, the first click) is
+an owner decision, and it would need adding to both calculators together.
+
+---
+
+## 2026-09-24 — Hand-dated pages carry a text hash, and check 15 holds them to it
+
+**What went wrong.** `3ebd398` corrected the whole-home typical low from $8,000
+to $60,000, which changed the visible text of `/remodeling`. `/remodeling` is
+dated by a literal override, `__service__remodeling`, whose note says to bump
+it in the same commit as any content change. It was not bumped, so the page
+kept claiming 2026-09-23 and no gate noticed. `dates-set-by-head` reported
+"No page takes its dateModified from this commit" at that commit, and it was
+right: literal overrides are not derived from git, so nothing moves them.
+
+**Decision.** Every page whose `dateModified` comes from an entry in the
+`dates` block of `src/data/content-date-overrides.json` (today 18: sixteen
+service pages, privacy, terms) has its visible-text hash stored beside its
+date, in a new `textHashes` block. check-build check 15 recomputes each hash
+from `.build/pages/` and fails when one no longer matches, naming the page:
+
+- text changed, date did not → "bump the override's dateModified";
+- date moved, hash not re-recorded → "run scripts/record-text-hashes.mjs".
+
+Visible text excludes `<head>`, the header and footer chrome, scripts and
+styles, and replaces every ISO date with a placeholder, because the byline
+prints the page's own date and would otherwise make the hash circular.
+
+`scripts/record-text-hashes.mjs` writes the hashes. It refuses to re-record a
+page whose text changed while its date did not, since that would erase the
+finding check 15 exists to raise. `--accept` overrides the refusal for a text
+change that genuinely needs no new date; say why in the commit.
+
+**Seeding (owner decision, option (a)).** On 2026-09-24 every hash was seeded
+from that day's build, except `/remodeling`. Its hash was seeded from a build
+at `e5d56d9`, the last commit dated 2026-09-23, which is the content its date
+actually vouched for. Seeded that way, check 15 failed on `main` naming
+exactly `/remodeling`. A comparison of all 18 pages between `e5d56d9` and that
+day's build showed `/remodeling` as the only difference. It passed once
+`__service__remodeling` moved to 2026-09-24 and the hash was re-recorded.
+
+**Every other override was accepted as correct at seeding on 2026-09-24.** The
+check vouches for changes from that point forward, not for history. It does not
+prove that pages pinned to 2026-09-11 (decks, commercial roofing, insurance
+restoration, ADA compliance) or to 2026-07-23 (privacy, terms) are unchanged
+since those dates.
+
+Proven both ways: the seeded state failed on `/remodeling`. A temporary edit
+to the decks intro failed on `/outdoor-living/decks`, which is dated by the
+shared `services.js` pin. After the bump, and with the tamper restored, it
+passes. The recorder refused to re-baseline `/remodeling` before the bump.
+
+---
+
+## 2026-09-24 — Negative tests recorded for the eight checks that had none
+
+The survey of 2026-09-24 found eight check-build assertions with no recorded
+failing test. That is absence of evidence, not a known defect. Each has now
+been made to fail on purpose, by tampering the tree it actually reads, and then
+restored to green. Two findings came out of it, recorded after the table.
+
+| Tag | Tamper (tree read) | Failure message |
+|---|---|---|
+| `orphan-page` | removed both inbound links to `/cost/screened-porch-vs-sunroom-sc` from `.build/pages/` (2 pages → 0) | `[orphan-page] 1 issue(s): /cost/screened-porch-vs-sunroom-sc` |
+| `faq-schema-visible-mismatch` (both directions) | renamed the schema Question on `calculator/decks.html` (`.build/pages/`) | `schema Question "How much does a deck cost in Upstate SC? TAMPERED" not found as visible text` **and** `visible question heading "How much does a deck cost in Upstate SC?" is missing from the page's FAQPage schema` |
+| `faq-schema-visible-mismatch` (schema direction alone) | injected a Question the page never shows | `schema Question "Is this question invisible?" not found as visible text` |
+| `recaptcha-site-key` | `data-recaptcha-site-key="YOUR_SITE_KEY_HERE"` in `dist/contact.html` | `…is "YOUR_SITE_KEY_HERE" — not a well-formed reCAPTCHA v3 site key…` |
+| `recaptcha-key-baked-into-js` | a `6L…` literal appended to a `dist/assets/*.js` bundle | `dist/assets/calculator_ada-bath-shower-….js contains a reCAPTCHA key literal…` |
+| `robots-txt-missing` | deleted `dist/robots.txt` | `dist/robots.txt was not produced by the build` |
+| `robots-txt-disallows-everything` | `User-agent: * / Disallow: /` in `dist/robots.txt` | `dist/robots.txt contains a blanket "Disallow: /"` |
+| `content-dates-not-derived` | **a real `git clone --depth 1`**, built from scratch (not a hand edit) | `25 pages claim datePublished 2026-09-24 … This is what a shallow clone looks like — actions/checkout needs fetch-depth: 0.` |
+| `staging-build-missing-noindex` | ran the staging assertion (`BUILD_ENV=staging`) against a production build | `[staging-build-missing-noindex] 70 issue(s)`, every page named |
+
+Each tamper confirmed that its edit landed (the counts and file contents are in
+the PR #31 body) before reading the result. Each was restored, and
+`check-build` passed afterwards.
+
+**Finding 1 — check 5 covers the calculators only.** The check-build header
+says every Question in "a page's" FAQPage must be visible and every visible
+question heading must be in the schema. The loop covers `calculator/` pages
+only. `check-schema` separately asserts "every FAQPage question visible" on all
+pages, so the schema-to-visible direction is covered site-wide. The
+visible-to-schema direction is not: a service or guide page could drop a
+question from its FAQPage with nothing failing. Left as found; widening the
+loop is a follow-up.
+
+**Finding 2 — check 9 only recognises a shallow clone dated today.** It fails
+when more than three pages claim `datePublished` = today, or when every page
+shares one `datePublished`. A shallow clone of a commit authored on an earlier
+day dates its git-derived pages to that day instead. The literal overrides keep
+`datePublished` from being uniform, so neither condition fires and the check
+passes. The deploy workflow checks out with `fetch-depth: 0`, so production is
+not exposed today. But the check promises more than it guarantees. A stronger
+form would compare against HEAD's commit date, or fail when a clone is shallow
+(`git rev-parse --is-shallow-repository`). Left as found.
+
+---
+
+## 2026-09-24 — Prompts and briefs are archived beside the work they drove
+
+- The PR #28 prompt is archived at
+  `docs/archive/2026-09-23-pr-28-serp-display-prompt.md`. It was rebuilt
+  verbatim from the conversation it was pasted into; no original file existed.
+  Its header says so and records the owner's answers.
+- The 2026-09-24 survey is archived at
+  `docs/archive/2026-09-24-review-brief-survey.md` (PR #30).
+- The PR #23 (Phase 6) prompt is archived at
+  `docs/archive/2026-09-22-pr-23-phase-6-prompt.md`, as supplied by the owner
+  on 2026-09-24 (verbatim). It was not available when Phase 6 was done (the
+  work ran from the cleanup plan). Its header lists where the shipped work
+  departs from it. Two items are still open: the 6.5 `/services`
+  comparison-table rework, and the 6.8 content-queue order from the export
+  ("bathroom remodeling cost five forks" first).

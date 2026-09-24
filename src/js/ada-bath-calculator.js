@@ -5,6 +5,7 @@ import {
   formatCurrency,
   formatPercent,
 } from './calculator-config.js'
+import { trackEvent } from './analytics.js'
 
 const app = document.getElementById('ada-bath-calculator-app')
 if (app) initCalculator(app)
@@ -33,6 +34,18 @@ function initCalculator(root) {
     renderResults(resultsEl, state)
   }
 
+  // Same rule as calculator.js: fires once per page load, the first time the
+  // user changes one of the calculator's inputs — not on the initial render
+  // with defaults, and not on toggle-details or print. Without it the
+  // tub-to-shower calculator, a lead offer, was invisible in GA4.
+  let completeFired = false
+  const markComplete = () => {
+    if (completeFired) return
+    completeFired = true
+    trackEvent('calculator_complete', { service: 'adaBathShower' })
+  }
+  const ESTIMATE_ACTIONS = new Set(['select-location', 'select-finish', 'select-tub-size', 'toggle-grab-bars', 'toggle-thermostatic'])
+
   root.addEventListener('click', (e) => {
     const target = e.target.closest('[data-action]')
     if (!target) return
@@ -45,6 +58,7 @@ function initCalculator(root) {
     if (action === 'toggle-thermostatic') state.thermostatic = !state.thermostatic
     if (action === 'toggle-details') state.showDetails = !state.showDetails
     if (action === 'print') window.print()
+    if (ESTIMATE_ACTIONS.has(action)) markComplete()
 
     render()
   })

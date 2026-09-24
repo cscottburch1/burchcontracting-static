@@ -23,30 +23,66 @@
     "",
     "This file has been lost three times as a hand-edit to a generated file (see",
     "docs/DECISIONS.md, 2026-08-16/08-29/09-21). It is real committed input now, so",
-    "regenerating dates can no longer discard it."
+    "regenerating dates can no longer discard it.",
+    "",
+    "textHashes: the visible-text hash of every page whose date comes from an entry in \"dates\" above, recorded beside the dateModified it was taken under. check-build check 15 fails when a page's text no longer matches: bump the date, then run scripts/record-text-hashes.mjs. It vouches for changes from 2026-09-24 onward, not for history (DECISIONS 2026-09-24)."
   ],
-
   "history": {
-    "index.html": ["index.html"],
-    "about.html": ["about.html"],
-    "contact.html": ["contact.html"],
-    "projects.html": ["projects.html"],
-    "services.html": ["services.html"],
-    "privacy-policy.html": ["privacy-policy.html"],
-    "terms-of-service.html": ["terms-of-service.html"],
-    "calculator/ada-bath-shower.html": ["calculator/ada-bath-shower.html"],
-    "calculator/additions.html": ["calculator/additions.html"],
-    "calculator/basement-finishing.html": ["calculator/basement-finishing.html"],
-    "calculator/bath-remodel.html": ["calculator/bath-remodel.html"],
-    "calculator/covered-patios.html": ["calculator/covered-patios.html"],
-    "calculator/decks.html": ["calculator/decks.html"],
-    "calculator/estimate.html": ["calculator/estimate.html"],
-    "calculator/garages.html": ["calculator/garages.html"],
-    "calculator/kitchen-remodel.html": ["calculator/kitchen-remodel.html"],
-    "calculator/porch.html": ["calculator/porch.html"],
-    "calculator/whole-home-remodel.html": ["calculator/whole-home-remodel.html"]
+    "index.html": [
+      "index.html"
+    ],
+    "about.html": [
+      "about.html"
+    ],
+    "contact.html": [
+      "contact.html"
+    ],
+    "projects.html": [
+      "projects.html"
+    ],
+    "services.html": [
+      "services.html"
+    ],
+    "privacy-policy.html": [
+      "privacy-policy.html"
+    ],
+    "terms-of-service.html": [
+      "terms-of-service.html"
+    ],
+    "calculator/ada-bath-shower.html": [
+      "calculator/ada-bath-shower.html"
+    ],
+    "calculator/additions.html": [
+      "calculator/additions.html"
+    ],
+    "calculator/basement-finishing.html": [
+      "calculator/basement-finishing.html"
+    ],
+    "calculator/bath-remodel.html": [
+      "calculator/bath-remodel.html"
+    ],
+    "calculator/covered-patios.html": [
+      "calculator/covered-patios.html"
+    ],
+    "calculator/decks.html": [
+      "calculator/decks.html"
+    ],
+    "calculator/estimate.html": [
+      "calculator/estimate.html"
+    ],
+    "calculator/garages.html": [
+      "calculator/garages.html"
+    ],
+    "calculator/kitchen-remodel.html": [
+      "calculator/kitchen-remodel.html"
+    ],
+    "calculator/porch.html": [
+      "calculator/porch.html"
+    ],
+    "calculator/whole-home-remodel.html": [
+      "calculator/whole-home-remodel.html"
+    ]
   },
-
   "mechanicalCommits": {
     "db21e9c": "refactor(dates): the commit that introduced this mechanism. Its only touch on a tracked path is three comment lines in src/data/geo-aeo.js, renaming generate-geo-aeo.mjs to src/build/geo.mjs. It carries no Content-Change trailer and could not list its own hash here, so on the first build after it landed /faqs and all eight service-area pages claimed dateModified 2026-09-22. Check 9 did not fire: nine of seventy is under its threshold, correctly, because nine genuinely changed pages is plausible. See docs/DECISIONS.md, 2026-09-22.",
     "6d8e92e": "contact form repairs — the diff to contact.html is one reCAPTCHA site-key attribute",
@@ -67,22 +103,58 @@
     "ba64e18": "refactor(trust-layer): promoted FAQs come from data — same text, different source",
     "1ca10f2": "refactor(trust-layer): render from data; the seven root pages go",
     "dd4a1dd": "refactor(build): the calculators render from templates",
-  "06001c4": "feat(seo): Phase 6.2 titles and descriptions — head metadata only, 0 chars of visible text changed on any page"
+    "06001c4": "feat(seo): Phase 6.2 titles and descriptions — head metadata only, 0 chars of visible text changed on any page"
   },
-
   "dates": {
-    "__service__additions": {"dateModified":"2026-09-23","why":"The page gained its first photo on 2026-09-23 — the owner's finished room addition. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
-    "__service__adu-builder": {"dateModified":"2026-09-23","why":"Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
-    "__service__commercial-upfits": {"dateModified":"2026-09-23","why":"Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
-    "__service__basement-finishing": {"dateModified":"2026-09-23","why":"Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
-    "__service__handyman": {"dateModified":"2026-09-23","why":"Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
-    "__service__garages": {"dateModified":"2026-09-23","why":"Phase 6.6 changed this page's headline price on 2026-09-23 (it now derives from the same estimates as its table). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
-    "__service__screened-porches": {"dateModified":"2026-09-23","why":"Phase 6.6 changed this page's headline price on 2026-09-23 (it now derives from the same estimates as its table). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
-    "__service__covered-patios": {"dateModified":"2026-09-23","why":"Phase 6.6 changed this page's headline price on 2026-09-23 (it now derives from the same estimates as its table). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."},
-    "__service__bathroom-remodeling": {"dateModified":"2026-09-23","why":"Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."},
-    "__service__kitchen-remodeling": {"datePublished":"2026-08-29","dateModified":"2026-09-23","why":"Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates. datePublished 2026-08-29 is when kitchen-remodeling was added (docs/archive/FINDINGS.md #7), not services.js's 2026-06-01."},
-    "__service__ada-bath-to-shower": {"dateModified":"2026-09-23","why":"Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."},
-    "__service__remodeling": {"dateModified":"2026-09-23","why":"Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."},
+    "__service__additions": {
+      "dateModified": "2026-09-23",
+      "why": "The page gained its first photo on 2026-09-23 — the owner's finished room addition. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
+    },
+    "__service__adu-builder": {
+      "dateModified": "2026-09-23",
+      "why": "Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
+    },
+    "__service__commercial-upfits": {
+      "dateModified": "2026-09-23",
+      "why": "Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
+    },
+    "__service__basement-finishing": {
+      "dateModified": "2026-09-23",
+      "why": "Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
+    },
+    "__service__handyman": {
+      "dateModified": "2026-09-23",
+      "why": "Owner pricing of 2026-09-23 changed this page's prices (headline, table and FAQ). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
+    },
+    "__service__garages": {
+      "dateModified": "2026-09-23",
+      "why": "Phase 6.6 changed this page's headline price on 2026-09-23 (it now derives from the same estimates as its table). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
+    },
+    "__service__screened-porches": {
+      "dateModified": "2026-09-23",
+      "why": "Phase 6.6 changed this page's headline price on 2026-09-23 (it now derives from the same estimates as its table). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
+    },
+    "__service__covered-patios": {
+      "dateModified": "2026-09-23",
+      "why": "Phase 6.6 changed this page's headline price on 2026-09-23 (it now derives from the same estimates as its table). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
+    },
+    "__service__bathroom-remodeling": {
+      "dateModified": "2026-09-23",
+      "why": "Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."
+    },
+    "__service__kitchen-remodeling": {
+      "datePublished": "2026-08-29",
+      "dateModified": "2026-09-23",
+      "why": "Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates. datePublished 2026-08-29 is when kitchen-remodeling was added (docs/archive/FINDINGS.md #7), not services.js's 2026-06-01."
+    },
+    "__service__ada-bath-to-shower": {
+      "dateModified": "2026-09-23",
+      "why": "Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."
+    },
+    "__service__remodeling": {
+      "dateModified": "2026-09-24",
+      "why": "Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates. Bumped to 2026-09-24: the whole-home typical low was corrected from $8,000 to $60,000 (3ebd398, PR #29), changing the Whole-House Remodel row; the bump was missed in that commit and caught by the repo-truth survey. check-build check 15 now fails on this miss."
+    },
     "privacy-policy.html": {
       "datePublished": "2026-07-10",
       "dateModified": "2026-07-23",
@@ -97,6 +169,98 @@
       "datePublished": "2026-06-01",
       "dateModified": "2026-09-11",
       "why": "Git tracks files, not the services inside one. Every service shares services.js's history, so each claims the file's creation date. 2026-06-01 is when the earliest of them actually shipped; the file itself was created 2026-07-02, which made every service look newer than it is. See docs/archive/FINDINGS.md #7 — kitchen-remodeling is the clearest case, added 2026-08-29 and claiming 2026-07-02. Per-service dates need per-object history, which git does not have; this at least stops the oldest services from being backdated forward. Since Phase 6.3 a service can carry its own dates as a __service__<id> entry below; the Tier 1 lead offers do."
+    }
+  },
+  "textHashes": {
+    "outdoor-living/decks/index.html": {
+      "key": "__datafile__src/data/services.js",
+      "dateModified": "2026-09-11",
+      "hash": "7535b0f348d90e85"
+    },
+    "outdoor-living/screened-porches/index.html": {
+      "key": "__service__screened-porches",
+      "dateModified": "2026-09-23",
+      "hash": "f17da963b5b30fcc"
+    },
+    "outdoor-living/covered-patios/index.html": {
+      "key": "__service__covered-patios",
+      "dateModified": "2026-09-23",
+      "hash": "80eb3b56957b388a"
+    },
+    "garage-builder/index.html": {
+      "key": "__service__garages",
+      "dateModified": "2026-09-23",
+      "hash": "d3604c7934755643"
+    },
+    "room-additions/index.html": {
+      "key": "__service__additions",
+      "dateModified": "2026-09-23",
+      "hash": "5cb52096a38f1394"
+    },
+    "adu-builder/index.html": {
+      "key": "__service__adu-builder",
+      "dateModified": "2026-09-23",
+      "hash": "f64738d82c1cd244"
+    },
+    "bathroom-remodeling/index.html": {
+      "key": "__service__bathroom-remodeling",
+      "dateModified": "2026-09-23",
+      "hash": "d6973c3a3b6cca0f"
+    },
+    "kitchen-remodeling/index.html": {
+      "key": "__service__kitchen-remodeling",
+      "dateModified": "2026-09-23",
+      "hash": "42cf08db0359fb83"
+    },
+    "commercial-upfits/index.html": {
+      "key": "__service__commercial-upfits",
+      "dateModified": "2026-09-23",
+      "hash": "dd19fa47c0cf38f5"
+    },
+    "commercial-roofing/index.html": {
+      "key": "__datafile__src/data/services.js",
+      "dateModified": "2026-09-11",
+      "hash": "7f8b236352f55da4"
+    },
+    "basement-finishing/index.html": {
+      "key": "__service__basement-finishing",
+      "dateModified": "2026-09-23",
+      "hash": "0d2a4a84ea5e05de"
+    },
+    "insurance-restoration/index.html": {
+      "key": "__datafile__src/data/services.js",
+      "dateModified": "2026-09-11",
+      "hash": "f3dcb39cbbaadc64"
+    },
+    "ada-compliance/index.html": {
+      "key": "__datafile__src/data/services.js",
+      "dateModified": "2026-09-11",
+      "hash": "9343e8040bd13de0"
+    },
+    "ada-bath-to-shower/index.html": {
+      "key": "__service__ada-bath-to-shower",
+      "dateModified": "2026-09-23",
+      "hash": "1de9284290a3f032"
+    },
+    "remodeling/index.html": {
+      "key": "__service__remodeling",
+      "dateModified": "2026-09-24",
+      "hash": "5c5c7a8b315e26c8"
+    },
+    "handyman/index.html": {
+      "key": "__service__handyman",
+      "dateModified": "2026-09-23",
+      "hash": "1192d0485b359b6c"
+    },
+    "privacy-policy.html": {
+      "key": "privacy-policy.html",
+      "dateModified": "2026-07-23",
+      "hash": "4f2dba47eeab5c72"
+    },
+    "terms-of-service.html": {
+      "key": "terms-of-service.html",
+      "dateModified": "2026-07-23",
+      "hash": "19dce09453b8b93c"
     }
   }
 }
