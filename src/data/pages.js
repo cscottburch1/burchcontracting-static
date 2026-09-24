@@ -22,7 +22,7 @@ export const HAND_AUTHORED_PAGES = [
   {
     "file": "index.html",
     "title": "Bathroom & Kitchen Remodeling Contractor | Upstate SC",
-    "description": "Bathroom and kitchen remodeling, room additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC since 1995. SC Licensed #CLG118679, BBB A+ rated.",
+    "description": "Bathroom and kitchen remodeling, room additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC since 1995. SC Licensed #CLG118679, BBB A+.",
     "canonical": "https://burchcontracting.com/",
     "ogImage": "/images/kitchen-remodel-white-shaker-granite.webp",
     "schema": [
@@ -459,7 +459,7 @@ export const HAND_AUTHORED_PAGES = [
   {
     "file": "contact.html",
     "title": "Free Remodeling Consultation | Simpsonville & Greenville SC",
-    "description": "Free consultation for bathroom and kitchen remodeling, additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Burch Contracting, since 1995.",
+    "description": "Free consultation for bathroom and kitchen remodeling, additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Since 1995.",
     "canonical": "https://burchcontracting.com/contact",
     "ogImage": "/images/burch-contracting-logo.webp",
     "schema": [
@@ -581,7 +581,7 @@ export const HAND_AUTHORED_PAGES = [
   {
     "file": "services.html",
     "title": "Services & Pricing | Simpsonville & Greenville SC",
-    "description": "Every Burch Contracting service compared — remodeling, additions, outdoor living, commercial — by cost range, timeline & permit status. SC Licensed #CLG118679.",
+    "description": "Every Burch Contracting service compared — remodeling, additions, outdoor living, commercial — by cost, timeline & permit status. SC Licensed #CLG118679.",
     "canonical": "https://burchcontracting.com/services",
     "ogImage": "/images/custom-deck-greenville-sc.webp",
     "schema": [
@@ -766,7 +766,7 @@ export const HAND_AUTHORED_PAGES = [
   {
     "file": "projects.html",
     "title": "Recent Projects | Burch Contracting Upstate SC",
-    "description": "16 real completed projects: a whole-home renovation, bathroom and kitchen remodels, additions, decks & garages across Upstate SC. SC Licensed #CLG118679, BBB A+.",
+    "description": "16 real completed projects: a whole-home renovation, bathroom and kitchen remodels, additions, decks & garages across Upstate SC. SC Licensed #CLG118679.",
     "canonical": "https://burchcontracting.com/projects",
     "ogImage": "/images/room-addition-fountain-inn-sc.webp",
     "schema": [
@@ -890,7 +890,7 @@ export const HAND_AUTHORED_PAGES = [
   {
     "file": "privacy-policy.html",
     "title": "Privacy Policy | Burch Contracting",
-    "description": "Privacy Policy for Burch Contracting — how we collect, use, and protect information submitted through our website.",
+    "description": "Privacy Policy for Burch Contracting — how we collect, use, and protect the information you submit through our website and consultation request form.",
     "canonical": "https://burchcontracting.com/privacy-policy",
     "ogImage": "/images/burch-contracting-logo.webp",
     "schema": [
@@ -937,7 +937,7 @@ export const HAND_AUTHORED_PAGES = [
   {
     "file": "terms-of-service.html",
     "title": "Terms of Service | Burch Contracting",
-    "description": "Terms of Service for Burch Contracting — terms governing use of our website and consultation requests.",
+    "description": "Terms of Service for Burch Contracting, SC Licensed #CLG118679 — the terms governing use of our website and the consultation requests made through it.",
     "canonical": "https://burchcontracting.com/terms-of-service",
     "ogImage": "/images/burch-contracting-logo.webp",
     "schema": [

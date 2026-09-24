@@ -813,6 +813,22 @@ if (longTitles.length) {
   failures.push({ check: `title-over-${TITLE_MAX}-chars`, detail: longTitles })
 }
 
+// --- Check 14: every meta description is 120-155 characters ---
+// PR #28. Google shows about 155; past that the snippet is cut mid-sentence,
+// and the Phase 6.2 descriptions ran to 178. Under 120 wastes the space a
+// search result gives you. 404.html is exempt: it is noindex and never shown.
+const DESCRIPTION_MIN = 120
+const DESCRIPTION_MAX = 155
+const badDescriptions = pages
+  .filter((page) => !NOINDEX_EXEMPT.has(page.rel))
+  .map((page) => [page.rel, decodeEntities((page.html.match(/<meta name="description" content="([^"]*)"/) || [])[1] ?? '')])
+  .filter(([, d]) => d.length < DESCRIPTION_MIN || d.length > DESCRIPTION_MAX)
+  .map(([rel, d]) => `${rel}: ${d.length} chars — "${d}"`)
+if (badDescriptions.length) {
+  failed = true
+  failures.push({ check: `description-outside-${DESCRIPTION_MIN}-${DESCRIPTION_MAX}-chars`, detail: badDescriptions })
+}
+
 // --- Report ---
 if (failed) {
   console.error('check-build FAILED\n')

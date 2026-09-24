@@ -116,7 +116,7 @@ export const COST_GUIDES = [
     h1: 'Home Addition Cost in Greenville, SC',
     metaTitle: 'Home Addition Cost Greenville SC',
     metaDescription:
-      'Home addition costs in Greenville SC by size and finish level, computed from our own pricing, plus the foundation, roofline and HVAC decisions that move the number.',
+      'Home addition costs in Greenville SC by size and finish level, computed from our own pricing, plus the foundation, roofline and HVAC choices that move it.',
     lead: (p) =>
       `Adding finished square footage in Greenville County runs <strong>${p.perSqft} per square foot</strong>, so a 400 sq ft room addition typically lands between ${p.tier('basicFinish', 400)} and ${p.tier('premiumCustom', 400)} depending on finish level. Additions cost more per foot than new construction because you are cutting into a finished, occupied house.`,
     tiers: [

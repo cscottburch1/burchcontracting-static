@@ -29,7 +29,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/ada-bath-shower.html",
     "title": "ADA Bath-to-Shower Cost Calculator Upstate SC",
-    "description": `${adaBathRange()} for an ADA bath-to-shower conversion in Upstate SC. Roll-in showers, grab bars. SC Licensed #CLG118679.`,
+    "description": `${adaBathRange()} for an ADA bath-to-shower conversion in Upstate SC: roll-in showers, grab bars, non-slip floors. Itemized pricing, SC Licensed #CLG118679.`,
     "canonical": "https://burchcontracting.com/calculator/ada-bath-shower",
     "ogImage": "/images/ada-compliance-residential.webp",
     "ogType": "website",
@@ -40,7 +40,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/additions.html",
     "title": "Room Addition Cost Calculator Simpsonville & Greenville SC",
-    "description": "Estimate room addition and home expansion costs in Upstate SC. $196–$425/sq ft typical range.",
+    "description": "Estimate room addition and home expansion costs in Upstate SC: $196–$425/sq ft typical range, with a fixed 20% overhead & profit. SC Licensed #CLG118679.",
     "canonical": "https://burchcontracting.com/calculator/additions",
     "ogImage": "/images/room-addition-fountain-inn-sc.webp",
     "ogType": "website",
@@ -51,7 +51,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/basement-finishing.html",
     "title": "Basement Finishing Cost Calculator Upstate SC",
-    "description": `${basementBand()} basement finishing costs in Upstate SC — basic space up to a premium build-out. SC Licensed #CLG118679.`,
+    "description": `${basementBand()} basement finishing costs in Upstate SC — basic space up to a premium build-out, with a fixed 20% overhead & profit. SC Licensed #CLG118679.`,
     "canonical": "https://burchcontracting.com/calculator/basement-finishing",
     "ogImage": "/images/finished-basement.webp",
     "ogType": "website",
@@ -62,7 +62,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/bath-remodel.html",
     "title": "Bathroom Remodel Cost Calculator Upstate SC",
-    "description": "Bathroom remodels in Greenville & Laurens County SC run $5,578-$113,098. Get a personalized estimate in minutes — transparent pricing, SC Licensed #CLG118679.",
+    "description": "Bathroom remodels in Greenville & Laurens County SC run $5,578-$113,098. Get a personalized estimate in minutes — SC Licensed #CLG118679.",
     "canonical": "https://burchcontracting.com/calculator/bath-remodel",
     "ogImage": "/images/bath-shower-conversion-woodruff-sc-1.webp",
     "ogType": "website",
@@ -73,7 +73,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/covered-patios.html",
     "title": "Covered Patio Cost Calculator Simpsonville & Greenville SC",
-    "description": "$77-$154/sq ft covered patio costs in Upstate SC by size & finish level. SC Licensed #CLG118679, transparent pricing.",
+    "description": "$77-$154/sq ft covered patio costs in Upstate SC by size & finish level, with a fixed 20% overhead & profit. SC Licensed #CLG118679, transparent pricing.",
     "canonical": "https://burchcontracting.com/calculator/covered-patios",
     "ogImage": "/images/custom-deck-greenville-sc.webp",
     "ogType": "website",
@@ -95,7 +95,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/estimate.html",
     "title": "Project Cost Calculator Simpsonville & Greenville SC",
-    "description": "Estimate decks, garages, porches & additions in Upstate SC with one all-in-one calculator. SC Licensed #CLG118679.",
+    "description": "Estimate decks, garages, porches & additions in Upstate SC with one all-in-one calculator and transparent pricing. SC Licensed #CLG118679, BBB A+ rated.",
     "canonical": "https://burchcontracting.com/calculator/estimate",
     "ogImage": "/images/custom-deck-greenville-sc.webp",
     "ogType": "website",
@@ -106,7 +106,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/garages.html",
     "title": "Garage Cost Calculator Simpsonville & Greenville SC",
-    "description": "Plan detached and attached garage construction costs in Upstate SC. Transparent pricing with 20% overhead & profit.",
+    "description": "Plan detached and attached garage construction costs in Upstate SC. Transparent pricing with a fixed 20% overhead & profit. SC Licensed #CLG118679.",
     "canonical": "https://burchcontracting.com/calculator/garages",
     "ogImage": "/images/screened-patio-simpsonville-sc.webp",
     "ogType": "website",
@@ -128,7 +128,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/porch.html",
     "title": "Screened Porch Cost Calculator Simpsonville & Greenville SC",
-    "description": "Estimate screened porch and outdoor room costs in Upstate SC. New construction or deck conversions.",
+    "description": "Estimate screened porch and outdoor room costs in Upstate SC, for new construction or deck conversions. Transparent pricing, SC Licensed #CLG118679.",
     "canonical": "https://burchcontracting.com/calculator/porch",
     "ogImage": "/images/2024-05-24.webp",
     "ogType": "website",
@@ -139,7 +139,7 @@ export const CALCULATOR_PAGES_META = [
   {
     "file": "calculator/whole-home-remodel.html",
     "title": "Whole-Home Remodel Cost Calculator Upstate SC",
-    "description": "$125-$322/sq ft whole-home remodeling in Greenville & Laurens County SC. SC Licensed #CLG118679, transparent pricing.",
+    "description": "$125-$322/sq ft whole-home remodeling in Greenville & Laurens County SC, by size and finish level. SC Licensed #CLG118679, transparent pricing.",
     "canonical": "https://burchcontracting.com/calculator/whole-home-remodel",
     "ogImage": "/images/finished-basement.webp",
     "ogType": "website",

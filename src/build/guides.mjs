@@ -69,7 +69,7 @@ const KINDS = {
     hubH1: 'Project Cost Guides for Upstate South Carolina',
     hubMetaTitle: 'Project Cost Guides — Upstate SC | Burch Contracting',
     hubMetaDescription:
-      'What building and remodeling projects actually cost in Upstate South Carolina, by project type and city. Every figure computed from our own pricing, not estimated.',
+      'What building and remodeling projects actually cost in Upstate South Carolina, by project type and city, every figure computed from our own pricing.',
     hubIntro:
       'Straight answers on what projects cost in the Upstate, by type and by city. Every dollar figure on these pages is computed from the same pricing engine behind our calculators, so the guide and the calculator can never disagree.',
     entries: COST_GUIDES,
