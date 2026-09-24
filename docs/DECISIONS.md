@@ -1043,3 +1043,25 @@ priorities; that contradicts the 2026-07-23 entry above (Google ignores both
 `priority` and `changefreq`). The owner confirmed: `lastmod` updates
 automatically from content dates, and nothing else is added. Item 2 is closed
 as not done.
+
+---
+
+## 2026-09-23 — Whole-home remodel: the owner's typical range, $8,000 to $350,000
+
+The whole-home service page's "Whole-House Remodel" row showed $250,430–$644,314+,
+which is the calculator's full span for a 2,000 sq ft home, from its cheapest
+tier to its maximum configuration. The page headline followed it to
+$5,500–$644,500. That is what the calculator can produce, not what a homeowner
+is quoted for a whole-home job.
+
+**Decision (owner, 2026-09-23):** the typical range quoted for a whole-home job
+is **$8,000 to $350,000**.
+
+- It lives in `calculator-config.js` as `QUOTED_RATES.wholeHomeTypical`, a
+  typical-range tier, not as a typed string. The row reads it through
+  `quotedTypicalString()`.
+- The calculator's own whole-home math is unchanged. Its maximum configuration
+  ($644,314 at 2,000 sq ft) is higher than the owner's high, so the row reads
+  **$8,000–$350,000+**, and the headline follows at **$5,500–$350,000+ Typical**.
+  The calculator page's intro still describes the calculator's 2,000 sq ft
+  scenario ($250,000–$644,000); it describes that tool, not the typical job.

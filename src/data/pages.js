@@ -282,7 +282,7 @@ export const HAND_AUTHORED_PAGES = [
                 "name": "How much does a screened porch cost in Upstate SC?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Screened porches in Simpsonville and surrounding areas typically run {{range.screened-porches}} for new construction. Converting an existing deck can save 50–70%."
+                  "text": "Screened porches in Simpsonville and surrounding areas typically run {{prose.screened-porches}} for new construction. Converting an existing deck can save 50–70%."
                 }
               },
               {
@@ -290,7 +290,7 @@ export const HAND_AUTHORED_PAGES = [
                 "name": "How much does a detached garage cost?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Detached garages in Upstate SC commonly run {{range.garages}}, from a standard two-car (576 sqft) to a 3-car or workshop configuration (900 sqft)."
+                  "text": "Detached garages in Upstate SC commonly run {{prose.garages}}, from a standard two-car (576 sqft) to a 3-car or workshop configuration (900 sqft)."
                 }
               },
               {

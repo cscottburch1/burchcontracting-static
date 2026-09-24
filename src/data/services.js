@@ -34,7 +34,10 @@ import {
   quotedPerSqft,
   quotedCost,
   quotedEstimate,
+  quotedTypical,
+  quotedTypicalString,
   handymanRate,
+  proseCost,
 } from './pricing-sync.js'
 import { bathroomRemodelingBeforeProcess, bathroomRemodelingAfterProcess } from './bathroom-remodeling-content.js'
 import { kitchenRemodelingBeforeProcess, kitchenRemodelingAfterProcess } from './kitchen-remodeling-content.js'
@@ -522,7 +525,7 @@ export const SERVICES = [
     metaTitle: 'Bathroom Remodeling Simpsonville & Greenville SC',
     description: 'Bathroom remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: walk-in showers, tile, full-gut remodels. SC Licensed #CLG118679, since 1995.',
     h1: 'Bathroom Remodeling Contractor — Simpsonville & Fountain Inn, SC',
-    intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${projectCostString('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${projectCostString('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${projectCostString('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${projectCostString('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
+    intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${proseCost('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${proseCost('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${proseCost('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${proseCost('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
       costRange: displayRange(
         projectEstimate('bathRemodel', 'basicRefresh', 25),
@@ -701,7 +704,7 @@ export const SERVICES = [
     metaTitle: 'Kitchen Remodeling Contractor Simpsonville & Greenville SC',
     description: 'Kitchen remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: cabinets, quartz & granite counters, layout changes. SC Licensed #CLG118679.',
     h1: 'Kitchen Remodeling Contractor — Simpsonville & Fountain Inn, SC',
-    intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${projectCostString('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${projectCostString('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
+    intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${proseCost('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${proseCost('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
       costRange: displayRange(
         projectEstimate('kitchenRemodel', 'standardRefresh', 100),
@@ -1212,12 +1215,12 @@ export const SERVICES = [
     h1: 'Home Remodeling Contractor - Upstate SC',
     intro: "From kitchen and bathroom renovations to whole-house remodels, I handle all phases: design, demolition, structural work, electrical, plumbing, and complete finishing. Every project managed personally from start to finish.",
     stats: {
-      // Bath + kitchen scope only (see note on the Whole-House tier below for
-      // why that one isn't rolled into this headline figure).
+      // Cheapest table row (a small bath) through the owner's typical
+      // whole-home high (QUOTED_RATES.wholeHomeTypical, PR #28).
       costRange:
         displayRange(
           projectEstimate('bathRemodel', 'basicRefresh', 35),
-          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
+          quotedTypical('wholeHomeTypical', projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000)),
           { plus: true }
         ) + ' Typical',
       timeline: '2-8 Weeks Typical',
@@ -1265,16 +1268,12 @@ export const SERVICES = [
       },
       {
         name: 'Whole-House Remodel',
-        // NOTE: large increase from the original "$50,000-$150,000+". The
-        // wholeHomeRemodel service in calculator-config.js (added 2026-07-05)
-        // is scoped to comprehensive renovation of a typical 2,000 sqft home
-        // at $135-290/sqft — its mathematical floor is well above the old
-        // figure. Flagged for visibility in the reconciliation PR.
-        range: combinedCostString(
-          projectEstimate('wholeHomeRemodel', 'standardRefresh', 2000),
-          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
-          { plus: true }
-        ),
+        // The owner's typical whole-home range (PR #28, 2026-09-23), from
+        // QUOTED_RATES.wholeHomeTypical. The calculator's maximum
+        // configuration for 2,000 sq ft ($644,314) exceeds it, hence the "+";
+        // this row used to show that maximum, which read as what a homeowner
+        // would pay.
+        range: quotedTypicalString('wholeHomeTypical', projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000)),
         description: 'Comprehensive home renovation including multiple rooms, structural changes, systems upgrades, complete interior refresh. Custom scope and pricing.'
       }
     ],

@@ -19,12 +19,13 @@
  * verbatim, which is why the generator treats them as already escaped.
  */
 import { SERVICES } from './services.js'
+import { proseOf, proseSpan } from './pricing-sync.js'
 
 const bath = SERVICES.find((s) => s.id === 'bathroom-remodeling')
 const bathRow = (name) => {
   const found = bath.commonProjects.find((p) => p.name === name)
   if (!found) throw new Error(`promoted-faqs.js: bathroom-remodeling has no common project '${name}'`)
-  return found.cost
+  return proseOf(found.cost)
 }
 
 export const PROMOTED_FAQS = {
@@ -41,7 +42,7 @@ export const PROMOTED_FAQS = {
       // Phase 6.6: the home page's cost answer leads with the lead offer, and
       // every figure is the bathroom page's own headline and table rows.
       "question": "How much does a bathroom remodel cost in Upstate SC?",
-      "answer": `Bathroom remodels typically run ${bath.stats.costRange.replace(/ Typical$/, '')} depending on size and scope — about ${bathRow('Hall/Guest Bath — Basic Refresh')} for a 5×8 hall bath refresh, up to ${bathRow('Full-Gut Primary Bath')} for a full-gut primary bath. <a href="/calculator/bath-remodel" class="text-blue-700 font-semibold hover:text-blue-800">Use the bathroom remodel calculator</a> for a planning estimate.`
+      "answer": `Bathroom remodels typically run ${proseSpan(bath)} depending on size and scope — about ${bathRow('Hall/Guest Bath — Basic Refresh')} for a 5×8 hall bath refresh, up to ${bathRow('Full-Gut Primary Bath')} for a full-gut primary bath. <a href="/calculator/bath-remodel" class="text-blue-700 font-semibold hover:text-blue-800">Use the bathroom remodel calculator</a> for a planning estimate.`
     }
   ],
   "services.html": [

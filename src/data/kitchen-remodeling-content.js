@@ -18,6 +18,8 @@
  * FILE LOCATION: src/data/kitchen-remodeling-content.js
  */
 
+import { proseAmount } from './pricing-sync.js'
+
 export function kitchenRemodelingBeforeProcess({ midKitchen, refaceLow }) {
   return `
       <section class="bg-white py-16 lg:py-20 border-t border-slate-100">
@@ -28,7 +30,7 @@ export function kitchenRemodelingBeforeProcess({ midKitchen, refaceLow }) {
           </div>
           <div>
             <h3 class="text-2xl font-bold text-slate-900 mb-4">Cabinet Replacement vs. Refacing</h3>
-            <p class="text-slate-600 leading-relaxed">Refacing — new doors, drawer fronts, and veneer over your existing cabinet boxes — starts near $${Math.round(refaceLow / 1000)}K as part of a standard refresh and makes sense when two things are true: the boxes are structurally solid, and the layout already works for how you cook. If either fails, refacing is money spent polishing a floor plan you'll still dislike. Full replacement costs more but is the only path that fixes storage, workflow, and layout problems — and it's what the mid-range tier on this page prices. We'll tell you honestly which situation your kitchen is in during the first visit; roughly, refacing suits kitchens built well and laid out sensibly, and replacement suits everything else.</p>
+            <p class="text-slate-600 leading-relaxed">Refacing — new doors, drawer fronts, and veneer over your existing cabinet boxes — starts near ${proseAmount(refaceLow)} as part of a standard refresh and makes sense when two things are true: the boxes are structurally solid, and the layout already works for how you cook. If either fails, refacing is money spent polishing a floor plan you'll still dislike. Full replacement costs more but is the only path that fixes storage, workflow, and layout problems — and it's what the mid-range tier on this page prices. We'll tell you honestly which situation your kitchen is in during the first visit; roughly, refacing suits kitchens built well and laid out sensibly, and replacement suits everything else.</p>
           </div>
           <div>
             <h3 class="text-2xl font-bold text-slate-900 mb-4">What a 4-7 Week Timeline Actually Looks Like</h3>
@@ -36,7 +38,7 @@ export function kitchenRemodelingBeforeProcess({ midKitchen, refaceLow }) {
           </div>
           <div>
             <h3 class="text-2xl font-bold text-slate-900 mb-4">Can You Live at Home During a Kitchen Remodel?</h3>
-            <p class="text-slate-600 leading-relaxed">Most of our clients do, and it's manageable with planning. We help homeowners set up a temporary kitchen — refrigerator, microwave, coffee maker, and a wash-up station in a laundry room or garage — before demolition starts, and we seal the work zone with dust barriers and keep water shutoffs as short as the work allows. The honest version: weeks two through four, when the room is stripped and the trades are cycling through, are the tiring stretch. A $${Math.round(midKitchen / 1000)}K remodel is disruptive for a season and then it's your kitchen for twenty years; families with very young children sometimes schedule a week away during rough-in, and that's usually the only stretch worth leaving for.</p>
+            <p class="text-slate-600 leading-relaxed">Most of our clients do, and it's manageable with planning. We help homeowners set up a temporary kitchen — refrigerator, microwave, coffee maker, and a wash-up station in a laundry room or garage — before demolition starts, and we seal the work zone with dust barriers and keep water shutoffs as short as the work allows. The honest version: weeks two through four, when the room is stripped and the trades are cycling through, are the tiring stretch. A ${proseAmount(midKitchen)} remodel is disruptive for a season and then it's your kitchen for twenty years; families with very young children sometimes schedule a week away during rough-in, and that's usually the only stretch worth leaving for.</p>
           </div>
         </div>
       </section>`

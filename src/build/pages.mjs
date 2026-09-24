@@ -58,7 +58,7 @@ import { documentHead, imageUrl, pageFooter } from '../chrome/index.mjs'
 import { CALCULATOR_PAGES_META } from '../data/calculators.js'
 import { HAND_AUTHORED_PAGES } from '../data/pages.js'
 import { pageUrl } from '../data/url-map.js'
-import { calculatorTable, tabledPages } from './calculator-tables.mjs'
+import { calculatorIntro, calculatorTable, tabledPages } from './calculator-tables.mjs'
 import { homeServiceGrid, withOfferCatalog } from './home-grid.mjs'
 import { fillPrices } from './prices.mjs'
 import { assertNoPlaceholders, fillBlocks } from './placeholders.mjs'
@@ -85,7 +85,8 @@ function renderPage(page, dates) {
   let main = readFileSync(resolve(templatesDir, `${name}.html`), 'utf-8').trimEnd()
 
   if (main.includes('{{calculator.')) {
-    main = fillBlocks(main, 'calculator', { table: calculatorTable(page.file) }, page.file)
+    const intro = calculatorIntro(page.file)
+    main = fillBlocks(main, 'calculator', { table: calculatorTable(page.file), ...(intro ? { intro } : {}) }, page.file)
   }
 
   const homeGrid = main.includes('{{home.')

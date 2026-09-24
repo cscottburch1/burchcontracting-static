@@ -387,6 +387,11 @@ export function adaBathEstimate({ location = 'fountainInnArea', finish = 'fiberg
  *   adu              priced like new-home construction
  *   garageApartment  a garage with a finished apartment above
  *   handyman         hourly, with a two-hour minimum
+ *   wholeHomeTypical the range the owner quotes for a whole-home job (PR #28,
+ *                    2026-09-23). The calculator's own whole-home math is
+ *                    unchanged; this is the typical-range tier the service
+ *                    page shows, since the calculator's maximum configuration
+ *                    ($644K for 2,000 sq ft) is not what a homeowner is quoted.
  *
  * Commercial upfits are custom-quoted and deliberately have no rate.
  */
@@ -394,15 +399,18 @@ export const QUOTED_RATES = {
   adu: { perSqftLow: 225, perSqftHigh: 325 },
   garageApartment: { perSqftLow: 200, perSqftHigh: 325 },
   handyman: { hourly: 65, minimumHours: 2 },
+  wholeHomeTypical: { low: 8000, high: 350000 },
 }
 
+// Each page's intro paragraph is in src/data/calculator-intros.js (PR #28),
+// computed from the scenario it describes; it used to be typed here and again
+// in the page template.
 export const CALCULATOR_PAGES = {
   decks: {
     serviceKey: 'decks',
     title: 'Deck Cost Calculator',
     metaTitle: 'Deck Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
     description: 'Estimate custom deck costs in Upstate SC by size, material, and location. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Decks in Upstate SC typically cost $39–$92 per square foot installed — a 12×16 deck (192 sqft) runs $7,400–$8,950 in pressure-treated lumber or $11,350–$13,700 in composite. Size, height, railing, and stairs are the biggest cost drivers.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   garages: {
@@ -410,10 +418,6 @@ export const CALCULATOR_PAGES = {
     title: 'Garage Cost Calculator',
     metaTitle: 'Garage Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
     description: 'Plan detached and attached garage construction costs in Upstate SC. Transparent pricing with 20% overhead & profit.',
-    // Recomputed 2026-08-16 alongside the detachedStandard/upgradedWorkshop
-    // rate cut above — see that comment for why. attachedBasic's figure is
-    // unchanged (that tier's rate wasn't touched).
-    intro: 'A standard two-car detached garage (24×24, 576 sqft) in Upstate SC costs $52,000–$62,000 fully finished — slab, framing, roof, doors, and basic electrical. A comparable attached garage runs $39,000–$47,000, and workshop upgrades or larger 3-car footprints (900 sqft) commonly run $109,000–$131,000.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   porch: {
@@ -421,10 +425,6 @@ export const CALCULATOR_PAGES = {
     title: 'Screened Porch Cost Calculator',
     metaTitle: 'Screened Porch Cost Calculator Simpsonville SC | Burch Contracting',
     description: 'Estimate screened porch and outdoor room costs in Upstate SC. New construction or deck conversions.',
-    // {{range.…}} is filled at build time by src/build/prices.mjs from the
-    // screened-porch service headline; this text is rendered only as the
-    // calculator page's pricing-table answer, never by the browser.
-    intro: 'Screened porches in Upstate SC typically run {{range.screened-porches}} depending on size, roof structure, and finishes. Converting an existing deck can save 50–70% versus new construction since the framing and floor are already in place.',
     marketArea: 'Simpsonville, Fountain Inn, Greenville County, and Laurens County',
   },
   additions: {
@@ -432,7 +432,6 @@ export const CALCULATOR_PAGES = {
     title: 'Home Addition Cost Calculator',
     metaTitle: 'Room Addition Cost Calculator Upstate SC | Burch Contracting',
     description: 'Estimate room addition and home expansion costs in Upstate SC. $196–$425/sq ft typical range.',
-    intro: 'Room additions in Upstate SC typically cost $196–$425 per square foot depending on finishes, HVAC, plumbing, and structural complexity — a 400 sqft addition typically runs $78,000–$152,000. Use this calculator for a realistic planning range.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   kitchen: {
@@ -440,7 +439,6 @@ export const CALCULATOR_PAGES = {
     title: 'Kitchen Remodel Cost Calculator',
     metaTitle: 'Kitchen Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate kitchen remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Kitchen remodels in Greenville and Laurens County SC typically cost $125–$322 per square foot — a 200 sqft kitchen runs $25,000–$64,500 depending on cabinetry, counters, and layout changes.',
     marketArea: 'Greenville County & Laurens County',
   },
   bath: {
@@ -448,16 +446,6 @@ export const CALCULATOR_PAGES = {
     title: 'Bathroom Remodel Cost Calculator',
     metaTitle: 'Bathroom Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate bathroom remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    // Was "$5,600-$75,000 ... starts around $5,600" — $5,600 was $140/SF x 40
-    // SF, a raw direct cost with no location factor or 20% O&P applied. The
-    // calculator itself (and this page's own AEO pricing table) returns
-    // roughly $6,900 for that same 40 SF project, and the pricing table's
-    // real powder-room floor is $5,578-$6,717 at 35 SF (this service's
-    // configured sizeRanges.min). Recomputed from the same formula the
-    // calculator runs — see scripts/check-calculator-copy.mjs, which
-    // asserts this stays true — instead of a second, independently
-    // hand-typed number that can drift from what the tool actually outputs.
-    intro: 'Bathroom remodels in Greenville and Laurens County SC typically run $5,578–$113,098 depending on scope — a small 35 sq ft powder room refresh starts around $5,578, while a full 150 sq ft primary bath gut renovation with premium finishes can run $93,911–$113,098+.',
     marketArea: 'Greenville County & Laurens County',
   },
   wholeHome: {
@@ -465,7 +453,6 @@ export const CALCULATOR_PAGES = {
     title: 'Whole-Home Remodel Cost Calculator',
     metaTitle: 'Whole-Home Remodel Cost Calculator Greenville & Laurens County SC | Burch Contracting',
     description: 'Estimate whole-home remodeling costs in Greenville and Laurens County SC. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Whole-home remodels in Greenville and Laurens County SC typically cost $125–$322 per square foot — a 2,000 sqft home runs $250,000–$645,000 depending on scope and finish level.',
     marketArea: 'Greenville County & Laurens County',
   },
   coveredPatios: {
@@ -473,7 +460,6 @@ export const CALCULATOR_PAGES = {
     title: 'Covered Patio Cost Calculator',
     metaTitle: 'Covered Patio Cost Calculator Simpsonville & Fountain Inn SC | Burch Contracting',
     description: 'Estimate covered patio and outdoor living space costs in Upstate SC by size, finish level, and location. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Covered patios in Upstate SC typically cost $77–$154 per square foot — a 320 sqft mid-range outdoor room with decorative columns and lighting runs $32,055–$38,604. Roof structure, columns, and finish level are the biggest cost drivers.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
   basement: {
@@ -481,7 +467,6 @@ export const CALCULATOR_PAGES = {
     title: 'Basement Finishing Cost Calculator',
     metaTitle: 'Basement Finishing Cost Calculator Upstate SC | Burch Contracting',
     description: 'Estimate basement finishing costs in Upstate SC — basic living space, a full bedroom/bath suite, or a premium build-out. Transparent 20% overhead & profit. SC Licensed #CLG118679 | NC Licensed (Limited) #107292.',
-    intro: 'Basement finishing in Upstate SC typically costs $48–$121 per square foot — a 1,000 sqft basement runs $47,809–$120,637 depending on scope, from a basic finished space to a full living suite with bedroom and bath, up to a premium build-out with wet bar and media room.',
     marketArea: 'Simpsonville, Fountain Inn, Gray Court & Greenville County',
   },
 }

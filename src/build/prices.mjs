@@ -10,8 +10,11 @@
  *
  *   {{price.<service-id>}}  the service's headline, as on its page
  *                            ("$13,500–$51,500 Range")
- *   {{range.<service-id>}}  the same without its trailing label, for use
- *                            mid-sentence ("$13,500–$51,500")
+ *   {{range.<service-id>}}  the same without its trailing label ("$13,500–$51,500",
+ *                            or "$196-381" for a per-sq-ft headline)
+ *   {{prose.<service-id>}}  the service's dollar table low to high, rounded for
+ *                            a sentence with proseRound() (PR #28) — the form a
+ *                            price takes in prose
  *
  * Unlike the {{group.key}} block placeholders, these sit inside a line, so
  * they are replaced in place. Applied to a page's stored JSON-LD as well as
@@ -20,13 +23,15 @@
  * unfilled is caught by assertNoPlaceholders().
  */
 import { SERVICES } from '../data/services.js'
+import { proseSpan } from '../data/pricing-sync.js'
 
-const TOKEN = /\{\{(price|range)\.([a-z0-9-]+)\}\}/g
+const TOKEN = /\{\{(price|range|prose)\.([a-z0-9-]+)\}\}/g
 
 export function fillPrices(text, relFile) {
   return text.replace(TOKEN, (_, form, id) => {
     const service = SERVICES.find((s) => s.id === id)
     if (!service) throw new Error(`${relFile}: {{${form}.${id}}} names no service`)
+    if (form === 'prose') return proseSpan(service)
     const headline = service.stats.costRange
     return form === 'price' ? headline : headline.replace(/ (Range|Typical|Per Sq Ft)$/, '')
   })
