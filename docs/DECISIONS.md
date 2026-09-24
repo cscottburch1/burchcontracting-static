@@ -1230,6 +1230,10 @@ form would compare against HEAD's commit date, or fail when a clone is shallow
   Its header says so and records the owner's answers.
 - The 2026-09-24 survey is archived at
   `docs/archive/2026-09-24-review-brief-survey.md` (PR #30).
-- The PR #23 (Phase 6) prompt will be archived at
-  `docs/archive/2026-09-22-pr-23-phase-6-prompt.md`. The owner is supplying it
-  as a file; add it there when it arrives.
+- The PR #23 (Phase 6) prompt is archived at
+  `docs/archive/2026-09-22-pr-23-phase-6-prompt.md`, as supplied by the owner
+  on 2026-09-24 (verbatim). It was not available when Phase 6 was done (the
+  work ran from the cleanup plan). Its header lists where the shipped work
+  departs from it. Two items are still open: the 6.5 `/services`
+  comparison-table rework, and the 6.8 content-queue order from the export
+  ("bathroom remodeling cost five forks" first).
