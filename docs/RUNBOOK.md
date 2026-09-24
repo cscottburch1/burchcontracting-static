@@ -258,6 +258,34 @@ If you genuinely must:
 6. Add it to `npm test` via `scripts/test.mjs`, and to the header comment in
    `check-build.mjs` if it lives there.
 
+### The search-display and price-copy gates (PR #28)
+
+- **Titles, check 13:** no `<title>` over **60** characters, measured on the
+  decoded text. To shorten one, apply in order until it fits: drop
+  ` | Burch Contracting`; drop the trailing phrase after the last ` | ` (not
+  when that phrase is the geography); only then replace "Simpsonville &
+  Greenville SC" with "Upstate SC". The geography stays wherever it fits.
+- **Descriptions, check 14:** every indexable page's meta description is
+  **120–155** characters (404.html exempt). Trim from the end; keep the
+  geography and the offer in the first 100; lengthen only with facts already on
+  the site.
+- **Prices in sentences, check 12 (second half):** every price in a service
+  page's prose is `proseRound()` of a figure in that service's own tables, or
+  a figure declared with its source in `src/data/cited-figures.js`. Rates
+  (per sq ft, per hour, per month) are not checked.
+
+**Three rounding tiers, one per place a price appears:**
+
+| Where | Function | Rounding |
+|---|---|---|
+| Tables | none | exact, as the calculator computes |
+| Headlines (`stats.costRange`) | `displayRound()` | nearest $500 |
+| Sentences (intros, FAQs, cards, promoted answers) | `proseRound()` | nearest $100 under $10,000; $500 from $10,000; $1,000 from $100,000 |
+
+A hand-typed price in a sentence fails check 12: it will not be the rounding of
+anything the page prices. Use the helpers in `pricing-sync.js`, or the
+`{{price.<id>}}` / `{{range.<id>}}` / `{{prose.<id>}}` tokens in a template.
+
 ---
 
 ## Next content

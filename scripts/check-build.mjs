@@ -40,7 +40,11 @@
  *      this morning. Silent otherwise — the build succeeds either way.
  *  10. A TODO( in any page's visible text (Phase 6.0).
  *  11. The service hierarchy not derived from `tier` (Phase 6.1a).
- *  12. A service's headline price disagreeing with its own table (Phase 6.6).
+ *  12. A service's headline price disagreeing with its own table (Phase 6.6),
+ *      or a price in its prose that is not proseRound() of a table figure or a
+ *      declared cited figure (PR #28).
+ *  13. A <title> over 60 characters (PR #28).
+ *  14. A meta description outside 120-155 characters, 404.html exempt (PR #28).
  *
  * WHICH TREE EACH CHECK READS
  *
