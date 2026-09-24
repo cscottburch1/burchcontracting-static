@@ -1,3 +1,21 @@
+import { SERVICES } from './services.js'
+import { displayRange, projectEstimate } from './pricing-sync.js'
+
+// Prices in the FAQs below are read from the service pages' own headline and
+// table rows (Phase 6.6), so an FAQ cannot quote a figure the page it links to
+// contradicts. The deck answer said "$33,000 to $58,000" over a deck table of
+// $7,431–$45,924; the porch answer said "$15,000 to $65,000" over $13,551–$51,429.
+function service(id) {
+  const found = SERVICES.find((s) => s.id === id)
+  if (!found) throw new Error(`geo-aeo.js: no service '${id}'`)
+  return found
+}
+function row(id, name) {
+  const found = (service(id).commonProjects ?? []).find((p) => p.name === name)
+  if (!found) throw new Error(`geo-aeo.js: ${id} has no common project '${name}'`)
+  return found.cost
+}
+
 export const SITE = {
   name: 'Burch Contracting',
   domain: 'https://burchcontracting.com',
@@ -38,6 +56,8 @@ export const CITY_PROJECTS = {
     { title: 'Room Addition', description: 'Ground-floor room addition with siding and roofline matched to the existing home.', category: 'Room Additions' },
   ],
   simpsonville: [
+    { title: 'Whole-Home Renovation', description: 'The owner bought an unfinished house. We brought the entire build up to current building codes from the ground up, added a new master suite onto the original structure, built a new kitchen, finished the basement, and installed a new septic system. About six months and $250,000, start to finish.', category: 'Remodeling' },
+    { title: 'Kitchen Remodel', description: 'Part of the Simpsonville whole-home renovation: the kitchen rebuilt from bare studs with white shaker cabinets, dark granite countertops, a subway tile backsplash, stainless appliances, and new vinyl plank flooring.', category: 'Kitchen Remodeling' },
     { title: 'Detached Two-Car Garage', description: 'Gray siding with white trim, dual garage doors, and landscaped approach pad.', category: 'Garages' },
   ],
   woodruff: [
@@ -189,17 +209,23 @@ export const SERVICE_AREAS = [
   },
 ]
 
+// The services listed on every service-area page. `id` is the service's id in
+// services.js: src/build/geo.mjs renders these in servicesByTier() order, so the
+// order written here does not matter, and an id matching no service fails the
+// build (Phase 6.4). Remodeling now leads every city page, as it leads the site.
 export const CORE_SERVICES = [
-  { name: 'Custom Decks', url: '/outdoor-living/decks', summary: 'Wood and composite decks for outdoor entertaining.' },
-  { name: 'Screened Porches', url: '/outdoor-living/screened-porches', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
-  { name: 'Garages', url: '/garage-builder', summary: 'Attached and detached garage construction.' },
-  { name: 'Room Additions', url: '/room-additions', summary: 'Ground-floor and second-story home expansions.' },
-  { name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
-  { name: 'Bathroom Remodeling', url: '/bathroom-remodeling', summary: 'Full bathroom remodels, from powder rooms to custom primary spa baths.' },
-  { name: 'Commercial Upfits', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
-  { name: 'Commercial Roofing', url: '/commercial-roofing', summary: 'Flat and metal roof installation, repair, and maintenance.' },
-  { name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
-  { name: 'ADA Compliance', url: '/ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
+  { id: 'bathroom-remodeling', name: 'Bathroom Remodeling', url: '/bathroom-remodeling', summary: 'Full bathroom remodels, from powder rooms to custom primary spa baths.' },
+  { id: 'kitchen-remodeling', name: 'Kitchen Remodeling', url: '/kitchen-remodeling', summary: 'Cabinets, quartz and granite counters, and layout changes.' },
+  { id: 'ada-bath-to-shower', name: 'ADA Tub-to-Shower Conversions', url: '/ada-bath-to-shower', summary: 'Zero-entry roll-in showers with ADA grab bars and non-slip floors.' },
+  { id: 'remodeling', name: 'Remodeling', url: '/remodeling', summary: 'Kitchen, bath, basement, and whole-home remodels.' },
+  { id: 'additions', name: 'Room Additions', url: '/room-additions', summary: 'Ground-floor and second-story home expansions.' },
+  { id: 'decks', name: 'Custom Decks', url: '/outdoor-living/decks', summary: 'Wood and composite decks for outdoor entertaining.' },
+  { id: 'screened-porches', name: 'Screened Porches', url: '/outdoor-living/screened-porches', summary: 'Aluminum and wood-framed bug-free outdoor living.' },
+  { id: 'garages', name: 'Garages', url: '/garage-builder', summary: 'Attached and detached garage construction.' },
+  { id: 'commercial-upfits', name: 'Commercial Upfits', url: '/commercial-upfits', summary: 'Office upfits and tenant improvements.' },
+  { id: 'commercial-roofing', name: 'Commercial Roofing', url: '/commercial-roofing', summary: 'Flat and metal roof installation, repair, and maintenance.' },
+  { id: 'insurance-restoration', name: 'Insurance Restoration', url: '/insurance-restoration', summary: 'Storm damage, water damage, and insurance claim repairs.' },
+  { id: 'ada-compliance', name: 'ADA Compliance', url: '/ada-compliance', summary: 'Accessibility modifications for homes and businesses.' },
 ]
 
 export const GLOBAL_FAQS = [
@@ -225,19 +251,19 @@ export const GLOBAL_FAQS = [
   },
   {
     question: 'How much does a deck cost in Upstate SC?',
-    answer: 'Custom decks in Upstate SC typically range from $33,000 to $58,000 depending on size, materials, railing, and site conditions. Use the deck cost calculator at burchcontracting.com/calculator/decks or request a free consultation for an exact quote.',
+    answer: `Custom decks in Upstate SC typically run ${service('decks').pricePerSqFt.replace('/sq ft', '')} per square foot installed — about ${row('decks', 'Basic Pressure-Treated 12×16')} for a 12×16 pressure-treated deck and ${row('decks', 'Premium Two-Tier Deck')} for a 500 sq ft two-tier deck. Use the deck cost calculator at burchcontracting.com/calculator/decks or request a free consultation for an exact quote.`,
   },
   {
     question: 'How much does a screened porch cost in Simpsonville SC?',
-    answer: 'Screened porches in Simpsonville and surrounding areas typically run $15,000 to $65,000 for new construction. Converting an existing deck can save 50–70% since the framing and floor are already in place. Use the porch calculator at burchcontracting.com/calculator/porch for a planning estimate.',
+    answer: `Screened porches in Simpsonville and surrounding areas typically run ${service('screened-porches').stats.costRange.replace(/ Range$/, '')} for new construction. Converting an existing deck can save 50–70% since the framing and floor are already in place. Use the porch calculator at burchcontracting.com/calculator/porch for a planning estimate.`,
   },
   {
     question: 'How much does a detached garage cost in Upstate SC?',
-    answer: 'Detached two-car garages (576 sqft) in Upstate SC commonly range from $52,000 to $62,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $109,000 to $131,000. Use the garage calculator at burchcontracting.com/calculator/garages or contact us for a detailed quote.',
+    answer: `Detached two-car garages (576 sqft) in Upstate SC commonly run ${row('garages', '2-Car Detached Garage')} for a standard finish, with larger 3-car or workshop configurations (900 sqft) running ${row('garages', '3-Car Garage with Workshop')}. Use the garage calculator at burchcontracting.com/calculator/garages or contact us for a detailed quote.`,
   },
   {
     question: 'How much does a room addition cost per square foot?',
-    answer: 'Room additions in Upstate SC typically cost $200 to $340 per square foot depending on scope, structural work, finishes, and HVAC integration. A 400 sq ft addition often falls between $78,000 and $152,000. Use the addition calculator for a planning range.',
+    answer: `Room additions in Upstate SC typically cost ${service('additions').pricePerSqFt.replace('/sq ft', '')} per square foot depending on scope, structural work, finishes, and HVAC integration. A 400 sq ft addition often runs ${displayRange(projectEstimate('homeAdditions', 'basicFinish', 400), projectEstimate('homeAdditions', 'premiumCustom', 400))}. Use the addition calculator for a planning range.`,
   },
   {
     question: 'Does Burch Contracting handle permits and inspections?',

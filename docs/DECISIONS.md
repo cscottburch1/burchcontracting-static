@@ -915,3 +915,131 @@ the old build first and the new one after:
 `head -20` reads the diff from a **file**, not a pipe. Piping into `head` would
 hand `diff` an `EPIPE` under `pipefail` — the bug from the previous run, in a
 new costume.
+
+---
+
+## 2026-09-22 — Phase 6 is a content PR, and its snapshot diff is not supposed to be zero
+
+Phases 0–5, 7 and 8 were technically neutral: same 71 pages, same URLs, same
+content, from a build that can now be trusted. Every commit there was measured
+against "the snapshot shows nothing changed", and where something did change it
+was a defect being corrected and was enumerated.
+
+Phase 6 is the business change those phases were clearing the way for:
+bathroom and kitchen remodeling become the lead offers, garages stop being the
+front door, and every page's title, description and content depth follows. Before
+the migration, "bathroom remodeling" ranked 1.6; it is now 16. Recovering that is
+the point.
+
+**So the snapshot's job changes.** It is no longer a proof that nothing moved. It
+is the instrument that enumerates what moved, so every changed field on every
+page can be attributed to a numbered item in the PR. A field that changes without
+an attribution is still a defect; a field that changes with one is the work.
+
+**One expected chrome-hash change.** Reordering the Services mega-menu changes
+anchor order and text order, so the header hash moves on all 70 governed pages
+at once. That is the only chrome-hash change this PR may contain, it happens in
+a single commit, and the chrome baseline is re-recorded in that same commit.
+Outside it, a changed chrome hash is a defect exactly as before.
+
+**Missing facts are left missing.** Where the work needs a fact nobody has
+written down — a count of bathrooms remodeled, a real bath project with photos,
+a year — the data file gets `TODO(owner): <what is needed>` and the PR body
+lists it. `check-build`'s check 10 fails the build if a `TODO(` ever reaches
+visible text, so the convention is safe: a data file is read by the author, a
+page is read by a customer.
+
+**The Tier 1 floor was written before the content that satisfies it.** 
+`scripts/check-tier1.mjs` asserts that every `tier: 1` service page carries 6+
+FAQ questions, links to its own calculator, links to at least one cost guide,
+and has a headline range that agrees with its own pricing table. Run against
+`main` with tiers temporarily assigned, it produced ten findings:
+
+- `remodeling` has 5 FAQs, no calculator, no cost-guide link, and a headline of
+  "$5,600-$75,000" against its own table's $5,578–$644,314 — a wider
+  contradiction than the `garage-builder` one the plan cites.
+- `bathroom-remodeling` and `kitchen-remodeling` link to no cost guide, and
+  price their headline in absolute dollars while their tables are per square
+  foot, so the two cannot be compared at all until 6.6 derives both.
+- `ada-bath-to-shower` has 5 FAQs and no cost-guide link.
+
+None of the four Tier 1 pages links to a single cost guide. The guides exist;
+nothing points at them from the pages meant to sell the work.
+
+It is deliberately **not** in `npm test` yet. It joins at 6.3, in the commit that
+makes it pass — per the gate-adding rule, a gate added green is a gate nobody
+has seen work.
+
+---
+
+## 2026-09-22 — The www and http redirects are now asserted, not assumed
+
+A third of this property's search clicks arrive on a hostname that is supposed
+to 301 away.
+
+From the Search Console export of 2026-09-22 (28 days to 2026-09-20, committed
+at `migration/gsc-2026-09-22-pre-phase-6/`):
+
+| Page | Clicks | Impressions | Position |
+|---|---|---|---|
+| `https://www.burchcontracting.com/` | **19** | 998 | **3.25** |
+| `https://burchcontracting.com/` | 12 | 697 | 30.52 |
+
+The www version outranks the canonical root by 27 positions and earns more
+clicks — 19 of the property's 57. Google has had it indexed for years and still
+prefers it.
+
+**Nothing in this repository produces that redirect.** It is two Cloudflare zone
+settings: "Always Use HTTPS", and a www → root Redirect Rule
+(`CLOUDFLARE-CUTOVER.md`, step 4). They were configured by hand at cutover. If
+either is switched off — by a dashboard change, a plan change, a zone migration —
+every one of those clicks lands on an unredirected duplicate of the whole site,
+every canonical points somewhere else, and no build, gate or test would notice.
+
+**Decision.** `scripts/check-routing.mjs` asserts six hostname redirects against
+production: www and http, on `/` and `/services`, with and without a query
+string. `deploy.yml`'s verification repeats four of them, because that step is
+what runs against production on every deploy. Both assert a **single hop**, a
+**301**, and the **query string preserved**.
+
+They cannot go in `migration/routing-baseline.json`: that file is keyed by path,
+and these are hostnames. They are skipped on any non-production base, because
+www and http do not exist on `wrangler dev` or a preview URL.
+
+Verified working at the time of writing — all four combinations already 301
+correctly in one hop. This records behaviour that is right, so that it stays
+right. Tamper-tested by pointing one expectation at a wrong target; it failed
+naming both the observed and expected location and where to look in Cloudflare.
+
+**A regression this caught.** The workflow being replaced in Phase 5 checked two
+of these (`http://…/garages/` and `https://www.…/garages/`). Rewriting the verify
+step dropped them, and nothing noticed for three deploys. That is an argument for
+the check living in `check-routing` — which runs locally, in CI and on deploy —
+rather than only in a workflow step that can be rewritten out.
+
+---
+
+## 2026-09-23 — Owner pricing decisions, and the sitemap keeps no priority
+
+Phase 6.6 found five services whose published prices either contradicted the
+calculator or came from nowhere. They were not reconciled by guesswork; the
+owner decided each one:
+
+| Service | Was | Now | Source |
+|---|---|---|---|
+| Basement finishing | $30–$75/sq ft, typed | $48–$121/sq ft | `calculator-config.js`, which the basement calculator already used |
+| ADA bath-to-shower | $10,500–$19,800 (raw line-item sum) | $9,800–$25,400 | `adaBathEstimate()`, cheapest to priciest configuration |
+| ADUs | $65,000–$220,000, typed | $225–$325/sq ft, like new-home construction | `QUOTED_RATES.adu` |
+| Garage with apartment | $85,000–$145,000, typed | $200–$325/sq ft | `QUOTED_RATES.garageApartment` |
+| Handyman | $125–$4,400 by task, typed | $65/hour, two-hour minimum | `QUOTED_RATES.handyman` |
+| Commercial upfits | $30–$100+/sq ft, typed | Custom quote | no rate, deliberately |
+
+`QUOTED_RATES` in `calculator-config.js` holds the three owner-quoted rates.
+They are final customer prices, so no location factor or overhead & profit is
+applied on top. Everything that shows one of these prices reads it from there.
+
+**The sitemap keeps no `priority`.** Plan item 2 asked for tier-derived
+priorities; that contradicts the 2026-07-23 entry above (Google ignores both
+`priority` and `changefreq`). The owner confirmed: `lastmod` updates
+automatically from content dates, and nothing else is added. Item 2 is closed
+as not done.

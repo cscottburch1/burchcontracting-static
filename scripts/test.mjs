@@ -21,6 +21,8 @@
  *   check-schema           JSON-LD parses, is typed, resolves, and matches
  *                          visible content.
  *   check-links            every internal href resolves; no sitemap orphans.
+ *   check-tier1            the lead-offer floor: 6+ FAQs, own calculator, a
+ *                          cost guide, headline agreeing with its table.
  *   check-wrangler-config  no Cloudflare-side build block; the three asset
  *                          settings that cannot change.
  *   check-routing          481 paths against migration/routing-baseline.json,
@@ -57,6 +59,7 @@ const STATIC_GATES = [
   ['check-build', 'node', ['scripts/check-build.mjs']],
   ['check-schema', 'node', ['scripts/check-schema.mjs']],
   ['check-links', 'node', ['scripts/check-links.mjs']],
+  ['check-tier1', 'node', ['scripts/check-tier1.mjs']],
   ['check-wrangler-config', 'node', ['scripts/check-wrangler-config.mjs']],
 ]
 

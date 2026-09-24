@@ -38,6 +38,9 @@
  *      history; with actions/checkout's default fetch-depth of 1 every page
  *      gets today's date and the sitemap tells Google the whole site changed
  *      this morning. Silent otherwise — the build succeeds either way.
+ *  10. A TODO( in any page's visible text (Phase 6.0).
+ *  11. The service hierarchy not derived from `tier` (Phase 6.1a).
+ *  12. A service's headline price disagreeing with its own table (Phase 6.6).
  *
  * WHICH TREE EACH CHECK READS
  *
@@ -64,10 +67,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { CALCULATOR_PAGES } from '../src/js/calculator-config.js'
-import { servicePerSqftBand } from '../src/data/pricing-sync.js'
+import { headlineAgreesWithTable, servicePerSqftBand } from '../src/data/pricing-sync.js'
 import { chromeHash, chromeSource } from './lib/chrome-hash.mjs'
 import { NAV_CLASS, activeNavItem } from '../src/data/nav.js'
-import { SERVICES } from '../src/data/services.js'
+import { SERVICES, servicesByTier } from '../src/data/services.js'
+import { SERVICES_MENU } from '../src/data/nav.js'
 import { SERVICE_FAQS } from '../src/data/service-faqs.js'
 import { CHOOSE_IF, PERMIT_REQUIRED } from '../src/data/service-comparison.js'
 
@@ -682,6 +686,116 @@ const dateProblems = []
 if (dateProblems.length) {
   failed = true
   failures.push({ check: 'content-dates-not-derived', detail: dateProblems })
+}
+
+// --- Check 10: no unanswered TODO reaches a reader ---
+// Phase 6. This is a content phase, and the ground rule is that a missing fact
+// is left as `TODO(owner): <what is needed>` in the data file rather than
+// invented. That rule is only safe if a TODO can never be rendered: a data file
+// is read by the author, a page is read by a customer.
+//
+// Visible text only. TODO markers in source comments are the mechanism working
+// as intended, and `TODO(phase-6)` in a comment is how the deferred items in
+// service-comparison.js and promoted-faqs.js are tracked.
+const todoLeaks = []
+for (const page of pages) {
+  const visible = page.html
+    .replace(/<script[\s\S]*?<\/script>/g, ' ')
+    .replace(/<style[\s\S]*?<\/style>/g, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+  if (!visible.includes('TODO(')) continue
+  const at = visible.indexOf('TODO(')
+  todoLeaks.push(`${page.rel}: renders "${visible.slice(at, at + 70).replace(/\s+/g, ' ').trim()}" as visible text`)
+}
+if (todoLeaks.length) {
+  failed = true
+  failures.push({ check: 'todo-in-visible-text', detail: todoLeaks })
+}
+
+// --- Check 11: the service hierarchy is encoded once and derived everywhere ---
+// Phase 6.1. `tier` on each service is the single statement of what this
+// business leads with. Before it, three separate hand-written lists ordered the
+// same sixteen services and all three disagreed: the footer led with additions
+// and garages, the homepage grid led with decks, the nav led with outdoor
+// living — and bathroom and kitchen remodeling, the two lead offers, had no
+// homepage card at all.
+//
+// Asserted here: every service has a valid tier, the nav mega-menu opens with
+// exactly the Tier 1 services, and the footer's "Our Services" column is the
+// full tier-sorted list in order.
+//
+// The nav assertion is deliberately narrower than "globally tier-sorted". The
+// mega-menu groups are thematic — a reader scanning for a garage looks under
+// "Garages & ADUs", not under tier 3 — so the honest claim is that Tier 1 comes
+// first and complete, not that every later group is in tier order.
+const hierarchy = []
+{
+  const valid = [1, 2, 3, 'track']
+  for (const s of SERVICES) {
+    if (!valid.includes(s.tier)) {
+      hierarchy.push(`${s.slug}: tier is ${JSON.stringify(s.tier)}, must be one of 1, 2, 3, 'track'`)
+    }
+  }
+
+  const tier1 = SERVICES.filter((s) => s.tier === 1).map((s) => `/${s.slug}`)
+  const navHrefs = SERVICES_MENU.flat().flatMap((group) => group.items.map((i) => i.href))
+
+  const missingFromNav = SERVICES.map((s) => `/${s.slug}`).filter((h) => !navHrefs.includes(h))
+  if (missingFromNav.length) {
+    hierarchy.push(`services absent from the nav mega-menu: ${missingFromNav.join(', ')}`)
+  }
+
+  const leading = navHrefs.slice(0, tier1.length)
+  if (JSON.stringify(leading) !== JSON.stringify(tier1)) {
+    hierarchy.push(
+      `the nav mega-menu opens with ${leading.join(', ')}; it must open with the Tier 1 services in tier order: ${tier1.join(', ')}`
+    )
+  }
+
+  // The footer is a flat list, so it gets the strict assertion.
+  const wantFooter = servicesByTier().map((s) => `/${s.slug}`)
+  for (const page of pages) {
+    // Scoped to <footer>. Searching the whole page finds the <h2>Our Services</h2>
+    // section in the body of every service-area page first, which is a different
+    // list with a different job — the first version of this check reported that
+    // as a footer defect.
+    const footerAt = page.html.lastIndexOf('<footer')
+    if (footerAt === -1) continue
+    const at = page.html.indexOf('Our Services', footerAt)
+    if (at === -1) continue
+    const segment = page.html.slice(at, page.html.indexOf('</ul>', at))
+    const got = [...segment.matchAll(/href="([^"]+)"/g)].map((m) => m[1])
+    if (JSON.stringify(got) !== JSON.stringify(wantFooter)) {
+      hierarchy.push(
+        `${page.rel}: footer "Our Services" is not the tier-sorted service list.\n` +
+          `      got:  ${got.join(', ')}\n` +
+          `      want: ${wantFooter.join(', ')}`
+      )
+      break // one example is enough; the footer is shared
+    }
+  }
+}
+if (hierarchy.length) {
+  failed = true
+  failures.push({ check: 'service-hierarchy-not-derived', detail: hierarchy })
+}
+
+// --- Check 12: every service's headline price agrees with its own table ---
+// Phase 6.6. garage-builder's hero said "$39,000-$145,000" over a table whose
+// cheapest row was $51,798; screened porches said "$15,000-$65,000" over
+// $13,551-$51,429; whole-home said "$5,600-$75,000" over $5,578-$644,314.
+// Each headline was typed once and the table under it was later derived, so
+// they drifted with nothing to notice. Headlines now come from displayRange()
+// with the same estimates as their table rows; this asserts the result for all
+// sixteen, in the headline's own unit, allowing only displayRound(). Reads
+// src/, like checks 6 and 7: the drift starts in the data, so name the service.
+const headlineDrift = SERVICES.map((s) => [s, headlineAgreesWithTable(s)])
+  .filter(([, problem]) => problem)
+  .map(([s, problem]) => `${s.id}: ${problem}`)
+if (headlineDrift.length) {
+  failed = true
+  failures.push({ check: 'headline-price-disagrees-with-table', detail: headlineDrift })
 }
 
 // --- Report ---

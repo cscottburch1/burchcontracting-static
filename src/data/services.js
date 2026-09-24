@@ -29,6 +29,12 @@ import {
   tierPerSqftString,
   servicePerSqftBand,
   servicePerSqftString,
+  displayRange,
+  adaBathRange,
+  quotedPerSqft,
+  quotedCost,
+  quotedEstimate,
+  handymanRate,
 } from './pricing-sync.js'
 import { bathroomRemodelingBeforeProcess, bathroomRemodelingAfterProcess } from './bathroom-remodeling-content.js'
 import { kitchenRemodelingBeforeProcess, kitchenRemodelingAfterProcess } from './kitchen-remodeling-content.js'
@@ -63,13 +69,38 @@ export const SITE = {
   domain: 'burchcontracting.com'
 };
 
+/**
+ * Tier order: lead offers first, separate tracks last.
+ *
+ * Phase 6 encodes the service hierarchy once, as `tier` on each service, and
+ * derives every ordered presentation of the list from it — the nav mega-menu,
+ * the footer, the homepage grid. Before this, each of those was a hand-written
+ * list in its own file, and they disagreed: the footer led with additions and
+ * garages, the homepage grid led with decks, and bathroom and kitchen
+ * remodeling had no homepage card at all.
+ *
+ *   1       lead offers          bath, kitchen, tub-to-shower, whole-home
+ *   2       supported            room additions, basement finishing
+ *   3       maintained           garages, decks, porches, patios, ADUs, handyman
+ *   'track' separate audience    commercial x2, insurance restoration, ADA compliance
+ *
+ * Sorting is stable, so the order inside a tier is the order authored below.
+ */
+export const TIER_ORDER = [1, 2, 3, 'track']
+
+export function servicesByTier() {
+  return [...SERVICES].sort((a, b) => TIER_ORDER.indexOf(a.tier) - TIER_ORDER.indexOf(b.tier))
+}
+
 export const SERVICES = [
   {
     id: 'decks',
     title: 'Custom Deck Builder',
     slug: 'outdoor-living/decks',
+    tier: 3,
     category: 'Outdoor Living',
-    description: 'Professional deck construction with pressure-treated and composite materials. Licensed contractor serving Upstate SC since 1995.',
+    metaTitle: 'Custom Deck Builder Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Custom pressure-treated and composite decks in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Custom Deck Builder - Upstate SC',
     intro: "From pressure-treated pine to premium composite materials, I handle every aspect of custom deck construction: design, permits, footings, framing, and finishing. Every deck engineered for Upstate SC weather and built to last decades.",
     stats: {
@@ -128,12 +159,18 @@ export const SERVICES = [
     id: 'screened-porches',
     title: 'Screened Porch Builder',
     slug: 'outdoor-living/screened-porches',
+    tier: 3,
     category: 'Outdoor Living',
-    description: 'Custom screened porches and three-season rooms. Licensed contractor serving Upstate SC since 1995.',
+    metaTitle: 'Screened Porch Builder Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Screened porches and three-season rooms in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Screened Porch Builder - Upstate SC',
     intro: "From simple porch conversions to luxury three-season rooms with HVAC, I handle all aspects: foundation work, framing, screening systems, electrical, and interior finishing. Every porch designed for year-round comfort in Upstate SC's climate.",
     stats: {
-      costRange: '$15,000-$65,000 Range',
+      costRange:
+        displayRange(
+          projectEstimate('screenedPorches', 'newScreenedPorch', 192),
+          projectEstimate('screenedPorches', 'upgradedOutdoorRoom', 300, { material: 'premium', complexity: 'complex' })
+        ) + ' Range',
       timeline: '3-6 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
@@ -191,12 +228,14 @@ export const SERVICES = [
     id: 'covered-patios',
     title: 'Covered Patio Builder',
     slug: 'outdoor-living/covered-patios',
+    tier: 3,
     category: 'Outdoor Living',
-    description: 'Custom covered patios and outdoor living spaces. Professional construction serving Upstate SC since 1995.',
+    metaTitle: 'Covered Patio Builder Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Covered patios and outdoor living spaces in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Licensed contractor serving Upstate SC since 1995.',
     h1: 'Covered Patio Builder - Upstate SC',
     intro: "I build custom covered patios that extend your outdoor living space with protection from sun and rain. From simple roof extensions to fully-featured outdoor kitchens with lighting and ceiling fans, every patio is designed to complement your home's architecture and maximize your outdoor enjoyment.",
     stats: {
-      costRange: combinedCostString(
+      costRange: displayRange(
         projectEstimate('coveredPatios', 'basicRoof', 192),
         projectEstimate('coveredPatios', 'premiumOutdoorLiving', 400),
         { plus: true }
@@ -264,16 +303,17 @@ export const SERVICES = [
     // clicks (migration/baseline-2026-09.md). id stays 'garages' — it keys
     // FAQs and content dates, not URLs.
     slug: 'garage-builder',
+    tier: 3,
     category: 'Construction',
-    description: 'Custom garage construction: detached, attached, workshop, and garage apartments. Licensed contractor serving Upstate SC since 1995.',
+    metaTitle: 'Garage Builder Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Detached, attached and workshop garages and garage apartments in Simpsonville, Greenville, Fountain Inn & Mauldin SC. SC Licensed #CLG118679, since 1995.',
     h1: 'Garage Builder - Upstate SC',
     intro: "From basic 2-car detached garages to luxury 3-car workshops with apartments above, I handle everything: site prep, foundation, framing, roofing, electrical, and finishing. Every garage engineered to match your home's architecture and meet your specific needs.",
     stats: {
-      // Low end reconciled to calculator-config.js (attachedBasic @576sf). High end
-      // ($145,000) is the apartment-above-garage tier below, which calculator-config.js
-      // has no equivalent for (it prices the garage structure only, not living space) —
-      // left as the original hand-authored figure.
-      costRange: '$39,000-$145,000 Range',
+      // The 2-car and workshop rows, in dollars. The apartment tier is quoted per
+      // sq ft (QUOTED_RATES.garageApartment, owner 2026-09-23), so it sits above
+      // this range rather than inside it — hence the "+".
+      costRange: displayRange(projectEstimate('garages', 'detachedStandard', 576), projectEstimate('garages', 'upgradedWorkshop', 900), { plus: true }) + ' Range',
       timeline: '6-10 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
@@ -296,7 +336,7 @@ export const SERVICES = [
       {
         name: 'Garage with Apartment Above',
         size: '24×30 + 720 sq ft living',
-        cost: '$85,000–$145,000',
+        cost: quotedPerSqft('garageApartment'),
         details: 'Two-story construction, full apartment finish, separate HVAC, rental income potential'
       }
     ],
@@ -313,7 +353,7 @@ export const SERVICES = [
       },
       {
         name: 'Garage with Apartment',
-        range: '$85,000-$145,000',
+        range: quotedPerSqft('garageApartment'),
         description: 'Two-story construction with 576-720 sq ft apartment above garage. Full living space with kitchenette, bath, bedroom. Generates $850-$1,200/month rental income.'
       }
     ],
@@ -336,8 +376,12 @@ export const SERVICES = [
     // Slug restored to the legacy Next.js path (see the garage-builder note
     // above). id stays 'additions'.
     slug: 'room-additions',
+    tier: 2,
     category: 'Construction',
-    description: 'Custom room additions: bedrooms, master suites, sunrooms, in-law suites. Full design-build service from foundation to finish.',
+    metaTitle: 'Room Additions Simpsonville & Greenville SC | Primary Suites | Burch Contracting',
+    description: 'Room additions in Simpsonville, Greenville, Fountain Inn & Mauldin SC: bedrooms, primary suites, sunrooms, in-law suites. Design-build from foundation to finish.',
+    heroImage: '/images/room-addition-finished-interior.webp',
+    heroAlt: 'Finished room addition interior with a six-panel door, ceiling fan and wide-plank vinyl flooring',
     h1: 'Room Addition Contractor - Upstate SC',
     intro: "From single-story bedroom additions to two-story master suites, I handle all phases: design, foundation work, framing, roofing, HVAC integration, and complete interior finishing to seamlessly match your existing home's style and quality.",
     stats: {
@@ -408,53 +452,55 @@ export const SERVICES = [
     id: 'adu-builder',
     title: 'ADU Builder',
     slug: 'adu-builder',
+    tier: 3,
     category: 'Construction',
-    description: 'Accessory Dwelling Unit construction: garage apartments, backyard cottages, in-law suites. Rental income potential $850-$1,500/month.',
+    metaTitle: 'ADU Builder Simpsonville & Greenville SC | Burch Contracting',
+    description: 'ADUs in Simpsonville, Greenville, Fountain Inn & Mauldin SC: garage apartments, backyard cottages, in-law suites. Rental income potential $850-$1,500/month.',
     h1: 'ADU Builder - Accessory Dwelling Units Upstate SC',
     intro: "From garage apartments to detached backyard cottages, I handle all aspects of ADU construction: zoning review, design, construction, and utilities. ADUs provide rental income ($850-$1,500/month) or flexible living space for family members.",
     stats: {
-      costRange: '$65,000-$220,000 Range',
+      costRange: displayRange(quotedEstimate('adu', 576), quotedEstimate('adu', 900, 1200)) + ' Range',
       timeline: '10-16 Weeks Typical',
       experience: 'Since 1995',
       rental: 'Income $850-$1,500/mo'
     },
-    pricePerSqFt: '$110-185/sq ft',
+    pricePerSqFt: quotedPerSqft('adu'),
     timeline: '10-16 weeks',
     rentalIncome: '$850-$1,500/month',
     commonProjects: [
       {
         name: 'Garage Apartment',
         size: '576 sq ft above 2-car garage',
-        cost: '$65,000–$95,000',
+        cost: quotedCost('adu', 576),
         details: 'Studio or 1-bed layout, kitchenette, full bath, separate entrance, rental income $850-$1,200/mo'
       },
       {
         name: '1-Bedroom Detached Cottage',
         size: '600-800 sq ft',
-        cost: '$125,000–$185,000',
+        cost: quotedCost('adu', 600, 800),
         details: 'Full kitchen, bathroom, living area, separate utilities, full-time living capable'
       },
       {
         name: '2-Bedroom ADU',
         size: '900-1,200 sq ft',
-        cost: '$175,000–$220,000',
+        cost: quotedCost('adu', 900, 1200),
         details: 'Full home features, 2 bed/1-2 bath, complete kitchen, laundry, rental income $1,200-$1,500/mo'
       }
     ],
     pricingTiers: [
       {
         name: 'Garage Apartment',
-        range: '$65,000-$95,000',
+        range: quotedCost('adu', 576),
         description: '576 sq ft above new or existing 2-car garage. Open studio or 1-bedroom layout, kitchenette, full bath, HVAC, separate entrance. Most economical ADU option.'
       },
       {
         name: 'Detached Cottage',
-        range: '$125,000-$185,000',
+        range: quotedCost('adu', 600, 800),
         description: '600-800 sq ft detached structure. Complete kitchen, bathroom, bedroom, living area. Separate utilities, full code compliance. Perfect for in-law suite or long-term rental.'
       },
       {
         name: 'Premium 2-Bedroom',
-        range: '$175,000-$220,000',
+        range: quotedCost('adu', 900, 1200),
         description: '900-1,200 sq ft full-featured home. Two bedrooms, 1-2 bathrooms, complete kitchen, laundry room. Highest rental income potential at $1,200-$1,500/month.'
       }
     ],
@@ -466,111 +512,19 @@ export const SERVICES = [
     ]
   },
   {
-    id: 'remodeling',
-    title: 'Home Remodeling',
-    slug: 'remodeling',
-    category: 'Remodeling',
-    description: 'Complete home remodeling: kitchens, bathrooms, whole-house renovations. Professional design-build service.',
-    h1: 'Home Remodeling Contractor - Upstate SC',
-    intro: "From kitchen and bathroom renovations to whole-house remodels, I handle all phases: design, demolition, structural work, electrical, plumbing, and complete finishing. Every project managed personally from start to finish.",
-    stats: {
-      // Bath + kitchen scope only (see note on the Whole-House tier below for
-      // why that one isn't rolled into this headline figure).
-      costRange: '$5,600-$75,000 Typical',
-      timeline: '2-8 Weeks Typical',
-      experience: 'Since 1995',
-      rating: 'BBB A+ Rated'
-    },
-    pricePerSqFt: 'Varies by scope',
-    timeline: '2-8 weeks',
-    commonProjects: [
-      {
-        name: 'Modest Bathroom Remodel',
-        size: '5×8 full bath',
-        cost: projectCostString('bathRemodel', 'basicRefresh', 40),
-        details: 'New tub/shower, vanity, toilet, flooring, tile work, updated electrical and plumbing'
-      },
-      {
-        name: 'Mid-Range Kitchen Remodel',
-        size: '10×12 kitchen',
-        cost: projectCostString('kitchenRemodel', 'midRangeRemodel', 120),
-        details: 'New cabinets, countertops, appliances, flooring, lighting, backsplash, reconfigured layout'
-      },
-      {
-        name: 'Luxury Master Bath',
-        size: '8×12 or larger',
-        cost: projectCostString('bathRemodel', 'fullGutRenovation', 96),
-        details: 'Custom tile shower, soaking tub, double vanity, heated floors, premium fixtures'
-      }
-    ],
-    pricingTiers: [
-      {
-        name: 'Bathroom Remodeling',
-        range: combinedCostString(
-          projectEstimate('bathRemodel', 'basicRefresh', 35),
-          projectEstimate('bathRemodel', 'fullGutRenovation', 100)
-        ),
-        description: 'Full bathroom renovation including new fixtures, tile, vanity, flooring, and updated plumbing/electrical. Modest remodel $6-8K, luxury master bath $60-72K.'
-      },
-      {
-        name: 'Kitchen Remodeling',
-        range: combinedCostString(
-          projectEstimate('kitchenRemodel', 'standardRefresh', 200),
-          projectEstimate('kitchenRemodel', 'premiumCustom', 200)
-        ),
-        description: 'Complete kitchen renovation with new cabinets, countertops, appliances, flooring, lighting. Budget refresh $25-30K, mid-range remodel $38-45K, high-end custom $54-64K+.'
-      },
-      {
-        name: 'Whole-House Remodel',
-        // NOTE: large increase from the original "$50,000-$150,000+". The
-        // wholeHomeRemodel service in calculator-config.js (added 2026-07-05)
-        // is scoped to comprehensive renovation of a typical 2,000 sqft home
-        // at $135-290/sqft — its mathematical floor is well above the old
-        // figure. Flagged for visibility in the reconciliation PR.
-        range: combinedCostString(
-          projectEstimate('wholeHomeRemodel', 'standardRefresh', 2000),
-          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
-          { plus: true }
-        ),
-        description: 'Comprehensive home renovation including multiple rooms, structural changes, systems upgrades, complete interior refresh. Custom scope and pricing.'
-      }
-    ],
-    timelines: {
-      kitchen: '4-8 weeks',
-      bathroom: '2-4 weeks',
-      wholeHouse: '12-20 weeks'
-    },
-    // Three separate calculators exist for this service (kitchen, bath,
-    // whole-home) — a single `calculator` field can't link all three, which
-    // is why kitchen-remodel.html and whole-home-remodel.html had no
-    // inbound link from anywhere despite being real, sitemapped pages.
-    calculators: [
-      { id: 'kitchen-remodel', label: 'Kitchen Cost Calculator' },
-      { id: 'bath-remodel', label: 'Bath Cost Calculator' },
-      { id: 'whole-home-remodel', label: 'Whole-Home Cost Calculator' }
-    ],
-    relatedServices: [
-      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
-      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling' },
-      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
-      { name: 'Room Additions', url: '/room-additions' },
-      { name: 'Basement Finishing', url: '/basement-finishing' },
-      { name: 'ADU Construction', url: '/adu-builder' }
-    ]
-  },
-  {
     id: 'bathroom-remodeling',
     title: 'Bathroom Remodeling',
     slug: 'bathroom-remodeling',
+    tier: 1,
     category: 'Remodeling',
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
-    metaTitle: 'Bathroom Remodeling Simpsonville SC | Burch Contracting',
     heroImage: '/images/bath-shower-conversion-woodruff-sc-1.webp',
-    description: 'Bathroom remodeling in Simpsonville, Fountain Inn & Greenville County SC. Transparent per-sqft pricing computed live from our published rates. SC Licensed #CLG118679, 30+ years, BBB A+.',
+    metaTitle: 'Bathroom Remodeling Simpsonville & Greenville SC | Walk-In Showers, Full Remodels',
+    description: 'Bathroom remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: walk-in showers, tile, full-gut remodels. SC Licensed #CLG118679, since 1995, BBB A+.',
     h1: 'Bathroom Remodeling Contractor — Simpsonville & Fountain Inn, SC',
     intro: `Burch Contracting remodels bathrooms across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, plumbing, electrical, waterproofing, tile, and finish work as a single licensed crew. A typical full bathroom remodel in this market runs ${projectCostString('bathRemodel', 'basicRefresh', 40)} for a modest 5×8 hall bath refresh up to ${projectCostString('bathRemodel', 'fullGutRenovation', 96)} for a full-gut primary bath, with powder rooms starting near ${projectCostString('bathRemodel', 'basicRefresh', 25)} and large custom spa baths reaching ${projectCostString('bathRemodel', 'fullGutRenovation', 130)}. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
-      costRange: combinedCostString(
+      costRange: displayRange(
         projectEstimate('bathRemodel', 'basicRefresh', 25),
         projectEstimate('bathRemodel', 'fullGutRenovation', 130),
         { plus: true }
@@ -739,15 +693,17 @@ export const SERVICES = [
     id: 'kitchen-remodeling',
     title: 'Kitchen Remodeling',
     slug: 'kitchen-remodeling',
+    tier: 1,
     category: 'Remodeling',
     breadcrumbParent: { name: 'Home Remodeling', url: '/remodeling' },
-    metaTitle: 'Kitchen Remodeling Simpsonville SC | Burch Contracting',
-    heroImage: '/images/kitchen-remodeling-sc.webp',
-    description: 'Kitchen remodeling in Simpsonville, Fountain Inn & Greenville County SC. Custom cabinets, quartz & granite counters, transparent per-sqft pricing computed from our published rates. SC Licensed #CLG118679, 30+ years, BBB A+.',
+    heroImage: '/images/kitchen-remodel-white-shaker-granite.webp',
+    heroAlt: 'Remodeled kitchen with white shaker cabinets, dark granite countertops, stainless appliances and wide-plank vinyl flooring',
+    metaTitle: 'Kitchen Remodeling Contractor Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Kitchen remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: cabinets, quartz & granite counters, layout changes. SC Licensed #CLG118679, since 1995, BBB A+.',
     h1: 'Kitchen Remodeling Contractor — Simpsonville & Fountain Inn, SC',
     intro: `Burch Contracting remodels kitchens across Simpsonville, Fountain Inn, and the Golden Strip corridor of Upstate South Carolina, handling design, demolition, cabinetry, countertops, backsplash tile, flooring, lighting, plumbing, and electrical as a single licensed crew. A typical kitchen remodel in this market runs ${projectCostString('kitchenRemodel', 'standardRefresh', 120)} for a standard refresh of a 120 sq ft kitchen up to ${projectCostString('kitchenRemodel', 'premiumCustom', 200)} for a premium custom rebuild of a large kitchen, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup. Every project is managed personally by owner C. Scott Burch, a South Carolina licensed general contractor (#CLG118679) with 30+ years in the trade.`,
     stats: {
-      costRange: combinedCostString(
+      costRange: displayRange(
         projectEstimate('kitchenRemodel', 'standardRefresh', 100),
         projectEstimate('kitchenRemodel', 'premiumCustom', 220),
         { plus: true }
@@ -866,52 +822,54 @@ export const SERVICES = [
     id: 'commercial-upfits',
     title: 'Commercial Upfits',
     slug: 'commercial-upfits',
+    tier: 'track',
     category: 'Commercial',
-    description: 'Commercial tenant improvements and build-outs: retail, office, food service. Complete design-build service.',
+    metaTitle: 'Commercial Upfits & Tenant Improvements Greenville SC | Burch Contracting',
+    description: 'Commercial tenant improvements and build-outs in Greenville, Simpsonville, Fountain Inn & Mauldin SC: retail, office, food service. Complete design-build service.',
     h1: 'Commercial Upfits & Tenant Improvements - Upstate SC',
     intro: "From retail spaces to medical offices and restaurant build-outs, I handle all phases: space planning, permitting, construction, inspections, and final finishes. Every project delivered on time and within budget.",
     stats: {
-      costRange: '$30-100+ Per Sq Ft',
+      costRange: 'Custom Quote',
       timeline: '4-16 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: '$30-100+/sq ft',
+    pricePerSqFt: 'Custom quote',
     timeline: '4-16 weeks',
     commonProjects: [
       {
         name: 'Small Retail or Office',
         size: '1,000-2,000 sq ft',
-        cost: '$30,000–$80,000',
+        cost: 'Custom quote',
         details: 'Interior walls, flooring, lighting, HVAC, restroom updates, storefront modifications. 4-8 week timeline.'
       },
       {
         name: 'Medical or Professional Office',
         size: '2,000-3,500 sq ft',
-        cost: '$80,000–$200,000',
+        cost: 'Custom quote',
         details: 'Multiple exam rooms, reception area, ADA compliance, specialized HVAC, medical plumbing. 8-12 week timeline.'
       },
       {
         name: 'Restaurant or Food Service',
         size: '2,500-4,000 sq ft',
-        cost: '$150,000–$400,000+',
+        cost: 'Custom quote',
         details: 'Commercial kitchen equipment, hood systems, grease trap, dining area finishes, health dept compliance. 12-16 week timeline.'
       }
     ],
     pricingTiers: [
       {
         name: 'Basic Office/Retail',
-        range: '$30-50/sq ft',
+        range: 'Custom quote',
         description: 'Simple build-out with interior walls, flooring, lighting, basic electrical, HVAC adjustments. Minimal plumbing. Standard finishes. 4-8 weeks for 1K-2K sf spaces.'
       },
       {
         name: 'Mid-Range Professional',
-        range: '$50-80/sq ft',
+        range: 'Custom quote',
         description: 'Multiple rooms, upgraded finishes, ADA compliance, restroom additions, specialized systems. Medical, dental, or professional office. 8-12 weeks typical timeline.'
       },
       {
         name: 'Complex Food Service',
-        range: '$80-100+/sq ft',
+        range: 'Custom quote',
         description: 'Restaurant or food service with commercial kitchen, hood systems, grease trap, health department compliance, heavy electrical/plumbing. 12-16 weeks for 2.5K-4K sf.'
       }
     ],
@@ -926,8 +884,10 @@ export const SERVICES = [
     id: 'commercial-roofing',
     title: 'Commercial Roofing',
     slug: 'commercial-roofing',
+    tier: 'track',
     category: 'Commercial',
-    description: '30+ years installing TPO, EPDM, PVC & metal roofing for Upstate SC commercial buildings. Free consultation, licensed contractor.',
+    metaTitle: 'Commercial Roofing Contractor Greenville & Simpsonville SC | Burch Contracting',
+    description: 'TPO, EPDM, PVC & metal roofing for commercial buildings in Greenville, Simpsonville, Fountain Inn & Mauldin SC. Licensed contractor since 1995, free consultation.',
     h1: 'Commercial Roofing Contractor - Upstate SC',
     heroImage: '/images/commercial-tpo-roof.webp',
     intro: "Most roofers only touch the roof. When a leak, a tear-off, or a storm claim damages what's underneath — ceilings, drywall, insulation, flooring — I handle that too, as one contract with one point of contact instead of a roofer and a separate remodeling contractor. From flat-roof systems to standing seam metal, tear-offs to recover, and ongoing maintenance agreements, every project is licensed, code-compliant, and personally overseen.",
@@ -988,52 +948,56 @@ export const SERVICES = [
     id: 'basement-finishing',
     title: 'Basement Finishing',
     slug: 'basement-finishing',
+    tier: 2,
     category: 'Construction',
-    description: 'Professional basement finishing with moisture control, egress windows, and complete interior build-out. Licensed contractor serving Upstate SC since 1995.',
+    metaTitle: 'Basement Finishing Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Basement finishing in Simpsonville, Greenville, Fountain Inn & Mauldin SC: moisture control, egress windows, full interior build-out. Licensed since 1995.',
+    heroImage: '/images/basement-finishing-bottom-floor.webp',
+    heroAlt: 'Finished basement with a new staircase, painted walls, recessed lighting and wide-plank vinyl flooring',
     h1: 'Basement Finishing Contractor - Upstate SC',
     intro: "From simple storage spaces to luxury home theaters, I handle all aspects of basement finishing: egress windows, moisture control, electrical, plumbing, and complete interior finishing. Every project code-compliant and built to last.",
     stats: {
-      costRange: '$30-75 Per Sq Ft',
+      costRange: servicePerSqftString('basementFinishing'),
       timeline: '6-10 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: '$30-75/sq ft',
+    pricePerSqFt: formatBand(servicePerSqftBand('basementFinishing')),
     timeline: '6-10 weeks',
     commonProjects: [
       {
         name: 'Basic 1,000 sq ft Finish',
         size: '1,000 sq ft',
-        cost: '$30,000–$45,000',
+        cost: projectCostString('basementFinishing', 'basicFinish', 1000),
         details: 'Egress windows, vapor barrier, framing, insulation, drywall, paint, LVP flooring, basic electrical, HVAC extension'
       },
       {
         name: 'Mid-Range with Bedroom & Bath',
         size: '1,000 sq ft',
-        cost: '$45,000–$60,000',
+        cost: projectCostString('basementFinishing', 'standardLivingSuite', 1000),
         details: 'Everything in Basic plus full bathroom with ejector pump, bedroom closet, upgraded lighting, premium finishes'
       },
       {
         name: 'High-End Luxury Basement',
         size: '1,000 sq ft',
-        cost: '$60,000–$75,000+',
+        cost: projectCostString('basementFinishing', 'premiumBuildOut', 1000),
         details: 'Multiple bedrooms/baths, wet bar, home theater wiring, custom built-ins, premium tile, soundproofing'
       }
     ],
     pricingTiers: [
       {
         name: 'Basic Finish',
-        range: '$30-45/sq ft',
+        range: tierPerSqftString('basementFinishing', 'basicFinish'),
         description: 'Simple living space conversion with egress windows, vapor barrier, framing, R-13 insulation, drywall, paint, LVP flooring, basic electrical (recessed lights, outlets), HVAC extension.'
       },
       {
         name: 'Mid-Range Finish',
-        range: '$45-60/sq ft',
+        range: tierPerSqftString('basementFinishing', 'standardLivingSuite'),
         description: 'Everything in Basic plus full bathroom with ejector pump, bedroom closet framing, upgraded lighting (dimmers, decorative fixtures), premium paint, upgraded flooring (carpet in bedrooms, tile in bath).'
       },
       {
         name: 'High-End Finish',
-        range: '$60-75/sq ft',
+        range: tierPerSqftString('basementFinishing', 'premiumBuildOut'),
         description: 'Luxury finishes including multiple bedrooms/bathrooms, wet bar with plumbing, home theater wiring (dedicated circuits, speaker pre-wire), custom built-ins, premium tile work, soundproofing.'
       }
     ],
@@ -1055,8 +1019,10 @@ export const SERVICES = [
     id: 'insurance-restoration',
     title: 'Insurance Restoration & Repair Services',
     slug: 'insurance-restoration',
+    tier: 'track',
     category: 'Insurance Restoration',
-    description: 'Professional storm damage, water damage, and insurance claim restoration services in Upstate SC. Free consultations and full repair services.',
+    metaTitle: 'Insurance Restoration Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Storm damage, water damage and insurance claim restoration in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Free consultations and full repair services.',
     h1: 'Insurance Restoration & Repair Services',
     intro: "Professional storm damage, water damage, and insurance claim restoration in Upstate SC — from a free consultation to full quality repairs. Scott Burch personally oversees every project.",
     stats: {
@@ -1098,8 +1064,10 @@ export const SERVICES = [
     id: 'ada-compliance',
     title: 'ADA Compliance & Accessibility Modifications',
     slug: 'ada-compliance',
+    tier: 'track',
     category: 'Accessibility',
-    description: 'Ramps, bathrooms, doorways, and other accessibility improvements for commercial and residential properties to meet current ADA standards.',
+    metaTitle: 'ADA Compliance & Accessibility Modifications Greenville SC | Burch Contracting',
+    description: 'Ramps, accessible bathrooms, doorways and other ADA modifications for homes and businesses in Greenville, Simpsonville, Fountain Inn & Mauldin SC.',
     h1: 'ADA Compliance & Accessibility Modifications',
     intro: "From aging-in-place bathroom conversions to commercial ramps and doorway widening, we design and build accessibility modifications that meet current ADA standards — for homeowners and business owners across Upstate SC.",
     heroImage: '/images/ada-compliance-commercial.webp',
@@ -1163,16 +1131,19 @@ export const SERVICES = [
     id: 'ada-bath-to-shower',
     title: 'ADA Bath to Shower Conversions',
     slug: 'ada-bath-to-shower',
+    tier: 1,
     category: 'Accessibility Remodeling',
-    description: 'Convert bathtubs into accessible, zero-entry roll-in showers with ADA-compliant grab bars, low-threshold entry, and non-slip surfaces.',
+    metaTitle: 'ADA Tub-to-Shower Conversions Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Tub-to-shower conversions in Simpsonville, Greenville, Fountain Inn & Mauldin SC: zero-entry roll-in showers, ADA grab bars, non-slip floors. SC Licensed #CLG118679.',
     h1: 'ADA Bath to Shower Conversions',
     intro: "Convert your existing bathtub into a safe, accessible, zero-entry roll-in shower — ADA-compliant grab bars, low-threshold entry, and non-slip surfaces, built for aging-in-place and long-term safety.",
     heroImage: '/images/ada-bath-to-shower/ada-bath-to-shower-conversion-simpsonville.webp',
-    // Fixed-scope itemized pricing (see ADA_BATH_SHOWER_ITEMS in
-    // calculator-config.js) — not sqft-based, so this range is
-    // informational only, not computed via pricing-sync.js.
+    // Itemized, not per sq ft: adaBathEstimate() in calculator-config.js, from
+    // the calculator's opening state to its priciest configuration. It used to
+    // say "$10,500-$19,800", the raw line-item sum with no location factor or
+    // overhead & profit.
     stats: {
-      costRange: '$10,500-$19,800 Typical',
+      costRange: adaBathRange() + ' Typical',
       timeline: '1-2 Weeks Typical',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
@@ -1218,6 +1189,9 @@ export const SERVICES = [
       'Insurance-friendly documentation available on request'
     ],
     calculator: 'ada-bath-shower',
+    // No /cost/ guide is about this service; the Simpsonville bathroom cost
+    // guide answers "Is converting a tub to a shower expensive?".
+    extraGuides: ['cost/bathroom-remodel-cost-simpsonville-sc.html'],
     relatedServices: [
       { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
       { name: 'ADA Compliance & Accessibility', url: '/ada-compliance' },
@@ -1226,55 +1200,200 @@ export const SERVICES = [
     ]
   },
   {
+    id: 'remodeling',
+    title: 'Home Remodeling',
+    slug: 'remodeling',
+    tier: 1,
+    category: 'Remodeling',
+    metaTitle: 'Home Remodeling Contractor Simpsonville & Greenville SC | Burch Contracting',
+    description: 'Whole-home remodeling in Simpsonville, Greenville, Fountain Inn & Mauldin SC: kitchens, bathrooms and full-house renovations, design-build. Licensed since 1995.',
+    heroImage: '/images/whole-home-remodel-porch-after.webp',
+    heroAlt: 'Whole-home remodel with new siding, windows and a covered porch with painted stairs and railings',
+    h1: 'Home Remodeling Contractor - Upstate SC',
+    intro: "From kitchen and bathroom renovations to whole-house remodels, I handle all phases: design, demolition, structural work, electrical, plumbing, and complete finishing. Every project managed personally from start to finish.",
+    stats: {
+      // Bath + kitchen scope only (see note on the Whole-House tier below for
+      // why that one isn't rolled into this headline figure).
+      costRange:
+        displayRange(
+          projectEstimate('bathRemodel', 'basicRefresh', 35),
+          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
+          { plus: true }
+        ) + ' Typical',
+      timeline: '2-8 Weeks Typical',
+      experience: 'Since 1995',
+      rating: 'BBB A+ Rated'
+    },
+    pricePerSqFt: 'Varies by scope',
+    timeline: '2-8 weeks',
+    commonProjects: [
+      {
+        name: 'Modest Bathroom Remodel',
+        size: '5×8 full bath',
+        cost: projectCostString('bathRemodel', 'basicRefresh', 40),
+        details: 'New tub/shower, vanity, toilet, flooring, tile work, updated electrical and plumbing'
+      },
+      {
+        name: 'Mid-Range Kitchen Remodel',
+        size: '10×12 kitchen',
+        cost: projectCostString('kitchenRemodel', 'midRangeRemodel', 120),
+        details: 'New cabinets, countertops, appliances, flooring, lighting, backsplash, reconfigured layout'
+      },
+      {
+        name: 'Luxury Master Bath',
+        size: '8×12 or larger',
+        cost: projectCostString('bathRemodel', 'fullGutRenovation', 96),
+        details: 'Custom tile shower, soaking tub, double vanity, heated floors, premium fixtures'
+      }
+    ],
+    pricingTiers: [
+      {
+        name: 'Bathroom Remodeling',
+        range: combinedCostString(
+          projectEstimate('bathRemodel', 'basicRefresh', 35),
+          projectEstimate('bathRemodel', 'fullGutRenovation', 100)
+        ),
+        description: 'Full bathroom renovation including new fixtures, tile, vanity, flooring, and updated plumbing/electrical. Modest remodel $6-8K, luxury master bath $60-72K.'
+      },
+      {
+        name: 'Kitchen Remodeling',
+        range: combinedCostString(
+          projectEstimate('kitchenRemodel', 'standardRefresh', 200),
+          projectEstimate('kitchenRemodel', 'premiumCustom', 200)
+        ),
+        description: 'Complete kitchen renovation with new cabinets, countertops, appliances, flooring, lighting. Budget refresh $25-30K, mid-range remodel $38-45K, high-end custom $54-64K+.'
+      },
+      {
+        name: 'Whole-House Remodel',
+        // NOTE: large increase from the original "$50,000-$150,000+". The
+        // wholeHomeRemodel service in calculator-config.js (added 2026-07-05)
+        // is scoped to comprehensive renovation of a typical 2,000 sqft home
+        // at $135-290/sqft — its mathematical floor is well above the old
+        // figure. Flagged for visibility in the reconciliation PR.
+        range: combinedCostString(
+          projectEstimate('wholeHomeRemodel', 'standardRefresh', 2000),
+          projectEstimate('wholeHomeRemodel', 'highEndRenovation', 2000),
+          { plus: true }
+        ),
+        description: 'Comprehensive home renovation including multiple rooms, structural changes, systems upgrades, complete interior refresh. Custom scope and pricing.'
+      }
+    ],
+    timelines: {
+      kitchen: '4-8 weeks',
+      bathroom: '2-4 weeks',
+      wholeHouse: '12-20 weeks'
+    },
+    // Phase 6.3 "what's included". Every item restates something this page
+    // already says — the design-build FAQ, the pricing tiers and the common
+    // projects — so the section adds structure, not claims.
+    serviceCategories: [
+      {
+        name: 'Design & Planning',
+        items: [
+          'Design-build: design, selections and construction under one roof',
+          'No separate designer to hire and coordinate',
+          'Permits pulled as part of the job',
+        ],
+      },
+      {
+        name: 'Structure & Systems',
+        items: [
+          'Demolition and structural changes',
+          'Electrical and plumbing upgrades',
+          'Systems upgrades across multiple rooms',
+        ],
+      },
+      {
+        name: 'Kitchens, Baths & Whole-House',
+        items: [
+          'Kitchens: cabinets, countertops, appliances, flooring, lighting, backsplash, reconfigured layouts',
+          'Bathrooms: tub or shower, vanity, toilet, flooring, tile, updated plumbing and electrical',
+          'Whole-house: multiple rooms and a complete interior refresh',
+        ],
+      },
+    ],
+    // Three separate calculators exist for this service (kitchen, bath,
+    // whole-home) — a single `calculator` field can't link all three, which
+    // is why kitchen-remodel.html and whole-home-remodel.html had no
+    // inbound link from anywhere despite being real, sitemapped pages.
+    calculators: [
+      { id: 'kitchen-remodel', label: 'Kitchen Cost Calculator' },
+      { id: 'bath-remodel', label: 'Bath Cost Calculator' },
+      { id: 'whole-home-remodel', label: 'Whole-Home Cost Calculator' }
+    ],
+    // This service's own calculator, for the pages that link exactly one
+    // (the /services and homepage comparison tables, check-tier1). The three
+    // above are still what this page renders as buttons.
+    calculator: 'whole-home-remodel',
+    // No whole-home cost guide exists yet (queued in RUNBOOK "Next content");
+    // until one does, the kitchen and bathroom guides are this page's.
+    extraGuides: [
+      'cost/kitchen-remodel-cost-simpsonville-sc.html',
+      'cost/kitchen-remodel-cost-greenville-sc.html',
+      'cost/bathroom-remodel-cost-simpsonville-sc.html',
+      'cost/bathroom-remodel-cost-greenville-sc.html',
+    ],
+    relatedServices: [
+      { name: 'Bathroom Remodeling', url: '/bathroom-remodeling' },
+      { name: 'Kitchen Remodeling', url: '/kitchen-remodeling' },
+      { name: 'ADA Bath to Shower Conversions', url: '/ada-bath-to-shower' },
+      { name: 'Room Additions', url: '/room-additions' },
+      { name: 'Basement Finishing', url: '/basement-finishing' },
+      { name: 'ADU Construction', url: '/adu-builder' }
+    ]
+  },
+  {
     id: 'handyman',
     title: 'Handyman Services',
     slug: 'handyman',
+    tier: 3,
     category: 'Handyman & Repairs',
-    description: 'Handyman jobs $125-$4,400 in Upstate SC: plumbing, electrical, carpentry & painting. Licensed contractor, serving since 1995.',
+    metaTitle: 'Handyman Services Simpsonville & Greenville SC | Burch Contracting',
+    description: `Handyman work in Simpsonville, Greenville, Fountain Inn & Mauldin SC at ${handymanRate()}: plumbing, electrical, carpentry & painting. Licensed contractor since 1995.`,
     h1: 'Handyman Services - Upstate SC',
     intro: "From a single outlet swap to a water heater replacement, I handle the smaller jobs too — plumbing fixtures, electrical, doors and windows, carpentry, drywall repair, and interior painting. Same licensing and accountability as every larger project, just sized for a shorter task list.",
     stats: {
-      costRange: '$125-$4,400 Typical',
+      costRange: handymanRate(),
       timeline: 'Same-Day to 1 Week',
       experience: 'Since 1995',
       rating: 'BBB A+ Rated'
     },
-    pricePerSqFt: 'Priced per task',
+    pricePerSqFt: 'Priced per hour',
     timeline: 'Same-day to 1 week',
     commonProjects: [
       {
         name: 'Outlet or Light Fixture Swap',
         size: 'Single fixture',
-        cost: '$125–$730',
+        cost: handymanRate(),
         details: 'Outlet and switch replacement, GFCI upgrades, light fixture or ceiling fan installation.'
       },
       {
         name: 'Interior Door or Room Paint',
         size: 'Single room',
-        cost: '$400–$2,050',
+        cost: handymanRate(),
         details: 'Interior or exterior door installation, baseboards, crown molding, or a full room repaint.'
       },
       {
         name: 'Water Heater Replacement',
         size: '40-50 gal or tankless',
-        cost: '$1,100–$4,400',
+        cost: handymanRate(),
         details: 'Standard tank or tankless water heater installation, fully licensed and code-compliant.'
       }
     ],
     pricingTiers: [
       {
         name: 'Small Repairs & Fixture Swaps',
-        range: '$125-$730',
+        range: handymanRate(),
         description: 'Outlet and switch replacement, light fixtures, GFCI and dimmer upgrades, small drywall patches, ceiling fans, faucet and toilet installation.'
       },
       {
         name: 'Installations & Carpentry',
-        range: '$400-$2,050',
+        range: handymanRate(),
         description: 'Interior and exterior doors, windows, baseboards, crown molding, custom shelving, and full-room interior painting.'
       },
       {
         name: 'Larger Plumbing & Repairs',
-        range: '$1,100-$4,400',
+        range: handymanRate(),
         description: 'Standard or tankless water heater replacement, large drywall repairs, and popcorn ceiling removal.'
       }
     ],

@@ -158,7 +158,65 @@ if (new URL(base).hostname !== PRODUCTION_HOST) {
   }
 }
 
-console.log(`check-routing: compared ${paths.length} paths on ${base} against the baseline recorded from ${baseline.recordedFrom} (${baseline.recordedAt.slice(0, 10)})`)
+// --- Hostname redirects, production only ---------------------------------
+//
+// www and http are not paths, so they cannot live in the path-keyed baseline
+// above, and they do not exist on a wrangler dev or preview host. They are
+// checked here, against production only.
+//
+// These matter more than their size suggests. In the Search Console export of
+// 2026-09-22, https://www.burchcontracting.com/ drew 19 of the property's 57
+// clicks at position 3.25, while the canonical root drew 12 at position 30.52 —
+// a third of all clicks arriving on a hostname that is supposed to 301. Google
+// has had www indexed for years and still prefers it.
+//
+// Nothing in this repository produced that redirect. It is a Cloudflare zone
+// setting: "Always Use HTTPS" plus a www -> root Redirect Rule. If either is
+// switched off, every one of those clicks lands on an unredirected duplicate of
+// the site and nothing here would notice. Now something does.
+//
+// Asserted: a single hop, 301, to the same path on the canonical host, with the
+// query string preserved.
+const HOSTNAME_REDIRECTS = [
+  ['https://www.burchcontracting.com/', 'https://burchcontracting.com/'],
+  ['http://burchcontracting.com/', 'https://burchcontracting.com/'],
+  ['https://www.burchcontracting.com/services', 'https://burchcontracting.com/services'],
+  ['http://burchcontracting.com/services', 'https://burchcontracting.com/services'],
+  [
+    'https://www.burchcontracting.com/services?utm_source=routing-check',
+    'https://burchcontracting.com/services?utm_source=routing-check',
+  ],
+  [
+    'http://burchcontracting.com/services?utm_source=routing-check',
+    'https://burchcontracting.com/services?utm_source=routing-check',
+  ],
+]
+
+let hostnameChecked = 0
+if (new URL(base).hostname === PRODUCTION_HOST) {
+  for (const [from, want] of HOSTNAME_REDIRECTS) {
+    hostnameChecked++
+    let response
+    try {
+      response = await fetch(from, { redirect: 'manual', headers: { 'user-agent': BROWSER_UA } })
+    } catch (error) {
+      problems.push(`${from}: request failed (${error.message})`)
+      continue
+    }
+    const location = response.headers.get('location')
+    if (response.status !== 301 || location !== want) {
+      problems.push(
+        `${from}: got ${response.status} -> ${location ?? '(no location)'}, expected 301 -> ${want}. ` +
+          `Check the Cloudflare zone's "Always Use HTTPS" setting and the www redirect rule.`
+      )
+    }
+  }
+}
+
+console.log(
+  `check-routing: compared ${paths.length} paths on ${base} against the baseline recorded from ${baseline.recordedFrom} (${baseline.recordedAt.slice(0, 10)})` +
+    (hostnameChecked ? `, plus ${hostnameChecked} hostname redirect(s)` : '')
+)
 report()
 
 function report() {

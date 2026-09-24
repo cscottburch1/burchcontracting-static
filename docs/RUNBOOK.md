@@ -260,14 +260,46 @@ If you genuinely must:
 
 ---
 
+## Next content
+
+For the owner to write — Claude Code does not. Ranked by what the Phase 6
+repositioning needs most. Every URL below was checked against
+`src/data/url-map.js` on 2026-09-23 and collides with nothing; add each to
+`guides-cost.js` or `guides-articles.js` and to `url-map.js` as described
+above. Prices in a guide come from `calculator-config.js` through
+`pricing-sync.js`, never typed.
+
+1. **Whole-home renovation cost in SC** — `/cost/whole-home-renovation-cost-sc`.
+   The whole-home page (`/remodeling`) is a lead offer with no cost guide of its
+   own; until this exists it borrows the four kitchen and bath guides through
+   `extraGuides` in `services.js`. Remove that entry when this ships, since the
+   derived guide list will pick the new one up.
+2. **How long does a bathroom remodel take?** —
+   `/blog/how-long-does-a-bathroom-remodel-take`. The kitchen equivalent exists
+   and earns its place; the bath page's own five-phase process is the outline.
+3. **Aging-in-place bathroom guide** — `/blog/aging-in-place-bathroom-remodel-sc`.
+   Gives the ADA tub-to-shower page (a lead offer with one article) a second
+   one, and a /cost/-adjacent reason to link it.
+4. **Portfolio: a full bathroom remodel.** `/projects` now has four bath or
+   kitchen entries, meeting the Phase 6 floor (the Simpsonville whole-home
+   renovation and its kitchen were added 2026-09-23), but both bathroom entries
+   are tub/shower conversions. Needed: at least one full bathroom remodel, with
+   photos and a one-paragraph write-up (city, scope, rough size, duration).
+
+**Already live, so not queued** (the Phase 6 plan listed them before it knew):
+bathroom remodel cost Simpsonville (`/cost/bathroom-remodel-cost-simpsonville-sc`)
+and Greenville (`/cost/bathroom-remodel-cost-greenville-sc`); kitchen remodel
+cost Simpsonville and Greenville (`/cost/kitchen-remodel-cost-*`); kitchen
+remodel timeline (`/blog/how-long-does-a-kitchen-remodel-take`).
+
+**Deliberately not queued:** "walk-in shower conversion cost SC". It targets
+the same query as `/blog/bath-to-shower-conversion-cost-south-carolina`; a
+second page would compete with the first. Deepen that article instead.
+
+---
+
 ## Everything else
 
-- **Content queue** (ranked, for the owner to write): bathroom remodel cost
-  Simpsonville; bathroom remodel cost Greenville; walk-in shower conversion cost
-  SC; kitchen remodel cost Simpsonville/Greenville; how long does a bath remodel
-  take; aging-in-place bathroom guide; kitchen remodel timeline; whole-home
-  renovation cost SC. Each needs a target URL under `/cost/` or `/blog/` that
-  does not collide with an existing one.
 - **The mobile menu cannot be gated.** `check-build` asserts one nav handler and
   the snapshot proves the markup matches across pages, but neither can tell
   whether a tap opens the menu. Check it by hand at phone width after any change

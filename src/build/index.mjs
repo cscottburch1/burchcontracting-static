@@ -41,6 +41,7 @@ import * as guides from './guides.mjs'
 import * as services from './services.mjs'
 import * as geo from './geo.mjs'
 import * as handAuthored from './pages.mjs'
+import * as llms from './llms.mjs'
 
 const project = resolve(import.meta.dirname, '../..')
 const outDir = resolve(project, '.build/pages')
@@ -104,11 +105,14 @@ for (const rel of COPIED_PAGES) {
 // gates. Written beside .build/pages/ so the scan never treats it as an input;
 // scripts/write-sitemap.mjs puts it in dist/ after the build.
 writeFileSync(resolve(project, '.build/sitemap.xml'), geo.renderSitemap({ dates }), 'utf-8')
+// llms.txt likewise (Phase 6.8): rendered from the site's data, not kept in
+// public/. scripts/write-llms.mjs puts it in dist/.
+writeFileSync(resolve(project, '.build/llms.txt'), llms.render(), 'utf-8')
 
 const total = rendered.length + copied
 console.log(
   `build: ${total} pages -> .build/pages/ ` +
-  `(${rendered.length} rendered, ${copied} copied verbatim), plus sitemap.xml`
+  `(${rendered.length} rendered, ${copied} copied verbatim), plus sitemap.xml and llms.txt`
 )
 
 if (missing.length) {

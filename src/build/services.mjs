@@ -1,8 +1,11 @@
 import { SITE, SERVICES } from '../data/services.js'
 import { SERVICE_FAQS } from '../data/service-faqs.js'
+import { COST_GUIDES } from '../data/guides-cost.js'
+import { ARTICLES } from '../data/guides-articles.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../data/site-schema.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { footer, header } from '../chrome/index.mjs'
+import { serviceDates } from './content-dates.mjs'
 
 // Dates arrive as a render() argument. They used to be read from a committed
 // content-dates.js at module load, with a '2026-07-19' fallback for when that
@@ -68,17 +71,48 @@ function faqHtml(faqs, idPrefix = 'faq') {
     .join('\n')
 }
 
+/**
+ * The cost guides and articles a Tier 1 service page links to (Phase 6.3).
+ *
+ * Derived, not listed: every guide already names its servicePage, so a
+ * service's guides are the ones pointing back at it — a new guide appears
+ * here without anyone remembering to add it. `extraGuides` covers the lead
+ * offers with no /cost/ guide of their own (ADA bath-to-shower, whole-home),
+ * by page key, and a key that matches no guide fails the build.
+ *
+ * Tier 1 only: plan item 5 sets this floor for the lead offers. Every other
+ * service page is unchanged by it.
+ */
+const GUIDES_BY_KEY = new Map([
+  ...COST_GUIDES.map((g) => [`cost/${g.slug}.html`, { ...g, kind: 'Cost guide' }]),
+  ...ARTICLES.map((g) => [`blog/${g.slug}.html`, { ...g, kind: 'Article' }]),
+])
+
+function serviceGuides(service) {
+  if (service.tier !== 1) return []
+  const own = `${service.slug}/index.html`
+  const keys = [...GUIDES_BY_KEY].filter(([, g]) => g.servicePage === own).map(([key]) => key)
+  for (const key of service.extraGuides ?? []) {
+    if (!GUIDES_BY_KEY.has(key)) throw new Error(`services.js: ${service.id}.extraGuides has '${key}', which is no cost guide or article`)
+    if (!keys.includes(key)) keys.push(key)
+  }
+  // Cost guides first — they carry the prices a lead page is selling on.
+  return keys
+    .map((key) => ({ ...GUIDES_BY_KEY.get(key), url: pageUrl(key) }))
+    .sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'Cost guide' ? -1 : 1))
+}
+
 function servicePage(service, serviceDates) {
   // Every URL comes from src/data/url-map.js, the single source of truth, so
   // a canonical can never point at a URL that itself redirects. These pages
   // build to {slug}/index.html and are served at /{slug} — the trailing-slash
   // and .html forms 301 here.
   const canonical = `${SITE_ORIGIN}${pageUrl(`${service.slug}/index.html`)}`
-  // Nearly every service's <title> is just "{title} | Burch Contracting" —
-  // service.metaTitle is an escape hatch for pages that need a geo-targeted
-  // title tag distinct from the shorter nav/breadcrumb label in
-  // service.title (e.g. "Bathroom Remodeling Simpsonville SC" vs. the
-  // nav's plain "Bathroom Remodeling").
+  // Every service carries a geo-targeted service.metaTitle (Phase 6.2),
+  // distinct from the short nav/breadcrumb label in service.title — e.g.
+  // "Bathroom Remodeling Simpsonville & Greenville SC | …" vs. the nav's
+  // plain "Bathroom Remodeling". The label stays short because it is
+  // chrome: changing it moves the header on every page.
   const title = service.metaTitle ?? `${service.title} | Burch Contracting`
   const description = service.description
   const faqs = SERVICE_FAQS[service.id] || []
@@ -360,7 +394,7 @@ ${calculatorButton}
           <div>
 ${heroContentHtml}
           </div>
-          <img src="${esc(service.heroImage)}" alt="${esc(service.h1)}" width="640" height="480" loading="lazy" class="rounded-2xl w-full h-72 lg:h-96 object-cover shadow-lg" />
+          <img src="${esc(service.heroImage)}" alt="${esc(service.heroAlt ?? service.h1)}" width="640" height="480" loading="lazy" class="rounded-2xl w-full h-72 lg:h-96 object-cover shadow-lg" />
         </div>
       </section>`
     : `      <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white py-16 lg:py-24">
@@ -559,6 +593,27 @@ ${faqHtml(remainingFaqs, service.id)}
       </section>`
     : ''
 
+  const guides = serviceGuides(service)
+  const guidesSectionHtml = guides.length
+    ? `
+      <section class="bg-slate-50 py-16 lg:py-20 border-t border-slate-100" aria-labelledby="${service.id}-guides-heading">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 id="${service.id}-guides-heading" class="text-3xl font-bold text-slate-900 mb-8">${esc(service.title)} Cost Guides &amp; Planning Articles</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+${guides
+  .map(
+    (g) => `            <a href="${g.url}" class="block bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:border-blue-200 hover:shadow-md transition-all">
+              <p class="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-2">${g.kind}</p>
+              <h3 class="text-lg font-bold text-slate-900 mb-2">${esc(g.h1)}</h3>
+              <p class="text-slate-600 text-sm leading-relaxed">${esc(g.metaDescription)}</p>
+            </a>`
+  )
+  .join('\n')}
+          </div>
+        </div>
+      </section>`
+    : ''
+
   const citationsSectionHtml = service.citations
     ? `
       <section class="bg-white py-8 border-t border-slate-100">
@@ -597,6 +652,7 @@ ${fallbackTableSectionHtml}
 ${pricingSectionHtml}
 ${authorOnlySectionHtml}
 ${additionalCostsHtml}
+${guidesSectionHtml}
 ${service.richContentBeforeProcess ?? ''}
 ${howItWorksSectionHtml}
 ${service.richContentAfterProcess ?? ''}
@@ -637,13 +693,12 @@ ${footer}
  * nothing observable. Phase 3.2d moves output to .build/pages/ and drops it.
  */
 export function render({ dates }) {
-  const serviceDates = dates[DATA_FILE_KEY]
-  if (!serviceDates) throw new Error(`services: no content dates under ${DATA_FILE_KEY}`)
+  if (!dates[DATA_FILE_KEY]) throw new Error(`services: no content dates under ${DATA_FILE_KEY}`)
 
   // Every service page uses the nested directory + index.html pattern.
   return SERVICES.map((service) => ({
     url: pageUrl(`${service.slug}/index.html`),
     file: `${service.slug}/index.html`,
-    html: servicePage(service, serviceDates),
+    html: servicePage(service, serviceDates(dates, service)),
   }))
 }

@@ -21,8 +21,8 @@
 export const HAND_AUTHORED_PAGES = [
   {
     "file": "index.html",
-    "title": "General Contractor in Upstate SC | Burch Contracting",
-    "description": "$40-$340/sq ft: decks, additions, garages & screened porches in Upstate SC since 1995. SC Licensed #CLG118679, BBB A+ rated.",
+    "title": "Bathroom & Kitchen Remodeling Contractor | Simpsonville & Greenville SC | Burch Contracting",
+    "description": "Bathroom and kitchen remodeling, room additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC since 1995. SC Licensed #CLG118679, BBB A+ rated.",
     "canonical": "https://burchcontracting.com/",
     "ogImage": "/images/custom-deck-greenville-sc.webp",
     "schema": [
@@ -39,7 +39,7 @@ export const HAND_AUTHORED_PAGES = [
             "url": "https://burchcontracting.com/",
             "image": "https://burchcontracting.com/images/burch-contracting-logo.webp",
             "logo": "https://burchcontracting.com/images/burch-contracting-logo.webp",
-            "description": "Scott Burch has built and restored homes for Upstate SC homeowners since 1995 — decks, screened porches, garages, additions, remodeling, and insurance restoration. SC Licensed #CLG118679 | NC Licensed (Limited) #107292. BBB A+ rated.",
+            "description": "Scott Burch has built and restored homes for Upstate SC homeowners since 1995 — bathroom and kitchen remodeling, whole-home renovations, additions, basements, decks, screened porches, garages, and insurance restoration. SC Licensed #CLG118679 | NC Licensed (Limited) #107292. BBB A+ rated.",
             "telephone": "+18647244600",
             "email": "estimates@burchcontracting.com",
             "foundingDate": "1995",
@@ -282,7 +282,7 @@ export const HAND_AUTHORED_PAGES = [
                 "name": "How much does a screened porch cost in Upstate SC?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Screened porches in Simpsonville and surrounding areas typically run $15,000 to $65,000 for new construction. Converting an existing deck can save 50–70%."
+                  "text": "Screened porches in Simpsonville and surrounding areas typically run {{range.screened-porches}} for new construction. Converting an existing deck can save 50–70%."
                 }
               },
               {
@@ -290,7 +290,7 @@ export const HAND_AUTHORED_PAGES = [
                 "name": "How much does a detached garage cost?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Detached two-car garages (576 sqft) in Upstate SC commonly range from $52,000 to $62,000 for a standard finish, with larger 3-car or workshop configurations (900 sqft) running $109,000 to $131,000."
+                  "text": "Detached garages in Upstate SC commonly run {{range.garages}}, from a standard two-car (576 sqft) to a 3-car or workshop configuration (900 sqft)."
                 }
               },
               {
@@ -458,8 +458,8 @@ export const HAND_AUTHORED_PAGES = [
   },
   {
     "file": "contact.html",
-    "title": "Get a Free Consultation | Simpsonville SC Contractor | Burch Contracting",
-    "description": "30+ years in Upstate SC — free consultation from Burch Contracting. Decks, additions, garages, remodeling.",
+    "title": "Free Remodeling Consultation | Simpsonville & Greenville SC | Burch Contracting",
+    "description": "Free consultation for bathroom and kitchen remodeling, additions and more in Simpsonville, Greenville, Fountain Inn & Mauldin SC. Burch Contracting, since 1995.",
     "canonical": "https://burchcontracting.com/contact",
     "ogImage": "/images/burch-contracting-logo.webp",
     "schema": [
@@ -580,8 +580,8 @@ export const HAND_AUTHORED_PAGES = [
   },
   {
     "file": "services.html",
-    "title": "Services & Pricing | Burch Contracting",
-    "description": "Every Burch Contracting service compared: cost range, timeline & permit status. SC Licensed #CLG118679, BBB A+, free consultations.",
+    "title": "Services & Pricing | Simpsonville & Greenville SC | Burch Contracting",
+    "description": "Every Burch Contracting service compared — remodeling, additions, outdoor living, commercial — by cost range, timeline & permit status. SC Licensed #CLG118679.",
     "canonical": "https://burchcontracting.com/services",
     "ogImage": "/images/custom-deck-greenville-sc.webp",
     "schema": [
@@ -766,7 +766,7 @@ export const HAND_AUTHORED_PAGES = [
   {
     "file": "projects.html",
     "title": "Recent Projects | Burch Contracting Upstate SC",
-    "description": "14 real completed projects: decks, garages, additions & remodels across Upstate SC. SC Licensed #CLG118679, BBB A+.",
+    "description": "16 real completed projects: a whole-home renovation, bathroom and kitchen remodels, additions, decks & garages across Upstate SC. SC Licensed #CLG118679, BBB A+.",
     "canonical": "https://burchcontracting.com/projects",
     "ogImage": "/images/room-addition-fountain-inn-sc.webp",
     "schema": [

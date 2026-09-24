@@ -18,6 +18,15 @@
  * is exactly what shipped. Answers carry inline HTML (links) and are inserted
  * verbatim, which is why the generator treats them as already escaped.
  */
+import { SERVICES } from './services.js'
+
+const bath = SERVICES.find((s) => s.id === 'bathroom-remodeling')
+const bathRow = (name) => {
+  const found = bath.commonProjects.find((p) => p.name === name)
+  if (!found) throw new Error(`promoted-faqs.js: bathroom-remodeling has no common project '${name}'`)
+  return found.cost
+}
+
 export const PROMOTED_FAQS = {
   "index.html": [
     {
@@ -29,9 +38,10 @@ export const PROMOTED_FAQS = {
       "answer": "Simpsonville, Fountain Inn, Mauldin, Greenville, Five Forks, Woodruff, Laurens, Gray Court, and surrounding Upstate SC communities. <a href=\"/#service-areas\" class=\"text-blue-700 font-semibold hover:text-blue-800\">View all service areas</a>."
     },
     {
-      "question": "How much does a deck cost in Upstate SC?",
-      "_todo": "TODO(phase-6): derive from calculator-config via pricing-sync — the $39-$92/sq ft below is a literal, and Phase 6 requires every price in copy to come from calculator-config.js. Same class as the garage hero range that contradicts its own table.",
-      "answer": "Custom decks typically run $39 to $92 per square foot installed. <a href=\"/calculator/decks\" class=\"text-blue-700 font-semibold hover:text-blue-800\">Use the deck calculator</a> for a planning estimate."
+      // Phase 6.6: the home page's cost answer leads with the lead offer, and
+      // every figure is the bathroom page's own headline and table rows.
+      "question": "How much does a bathroom remodel cost in Upstate SC?",
+      "answer": `Bathroom remodels typically run ${bath.stats.costRange.replace(/ Typical$/, '')} depending on size and scope — about ${bathRow('Hall/Guest Bath — Basic Refresh')} for a 5×8 hall bath refresh, up to ${bathRow('Full-Gut Primary Bath')} for a full-gut primary bath. <a href="/calculator/bath-remodel" class="text-blue-700 font-semibold hover:text-blue-800">Use the bathroom remodel calculator</a> for a planning estimate.`
     }
   ],
   "services.html": [

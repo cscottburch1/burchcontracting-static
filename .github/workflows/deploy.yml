@@ -289,6 +289,29 @@ jobs:
           echo "— crawler access"
           node scripts/check-crawler-access.mjs "$BASE_URL"
 
+          # 5b. The hostname redirects, which no code in this repo produces.
+          #     They are Cloudflare zone settings — "Always Use HTTPS" and a
+          #     www -> root Redirect Rule — and if either is switched off,
+          #     nothing in a build would notice.
+          #
+          #     In the 2026-09-22 Search Console export, www drew 19 of the
+          #     property's 57 clicks at position 3.25 while the canonical root
+          #     drew 12 at position 30.52. A third of all clicks arrive on a
+          #     hostname that is supposed to 301. check-routing asserts these
+          #     too; they are repeated here because this step is what runs
+          #     against production on every deploy.
+          echo "— hostname redirects"
+          for pair in             "https://www.burchcontracting.com/|https://burchcontracting.com/"             "http://burchcontracting.com/|https://burchcontracting.com/"             "https://www.burchcontracting.com/services?utm_source=deploy|https://burchcontracting.com/services?utm_source=deploy"             "http://burchcontracting.com/services?utm_source=deploy|https://burchcontracting.com/services?utm_source=deploy"; do
+            from="${pair%%|*}"
+            want="${pair#*|}"
+            got=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "$from")
+            echo "  $from -> $got"
+            if [ "$got" != "301 $want" ]; then
+              echo "::error::$from should 301 to $want in one hop. Check the Cloudflare zone's Always Use HTTPS setting and the www redirect rule."
+              exit 1
+            fi
+          done
+
           # 6. The API is answered by the Worker, not by a 404 or a 500.
           #    cloudflare/api.js replies 405 to a HEAD on the contact endpoint;
           #    a 404 would mean the route is not reaching api.js at all.

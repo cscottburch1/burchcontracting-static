@@ -341,6 +341,61 @@ export const ADA_BATH_SHOWER_ITEMS = [
   { id: 'labor', label: 'Labor & Finishing', low: 2500, high: 4000, always: true },
 ]
 
+/**
+ * One ADA bath-to-shower estimate. The on-page calculator, the calculator
+ * page's pricing table and the service page's headline all call this, so
+ * there is one copy of the math (there were two, one in the browser module
+ * and one in the build). Defaults are the calculator's opening state.
+ */
+export function adaBathEstimate({ location = 'fountainInnArea', finish = 'fiberglass', grabBars = true, thermostatic = false } = {}) {
+  const loc = PRICING_CONFIG.locationFactors[location]
+  let directLow = 0
+  let directHigh = 0
+  const includedItems = []
+
+  for (const item of ADA_BATH_SHOWER_ITEMS) {
+    let low = item.low
+    let high = item.high
+    let included = Boolean(item.always)
+
+    if (item.group === 'finish') included = finish === item.groupValue
+    if (item.optional) included = item.id === 'grabBars' ? grabBars : included
+    if (item.hasThermostatic) {
+      included = true
+      low = thermostatic ? item.high : item.low
+      high = low
+    }
+
+    if (included) {
+      directLow += low
+      directHigh += high
+      includedItems.push({ ...item, low, high })
+    }
+  }
+
+  const finalLow = directLow * loc.factor * (1 + PRICING_CONFIG.defaultOverheadAndProfit)
+  const finalHigh = directHigh * loc.factor * (1 + PRICING_CONFIG.defaultOverheadAndProfit)
+  return { directLow, directHigh, finalLow, finalHigh, mostCommon: (finalLow + finalHigh) / 2, includedItems, location: loc }
+}
+
+/**
+ * Owner-quoted rates, 2026-09-23, for work calculateEstimate() does not model.
+ * Final customer prices (not direct cost), so no location factor or overhead
+ * & profit is applied on top. Still the single source for these figures:
+ * src/data/services.js and the FAQs derive from here, nothing retypes them.
+ *
+ *   adu              priced like new-home construction
+ *   garageApartment  a garage with a finished apartment above
+ *   handyman         hourly, with a two-hour minimum
+ *
+ * Commercial upfits are custom-quoted and deliberately have no rate.
+ */
+export const QUOTED_RATES = {
+  adu: { perSqftLow: 225, perSqftHigh: 325 },
+  garageApartment: { perSqftLow: 200, perSqftHigh: 325 },
+  handyman: { hourly: 65, minimumHours: 2 },
+}
+
 export const CALCULATOR_PAGES = {
   decks: {
     serviceKey: 'decks',
@@ -366,7 +421,10 @@ export const CALCULATOR_PAGES = {
     title: 'Screened Porch Cost Calculator',
     metaTitle: 'Screened Porch Cost Calculator Simpsonville SC | Burch Contracting',
     description: 'Estimate screened porch and outdoor room costs in Upstate SC. New construction or deck conversions.',
-    intro: 'Screened porches in Upstate SC typically run $15,000–$65,000 depending on size, roof structure, and finishes. Converting an existing deck can save 50–70% versus new construction since the framing and floor are already in place.',
+    // {{range.…}} is filled at build time by src/build/prices.mjs from the
+    // screened-porch service headline; this text is rendered only as the
+    // calculator page's pricing-table answer, never by the browser.
+    intro: 'Screened porches in Upstate SC typically run {{range.screened-porches}} depending on size, roof structure, and finishes. Converting an existing deck can save 50–70% versus new construction since the framing and floor are already in place.',
     marketArea: 'Simpsonville, Fountain Inn, Greenville County, and Laurens County',
   },
   additions: {

@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "prebuild": "node src/build/index.mjs",
-    "build": "vite build && node scripts/apply-staging-noindex.mjs && node scripts/write-sitemap.mjs && node scripts/generate-cloudflare-files.mjs",
+    "build": "vite build && node scripts/apply-staging-noindex.mjs && node scripts/write-sitemap.mjs && node scripts/write-llms.mjs && node scripts/generate-cloudflare-files.mjs",
     "preview": "vite preview",
     "test": "node scripts/test.mjs",
     "check-build": "node scripts/check-build.mjs",
