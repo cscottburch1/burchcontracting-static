@@ -56,7 +56,8 @@ export const CITY_PROJECTS = {
     { title: 'Room Addition', description: 'Ground-floor room addition with siding and roofline matched to the existing home.', category: 'Room Additions' },
   ],
   simpsonville: [
-    { title: 'Whole-Home Renovation', description: 'The owner bought an unfinished house. We brought the entire build up to current building codes from the ground up, added a new master suite onto the original structure, finished the basement, and installed a new septic system. About six months, start to finish.', category: 'Remodeling' },
+    { title: 'Whole-Home Renovation', description: 'The owner bought an unfinished house. We brought the entire build up to current building codes from the ground up, added a new master suite onto the original structure, built a new kitchen, finished the basement, and installed a new septic system. About six months and $250,000, start to finish.', category: 'Remodeling' },
+    { title: 'Kitchen Remodel', description: 'Part of the Simpsonville whole-home renovation: the kitchen rebuilt from bare studs with white shaker cabinets, dark granite countertops, a subway tile backsplash, stainless appliances, and new vinyl plank flooring.', category: 'Kitchen Remodeling' },
     { title: 'Detached Two-Car Garage', description: 'Gray siding with white trim, dual garage doors, and landscaped approach pad.', category: 'Garages' },
   ],
   woodruff: [

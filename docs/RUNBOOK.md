@@ -280,13 +280,11 @@ above. Prices in a guide come from `calculator-config.js` through
 3. **Aging-in-place bathroom guide** — `/blog/aging-in-place-bathroom-remodel-sc`.
    Gives the ADA tub-to-shower page (a lead offer with one article) a second
    one, and a /cost/-adjacent reason to link it.
-4. **Portfolio: bath and kitchen projects.** Not a guide, but the highest-value
-   gap after 1–3. `/projects` has three bath or kitchen entries of fourteen,
-   under the Phase 6 floor of four, and both bath entries are tub/shower
-   conversions. Needed, each with photos and a one-paragraph write-up (city,
-   scope, rough size, duration): at least one full bathroom remodel and at
-   least one more kitchen remodel. The whole-home example now exists
-   (Simpsonville, added 2026-09-23).
+4. **Portfolio: a full bathroom remodel.** `/projects` now has four bath or
+   kitchen entries, meeting the Phase 6 floor (the Simpsonville whole-home
+   renovation and its kitchen were added 2026-09-23), but both bathroom entries
+   are tub/shower conversions. Needed: at least one full bathroom remodel, with
+   photos and a one-paragraph write-up (city, scope, rough size, duration).
 
 **Already live, so not queued** (the Phase 6 plan listed them before it knew):
 bathroom remodel cost Simpsonville (`/cost/bathroom-remodel-cost-simpsonville-sc`)
