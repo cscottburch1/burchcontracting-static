@@ -1219,3 +1219,17 @@ passes. The deploy workflow checks out with `fetch-depth: 0`, so production is
 not exposed today. But the check promises more than it guarantees. A stronger
 form would compare against HEAD's commit date, or fail when a clone is shallow
 (`git rev-parse --is-shallow-repository`). Left as found.
+
+---
+
+## 2026-09-24 — Prompts and briefs are archived beside the work they drove
+
+- The PR #28 prompt is archived at
+  `docs/archive/2026-09-23-pr-28-serp-display-prompt.md`. It was rebuilt
+  verbatim from the conversation it was pasted into; no original file existed.
+  Its header says so and records the owner's answers.
+- The 2026-09-24 survey is archived at
+  `docs/archive/2026-09-24-review-brief-survey.md` (PR #30).
+- The PR #23 (Phase 6) prompt will be archived at
+  `docs/archive/2026-09-22-pr-23-phase-6-prompt.md`. The owner is supplying it
+  as a file; add it there when it arrives.
