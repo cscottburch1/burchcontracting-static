@@ -121,6 +121,13 @@ export const COST_GUIDES = [
 
   {
     slug: 'home-addition-cost-greenville-sc',
+    // Two Greenville guides target the addition-cost search. The owner chose
+    // room addition as the main one on 2026-09-25, on the September export:
+    // "room addition greenville sc" 47 impressions and "room addition
+    // contractors" 35, against "home addition cost greenville" 4; the room
+    // guide at position 14.7 (22 impressions), this one at 21.8 (8). This page
+    // stays live and names that one under its hero. Nothing is redirected.
+    primaryGuide: 'room-addition-cost-greenville-sc',
     service: 'Home Additions',
     city: 'Greenville, SC',
     serviceKey: 'homeAdditions',

@@ -215,7 +215,7 @@
     },
     "cost/home-addition-cost-greenville-sc.html": {
       "dateModified": "2026-09-25",
-      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county."
+      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county. Same day: names /cost/room-addition-cost-greenville-sc as the main addition-cost guide under its hero (primaryGuide)."
     },
     "cost/kitchen-remodel-cost-greenville-sc.html": {
       "dateModified": "2026-09-25",
@@ -330,7 +330,7 @@
     "cost/home-addition-cost-greenville-sc.html": {
       "key": "cost/home-addition-cost-greenville-sc.html",
       "dateModified": "2026-09-25",
-      "hash": "071539e934fc4d0c"
+      "hash": "b5789143cdd197a9"
     },
     "cost/room-addition-cost-greenville-sc.html": {
       "key": "cost/room-addition-cost-greenville-sc.html",

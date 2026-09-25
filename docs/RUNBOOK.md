@@ -394,6 +394,11 @@ page per search. An article that shares a service and city with a cost guide
 names that guide under its hero, which is built in (`primaryCostGuideHtml()` in
 `src/build/guides.mjs`). Don't queue a blog post whose search a cost guide
 already targets. Deepen the guide instead.
+Where two cost guides share a search, one is the main guide and the other sets
+`primaryGuide` to name it under its hero. Articles then point only at the main
+one. Room addition is the main Greenville additions guide (owner, 2026-09-25),
+with `/cost/home-addition-cost-greenville-sc` pointing to it. Nothing is
+redirected.
 
 **Deliberately not queued:** "walk-in shower conversion cost SC". It targets
 the same query as `/blog/bath-to-shower-conversion-cost-south-carolina`; a
