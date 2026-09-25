@@ -343,23 +343,30 @@ anything the page prices. Use the helpers in `pricing-sync.js`, or the
 
 For the owner to write — Claude Code does not. Ranked by what the Phase 6
 repositioning needs most. Every URL below was checked against
-`src/data/url-map.js` on 2026-09-23 and collides with nothing; add each to
+`src/data/url-map.js` on 2026-09-23 (Five Forks on 2026-09-25) and collides with nothing; add each to
 `guides-cost.js` or `guides-articles.js` and to `url-map.js` as described
 above. Prices in a guide come from `calculator-config.js` through
 `pricing-sync.js`, never typed.
 
-1. **Whole-home renovation cost in SC** — `/cost/whole-home-renovation-cost-sc`.
+1. **Bathroom remodeling cost Five Forks** —
+   `/cost/bathroom-remodel-cost-five-forks-sc`. First because the export has
+   the query already on page one (position 3.9) with nothing built for it. The
+   Simpsonville bath cost guide is the model: same structure, Five Forks'
+   own neighborhoods and permitting (Greenville County), prices from the table.
+   Add it to `guides-cost.js` with `servicePage: 'bathroom-remodeling'` so the
+   bath page's guide list picks it up.
+2. **Whole-home renovation cost in SC** — `/cost/whole-home-renovation-cost-sc`.
    The whole-home page (`/remodeling`) is a lead offer with no cost guide of its
    own; until this exists it borrows the four kitchen and bath guides through
    `extraGuides` in `services.js`. Remove that entry when this ships, since the
    derived guide list will pick the new one up.
-2. **How long does a bathroom remodel take?** —
+3. **How long does a bathroom remodel take?** —
    `/blog/how-long-does-a-bathroom-remodel-take`. The kitchen equivalent exists
    and earns its place; the bath page's own five-phase process is the outline.
-3. **Aging-in-place bathroom guide** — `/blog/aging-in-place-bathroom-remodel-sc`.
+4. **Aging-in-place bathroom guide** — `/blog/aging-in-place-bathroom-remodel-sc`.
    Gives the ADA tub-to-shower page (a lead offer with one article) a second
    one, and a /cost/-adjacent reason to link it.
-4. **Portfolio: a full bathroom remodel.** `/projects` now has four bath or
+5. **Portfolio: a full bathroom remodel.** `/projects` now has four bath or
    kitchen entries, meeting the Phase 6 floor (the Simpsonville whole-home
    renovation and its kitchen were added 2026-09-23), but both bathroom entries
    are tub/shower conversions. Needed: at least one full bathroom remodel, with
