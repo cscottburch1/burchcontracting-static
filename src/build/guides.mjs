@@ -36,7 +36,7 @@ import {
   webPageSchema,
 } from '../data/site-schema.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
-import { COST_GUIDES } from '../data/guides-cost.js'
+import { CITY_PERMIT_OFFICES, COST_GUIDES } from '../data/guides-cost.js'
 import { ARTICLES } from '../data/guides-articles.js'
 import { projectCostString, servicePerSqftBand, tierPerSqftBand } from '../data/pricing-sync.js'
 import { authorBox, documentHead, esc, footer } from '../chrome/index.mjs'
@@ -241,9 +241,13 @@ function permitsHtml(guide) {
   if (!office) return ''
   // Spartanburg County has no permit URL in PERMIT_OFFICES — render the name
   // without a link rather than an href to nowhere.
-  const officeText = office.url
+  const countyText = office.url
     ? `<a href="${esc(office.url)}" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">${esc(office.name)}</a>`
     : esc(office.name)
+  // A city that permits inside its own limits is named first; the county
+  // office then covers everything outside them (CITY_PERMIT_OFFICES).
+  const city = CITY_PERMIT_OFFICES[guide.city]
+  const officeText = city ? `${esc(city.name)} inside city limits, ${countyText} outside them` : countyText
   return `
       <section class="bg-white py-8 border-t border-slate-100">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

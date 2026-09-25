@@ -204,6 +204,26 @@
     "blog/composite-vs-pressure-treated-deck-which-is-better.html": {
       "dateModified": "2026-09-25",
       "why": "the Related Guides cards now include /cost/deck-cost-greenville-sc (added 2026-09-25) in place of a deck article."
+    },
+    "cost/basement-finishing-cost-greenville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county."
+    },
+    "cost/bathroom-remodel-cost-greenville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county."
+    },
+    "cost/home-addition-cost-greenville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county."
+    },
+    "cost/kitchen-remodel-cost-greenville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county."
+    },
+    "cost/room-addition-cost-greenville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county."
     }
   },
   "textHashes": {
@@ -308,14 +328,14 @@
       "hash": "e34eeded046414b4"
     },
     "cost/home-addition-cost-greenville-sc.html": {
-      "key": "__datafile__src/data/guides-cost.js",
-      "dateModified": "2026-09-23",
-      "hash": "cba06c36f496bcdc"
+      "key": "cost/home-addition-cost-greenville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "071539e934fc4d0c"
     },
     "cost/room-addition-cost-greenville-sc.html": {
-      "key": "__datafile__src/data/guides-cost.js",
-      "dateModified": "2026-09-23",
-      "hash": "f396b82eefd35aa9"
+      "key": "cost/room-addition-cost-greenville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "b5f352a30662e76d"
     },
     "cost/cost-to-build-a-deck-simpsonville-sc.html": {
       "key": "cost/cost-to-build-a-deck-simpsonville-sc.html",
@@ -330,12 +350,12 @@
     "cost/deck-cost-greenville-sc.html": {
       "key": "cost/deck-cost-greenville-sc.html",
       "dateModified": "2026-09-25",
-      "hash": "3df6d9a8f8d1d0ee"
+      "hash": "ca1dc478d3725934"
     },
     "cost/basement-finishing-cost-greenville-sc.html": {
-      "key": "__datafile__src/data/guides-cost.js",
-      "dateModified": "2026-09-23",
-      "hash": "c156aef12a1dfb1d"
+      "key": "cost/basement-finishing-cost-greenville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "9901e95d699f71bc"
     },
     "cost/screened-porch-vs-sunroom-sc.html": {
       "key": "__datafile__src/data/guides-cost.js",
@@ -348,9 +368,9 @@
       "hash": "b7650febae153bb3"
     },
     "cost/kitchen-remodel-cost-greenville-sc.html": {
-      "key": "__datafile__src/data/guides-cost.js",
-      "dateModified": "2026-09-23",
-      "hash": "148e784a38d9f56d"
+      "key": "cost/kitchen-remodel-cost-greenville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "9f066c1f2e27e274"
     },
     "cost/bathroom-remodel-cost-simpsonville-sc.html": {
       "key": "__datafile__src/data/guides-cost.js",
@@ -358,9 +378,9 @@
       "hash": "4e30646a07c26317"
     },
     "cost/bathroom-remodel-cost-greenville-sc.html": {
-      "key": "__datafile__src/data/guides-cost.js",
-      "dateModified": "2026-09-23",
-      "hash": "af8151072374cb90"
+      "key": "cost/bathroom-remodel-cost-greenville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "4dfba91300a79b54"
     },
     "blog/index.html": {
       "key": "__datafile__src/data/guides-articles.js",
