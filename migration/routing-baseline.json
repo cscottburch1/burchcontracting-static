@@ -1,6 +1,6 @@
 {
   "recordedFrom": "https://burchcontracting.com",
-  "recordedAt": "2026-09-12T00:52:59.250Z",
+  "recordedAt": "2026-09-25T20:42:53.799Z",
   "results": {
     "/": {
       "status": 200,
@@ -418,10 +418,62 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/blog/": {
+      "status": 301,
+      "location": "/blog",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/blog/average-cost-of-basement-finishing-in-south-carolina": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/average-cost-of-basement-finishing-in-south-carolina.html": {
+      "status": 301,
+      "location": "/blog/average-cost-of-basement-finishing-in-south-carolina",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/average-cost-of-basement-finishing-in-south-carolina.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/average-cost-of-basement-finishing-in-south-carolina/": {
+      "status": 301,
+      "location": "/blog/average-cost-of-basement-finishing-in-south-carolina",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -444,10 +496,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/blog/basement-finishing-ideas-sc.html": {
+      "status": 301,
+      "location": "/blog/basement-finishing-ideas-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/basement-finishing-ideas-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/basement-finishing-ideas-sc/": {
+      "status": 301,
+      "location": "/blog/basement-finishing-ideas-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/blog/bath-to-shower-conversion-cost-south-carolina": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/bath-to-shower-conversion-cost-south-carolina.html": {
+      "status": 301,
+      "location": "/blog/bath-to-shower-conversion-cost-south-carolina",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/bath-to-shower-conversion-cost-south-carolina.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/bath-to-shower-conversion-cost-south-carolina/": {
+      "status": 301,
+      "location": "/blog/bath-to-shower-conversion-cost-south-carolina",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -470,10 +600,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/blog/best-bathroom-tile-options-for-remodels.html": {
+      "status": 301,
+      "location": "/blog/best-bathroom-tile-options-for-remodels",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/best-bathroom-tile-options-for-remodels.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/best-bathroom-tile-options-for-remodels/": {
+      "status": 301,
+      "location": "/blog/best-bathroom-tile-options-for-remodels",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/blog/best-home-improvements-for-property-value-in-south-carolina": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/best-home-improvements-for-property-value-in-south-carolina.html": {
+      "status": 301,
+      "location": "/blog/best-home-improvements-for-property-value-in-south-carolina",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/best-home-improvements-for-property-value-in-south-carolina.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/best-home-improvements-for-property-value-in-south-carolina/": {
+      "status": 301,
+      "location": "/blog/best-home-improvements-for-property-value-in-south-carolina",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -496,10 +704,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/blog/composite-vs-pressure-treated-deck-which-is-better.html": {
+      "status": 301,
+      "location": "/blog/composite-vs-pressure-treated-deck-which-is-better",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/composite-vs-pressure-treated-deck-which-is-better.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/composite-vs-pressure-treated-deck-which-is-better/": {
+      "status": 301,
+      "location": "/blog/composite-vs-pressure-treated-deck-which-is-better",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/blog/cost-of-bathroom-remodeling-simpsonville-sc": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/cost-of-bathroom-remodeling-simpsonville-sc.html": {
+      "status": 301,
+      "location": "/blog/cost-of-bathroom-remodeling-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/cost-of-bathroom-remodeling-simpsonville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/cost-of-bathroom-remodeling-simpsonville-sc/": {
+      "status": 301,
+      "location": "/blog/cost-of-bathroom-remodeling-simpsonville-sc",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -522,10 +808,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/blog/deck-building-cost-simpsonville-sc.html": {
+      "status": 301,
+      "location": "/blog/deck-building-cost-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/deck-building-cost-simpsonville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/deck-building-cost-simpsonville-sc/": {
+      "status": 301,
+      "location": "/blog/deck-building-cost-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc.html": {
+      "status": 301,
+      "location": "/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc/": {
+      "status": 301,
+      "location": "/blog/do-you-need-permits-for-remodeling-in-simpsonville-sc",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -548,10 +912,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/blog/how-long-does-a-kitchen-remodel-take.html": {
+      "status": 301,
+      "location": "/blog/how-long-does-a-kitchen-remodel-take",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/how-long-does-a-kitchen-remodel-take.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/how-long-does-a-kitchen-remodel-take/": {
+      "status": 301,
+      "location": "/blog/how-long-does-a-kitchen-remodel-take",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/blog/how-much-does-a-screened-porch-cost-in-south-carolina": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/how-much-does-a-screened-porch-cost-in-south-carolina.html": {
+      "status": 301,
+      "location": "/blog/how-much-does-a-screened-porch-cost-in-south-carolina",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/how-much-does-a-screened-porch-cost-in-south-carolina.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/how-much-does-a-screened-porch-cost-in-south-carolina/": {
+      "status": 301,
+      "location": "/blog/how-much-does-a-screened-porch-cost-in-south-carolina",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -574,6 +1016,58 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/blog/how-to-plan-a-kitchen-remodel-step-by-step.html": {
+      "status": 301,
+      "location": "/blog/how-to-plan-a-kitchen-remodel-step-by-step",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/how-to-plan-a-kitchen-remodel-step-by-step.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/how-to-plan-a-kitchen-remodel-step-by-step/": {
+      "status": 301,
+      "location": "/blog/how-to-plan-a-kitchen-remodel-step-by-step",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/index.html": {
+      "status": 301,
+      "location": "/blog",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/blog/kitchen-remodel-cost-fountain-inn-sc": {
       "status": 200,
       "location": null,
@@ -587,10 +1081,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/blog/kitchen-remodel-cost-fountain-inn-sc.html": {
+      "status": 301,
+      "location": "/blog/kitchen-remodel-cost-fountain-inn-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/kitchen-remodel-cost-fountain-inn-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/kitchen-remodel-cost-fountain-inn-sc/": {
+      "status": 301,
+      "location": "/blog/kitchen-remodel-cost-fountain-inn-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/blog/room-addition-cost-in-south-carolina": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/room-addition-cost-in-south-carolina.html": {
+      "status": 301,
+      "location": "/blog/room-addition-cost-in-south-carolina",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/room-addition-cost-in-south-carolina.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/blog/room-addition-cost-in-south-carolina/": {
+      "status": 301,
+      "location": "/blog/room-addition-cost-in-south-carolina",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1614,10 +2186,62 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/cost/": {
+      "status": 301,
+      "location": "/cost",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/cost/basement-finishing-cost-greenville-sc": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/basement-finishing-cost-greenville-sc.html": {
+      "status": 301,
+      "location": "/cost/basement-finishing-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/basement-finishing-cost-greenville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/basement-finishing-cost-greenville-sc/": {
+      "status": 301,
+      "location": "/cost/basement-finishing-cost-greenville-sc",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1640,10 +2264,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/cost/bathroom-remodel-cost-greenville-sc.html": {
+      "status": 301,
+      "location": "/cost/bathroom-remodel-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/bathroom-remodel-cost-greenville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/bathroom-remodel-cost-greenville-sc/": {
+      "status": 301,
+      "location": "/cost/bathroom-remodel-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/cost/bathroom-remodel-cost-simpsonville-sc": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/bathroom-remodel-cost-simpsonville-sc.html": {
+      "status": 301,
+      "location": "/cost/bathroom-remodel-cost-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/bathroom-remodel-cost-simpsonville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/bathroom-remodel-cost-simpsonville-sc/": {
+      "status": 301,
+      "location": "/cost/bathroom-remodel-cost-simpsonville-sc",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1666,10 +2368,140 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/cost/cost-to-build-a-deck-simpsonville-sc.html": {
+      "status": 301,
+      "location": "/cost/cost-to-build-a-deck-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/cost-to-build-a-deck-simpsonville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/cost-to-build-a-deck-simpsonville-sc/": {
+      "status": 301,
+      "location": "/cost/cost-to-build-a-deck-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/deck-cost-greenville-sc": {
+      "status": 200,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/deck-cost-greenville-sc.html": {
+      "status": 301,
+      "location": "/cost/deck-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/deck-cost-greenville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/deck-cost-greenville-sc/": {
+      "status": 301,
+      "location": "/cost/deck-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/cost/deck-cost-simpsonville-sc": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/deck-cost-simpsonville-sc.html": {
+      "status": 301,
+      "location": "/cost/deck-cost-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/deck-cost-simpsonville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/deck-cost-simpsonville-sc/": {
+      "status": 301,
+      "location": "/cost/deck-cost-simpsonville-sc",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1692,10 +2524,101 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/cost/garage-construction-cost-laurens-sc.html": {
+      "status": 301,
+      "location": "/cost/garage-construction-cost-laurens-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/garage-construction-cost-laurens-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/garage-construction-cost-laurens-sc/": {
+      "status": 301,
+      "location": "/cost/garage-construction-cost-laurens-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/cost/home-addition-cost-greenville-sc": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/home-addition-cost-greenville-sc.html": {
+      "status": 301,
+      "location": "/cost/home-addition-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/home-addition-cost-greenville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/home-addition-cost-greenville-sc/": {
+      "status": 301,
+      "location": "/cost/home-addition-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/index.html": {
+      "status": 301,
+      "location": "/cost",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1718,10 +2641,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/cost/kitchen-remodel-cost-greenville-sc.html": {
+      "status": 301,
+      "location": "/cost/kitchen-remodel-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/kitchen-remodel-cost-greenville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/kitchen-remodel-cost-greenville-sc/": {
+      "status": 301,
+      "location": "/cost/kitchen-remodel-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/cost/kitchen-remodel-cost-simpsonville-sc": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/kitchen-remodel-cost-simpsonville-sc.html": {
+      "status": 301,
+      "location": "/cost/kitchen-remodel-cost-simpsonville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/kitchen-remodel-cost-simpsonville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/kitchen-remodel-cost-simpsonville-sc/": {
+      "status": 301,
+      "location": "/cost/kitchen-remodel-cost-simpsonville-sc",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -1744,10 +2745,88 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     },
+    "/cost/room-addition-cost-greenville-sc.html": {
+      "status": 301,
+      "location": "/cost/room-addition-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/room-addition-cost-greenville-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/room-addition-cost-greenville-sc/": {
+      "status": 301,
+      "location": "/cost/room-addition-cost-greenville-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
     "/cost/screened-porch-vs-sunroom-sc": {
       "status": 200,
       "location": null,
       "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/screened-porch-vs-sunroom-sc.html": {
+      "status": 301,
+      "location": "/cost/screened-porch-vs-sunroom-sc",
+      "contentType": null,
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/screened-porch-vs-sunroom-sc.html/": {
+      "status": 404,
+      "location": null,
+      "contentType": "text/html",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "geolocation=(), microphone=(), camera=()",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
+      }
+    },
+    "/cost/screened-porch-vs-sunroom-sc/": {
+      "status": 301,
+      "location": "/cost/screened-porch-vs-sunroom-sc",
+      "contentType": null,
       "headers": {
         "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
         "x-content-type-options": "nosniff",
@@ -5228,7 +6307,5 @@
         "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com; frame-src https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'"
       }
     }
-  },
-  "recordedNote": "402 paths recorded from live production (recordedFrom) on 2026-09-12. The 27 /cost and /blog entries were then amended to 200 after scripts/generate-guides.mjs restored those pages: each was verified returning 200 on the Cloudflare preview a599c45c before this file was updated, and all 12 search/AI crawlers got 200 on all 73 sitemap URLs there. Every other entry is the untouched production capture.",
-  "amendedAt": "2026-09-12T03:06:11.747Z"
+  }
 }
