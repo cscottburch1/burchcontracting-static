@@ -67,6 +67,8 @@ import { resolve } from 'node:path'
 import { CALCULATOR_PAGES_META } from '../data/calculators.js'
 import { HAND_AUTHORED_PAGES } from '../data/pages.js'
 import { SERVICES } from '../data/services.js'
+import { COST_GUIDES } from '../data/guides-cost.js'
+import { ARTICLES } from '../data/guides-articles.js'
 
 const root = resolve(import.meta.dirname, '../..')
 const overridesPath = resolve(root, 'src/data/content-date-overrides.json')
@@ -164,6 +166,34 @@ export function serviceDates(dates, service) {
   return dates[`${SERVICE_PREFIX}${service.id}`] ?? dates['__datafile__src/data/services.js']
 }
 
+/**
+ * Cost guides and articles share one data file per kind, so git gives all of
+ * them one date pair — the same problem as services.js (point 3 above), for
+ * the same reason. An entry keyed by the page's own file ("cost/<slug>.html",
+ * "blog/<slug>.html", or the hub's "cost/index.html") dates that page alone; a
+ * field it leaves out falls back to the data file's pair. Read them through
+ * guideDates(), never by key. Added 2026-09-25: before this, adding one guide
+ * re-dated every guide, and a new guide could not have a datePublished of its
+ * own.
+ */
+const GUIDE_DATA_FILES = { cost: 'src/data/guides-cost.js', blog: 'src/data/guides-articles.js' }
+const GUIDE_FILES = new Set([
+  'cost/index.html',
+  'blog/index.html',
+  ...COST_GUIDES.map((g) => `cost/${g.slug}.html`),
+  ...ARTICLES.map((g) => `blog/${g.slug}.html`),
+])
+
+/** One guide or hub page's dates. datePublished is null unless the page's own entry sets it. */
+export function guideDates(dates, kind, file) {
+  const shared = dates[`__datafile__${GUIDE_DATA_FILES[kind]}`]
+  const own = dates[file]
+  return {
+    datePublished: own?.datePublished ?? null,
+    dateModified: own?.dateModified ?? shared.dateModified,
+  }
+}
+
 export function contentDates() {
   const { history, mechanicalCommits, dates: literal } = readOverrides()
   const result = {}
@@ -204,6 +234,13 @@ export function contentDates() {
     const id = key.slice(SERVICE_PREFIX.length)
     if (!ids.has(id)) missing.push(`${key} (no service has id '${id}')`)
     else if (shared) result[key] = { datePublished: value.datePublished ?? shared.datePublished, dateModified: value.dateModified ?? shared.dateModified }
+  }
+
+  // Per-guide dates (2026-09-25). Same shape as the per-service ones above.
+  for (const [key, value] of Object.entries(literal)) {
+    if (!/^(cost|blog)\//.test(key)) continue
+    if (!GUIDE_FILES.has(key)) missing.push(`${key} (no cost guide, article or hub renders to that file)`)
+    else result[key] = { datePublished: value.datePublished, dateModified: value.dateModified }
   }
 
   if (missing.length) {

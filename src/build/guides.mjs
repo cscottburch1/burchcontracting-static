@@ -40,6 +40,7 @@ import { COST_GUIDES } from '../data/guides-cost.js'
 import { ARTICLES } from '../data/guides-articles.js'
 import { projectCostString, servicePerSqftBand, tierPerSqftBand } from '../data/pricing-sync.js'
 import { authorBox, documentHead, esc, footer } from '../chrome/index.mjs'
+import { guideDates } from './content-dates.mjs'
 
 /**
  * These pages are restorations, not new writing, so datePublished has to
@@ -272,12 +273,36 @@ ${related
       </section>`
 }
 
-function guidePage(guide, kind, related, modified) {
+/**
+ * An article that shares its service page and city with a cost guide names
+ * that guide as the place for its prices, right under the hero.
+ *
+ * /blog/cost-of-bathroom-remodeling-simpsonville-sc and
+ * /cost/bathroom-remodel-cost-simpsonville-sc target the same query, and until
+ * 2026-09-25 the article linked the guide only from a "Related Guides" card at
+ * the bottom. The owner chose to keep both and make the guide the primary one
+ * (option (a), fix/phase-6-leftovers), then extended it to every service on
+ * the same day, which brought in the Simpsonville deck article. Where a city
+ * has two guides for one service, the first in guides-cost.js is the primary.
+ */
+function primaryCostGuideHtml(guide, kind) {
+  if (kind !== 'blog') return ''
+  const cost = COST_GUIDES.find((g) => g.servicePage === guide.servicePage && g.city === guide.city)
+  if (!cost) return ''
+  return `
+      <section class="bg-blue-50 border-b border-blue-100 py-6">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p class="text-slate-700">For every size and scope priced out in one place, see our cost guide: <a href="${pageUrl(`cost/${cost.slug}.html`)}" class="font-semibold text-blue-700 hover:text-blue-800 underline">${esc(cost.h1)}</a>.</p>
+        </div>
+      </section>`
+}
+
+function guidePage(guide, kind, related, { datePublished, dateModified: modified }) {
   const file = `${KINDS[kind].dir}/${guide.slug}.html`
   const url = pageUrl(file)
   const canonical = `${SITE_ORIGIN}${url}`
   const p = priceHelper(guide.serviceKey, guide.slug)
-  const published = RESTORED_PUBLISHED
+  const published = datePublished ?? RESTORED_PUBLISHED
   const hubUrl = pageUrl(`${KINDS[kind].dir}/index.html`)
 
   const article = articleSchema({
@@ -345,6 +370,7 @@ function guidePage(guide, kind, related, modified) {
           </div>
         </div>
       </section>
+${primaryCostGuideHtml(guide, kind)}
 ${tierTableHtml(guide, p)}
 ${driversHtml(guide)}
 ${sectionsHtml(guide, p)}
@@ -375,7 +401,7 @@ ${footer}
 </html>`
 }
 
-function hubPage(kind, modified) {
+function hubPage(kind, { datePublished, dateModified: modified }) {
   const config = KINDS[kind]
   const file = `${config.dir}/index.html`
   const canonical = `${SITE_ORIGIN}${pageUrl(file)}`
@@ -485,7 +511,7 @@ ${rows}
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 ${cards}
           </div>
-${authorBox({ published: RESTORED_PUBLISHED, modified })}
+${authorBox({ published: datePublished ?? RESTORED_PUBLISHED, modified })}
         </div>
       </section>
 
@@ -540,21 +566,19 @@ export function render({ dates }) {
   const pages = []
   for (const kind of Object.keys(KINDS)) {
     const dir = KINDS[kind].dir
-    const forKind = dates[DATA_FILE_KEY[kind]]
-    if (!forKind) throw new Error(`guides: no content dates under ${DATA_FILE_KEY[kind]}`)
-    const modified = forKind.dateModified
+    if (!dates[DATA_FILE_KEY[kind]]) throw new Error(`guides: no content dates under ${DATA_FILE_KEY[kind]}`)
 
     for (const guide of KINDS[kind].entries) {
       pages.push({
         url: pageUrl(`${dir}/${guide.slug}.html`),
         file: `${dir}/${guide.slug}.html`,
-        html: guidePage(guide, kind, relatedFor(guide, kind), modified),
+        html: guidePage(guide, kind, relatedFor(guide, kind), guideDates(dates, kind, `${dir}/${guide.slug}.html`)),
       })
     }
     pages.push({
       url: pageUrl(`${dir}/index.html`),
       file: `${dir}/index.html`,
-      html: hubPage(kind, modified),
+      html: hubPage(kind, guideDates(dates, kind, `${dir}/index.html`)),
     })
   }
   return pages

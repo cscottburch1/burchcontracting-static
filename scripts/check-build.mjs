@@ -884,11 +884,20 @@ if (badDescriptions.length) {
     const hash = visibleTextHash(page.html)
     const entry = recorded[rel]
     if (!entry) {
-      dateProblems.push(`${rel}: dated by ${key} but has no recorded text hash — run scripts/record-text-hashes.mjs`)
+      dateProblems.push(
+        key.startsWith('__datafile__src/data/guides-')
+          ? `${toPublicUrl(rel)}: a new page on the shared ${key} pair, which would give it that pair's old dates — add "${rel}": { "datePublished": "<today>", "dateModified": "<today>" } to dates in content-date-overrides.json, then run scripts/record-text-hashes.mjs`
+          : `${rel}: dated by ${key} but has no recorded text hash — run scripts/record-text-hashes.mjs`
+      )
     } else if (entry.hash !== hash) {
+      // A guide on its data file's shared pair takes an entry of its own:
+      // bumping the pair would re-date every guide that file renders.
+      const fix = key.startsWith('__datafile__src/data/guides-')
+        ? `add "${rel}": { "dateModified": "<today>" } to dates in content-date-overrides.json (not the shared ${key} pair)`
+        : `bump the override's dateModified`
       dateProblems.push(
         entry.dateModified === dateModified
-          ? `${toPublicUrl(rel)}: visible text changed but dateModified is still ${dateModified} (${key}) — bump the override's dateModified, then run scripts/record-text-hashes.mjs`
+          ? `${toPublicUrl(rel)}: visible text changed but dateModified is still ${dateModified} (${key}) — ${fix}, then run scripts/record-text-hashes.mjs`
           : `${toPublicUrl(rel)}: dateModified moved to ${dateModified} but the text hash was recorded under ${entry.dateModified} — run scripts/record-text-hashes.mjs`
       )
     }

@@ -26,16 +26,13 @@ export const CHOOSE_IF = {
   'room-additions': 'you need more square footage — a bedroom, suite, or multi-generational space — without moving.',
   'adu-builder': 'you want a separate income-producing or in-law living space on your existing lot.',
   remodeling: 'your kitchen, bath, basement, or whole home needs updating rather than expanding.',
-  // The two FINDINGS.md #2 flagged as blank. Both derived from these services'
-  // own description and intro in services.js — the same rule as every line
-  // above, no new capability or number.
-  //
-  // TODO(phase-6): revisit as lead offers. Phase 6 makes bathroom and kitchen
-  // remodeling the lead services, at which point these stop being one row in a
-  // comparison table and start carrying real weight. They were written to fill
-  // a blank cell honestly, not to sell.
-  'bathroom-remodeling': 'you want one bathroom done properly — design, plumbing, waterproofing, tile and finish work — rather than a whole-home project.',
-  'kitchen-remodeling': 'you want cabinetry, countertops, backsplash and lighting replaced in the kitchen rather than throughout the house.',
+  // The two lead services. Written as offers rather than as scope summaries,
+  // but still from nothing except what their own description, intro and
+  // commonProjects in services.js already state: one licensed crew for every
+  // trade, the owner managing it, the fixed 20% overhead & profit. No price,
+  // so these can't drift from the table.
+  'bathroom-remodeling': 'you want a bathroom done start to finish by one licensed crew — design, demolition, plumbing, electrical, waterproofing, tile and finish work — from a powder room refresh to a full-gut primary bath, managed personally by owner C. Scott Burch.',
+  'kitchen-remodeling': 'you want new cabinetry, quartz or granite counters, backsplash, lighting or a new layout from one licensed crew, with every price itemized against a fixed 20% overhead & profit rather than a hidden markup.',
   'commercial-upfits': 'you are building out a leased commercial space for your business.',
   'commercial-roofing': 'you need commercial roof installation, repair, or a maintenance/inspection agreement.',
   'basement-finishing': 'you have unfinished basement square footage you want converted to living space.',

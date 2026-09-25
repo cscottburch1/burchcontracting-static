@@ -1237,3 +1237,32 @@ form would compare against HEAD's commit date, or fail when a clone is shallow
   departs from it. Two items are still open: the 6.5 `/services`
   comparison-table rework, and the 6.8 content-queue order from the export
   ("bathroom remodeling cost five forks" first).
+
+---
+
+## 2026-09-25 — Cost guides and articles are dated one page at a time
+
+Every cost guide took one date from `guides-cost.js` and every article one from
+`guides-articles.js`, because git tracks files, not the entries inside them.
+Adding or editing one guide re-dated all of them, and a new guide could not
+have a datePublished of its own (they all took `RESTORED_PUBLISHED`). That is
+the services.js problem again, fixed the same way:
+
+- Both data files are pinned in `content-date-overrides.json` at the dates git
+  gave them on 2026-09-25 (published 2026-09-11, modified 2026-09-23). The
+  build output did not change: snapshot 71/71 identical, sitemap byte-identical.
+- A page's own entry, keyed by its file (`cost/<slug>.html`, `blog/<slug>.html`,
+  `cost/index.html`, `blog/index.html`), overrides either field. Read through
+  `guideDates()` in `src/build/content-dates.mjs`, which the pages and the
+  sitemap both use. An entry for a file no guide renders fails the build.
+- Check 15 now watches all 27 guide and hub pages (45 pages in total). Its
+  message for a guide names the per-page entry to add, not the shared pair.
+
+**Tamper tests:** a heading edited in `.build/pages/blog/basement-finishing-ideas-sc.html`
+fails check 15 naming that page and the entry to add; an entry for
+`blog/no-such-article.html` fails the build. Both restored.
+
+**Accepted at seeding, as with check 15's first seeding:** the three pages
+PR #33 changed in build code keep their dates. The owner decided on
+2026-09-25 to leave those dates, since a date that trails a change carries no
+Google penalty.

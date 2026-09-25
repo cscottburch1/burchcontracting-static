@@ -97,6 +97,7 @@ export const PAGE_URLS = {
   'cost/room-addition-cost-greenville-sc.html': '/cost/room-addition-cost-greenville-sc',
   'cost/cost-to-build-a-deck-simpsonville-sc.html': '/cost/cost-to-build-a-deck-simpsonville-sc',
   'cost/deck-cost-simpsonville-sc.html': '/cost/deck-cost-simpsonville-sc',
+  'cost/deck-cost-greenville-sc.html': '/cost/deck-cost-greenville-sc',
   'cost/basement-finishing-cost-greenville-sc.html': '/cost/basement-finishing-cost-greenville-sc',
   'cost/screened-porch-vs-sunroom-sc.html': '/cost/screened-porch-vs-sunroom-sc',
   'cost/kitchen-remodel-cost-simpsonville-sc.html': '/cost/kitchen-remodel-cost-simpsonville-sc',

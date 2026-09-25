@@ -17,7 +17,7 @@ import { ARTICLES } from '../data/guides-articles.js'
 import { LOCAL_BUSINESS_SCHEMA, ORGANIZATION_SCHEMA, SCOTT_PERSON_SCHEMA, articleSchema } from '../data/site-schema.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { footer, header } from '../chrome/index.mjs'
-import { serviceDates } from './content-dates.mjs'
+import { guideDates, serviceDates } from './content-dates.mjs'
 
 
 // The content-dates keys this module reads. The dates themselves arrive as a
@@ -692,16 +692,13 @@ export function sitemapEntries(dates) {
   // then left out of the sitemap. Their datePublished is the archived original
   // (see RESTORED_PUBLISHED there); lastmod here is the data file's real git
   // dateModified, which is what lastmod is actually for.
-  const guideDates = {
-    cost: dates[COST_KEY],
-    blog: dates[BLOG_KEY],
-  }
+  // Each page's own entry if it has one (guideDates(), 2026-09-25).
   const guidePages = [
-    [pageUrl('cost/index.html'), guideDates.cost],
-    ...COST_GUIDES.map((guide) => [pageUrl(`cost/${guide.slug}.html`), guideDates.cost]),
-    [pageUrl('blog/index.html'), guideDates.blog],
-    ...ARTICLES.map((guide) => [pageUrl(`blog/${guide.slug}.html`), guideDates.blog]),
-  ]
+    ['cost', 'cost/index.html'],
+    ...COST_GUIDES.map((guide) => ['cost', `cost/${guide.slug}.html`]),
+    ['blog', 'blog/index.html'],
+    ...ARTICLES.map((guide) => ['blog', `blog/${guide.slug}.html`]),
+  ].map(([kind, file]) => [pageUrl(file), guideDates(dates, kind, file)])
 
   return [...staticPages, ...servicePages, ...areaPages, ...guidePages]
 }
