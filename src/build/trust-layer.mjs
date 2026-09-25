@@ -28,7 +28,7 @@
 import { SCOTT_PERSON_SCHEMA, ORGANIZATION_SCHEMA, LOCAL_BUSINESS_SCHEMA, WEBSITE_SCHEMA, articleSchema, webPageSchema } from '../data/site-schema.js'
 import { SERVICE_FAQS } from '../data/service-faqs.js'
 import { GLOBAL_FAQS, faqPageSchema } from '../data/geo-aeo.js'
-import { SERVICES, SITE } from '../data/services.js'
+import { SERVICES, SITE, servicesByTier } from '../data/services.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
 import { PROMOTED_FAQS } from '../data/promoted-faqs.js'
 import { CHOOSE_IF, PERMIT_REQUIRED } from '../data/service-comparison.js'
@@ -299,8 +299,11 @@ function contactTableHtml() {
 }
 
 
+// Five columns, rows in tier order (Tier 1 first). The Calculator and Details
+// links sit under the service name rather than in a sixth "Links" column: with
+// six, the table scrolled sideways at 1280px and the links were the part cut off.
 function servicesComparisonTableHtml() {
-  const rows = SERVICES.map((s) => {
+  const rows = servicesByTier().map((s) => {
     // No fallbacks. check-build asserts both maps cover every slug, so a
     // missing entry is a failed build rather than a blank cell on /services.
     const permit = PERMIT_REQUIRED[s.slug]
@@ -309,12 +312,11 @@ function servicesComparisonTableHtml() {
       ? `<a href="${pageUrl(`calculator/${s.calculator}.html`)}" class="text-blue-700 hover:text-blue-800 underline">Calculator</a> &middot; <a href="${pageUrl(`${s.slug}/index.html`)}" class="text-blue-700 hover:text-blue-800 underline">Details</a>`
       : `<a href="${pageUrl(`${s.slug}/index.html`)}" class="text-blue-700 hover:text-blue-800 underline">Details</a>`
     return `                <tr class="border-t border-slate-200">
-                  <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left align-top whitespace-nowrap">${esc(s.title)}</th>
+                  <th scope="row" class="px-4 py-4 font-bold text-slate-900 text-left align-top min-w-[12rem]">${esc(s.title)}<span class="mt-1 block text-sm font-normal whitespace-nowrap">${linkHtml}</span></th>
                   <td class="px-4 py-4 text-blue-700 font-semibold align-top whitespace-nowrap">${esc(s.stats.costRange)}</td>
                   <td class="px-4 py-4 text-slate-600 text-sm align-top whitespace-nowrap">${esc(s.stats.timeline)}</td>
                   <td class="px-4 py-4 text-slate-600 text-sm align-top whitespace-nowrap">${esc(permit)}</td>
-                  <td class="px-4 py-4 text-slate-600 text-sm align-top">Choose this if ${esc(chooseIf)}</td>
-                  <td class="px-4 py-4 text-sm align-top whitespace-nowrap">${linkHtml}</td>
+                  <td class="px-4 py-4 text-slate-600 text-sm align-top min-w-[18rem]">Choose this if ${esc(chooseIf)}</td>
                 </tr>`
   }).join('\n')
 
@@ -331,7 +333,6 @@ function servicesComparisonTableHtml() {
                   <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Timeline</th>
                   <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Permit Required</th>
                   <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Choose This If</th>
-                  <th scope="col" class="px-4 py-3 text-sm font-semibold text-slate-900">Links</th>
                 </tr>
               </thead>
               <tbody>
