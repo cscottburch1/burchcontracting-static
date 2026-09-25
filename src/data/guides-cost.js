@@ -404,6 +404,90 @@ export const COST_GUIDES = [
   },
 
   {
+    // Added 2026-09-25. The September export has the Greenville deck-cost
+    // queries on page one with no guide for them, the calculator ranking
+    // instead: "deck cost greenville sc" (8.8), "composite deck cost greenville
+    // sc" (9.1), "how much does a deck cost greenville" (9.8). Every fact here
+    // is from this repo: prices from calculator-config through the price
+    // helper, the timeline from services.js, the project from CITY_PROJECTS
+    // and projects.html, city and county permitting from geo-aeo.js.
+    slug: 'deck-cost-greenville-sc',
+    service: 'Deck Building',
+    city: 'Greenville, SC',
+    serviceKey: 'decks',
+    calculator: 'calculator/decks.html',
+    servicePage: 'outdoor-living/decks/index.html',
+    permitCounty: 'Greenville County',
+    h1: 'Deck Cost in Greenville, SC',
+    metaTitle: 'Deck Cost Greenville SC: Composite vs Wood Pricing',
+    metaDescription:
+      'What a deck costs in Greenville SC, composite or pressure-treated, by size and height, computed from the same pricing our deck calculator uses.',
+    lead: (p) =>
+      `A deck in Greenville runs <strong>${p.perSqft} per square foot</strong> built. A 12×16 pressure-treated deck (192 sq ft) comes in around ${p.tier('pressureTreated', 192)}; the same deck in composite runs about ${p.tier('compositeLowMaintenance', 192)}.`,
+    tiers: [
+      {
+        label: 'Pressure-treated, 12×16',
+        rateId: 'pressureTreated',
+        sqft: 192,
+        note: 'Treated framing, decking and wood rail with one stair run. Room for a table and grill off the back door.',
+      },
+      {
+        label: 'Composite, 14×20',
+        rateId: 'compositeLowMaintenance',
+        sqft: 280,
+        note: 'Treated frame under composite boards and a low-maintenance rail. Seating and dining on one level.',
+      },
+      {
+        label: 'Multi-level premium, 400 sq ft',
+        rateId: 'premiumComposite',
+        sqft: 400,
+        note: 'Two levels joined by stairs, premium decking, lighting and built-ins such as benches or a bar top.',
+      },
+    ],
+    drivers: [
+      'Composite or treated boards: the biggest single choice on the material side, since the frame underneath is treated lumber either way.',
+      'Height off the ground. A deck at the back-door step is simple; one a storey up needs taller posts, deeper footings and code-driven guards.',
+      'Levels. A second level adds stairs, another guard run and more framing for the same floor area.',
+      'Railing, priced by the foot of perimeter, so it weighs more on a small deck than a large one.',
+      'Built-ins and extras such as lighting, a bar, benches or a fire feature. Each is a scope of its own on top of the per-foot rate.',
+    ],
+    sections: [
+      {
+        heading: 'Composite or pressure-treated?',
+        body: (p) =>
+          `<p>On a 14×20 deck the choice is roughly ${p.tier('pressureTreated', 280)} in treated wood against ${p.tier('compositeLowMaintenance', 280)} in composite. Treated wood costs less on day one and needs cleaning and sealing every year or two. Composite costs more up front and skips that upkeep. The frame is treated lumber in both cases, so the difference is in the boards and the rail, and in how you want to spend your weekends.</p>`,
+      },
+      {
+        heading: 'A Greenville deck we built',
+        body: () =>
+          '<p>One of our Greenville projects is a multi-level wood deck with an outdoor bar, a fire pit and built-in seating, designed for entertaining. It shows how cost builds: the second level, the bar and the seating are each their own scope, which is why a deck like it prices well above a single-level deck with the same floor area. It is on our <a href="/projects" class="text-blue-700 hover:text-blue-800 underline">projects page</a>.</p>',
+      },
+    ],
+    faqs: [
+      {
+        q: 'How much does a deck cost in Greenville SC?',
+        a: (p) =>
+          `${p.perSqft} per square foot built. A 12×16 pressure-treated deck runs about ${p.tier('pressureTreated', 192)}, and a 14×20 composite deck about ${p.tier('compositeLowMaintenance', 280)}. Height, stairs and built-ins move both.`,
+      },
+      {
+        q: 'What does a composite deck cost in Greenville?',
+        a: (p) =>
+          `${p.perSqftTier('compositeLowMaintenance')} per square foot for composite boards and rail on a treated frame, which puts a 14×20 deck near ${p.tier('compositeLowMaintenance', 280)}. Premium capped boards with lighting and built-ins run ${p.perSqftTier('premiumComposite')} per square foot.`,
+      },
+      {
+        q: 'Do I need a permit to build a deck in Greenville?',
+        a: () =>
+          'For an attached deck, or one more than a step or two off the ground, generally yes. Which office issues it depends on the address: the City of Greenville inside city limits, and Greenville County Building Safety outside them. We pull the permit and schedule the inspections as part of the job.',
+      },
+      {
+        q: 'How long does it take to build a deck?',
+        a: () =>
+          'Two to four weeks is typical for us, from footings to final inspection, weather permitting. Multi-level decks with lighting and built-ins take longer.',
+      },
+    ],
+  },
+
+  {
     slug: 'basement-finishing-cost-greenville-sc',
     service: 'Basement Finishing',
     city: 'Greenville, SC',
