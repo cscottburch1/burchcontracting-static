@@ -10,7 +10,9 @@
  * entry, else the __datafile__src/data/services.js pair (serviceDates() in
  * src/build/content-dates.mjs); a hand-authored or calculator page takes the
  * entry keyed by its own file; the area pages and /faqs take the geo-aeo.js
- * data-file entry. Only entries that are actually present are returned.
+ * data-file entry; a cost guide, article or hub takes the entry keyed by its
+ * own file, else its kind's data-file entry (guideDates()). Only entries that
+ * are actually present are returned.
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -19,6 +21,8 @@ import { CALCULATOR_PAGES_META } from '../../src/data/calculators.js'
 import { SERVICE_AREAS } from '../../src/data/geo-aeo.js'
 import { HAND_AUTHORED_PAGES } from '../../src/data/pages.js'
 import { SERVICES } from '../../src/data/services.js'
+import { COST_GUIDES } from '../../src/data/guides-cost.js'
+import { ARTICLES } from '../../src/data/guides-articles.js'
 
 const root = path.resolve(import.meta.dirname, '../..')
 export const OVERRIDES_PATH = path.join(root, 'src/data/content-date-overrides.json')
@@ -50,6 +54,17 @@ export function overrideDatedPages(overrides = readOverridesFile()) {
   if (literal[areaKey]?.dateModified) {
     for (const a of SERVICE_AREAS) out.push({ rel: `service-areas/${a.slug}.html`, key: areaKey, dateModified: literal[areaKey].dateModified })
     out.push({ rel: 'faqs.html', key: areaKey, dateModified: literal[areaKey].dateModified })
+  }
+
+  for (const [kind, dataFile, entries] of [
+    ['cost', 'src/data/guides-cost.js', COST_GUIDES],
+    ['blog', 'src/data/guides-articles.js', ARTICLES],
+  ]) {
+    const dataKey = `__datafile__${dataFile}`
+    for (const rel of [`${kind}/index.html`, ...entries.map((g) => `${kind}/${g.slug}.html`)]) {
+      const key = literal[rel]?.dateModified ? rel : literal[dataKey]?.dateModified ? dataKey : null
+      if (key) out.push({ rel, key, dateModified: literal[key].dateModified })
+    }
   }
 
   return out

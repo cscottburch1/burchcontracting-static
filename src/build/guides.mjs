@@ -40,6 +40,7 @@ import { COST_GUIDES } from '../data/guides-cost.js'
 import { ARTICLES } from '../data/guides-articles.js'
 import { projectCostString, servicePerSqftBand, tierPerSqftBand } from '../data/pricing-sync.js'
 import { authorBox, documentHead, esc, footer } from '../chrome/index.mjs'
+import { guideDates } from './content-dates.mjs'
 
 /**
  * These pages are restorations, not new writing, so datePublished has to
@@ -298,12 +299,12 @@ function primaryCostGuideHtml(guide, kind) {
       </section>`
 }
 
-function guidePage(guide, kind, related, modified) {
+function guidePage(guide, kind, related, { datePublished, dateModified: modified }) {
   const file = `${KINDS[kind].dir}/${guide.slug}.html`
   const url = pageUrl(file)
   const canonical = `${SITE_ORIGIN}${url}`
   const p = priceHelper(guide.serviceKey, guide.slug)
-  const published = RESTORED_PUBLISHED
+  const published = datePublished ?? RESTORED_PUBLISHED
   const hubUrl = pageUrl(`${KINDS[kind].dir}/index.html`)
 
   const article = articleSchema({
@@ -402,7 +403,7 @@ ${footer}
 </html>`
 }
 
-function hubPage(kind, modified) {
+function hubPage(kind, { datePublished, dateModified: modified }) {
   const config = KINDS[kind]
   const file = `${config.dir}/index.html`
   const canonical = `${SITE_ORIGIN}${pageUrl(file)}`
@@ -512,7 +513,7 @@ ${rows}
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 ${cards}
           </div>
-${authorBox({ published: RESTORED_PUBLISHED, modified })}
+${authorBox({ published: datePublished ?? RESTORED_PUBLISHED, modified })}
         </div>
       </section>
 
@@ -567,21 +568,19 @@ export function render({ dates }) {
   const pages = []
   for (const kind of Object.keys(KINDS)) {
     const dir = KINDS[kind].dir
-    const forKind = dates[DATA_FILE_KEY[kind]]
-    if (!forKind) throw new Error(`guides: no content dates under ${DATA_FILE_KEY[kind]}`)
-    const modified = forKind.dateModified
+    if (!dates[DATA_FILE_KEY[kind]]) throw new Error(`guides: no content dates under ${DATA_FILE_KEY[kind]}`)
 
     for (const guide of KINDS[kind].entries) {
       pages.push({
         url: pageUrl(`${dir}/${guide.slug}.html`),
         file: `${dir}/${guide.slug}.html`,
-        html: guidePage(guide, kind, relatedFor(guide, kind), modified),
+        html: guidePage(guide, kind, relatedFor(guide, kind), guideDates(dates, kind, `${dir}/${guide.slug}.html`)),
       })
     }
     pages.push({
       url: pageUrl(`${dir}/index.html`),
       file: `${dir}/index.html`,
-      html: hubPage(kind, modified),
+      html: hubPage(kind, guideDates(dates, kind, `${dir}/index.html`)),
     })
   }
   return pages
