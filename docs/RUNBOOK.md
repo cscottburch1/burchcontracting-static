@@ -197,7 +197,16 @@ of the three, and fails on a key matching no service. Add the URL to
 log rather than as invented text.
 
 **A cost guide or article:** add to `src/data/guides-cost.js` or
-`guides-articles.js`, and to `url-map.js`.
+`guides-articles.js`, and to `url-map.js`. Give it its own entry in
+`content-date-overrides.json`, keyed by its file:
+`"cost/<slug>.html": { "datePublished": "<today>", "dateModified": "<today>" }`.
+Then run `npm run build && node scripts/record-text-hashes.mjs`. Check 15 fails
+a new guide without that entry, because it would otherwise take its data file's
+old shared dates. Adding a guide also changes the hub and the Related Guides
+cards on pages for the same service, and check 15 names each of those pages.
+Give each one a `dateModified` entry. **Never move the shared
+`__datafile__src/data/guides-*.js` pair**, because that re-dates every guide.
+The Greenville deck guide (2026-09-25) is a worked example.
 
 **Any new page** needs an inbound link from somewhere, or `check-links` reports
 it as a sitemap orphan — correctly, because a page reachable only from the
@@ -376,7 +385,15 @@ above. Prices in a guide come from `calculator-config.js` through
 bathroom remodel cost Simpsonville (`/cost/bathroom-remodel-cost-simpsonville-sc`)
 and Greenville (`/cost/bathroom-remodel-cost-greenville-sc`); kitchen remodel
 cost Simpsonville and Greenville (`/cost/kitchen-remodel-cost-*`); kitchen
-remodel timeline (`/blog/how-long-does-a-kitchen-remodel-take`).
+remodel timeline (`/blog/how-long-does-a-kitchen-remodel-take`); deck cost
+Greenville (`/cost/deck-cost-greenville-sc`, added 2026-09-25).
+
+**The blog's role (owner, 2026-09-25):** `/cost/` pages own "*service* cost
+*city*" searches, and `/blog/` owns questions, choices and how-tos, with one
+page per search. An article that shares a service and city with a cost guide
+names that guide under its hero, which is built in (`primaryCostGuideHtml()` in
+`src/build/guides.mjs`). Don't queue a blog post whose search a cost guide
+already targets. Deepen the guide instead.
 
 **Deliberately not queued:** "walk-in shower conversion cost SC". It targets
 the same query as `/blog/bath-to-shower-conversion-cost-south-carolina`; a

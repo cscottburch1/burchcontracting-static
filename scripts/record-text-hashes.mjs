@@ -39,6 +39,13 @@ let changed = 0
 for (const { rel, key, dateModified } of overrideDatedPages(overrides)) {
   const hash = visibleTextHash(fs.readFileSync(path.join(pagesRoot, rel), 'utf8'))
   const before = previous[rel]
+  // A guide with no hash yet is a new page. On its data file's shared pair it
+  // would claim that pair's dates (and RESTORED_PUBLISHED as its datePublished),
+  // so it needs an entry of its own first.
+  if (!before && key.startsWith('__datafile__src/data/guides-') && !accept) {
+    refused.push(`${rel}: a new page on the shared ${key} pair — add "${rel}": { "datePublished": "<today>", "dateModified": "<today>" } to dates, then re-run`)
+    continue
+  }
   if (before && before.hash !== hash && before.dateModified === dateModified && !accept) {
     refused.push(`${rel}: text changed but its dateModified is still ${dateModified} (${key}) — bump the date, then re-run`)
     next[rel] = before

@@ -169,6 +169,41 @@
       "datePublished": "2026-06-01",
       "dateModified": "2026-09-11",
       "why": "Git tracks files, not the services inside one. Every service shares services.js's history, so each claims the file's creation date. 2026-06-01 is when the earliest of them actually shipped; the file itself was created 2026-07-02, which made every service look newer than it is. See docs/archive/FINDINGS.md #7 — kitchen-remodeling is the clearest case, added 2026-08-29 and claiming 2026-07-02. Per-service dates need per-object history, which git does not have; this at least stops the oldest services from being backdated forward. Since Phase 6.3 a service can carry its own dates as a __service__<id> entry below; the Tier 1 lead offers do."
+    },
+    "__datafile__src/data/guides-cost.js": {
+      "datePublished": "2026-09-11",
+      "dateModified": "2026-09-23",
+      "why": "Pinned 2026-09-25 at the date git gave it that day, so the 11 cost guides and the /cost hub can be dated one page at a time. Git tracks the file, not the guides inside it: before this, adding or editing one entry re-dated every page this file renders. A page whose text changes now takes its own entry, keyed by its file (e.g. \"cost/<slug>.html\"), and check 15 fails until it has one. Do not move this pair to date a single page."
+    },
+    "__datafile__src/data/guides-articles.js": {
+      "datePublished": "2026-09-11",
+      "dateModified": "2026-09-23",
+      "why": "Pinned 2026-09-25 at the date git gave it that day, so the 14 articles and the /blog hub can be dated one page at a time. Git tracks the file, not the articles inside it: before this, adding or editing one entry re-dated every page this file renders. A page whose text changes now takes its own entry, keyed by its file (e.g. \"blog/<slug>.html\"), and check 15 fails until it has one. Do not move this pair to date a single page."
+    },
+    "blog/deck-building-cost-simpsonville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Gained the callout naming /cost/cost-to-build-a-deck-simpsonville-sc as the place for its prices (the article-to-cost-guide rule extended to every service, 2026-09-25). Same day: its Related Guides cards now include /cost/deck-cost-greenville-sc."
+    },
+    "cost/deck-cost-greenville-sc.html": {
+      "datePublished": "2026-09-25",
+      "dateModified": "2026-09-25",
+      "why": "New guide, first published 2026-09-25."
+    },
+    "cost/index.html": {
+      "dateModified": "2026-09-25",
+      "why": "The hub lists /cost/deck-cost-greenville-sc, added 2026-09-25."
+    },
+    "cost/cost-to-build-a-deck-simpsonville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "the Related Guides cards now include /cost/deck-cost-greenville-sc (added 2026-09-25) in place of a deck article."
+    },
+    "cost/deck-cost-simpsonville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "the Related Guides cards now include /cost/deck-cost-greenville-sc (added 2026-09-25) in place of a deck article."
+    },
+    "blog/composite-vs-pressure-treated-deck-which-is-better.html": {
+      "dateModified": "2026-09-25",
+      "why": "the Related Guides cards now include /cost/deck-cost-greenville-sc (added 2026-09-25) in place of a deck article."
     }
   },
   "textHashes": {
@@ -261,6 +296,146 @@
       "key": "terms-of-service.html",
       "dateModified": "2026-07-23",
       "hash": "19dce09453b8b93c"
+    },
+    "cost/index.html": {
+      "key": "cost/index.html",
+      "dateModified": "2026-09-25",
+      "hash": "9350722fa41b0d8e"
+    },
+    "cost/garage-construction-cost-laurens-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "e34eeded046414b4"
+    },
+    "cost/home-addition-cost-greenville-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "cba06c36f496bcdc"
+    },
+    "cost/room-addition-cost-greenville-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "f396b82eefd35aa9"
+    },
+    "cost/cost-to-build-a-deck-simpsonville-sc.html": {
+      "key": "cost/cost-to-build-a-deck-simpsonville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "79f49436c2111984"
+    },
+    "cost/deck-cost-simpsonville-sc.html": {
+      "key": "cost/deck-cost-simpsonville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "608a11738030b170"
+    },
+    "cost/deck-cost-greenville-sc.html": {
+      "key": "cost/deck-cost-greenville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "3df6d9a8f8d1d0ee"
+    },
+    "cost/basement-finishing-cost-greenville-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "c156aef12a1dfb1d"
+    },
+    "cost/screened-porch-vs-sunroom-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "5d62d19e3362805b"
+    },
+    "cost/kitchen-remodel-cost-simpsonville-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "b7650febae153bb3"
+    },
+    "cost/kitchen-remodel-cost-greenville-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "148e784a38d9f56d"
+    },
+    "cost/bathroom-remodel-cost-simpsonville-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "4e30646a07c26317"
+    },
+    "cost/bathroom-remodel-cost-greenville-sc.html": {
+      "key": "__datafile__src/data/guides-cost.js",
+      "dateModified": "2026-09-23",
+      "hash": "af8151072374cb90"
+    },
+    "blog/index.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "970fcc19b7123bf3"
+    },
+    "blog/how-much-does-a-screened-porch-cost-in-south-carolina.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "500ab774fda15549"
+    },
+    "blog/room-addition-cost-in-south-carolina.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "3afb60a33f006204"
+    },
+    "blog/average-cost-of-basement-finishing-in-south-carolina.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "dba21353c6b8a545"
+    },
+    "blog/deck-building-cost-simpsonville-sc.html": {
+      "key": "blog/deck-building-cost-simpsonville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "020862a7084ce2b3"
+    },
+    "blog/cost-of-bathroom-remodeling-simpsonville-sc.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "adbc7b26fb65e6b8"
+    },
+    "blog/kitchen-remodel-cost-fountain-inn-sc.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "626beb79a309b63c"
+    },
+    "blog/bath-to-shower-conversion-cost-south-carolina.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "cc75a4981f961d37"
+    },
+    "blog/composite-vs-pressure-treated-deck-which-is-better.html": {
+      "key": "blog/composite-vs-pressure-treated-deck-which-is-better.html",
+      "dateModified": "2026-09-25",
+      "hash": "1c4dcecd6bfa8294"
+    },
+    "blog/best-bathroom-tile-options-for-remodels.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "eb8b6ce115ef2921"
+    },
+    "blog/how-long-does-a-kitchen-remodel-take.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "b40024e07dc41b47"
+    },
+    "blog/do-you-need-permits-for-remodeling-in-simpsonville-sc.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "a0905bb2d3a67441"
+    },
+    "blog/how-to-plan-a-kitchen-remodel-step-by-step.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "aa1acfaefa3bd11b"
+    },
+    "blog/best-home-improvements-for-property-value-in-south-carolina.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "56ac07d47ab2d82e"
+    },
+    "blog/basement-finishing-ideas-sc.html": {
+      "key": "__datafile__src/data/guides-articles.js",
+      "dateModified": "2026-09-23",
+      "hash": "e5449b698bc6d18e"
     }
   }
 }
