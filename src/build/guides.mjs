@@ -25,7 +25,7 @@
  * cost/ and blog/ directories by vite.config.js, so a new guide cannot be
  * generated and then silently left out of dist/.
  */
-import { SITE } from '../data/services.js'
+import { SERVICES, SITE } from '../data/services.js'
 import { PERMIT_OFFICES, SC_BUILDING_CODES_COUNCIL_URL } from '../data/geo-aeo.js'
 import {
   LOCAL_BUSINESS_SCHEMA,
@@ -272,6 +272,32 @@ ${related
       </section>`
 }
 
+/**
+ * An article that shares its service page and city with a Tier 1 cost guide
+ * names that guide as the place for its prices, right under the hero.
+ *
+ * /blog/cost-of-bathroom-remodeling-simpsonville-sc and
+ * /cost/bathroom-remodel-cost-simpsonville-sc target the same query, and until
+ * 2026-09-25 the article linked the guide only from a "Related Guides" card at
+ * the bottom. The owner chose to keep both and make the guide the primary one
+ * (option (a), fix/phase-6-leftovers). Tier 1 only, the same rule as a service
+ * page's guide list: the Simpsonville deck article has the same overlap and was
+ * left for a separate decision.
+ */
+function primaryCostGuideHtml(guide, kind) {
+  if (kind !== 'blog') return ''
+  const service = SERVICES.find((s) => `${s.slug}/index.html` === guide.servicePage)
+  if (service?.tier !== 1) return ''
+  const cost = COST_GUIDES.find((g) => g.servicePage === guide.servicePage && g.city === guide.city)
+  if (!cost) return ''
+  return `
+      <section class="bg-blue-50 border-b border-blue-100 py-6">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p class="text-slate-700">For every size and scope priced out in one place, see our cost guide: <a href="${pageUrl(`cost/${cost.slug}.html`)}" class="font-semibold text-blue-700 hover:text-blue-800 underline">${esc(cost.h1)}</a>.</p>
+        </div>
+      </section>`
+}
+
 function guidePage(guide, kind, related, modified) {
   const file = `${KINDS[kind].dir}/${guide.slug}.html`
   const url = pageUrl(file)
@@ -345,6 +371,7 @@ function guidePage(guide, kind, related, modified) {
           </div>
         </div>
       </section>
+${primaryCostGuideHtml(guide, kind)}
 ${tierTableHtml(guide, p)}
 ${driversHtml(guide)}
 ${sectionsHtml(guide, p)}
