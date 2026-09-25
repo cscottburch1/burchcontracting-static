@@ -179,6 +179,10 @@
       "datePublished": "2026-09-11",
       "dateModified": "2026-09-23",
       "why": "Pinned 2026-09-25 at the date git gave it that day, so the 14 articles and the /blog hub can be dated one page at a time. Git tracks the file, not the articles inside it: before this, adding or editing one entry re-dated every page this file renders. A page whose text changes now takes its own entry, keyed by its file (e.g. \"blog/<slug>.html\"), and check 15 fails until it has one. Do not move this pair to date a single page."
+    },
+    "blog/deck-building-cost-simpsonville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Gained the callout naming /cost/cost-to-build-a-deck-simpsonville-sc as the place for its prices (the article-to-cost-guide rule extended to every service, 2026-09-25)."
     }
   },
   "textHashes": {
@@ -353,9 +357,9 @@
       "hash": "dba21353c6b8a545"
     },
     "blog/deck-building-cost-simpsonville-sc.html": {
-      "key": "__datafile__src/data/guides-articles.js",
-      "dateModified": "2026-09-23",
-      "hash": "1d199ab6d64fca04"
+      "key": "blog/deck-building-cost-simpsonville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "18c7aa614c6978bc"
     },
     "blog/cost-of-bathroom-remodeling-simpsonville-sc.html": {
       "key": "__datafile__src/data/guides-articles.js",

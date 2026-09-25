@@ -25,7 +25,7 @@
  * cost/ and blog/ directories by vite.config.js, so a new guide cannot be
  * generated and then silently left out of dist/.
  */
-import { SERVICES, SITE } from '../data/services.js'
+import { SITE } from '../data/services.js'
 import { PERMIT_OFFICES, SC_BUILDING_CODES_COUNCIL_URL } from '../data/geo-aeo.js'
 import {
   LOCAL_BUSINESS_SCHEMA,
@@ -274,21 +274,19 @@ ${related
 }
 
 /**
- * An article that shares its service page and city with a Tier 1 cost guide
- * names that guide as the place for its prices, right under the hero.
+ * An article that shares its service page and city with a cost guide names
+ * that guide as the place for its prices, right under the hero.
  *
  * /blog/cost-of-bathroom-remodeling-simpsonville-sc and
  * /cost/bathroom-remodel-cost-simpsonville-sc target the same query, and until
  * 2026-09-25 the article linked the guide only from a "Related Guides" card at
  * the bottom. The owner chose to keep both and make the guide the primary one
- * (option (a), fix/phase-6-leftovers). Tier 1 only, the same rule as a service
- * page's guide list: the Simpsonville deck article has the same overlap and was
- * left for a separate decision.
+ * (option (a), fix/phase-6-leftovers), then extended it to every service on
+ * the same day, which brought in the Simpsonville deck article. Where a city
+ * has two guides for one service, the first in guides-cost.js is the primary.
  */
 function primaryCostGuideHtml(guide, kind) {
   if (kind !== 'blog') return ''
-  const service = SERVICES.find((s) => `${s.slug}/index.html` === guide.servicePage)
-  if (service?.tier !== 1) return ''
   const cost = COST_GUIDES.find((g) => g.servicePage === guide.servicePage && g.city === guide.city)
   if (!cost) return ''
   return `
