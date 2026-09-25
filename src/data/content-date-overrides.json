@@ -139,8 +139,8 @@
       "why": "Phase 6.6 changed this page's headline price on 2026-09-23 (it now derives from the same estimates as its table). services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Bump dateModified in the same commit as any later content change to this service."
     },
     "__service__bathroom-remodeling": {
-      "dateModified": "2026-09-23",
-      "why": "Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates."
+      "dateModified": "2026-09-25",
+      "why": "Phase 6.3 added this page's cost-guide section (and, where noted in the commit, a permit FAQ and a what's-included section) on 2026-09-23. services.js is pinned to 2026-09-11 for all sixteen services, which would hide that. Per-service override: bump dateModified in the same commit as any later content change to this service, or it understates. Bumped to 2026-09-25: the page's guide list shows the Simpsonville article under its new planning title."
     },
     "__service__kitchen-remodeling": {
       "datePublished": "2026-08-29",
@@ -182,12 +182,12 @@
     },
     "blog/deck-building-cost-simpsonville-sc.html": {
       "dateModified": "2026-09-25",
-      "why": "Gained the callout naming /cost/cost-to-build-a-deck-simpsonville-sc as the place for its prices (the article-to-cost-guide rule extended to every service, 2026-09-25). Same day: its Related Guides cards now include /cost/deck-cost-greenville-sc."
+      "why": "Gained the callout naming /cost/cost-to-build-a-deck-simpsonville-sc as the place for its prices (the article-to-cost-guide rule extended to every service, 2026-09-25). Same day: its Related Guides cards now include /cost/deck-cost-greenville-sc. Same day: retitled toward planning intent (title, H1, description; URL and body unchanged), the (b) half of the cannibalization decision."
     },
     "cost/deck-cost-greenville-sc.html": {
       "datePublished": "2026-09-25",
       "dateModified": "2026-09-25",
-      "why": "New guide, first published 2026-09-25."
+      "why": "New guide, first published 2026-09-25. Same day: Its Related Guides cards (or guide list) show the retitled Simpsonville articles, now \"Planning a Bathroom Remodel in Simpsonville, SC\" and \"Planning a Deck in Simpsonville, SC\" (2026-09-25, the (b) half of the cannibalization decision)."
     },
     "cost/index.html": {
       "dateModified": "2026-09-25",
@@ -195,11 +195,11 @@
     },
     "cost/cost-to-build-a-deck-simpsonville-sc.html": {
       "dateModified": "2026-09-25",
-      "why": "the Related Guides cards now include /cost/deck-cost-greenville-sc (added 2026-09-25) in place of a deck article."
+      "why": "the Related Guides cards now include /cost/deck-cost-greenville-sc (added 2026-09-25) in place of a deck article. Same day: Its Related Guides cards (or guide list) show the retitled Simpsonville articles, now \"Planning a Bathroom Remodel in Simpsonville, SC\" and \"Planning a Deck in Simpsonville, SC\" (2026-09-25, the (b) half of the cannibalization decision)."
     },
     "cost/deck-cost-simpsonville-sc.html": {
       "dateModified": "2026-09-25",
-      "why": "the Related Guides cards now include /cost/deck-cost-greenville-sc (added 2026-09-25) in place of a deck article."
+      "why": "the Related Guides cards now include /cost/deck-cost-greenville-sc (added 2026-09-25) in place of a deck article. Same day: Its Related Guides cards (or guide list) show the retitled Simpsonville articles, now \"Planning a Bathroom Remodel in Simpsonville, SC\" and \"Planning a Deck in Simpsonville, SC\" (2026-09-25, the (b) half of the cannibalization decision)."
     },
     "blog/composite-vs-pressure-treated-deck-which-is-better.html": {
       "dateModified": "2026-09-25",
@@ -211,7 +211,7 @@
     },
     "cost/bathroom-remodel-cost-greenville-sc.html": {
       "dateModified": "2026-09-25",
-      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county."
+      "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county. Same day: Its Related Guides cards (or guide list) show the retitled Simpsonville articles, now \"Planning a Bathroom Remodel in Simpsonville, SC\" and \"Planning a Deck in Simpsonville, SC\" (2026-09-25, the (b) half of the cannibalization decision)."
     },
     "cost/home-addition-cost-greenville-sc.html": {
       "dateModified": "2026-09-25",
@@ -224,6 +224,26 @@
     "cost/room-addition-cost-greenville-sc.html": {
       "dateModified": "2026-09-25",
       "why": "Greenville permitting corrected 2026-09-25 (owner confirmed): the City of Greenville permits inside city limits, Greenville County Building Safety outside them. The footer, and the permit FAQ where the page has one, said only the county."
+    },
+    "blog/cost-of-bathroom-remodeling-simpsonville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Retitled toward planning intent 2026-09-25: title, H1 and description (URL and body unchanged), so it stops competing with /cost/bathroom-remodel-cost-simpsonville-sc. The (b) half of the cannibalization decision; see DECISIONS."
+    },
+    "cost/bathroom-remodel-cost-simpsonville-sc.html": {
+      "dateModified": "2026-09-25",
+      "why": "Its Related Guides cards (or guide list) show the retitled Simpsonville articles, now \"Planning a Bathroom Remodel in Simpsonville, SC\" and \"Planning a Deck in Simpsonville, SC\" (2026-09-25, the (b) half of the cannibalization decision)."
+    },
+    "blog/index.html": {
+      "dateModified": "2026-09-25",
+      "why": "Its Related Guides cards (or guide list) show the retitled Simpsonville articles, now \"Planning a Bathroom Remodel in Simpsonville, SC\" and \"Planning a Deck in Simpsonville, SC\" (2026-09-25, the (b) half of the cannibalization decision)."
+    },
+    "blog/bath-to-shower-conversion-cost-south-carolina.html": {
+      "dateModified": "2026-09-25",
+      "why": "Its Related Guides cards (or guide list) show the retitled Simpsonville articles, now \"Planning a Bathroom Remodel in Simpsonville, SC\" and \"Planning a Deck in Simpsonville, SC\" (2026-09-25, the (b) half of the cannibalization decision)."
+    },
+    "blog/best-bathroom-tile-options-for-remodels.html": {
+      "dateModified": "2026-09-25",
+      "why": "Its Related Guides cards (or guide list) show the retitled Simpsonville articles, now \"Planning a Bathroom Remodel in Simpsonville, SC\" and \"Planning a Deck in Simpsonville, SC\" (2026-09-25, the (b) half of the cannibalization decision)."
     }
   },
   "textHashes": {
@@ -259,8 +279,8 @@
     },
     "bathroom-remodeling/index.html": {
       "key": "__service__bathroom-remodeling",
-      "dateModified": "2026-09-23",
-      "hash": "d6973c3a3b6cca0f"
+      "dateModified": "2026-09-25",
+      "hash": "dacaa929710a6712"
     },
     "kitchen-remodeling/index.html": {
       "key": "__service__kitchen-remodeling",
@@ -340,17 +360,17 @@
     "cost/cost-to-build-a-deck-simpsonville-sc.html": {
       "key": "cost/cost-to-build-a-deck-simpsonville-sc.html",
       "dateModified": "2026-09-25",
-      "hash": "79f49436c2111984"
+      "hash": "e3767cef5e4b0305"
     },
     "cost/deck-cost-simpsonville-sc.html": {
       "key": "cost/deck-cost-simpsonville-sc.html",
       "dateModified": "2026-09-25",
-      "hash": "608a11738030b170"
+      "hash": "debf608caad45279"
     },
     "cost/deck-cost-greenville-sc.html": {
       "key": "cost/deck-cost-greenville-sc.html",
       "dateModified": "2026-09-25",
-      "hash": "ca1dc478d3725934"
+      "hash": "0c3cc95e67e4d42b"
     },
     "cost/basement-finishing-cost-greenville-sc.html": {
       "key": "cost/basement-finishing-cost-greenville-sc.html",
@@ -373,19 +393,19 @@
       "hash": "9f066c1f2e27e274"
     },
     "cost/bathroom-remodel-cost-simpsonville-sc.html": {
-      "key": "__datafile__src/data/guides-cost.js",
-      "dateModified": "2026-09-23",
-      "hash": "4e30646a07c26317"
+      "key": "cost/bathroom-remodel-cost-simpsonville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "733eb11d9e5bfe9b"
     },
     "cost/bathroom-remodel-cost-greenville-sc.html": {
       "key": "cost/bathroom-remodel-cost-greenville-sc.html",
       "dateModified": "2026-09-25",
-      "hash": "4dfba91300a79b54"
+      "hash": "77e50e991317e927"
     },
     "blog/index.html": {
-      "key": "__datafile__src/data/guides-articles.js",
-      "dateModified": "2026-09-23",
-      "hash": "970fcc19b7123bf3"
+      "key": "blog/index.html",
+      "dateModified": "2026-09-25",
+      "hash": "6acf1119b39d1dda"
     },
     "blog/how-much-does-a-screened-porch-cost-in-south-carolina.html": {
       "key": "__datafile__src/data/guides-articles.js",
@@ -405,12 +425,12 @@
     "blog/deck-building-cost-simpsonville-sc.html": {
       "key": "blog/deck-building-cost-simpsonville-sc.html",
       "dateModified": "2026-09-25",
-      "hash": "020862a7084ce2b3"
+      "hash": "4f1f932c4e918f40"
     },
     "blog/cost-of-bathroom-remodeling-simpsonville-sc.html": {
-      "key": "__datafile__src/data/guides-articles.js",
-      "dateModified": "2026-09-23",
-      "hash": "adbc7b26fb65e6b8"
+      "key": "blog/cost-of-bathroom-remodeling-simpsonville-sc.html",
+      "dateModified": "2026-09-25",
+      "hash": "ed05155b658ee380"
     },
     "blog/kitchen-remodel-cost-fountain-inn-sc.html": {
       "key": "__datafile__src/data/guides-articles.js",
@@ -418,9 +438,9 @@
       "hash": "626beb79a309b63c"
     },
     "blog/bath-to-shower-conversion-cost-south-carolina.html": {
-      "key": "__datafile__src/data/guides-articles.js",
-      "dateModified": "2026-09-23",
-      "hash": "cc75a4981f961d37"
+      "key": "blog/bath-to-shower-conversion-cost-south-carolina.html",
+      "dateModified": "2026-09-25",
+      "hash": "f95a2e6e21a3b182"
     },
     "blog/composite-vs-pressure-treated-deck-which-is-better.html": {
       "key": "blog/composite-vs-pressure-treated-deck-which-is-better.html",
@@ -428,9 +448,9 @@
       "hash": "1c4dcecd6bfa8294"
     },
     "blog/best-bathroom-tile-options-for-remodels.html": {
-      "key": "__datafile__src/data/guides-articles.js",
-      "dateModified": "2026-09-23",
-      "hash": "eb8b6ce115ef2921"
+      "key": "blog/best-bathroom-tile-options-for-remodels.html",
+      "dateModified": "2026-09-25",
+      "hash": "e120b6126c721c74"
     },
     "blog/how-long-does-a-kitchen-remodel-take.html": {
       "key": "__datafile__src/data/guides-articles.js",

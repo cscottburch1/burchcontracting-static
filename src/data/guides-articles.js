@@ -265,10 +265,10 @@ export const ARTICLES = [
     calculator: 'calculator/decks.html',
     servicePage: 'outdoor-living/decks/index.html',
     permitCounty: 'Greenville County',
-    h1: 'Deck Building Cost in Simpsonville, SC',
-    metaTitle: 'Deck Building Cost Simpsonville SC | Burch Contracting',
+    h1: 'Planning a Deck in Simpsonville, SC',
+    metaTitle: 'Planning a Deck in Simpsonville SC: Permits, HOA & Materials',
     metaDescription:
-      'Deck building costs in Simpsonville SC for pressure-treated and composite decks, computed from our own pricing, with permit and HOA notes.',
+      'Planning a deck in Simpsonville SC: permits and HOA approval, pressure-treated versus composite, what moves the budget, and building in winter.',
     lead: (p) =>
       `Deck building in Simpsonville runs <strong>${p.perSqft} per square foot</strong>. A 12×16 treated deck (192 sq ft) starts around ${p.tier('pressureTreated', 192)}; a 16×20 composite deck (320 sq ft) runs about ${p.tier('compositeLowMaintenance', 320)}.`,
     tiers: [
@@ -338,10 +338,10 @@ export const ARTICLES = [
     calculator: 'calculator/bath-remodel.html',
     servicePage: 'bathroom-remodeling/index.html',
     permitCounty: 'Greenville County',
-    h1: 'Cost of Bathroom Remodeling in Simpsonville, SC',
-    metaTitle: 'Cost of Bathroom Remodeling Simpsonville SC',
+    h1: 'Planning a Bathroom Remodel in Simpsonville, SC',
+    metaTitle: 'Planning a Bathroom Remodel in Simpsonville SC',
     metaDescription:
-      'What bathroom remodeling costs in Simpsonville SC by scope, computed from our own pricing, plus the hidden costs that show up behind old tile.',
+      'Planning a bathroom remodel in Simpsonville SC: what moves the budget, hidden costs behind old tile, working in stages, and how long you lose the room.',
     lead: (p) =>
       `Bathroom remodeling in Simpsonville runs <strong>${p.perSqft} per square foot</strong> — the highest per-foot rate in the house, because plumbing, waterproofing, tile and ventilation all crowd into a small room. A 60 sq ft hall bath starts near ${p.tier('basicRefresh', 60)}; a full remodel of the same room is about ${p.tier('midRangeRemodel', 60)}.`,
     tiers: [

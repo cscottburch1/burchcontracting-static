@@ -1266,3 +1266,57 @@ fails check 15 naming that page and the entry to add; an entry for
 PR #33 changed in build code keep their dates. The owner decided on
 2026-09-25 to leave those dates, since a date that trails a change carries no
 Google penalty.
+
+---
+
+## 2026-09-25 — One search, one page: blog posts that competed with cost guides
+
+Two Simpsonville articles targeted the same search as a cost guide:
+`/blog/cost-of-bathroom-remodeling-simpsonville-sc` against
+`/cost/bathroom-remodel-cost-simpsonville-sc`, and
+`/blog/deck-building-cost-simpsonville-sc` against the two Simpsonville deck
+guides. The bath guide had no impressions while the calculator ranked for its
+query (investigated in PR #33). The rule the owner set: `/cost/` owns
+"*service* cost *city*" searches, and `/blog/` owns questions, choices and
+how-tos. It is written up in RUNBOOK → "Next content".
+
+**(a) Point, don't compete** (PRs #33–#35, owner's choice of (a) over
+retitling or redirecting, 2026-09-25).
+- An article that shares a service and city with a cost guide names that guide
+  under its hero (`primaryCostGuideHtml()` in `src/build/guides.mjs`). It was
+  Tier 1 only in #33 and every service in #34.
+- Where two cost guides share a search, the secondary one sets `primaryGuide`.
+  Articles then point only at the main one. Room addition is the main
+  Greenville additions guide on the September export (#35).
+- The homepage and /services cost tables link each Tier 1 row's cost guide
+  beside its calculator (#33).
+- Nothing is redirected or removed.
+
+**(b) Retitle the articles toward planning** (this entry, after
+`/cost/deck-cost-greenville-sc` went live in the 6030487 deploy). The owner
+added (b) on top of (a), not in place of it. For both articles the URL and
+body are unchanged, and only the title, H1 and description move:
+
+| Article | Title (before → after) | H1 after |
+|---|---|---|
+| bath | Cost of Bathroom Remodeling Simpsonville SC → **Planning a Bathroom Remodel in Simpsonville SC** (46) | Planning a Bathroom Remodel in Simpsonville, SC |
+| deck | Deck Building Cost Simpsonville SC \| Burch Contracting → **Planning a Deck in Simpsonville SC: Permits, HOA & Materials** (60) | Planning a Deck in Simpsonville, SC |
+
+The descriptions (151 and 143 characters) list what each body already covers:
+budget drivers, hidden costs, staging and downtime for the bath; permits and
+HOA approval, materials and winter building for the deck. Nothing new is
+claimed. Both still open with prices and still name their cost guide, so a
+reader who wanted a number is one click from the page built for it.
+
+Because these headings are link text elsewhere, nine other pages' visible text
+changed with them: Related Guides cards, the /blog hub, and the guide list on
+/bathroom-remodeling. That moves the site's own anchor text for these two URLs
+from "cost" to "planning", which is part of the point. Each page carries its
+own 2026-09-25 date entry (`__service__bathroom-remodeling` for the service
+page).
+
+**What to watch:** in the next export, whether
+`/cost/bathroom-remodel-cost-simpsonville-sc` starts earning the "bathroom
+remodel cost Simpsonville" impressions, and whether the articles pick up
+planning queries. If a retitled article loses traffic without the guide
+gaining it, revisit (b) before (a).
