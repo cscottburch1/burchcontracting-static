@@ -26,6 +26,20 @@
  *   p.perSqftTier(rateId) per-sq-ft band for one tier
  */
 
+/**
+ * Cities that issue their own building permits inside city limits, keyed by a
+ * guide's `city`. The county office in PERMIT_OFFICES (geo-aeo.js) covers
+ * addresses outside them. Confirmed by the owner 2026-09-25 for Greenville.
+ * No URL: none is on record, and a guessed one is worse than none.
+ *
+ * Here rather than beside PERMIT_OFFICES because geo-aeo.js is dated by git,
+ * and an edit to it re-dates the eight service-area pages and /faqs. This file
+ * is pinned, so only the guides this changes take a new date.
+ */
+export const CITY_PERMIT_OFFICES = {
+  'Greenville, SC': { name: 'City of Greenville', url: null },
+}
+
 export const COST_GUIDES = [
   {
     slug: 'garage-construction-cost-laurens-sc',
@@ -107,6 +121,13 @@ export const COST_GUIDES = [
 
   {
     slug: 'home-addition-cost-greenville-sc',
+    // Two Greenville guides target the addition-cost search. The owner chose
+    // room addition as the main one on 2026-09-25, on the September export:
+    // "room addition greenville sc" 47 impressions and "room addition
+    // contractors" 35, against "home addition cost greenville" 4; the room
+    // guide at position 14.7 (22 impressions), this one at 21.8 (8). This page
+    // stays live and names that one under its hero. Nothing is redirected.
+    primaryGuide: 'room-addition-cost-greenville-sc',
     service: 'Home Additions',
     city: 'Greenville, SC',
     serviceKey: 'homeAdditions',
@@ -173,7 +194,7 @@ export const COST_GUIDES = [
       {
         q: 'Do I need a permit for a room addition in Greenville County?',
         a: () =>
-          'Yes — an addition needs a building permit, and the trades need their own. Greenville County Building Safety reviews the plans and inspects the work in stages. Setbacks, easements and sometimes HOA review govern where the addition can sit.',
+          'Yes — an addition needs a building permit, and the trades need their own. Inside Greenville city limits the City of Greenville reviews the plans and inspects the work in stages; outside them, Greenville County Building Safety does. Setbacks, easements and sometimes HOA review govern where the addition can sit.',
       },
       {
         q: 'How long does a room addition take?',
@@ -550,7 +571,7 @@ export const COST_GUIDES = [
       {
         q: 'Do I need a permit to finish a basement?',
         a: () =>
-          'Yes. Framing, electrical, plumbing and HVAC in a basement conversion are all permitted work, inspected in stages by Greenville County Building Safety. Egress and smoke-alarm requirements are checked as part of it.',
+          'Yes. Framing, electrical, plumbing and HVAC in a basement conversion are all permitted work, inspected in stages by the City of Greenville inside city limits or Greenville County Building Safety outside them. Egress and smoke-alarm requirements are checked as part of it.',
       },
       {
         q: 'Does a finished basement count toward square footage?',

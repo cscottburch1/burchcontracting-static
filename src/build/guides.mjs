@@ -36,7 +36,7 @@ import {
   webPageSchema,
 } from '../data/site-schema.js'
 import { SITE_ORIGIN, pageUrl } from '../data/url-map.js'
-import { COST_GUIDES } from '../data/guides-cost.js'
+import { CITY_PERMIT_OFFICES, COST_GUIDES } from '../data/guides-cost.js'
 import { ARTICLES } from '../data/guides-articles.js'
 import { projectCostString, servicePerSqftBand, tierPerSqftBand } from '../data/pricing-sync.js'
 import { authorBox, documentHead, esc, footer } from '../chrome/index.mjs'
@@ -241,9 +241,13 @@ function permitsHtml(guide) {
   if (!office) return ''
   // Spartanburg County has no permit URL in PERMIT_OFFICES — render the name
   // without a link rather than an href to nowhere.
-  const officeText = office.url
+  const countyText = office.url
     ? `<a href="${esc(office.url)}" class="text-blue-700 hover:text-blue-800 underline" rel="noopener" target="_blank">${esc(office.name)}</a>`
     : esc(office.name)
+  // A city that permits inside its own limits is named first; the county
+  // office then covers everything outside them (CITY_PERMIT_OFFICES).
+  const city = CITY_PERMIT_OFFICES[guide.city]
+  const officeText = city ? `${esc(city.name)} inside city limits, ${countyText} outside them` : countyText
   return `
       <section class="bg-white py-8 border-t border-slate-100">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -286,15 +290,34 @@ ${related
  * has two guides for one service, the first in guides-cost.js is the primary.
  */
 function primaryCostGuideHtml(guide, kind) {
-  if (kind !== 'blog') return ''
-  const cost = COST_GUIDES.find((g) => g.servicePage === guide.servicePage && g.city === guide.city)
+  let cost
+  let lead
+  if (kind === 'blog') {
+    cost = mainCostGuide(guide.servicePage, guide.city)
+    lead = 'For every size and scope priced out in one place, see our cost guide:'
+  } else if (guide.primaryGuide) {
+    // A cost guide that shares its search with another names the main one.
+    cost = COST_GUIDES.find((g) => g.slug === guide.primaryGuide)
+    if (!cost) throw new Error(`guides-cost.js: ${guide.slug}.primaryGuide is '${guide.primaryGuide}', which is no cost guide`)
+    if (cost.primaryGuide) throw new Error(`guides-cost.js: ${guide.slug}.primaryGuide points at ${cost.slug}, which defers to another guide itself`)
+    lead = 'Our main guide to this cost, with every size and scope in one table:'
+  }
   if (!cost) return ''
   return `
       <section class="bg-blue-50 border-b border-blue-100 py-6">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p class="text-slate-700">For every size and scope priced out in one place, see our cost guide: <a href="${pageUrl(`cost/${cost.slug}.html`)}" class="font-semibold text-blue-700 hover:text-blue-800 underline">${esc(cost.h1)}</a>.</p>
+          <p class="text-slate-700">${lead} <a href="${pageUrl(`cost/${cost.slug}.html`)}" class="font-semibold text-blue-700 hover:text-blue-800 underline">${esc(cost.h1)}</a>.</p>
         </div>
       </section>`
+}
+
+/**
+ * The main cost guide for a service in a city: the first in guides-cost.js,
+ * skipping any that name another as primary (primaryGuide). An article points
+ * here, so it never points at a guide that itself defers.
+ */
+function mainCostGuide(servicePage, city) {
+  return COST_GUIDES.find((g) => g.servicePage === servicePage && g.city === city && !g.primaryGuide)
 }
 
 function guidePage(guide, kind, related, { datePublished, dateModified: modified }) {
