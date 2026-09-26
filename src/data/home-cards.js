@@ -22,8 +22,8 @@
 export const HOME_SERVICE_CARDS = {
   'bathroom-remodeling': {
     heading: 'Bathroom Remodeling',
-    image: '/images/bath-shower-conversion-woodruff-sc-1.webp',
-    alt: 'Tub-to-shower conversion bathroom remodel with custom tile surround in Woodruff South Carolina',
+    image: '/images/bathroom-remodel-double-vanity.webp',
+    alt: 'Remodeled bathroom with a white double vanity, marble-look countertop, matte black faucets and black-framed mirrors',
     blurb: 'Update your old bathroom with all-new finishes and fixtures for a clean, updated look.',
   },
   'kitchen-remodeling': {
@@ -100,8 +100,8 @@ export const HOME_SERVICE_CARDS = {
   },
   'insurance-restoration': {
     heading: 'Insurance Restoration & Repair Services',
-    image: '/images/finished-basement.webp',
-    alt: 'Finished basement living space in Upstate South Carolina',
+    image: '/images/storm-damage-tree-on-roof.webp',
+    alt: 'Storm damage: a large tree fallen onto a house beside the chimney, with the damaged roof tarped',
     blurb: 'Storm damage, water damage, and insurance claim repairs. Free consultation and ballpark range to start, full restoration services from there.',
   },
   'ada-compliance': {
